@@ -21,3 +21,8 @@ dist/
 # Logs
 *.log
 npm-debug.log*
+
+# Local tool state
+.claude/settings.local.json
+.playwright-mcp/
+.serena/
