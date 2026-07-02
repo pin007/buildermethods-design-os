@@ -1,4 +1,4 @@
-# Data Model
+# Data Shape
 
 ## Entities
 
@@ -41,6 +41,9 @@ An AI-generated trade suggestion produced by a strategy or the market analyst. I
 ### Strategy
 A trading strategy configuration defining entry/exit rules, indicators, position sizing, and risk parameters. Strategies are named, typed (trend following, mean reversion, etc.), and can be activated or deactivated without restart.
 
+### Backtest
+A historical simulation of a strategy over a date range, producing performance metrics (return, drawdown, Sharpe, win rate) and an equity curve. Supports walk-forward optimization where the strategy is tuned on in-sample data and validated on out-of-sample periods.
+
 ### MarketData
 OHLCV (open, high, low, close, volume) time series candles for an instrument. Stored in a time series database with multiple timeframes (1min, 5min, 15min, 1hour, 1day) and data sources (IB, Binance, Yahoo, Finnhub).
 
@@ -57,7 +60,10 @@ A taxable income event from a held position. Records gross amount, withholding t
 A daily CNB (Czech National Bank) exchange rate for converting foreign currencies to CZK. Fetched daily and stored historically. Used by CostLot, LotMatch, and Dividend for tax calculations.
 
 ### Alert
-A notification triggered by price levels, risk thresholds, system events, or margin warnings. Delivered through multiple channels (in-app, push, email, Slack, Discord). Includes severity level and acknowledgment status.
+A notification triggered by price levels, risk thresholds, system events, or margin warnings. Delivered through multiple channels (in-app, push, email, Slack, Discord). Includes severity level and acknowledgment status. Alerts can be routed, silenced, or inhibited by grouping rules.
+
+### CalendarEvent
+A scheduled market event that may affect holdings or trading decisions — earnings announcements, economic releases (FOMC, NFP, CPI, GDP), dividend ex-dates and pay-dates, options expirations, and upcoming IPOs. Each event has a category, an impact level, a scheduled date, and optional links to the instruments or positions it affects.
 
 ### ReconciliationLog
 A record of daily broker-to-database position and cash reconciliation. Tracks whether reconciliation succeeded or found discrepancies, with details of any mismatches and their resolution status.
@@ -79,6 +85,7 @@ A record of daily broker-to-database position and cash reconciliation. Tracks wh
 - CostLot is consumed by many LotMatches (for sales, FIFO order)
 - LotMatch links a sale Trade to a CostLot
 - Strategy generates many Recommendations
+- Strategy has many Backtests
 - Recommendation targets an Instrument within a Portfolio
 - Recommendation may become an Order (when approved or auto-executed)
 - User has many Watchlists
@@ -87,6 +94,8 @@ A record of daily broker-to-database position and cash reconciliation. Tracks wh
 - Dividend belongs to a Position and uses an ExchangeRate for CZK conversion
 - CostLot uses an ExchangeRate for CZK conversion
 - LotMatch uses an ExchangeRate for CZK conversion
+- CalendarEvent relates to one or more Instruments (and, through them, affected Positions)
+- Alert may reference a CalendarEvent, Position, Order, or Broker as its source
 - ReconciliationLog belongs to a Broker
 
 **Key tax chain:** Trade/Dividend --> CostLot --> LotMatch --> ExchangeRate --> CZK tax report (all with 10-year data retention)
