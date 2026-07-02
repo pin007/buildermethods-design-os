@@ -1,6 +1,7 @@
 // =============================================================================
-// Trading Squad — Core Data Model Types
-// Translate these to Python dataclasses or Pydantic models
+// Trading Squad — UI Data Shapes (core entities)
+// Frontend data contract — the shapes components expect as props.
+// Translate to Python dataclasses / Pydantic models as needed.
 // =============================================================================
 
 // =============================================================================

@@ -145,3 +145,33 @@ Series 6:             #8b5cf6  (violet-500)
 
 Drawdown chart fill: `rgba(239, 68, 68, 0.15)` (red-500 at 15% opacity)
 Positive area fill: `rgba(16, 185, 129, 0.15)` (emerald-500 at 15% opacity)
+
+## Token Format & Accessibility
+
+### OKLCH Design Tokens
+
+The design tokens in `tokens.css` are expressed in **OKLCH** — Tailwind v4's native color space — rather than hex. OKLCH gives perceptually-uniform lightness (so shade steps read as evenly spaced to the eye) and renders across the **P3 wide-gamut** on capable displays. Each token retains its Tailwind source name in a trailing comment for traceability:
+
+```css
+--color-accent: oklch(0.592 0.249 0.584);   /* pink-600 */
+--color-positive: oklch(0.696 0.17 162.48);  /* emerald-500 */
+--color-negative: oklch(0.637 0.237 25.331); /* red-500 */
+```
+
+### Colorblind-Safe (CVD) Alternate Palette
+
+A colorblind-safe alternate palette is available via the `[data-palette="cvd"]` attribute. It swaps the **emerald/red** profit-loss pair for a **blue/orange** pair that stays distinguishable under red-green color-vision deficiency:
+
+```css
+[data-palette="cvd"] {
+  --color-positive: oklch(0.623 0.214 259.815); /* blue-500 */
+  --color-negative: oklch(0.75 0.183 55.934);   /* orange-500 */
+}
+```
+
+Real-time flash highlights (tick up/down, fill confirmations) are derived from the semantic tokens via `color-mix(in oklch, ...)` rather than hard-coded colors, so they automatically respect the active palette:
+
+```css
+--flash-positive: color-mix(in oklch, var(--color-positive) 22%, transparent);
+--flash-negative: color-mix(in oklch, var(--color-negative) 22%, transparent);
+```

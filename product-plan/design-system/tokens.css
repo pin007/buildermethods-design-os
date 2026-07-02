@@ -1,52 +1,56 @@
 /* =========================================================
    Design Tokens — Trading Squad / Obsidian Forge
-   Dark-first professional trading aesthetic
+   Dark-first professional trading aesthetic.
+   Colors expressed in OKLCH (Tailwind CSS v4 palette) for
+   perceptual uniformity and P3 wide-gamut rendering.
    ========================================================= */
 
 :root {
-  /* --- Color Palette --- */
+  color-scheme: dark;
+
+  /* --- Color Palette (OKLCH) --- */
 
   /* Backgrounds */
-  --bg-primary:     #09090b;   /* zinc-950 — main app background */
-  --bg-secondary:   #18181b;   /* zinc-900 — card backgrounds */
-  --bg-tertiary:    #27272a;   /* zinc-800 — elevated cards, inputs */
-  --bg-muted:       #3f3f46;   /* zinc-700 — hover states */
+  --bg-primary:     oklch(0.141 0.005 285.823);  /* zinc-950 — main app background */
+  --bg-secondary:   oklch(0.21 0.006 285.885);   /* zinc-900 — card backgrounds */
+  --bg-tertiary:    oklch(0.274 0.006 286.033);  /* zinc-800 — elevated cards, inputs */
+  --bg-muted:       oklch(0.37 0.013 285.805);   /* zinc-700 — hover states */
 
   /* Borders */
-  --border-default: #27272a;   /* zinc-800 */
-  --border-muted:   #3f3f46;   /* zinc-700 */
+  --border-default: oklch(0.274 0.006 286.033);  /* zinc-800 */
+  --border-muted:   oklch(0.37 0.013 285.805);   /* zinc-700 */
 
   /* Text */
-  --text-primary:   #fafafa;   /* zinc-50 */
-  --text-secondary: #a1a1aa;   /* zinc-400 */
-  --text-muted:     #71717a;   /* zinc-500 */
-  --text-disabled:  #52525b;   /* zinc-600 */
+  --text-primary:   oklch(0.985 0 0);            /* zinc-50 */
+  --text-secondary: oklch(0.705 0.015 286.067);  /* zinc-400 */
+  --text-muted:     oklch(0.552 0.016 285.938);  /* zinc-500 */
+  --text-disabled:  oklch(0.442 0.017 285.786);  /* zinc-600 */
 
   /* Accent — Pink (primary brand color) */
-  --accent-primary:       #db2777;   /* pink-600 */
-  --accent-primary-hover: #be185d;   /* pink-700 */
-  --accent-primary-light: #f9a8d4;   /* pink-300 */
-  --accent-primary-muted: #1f0614;   /* pink-600/10 tint */
+  --accent-primary:       oklch(0.592 0.249 0.584);       /* pink-600 */
+  --accent-primary-hover: oklch(0.525 0.223 3.958);       /* pink-700 */
+  --accent-primary-light: oklch(0.823 0.12 346.018);      /* pink-300 */
+  --accent-primary-muted: oklch(0.592 0.249 0.584 / 0.1); /* pink-600 @ 10% */
 
   /* Semantic — Positive / Profit */
-  --color-positive:       #10b981;   /* emerald-500 */
-  --color-positive-bg:    #064e3b;   /* emerald-900 */
-  --color-positive-text:  #6ee7b7;   /* emerald-300 */
+  --color-positive:       oklch(0.696 0.17 162.48);   /* emerald-500 */
+  --color-positive-bg:    oklch(0.378 0.077 168.94);  /* emerald-900 */
+  --color-positive-text:  oklch(0.845 0.143 164.978); /* emerald-300 */
 
   /* Semantic — Negative / Loss */
-  --color-negative:       #ef4444;   /* red-500 */
-  --color-negative-bg:    #7f1d1d;   /* red-900 */
-  --color-negative-text:  #fca5a5;   /* red-300 */
+  --color-negative:       oklch(0.637 0.237 25.331); /* red-500 */
+  --color-negative-bg:    oklch(0.396 0.141 25.723); /* red-900 */
+  --color-negative-text:  oklch(0.808 0.114 19.571); /* red-300 */
 
   /* Semantic — Warning */
-  --color-warning:        #f59e0b;   /* amber-500 */
-  --color-warning-bg:     #78350f;   /* amber-900 */
-  --color-warning-text:   #fcd34d;   /* amber-300 */
+  --color-warning:        oklch(0.769 0.188 70.08);  /* amber-500 */
+  --color-warning-bg:     oklch(0.414 0.112 45.904); /* amber-900 */
+  --color-warning-text:   oklch(0.879 0.169 91.605); /* amber-300 */
 
   /* Semantic — Info */
-  --color-info:           #3b82f6;   /* blue-500 */
-  --color-info-bg:        #1e3a5f;   /* blue-900 */
-  --color-info-text:      #93c5fd;   /* blue-300 */
+  --color-info:           oklch(0.623 0.214 259.815); /* blue-500 */
+  --color-info-bg:        oklch(0.379 0.146 265.522); /* blue-900 */
+  --color-info-text:      oklch(0.809 0.105 251.813); /* blue-300 */
 
   /* --- Typography --- */
   --font-sans:  'DM Sans', ui-sans-serif, system-ui, sans-serif;
@@ -96,24 +100,56 @@
   --ease-in-out:     cubic-bezier(0.4, 0, 0.6, 1);
 
   /* --- Focus Ring --- */
-  --focus-ring-color:  #db2777;   /* pink-600 */
+  --focus-ring-color:  oklch(0.592 0.249 0.584); /* pink-600 */
   --focus-ring-offset: 4px;
   --focus-ring-width:  2px;
 }
 
-/* Flash animations for real-time price updates */
-@keyframes flash-green {
-  0%, 100% { background-color: transparent; }
-  50%       { background-color: rgba(16, 185, 129, 0.2); }
+/* =========================================================
+   Colorblind-safe (deuteranopia / protanopia) P&L palette.
+   Toggled via Settings > Calendar & Display > Appearance.
+   Set data-palette="cvd" on the app root to swap the green/red
+   profit-loss pair for a blue/orange pair that stays
+   distinguishable under red-green color-vision deficiency.
+   Directional icons (up/down) are retained regardless, so
+   meaning never depends on color alone.
+   ========================================================= */
+[data-palette="cvd"] {
+  --color-positive:       oklch(0.623 0.214 259.815); /* blue-500 */
+  --color-positive-bg:    oklch(0.379 0.146 265.522); /* blue-900 */
+  --color-positive-text:  oklch(0.809 0.105 251.813); /* blue-300 */
+
+  --color-negative:       oklch(0.705 0.191 47.604);  /* orange-500 */
+  --color-negative-bg:    oklch(0.408 0.123 38.172);  /* orange-900 */
+  --color-negative-text:  oklch(0.837 0.128 66.29);   /* orange-300 */
 }
 
-@keyframes flash-red {
-  0%, 100% { background-color: transparent; }
-  50%       { background-color: rgba(239, 68, 68, 0.2); }
+/* =========================================================
+   Tabular numerals — apply to any element rendering aligned
+   or live-updating numbers (order tables, prices, quantities,
+   percentages, P&L). Keeps digit width constant so values do
+   not jitter horizontally on real-time updates.
+   ========================================================= */
+.tabular,
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
-.flash-positive { animation: flash-green 300ms ease-out; }
-.flash-negative { animation: flash-red   300ms ease-out; }
+/* Flash animations for real-time price updates — CVD-aware via
+   color-mix on the semantic tokens (respects data-palette="cvd"). */
+@keyframes flash-positive {
+  0%, 100% { background-color: transparent; }
+  50%      { background-color: color-mix(in oklch, var(--color-positive) 20%, transparent); }
+}
+
+@keyframes flash-negative {
+  0%, 100% { background-color: transparent; }
+  50%      { background-color: color-mix(in oklch, var(--color-negative) 20%, transparent); }
+}
+
+.flash-positive { animation: flash-positive 300ms ease-out; }
+.flash-negative { animation: flash-negative 300ms ease-out; }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

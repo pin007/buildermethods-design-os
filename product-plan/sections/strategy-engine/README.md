@@ -56,3 +56,8 @@ Hub for building, testing, and evaluating trading strategies before deploying wi
 | Run walk-forward | Open configuration modal, queue optimization |
 | Compare strategies | Open comparison view with selected strategies |
 | Save strategy | Save configuration, validate all 7 steps first |
+
+## Rendering Notes
+
+- Numeric metric columns (Sharpe, returns, drawdown, trade log) and live values render with tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits stay column-aligned and don't jitter as backtest results update.
+- Metric cards and the strategy card grid reflow at component width using Tailwind v4 container queries (`@container`) rather than the viewport, so they adapt correctly inside the shell and any comparison/panel width.

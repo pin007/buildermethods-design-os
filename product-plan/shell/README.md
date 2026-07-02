@@ -139,6 +139,11 @@ Persistent banners at top of content area:
 - **Broker disconnected:** red — "Broker connection lost. Attempting to reconnect..." + "Reconnect"
 - **Session expiring:** yellow — countdown timer + "Extend Session"
 
+## Design Notes
+
+- **Tabular figures:** Numeric data (prices, quantities, P&L, order counts, timers) uses tabular figures via `font-variant-numeric: tabular-nums`, exposed as a `.tabular` utility defined in `design-system/tokens.css`. This keeps every digit the same width so values do not jitter or shift horizontally as they tick on live updates.
+- **Container queries over viewport breakpoints:** Cards, stat grids, and the slide-over Order Panel reflow at their own container width using Tailwind v4 container queries (`@container`), so a component adapts to the space it actually occupies rather than to the full window. Viewport breakpoints (`sm:`, `md:`, `lg:`) are reserved for the shell frame itself — the sidebar/content split, collapsed sidebar, and mobile overlay.
+
 ## NiceGui Implementation Notes
 
 ```python

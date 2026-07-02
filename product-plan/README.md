@@ -11,11 +11,11 @@ This folder contains everything needed to implement Trading Squad.
 **Instructions:**
 - `product-overview.md` — Product summary (provide with every implementation session)
 - `instructions/one-shot-instructions.md` — All milestones combined for full implementation
-- `instructions/incremental/` — 10 milestone instructions (foundation + 9 sections)
+- `instructions/incremental/` — 10 milestone instructions (shell + 9 sections)
 
 **Design Assets:**
 - `design-system/` — Colors, fonts, design tokens
-- `data-model/` — Core entities and TypeScript types
+- `data-shapes/` — Core entities and TypeScript types
 - `shell/` — Application shell components
 - `sections/` — All section components, types, sample data, and test instructions
 
@@ -26,7 +26,7 @@ This folder contains everything needed to implement Trading Squad.
 Build your app milestone by milestone for better control:
 
 1. Copy the `product-plan/` folder to your codebase
-2. Start with Foundation (`instructions/incremental/01-foundation.md`) — includes design tokens, data model, routing, and application shell
+2. Start with Shell (`instructions/incremental/01-shell.md`) — includes design tokens and application shell
 3. For each section:
    - Open `prompts/section-prompt.md`
    - Fill in the section variables at the top (SECTION_NAME, SECTION_ID, NN)

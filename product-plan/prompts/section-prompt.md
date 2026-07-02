@@ -4,7 +4,7 @@
 
 - **SECTION_NAME** = [Human-readable name, e.g., "Trading Core" or "Trade Journal"]
 - **SECTION_ID** = [Folder name in sections/, e.g., "trading-core" or "trade-journal"]
-- **NN** = [Milestone number, e.g., "02" or "03" — sections start at 02 since 01 is Foundation]
+- **NN** = [Milestone number, e.g., "02" or "03" — sections start at 02 since 01 is Shell]
 
 ---
 

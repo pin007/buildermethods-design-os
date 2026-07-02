@@ -33,6 +33,17 @@ AI-powered analysis hub surfacing actionable trading opportunities from multiple
 - Research jobs: system-default jobs (Daily Stock Research, Crypto High Cap) can be disabled but not deleted
 - Shell's order panel is used for "Create Order" and "Follow Trade" — section never renders its own
 
+## AI Provenance Chip
+
+A reusable component rendered consistently across recommendation lists and any surface that presents an AI recommendation. It makes every AI-originated suggestion auditable at a glance:
+
+- **Confidence gauge** — 0–100 score using the same color thresholds as the Confidence badge (green>=75, yellow 50-74, gray<50)
+- **Source badge** — attribution to the originating strategy name or "Market Analyst"
+- **Model/version tag** — the model and version that produced the recommendation (e.g. `gpt-4o · v2.3`)
+- **Reasoning disclosure** — expandable panel revealing structured reasoning and target prices; collapsed by default
+
+Always render this chip rather than ad-hoc confidence/source markup so provenance stays uniform across every recommendation surface.
+
 ## Visual References
 
 - `recommendations-light.png` / `recommendations-dark.png` — Recommendations tab with expanded card

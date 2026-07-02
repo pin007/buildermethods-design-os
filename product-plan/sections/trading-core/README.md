@@ -27,6 +27,7 @@ Trading Core is the command center for order execution and portfolio monitoring.
 - Order entry form is content-only rendered inside the shell's slide-over panel — it never renders its own panel chrome
 - Real-time value changes flash green/red for 300ms
 - Bracket orders display as collapsible group rows with indented child legs
+- AI provenance is surfaced via a reusable `AIProvenanceChip` shown wherever an AI Recommendation appears (e.g. the approval card's "AI Recommendation" section) — it renders a confidence gauge (0–100), a source badge (strategy name or "Market Analyst"), a model/version tag, and an expandable disclosure of structured reasoning + target prices
 
 ## Data Used
 
@@ -52,6 +53,7 @@ These React components show the target design. Rebuild them in NiceGui Python:
 - `ApprovalCard` — Order approval review card
 - `OrderStatusBadge` — Status badge with 12 states and semantic colors
 - `StatCard` — Reusable stat card (icon, label, monospace value, change indicator)
+- `AIProvenanceChip` — Reusable provenance component rendered wherever an AI Recommendation appears: confidence gauge (0–100), source badge (strategy name or "Market Analyst"), model/version tag, and an expandable disclosure revealing structured reasoning + target prices
 
 ## Callback Reference
 

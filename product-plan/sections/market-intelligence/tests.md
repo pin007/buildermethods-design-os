@@ -100,6 +100,12 @@ Framework-agnostic. Adapt to your testing setup.
 - [ ] Score 25 → red gauge zone
 - [ ] Score displayed in center in monospace font
 
+### AI Provenance Chip
+
+- [ ] Renders confidence gauge (0–100), source badge (strategy name or "Market Analyst"), and model/version tag
+- [ ] Reasoning disclosure is collapsed by default; clicking it expands to show structured reasoning + target prices
+- [ ] Clicking the expanded disclosure again collapses it, hiding reasoning and target prices
+
 ### Recommendation Status Badges
 
 - [ ] ACTIVE → blue

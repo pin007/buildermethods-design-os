@@ -69,3 +69,8 @@ def tax_status_badge(days_held: int):
         ui.label('Taxable').classes('bg-red-500/10 text-red-400 border border-red-500/30 text-xs px-2 py-0.5 rounded-full') \
             .tooltip(f'{days_remaining} days until tax exemption')
 ```
+
+## Rendering Notes
+
+- Numeric table columns (values, P&L, quantities) and live price cells render with tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits stay column-aligned and don't jitter as real-time values update.
+- Data cards and stat grids (overview stats, allocation, positions) reflow at component width using Tailwind v4 container queries (`@container`) rather than the viewport, so they adapt correctly inside the shell and any panel width.

@@ -38,6 +38,7 @@ Centralized configuration hub for the Trading Squad platform. Card-based overvie
 - Drag-to-reorder for data source priority (not just up/down buttons)
 - Notification subscription matrix: alert types as rows, channels as columns, checkboxes at intersections
 - Risk management sliders include visual indicator of current vs. default value
+- Colorblind-safe P&L palette (Calendar & Display) — a toggle that sets `data-palette="cvd"` on the app root, swapping the default green/red profit-loss colors for a blue/orange pair distinguishable under red-green color-vision deficiency (deuteranopia/protanopia). Directional up/down icons are always shown so meaning never depends on color alone.
 
 ## Visual References
 

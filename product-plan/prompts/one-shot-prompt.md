@@ -11,7 +11,7 @@ Please carefully read and analyze the following files:
 
 After reading these, also review:
 - **@product-plan/design-system/** — Color and typography tokens
-- **@product-plan/data-model/** — Entity types and relationships
+- **@product-plan/data-shapes/** — Entity types and relationships
 - **@product-plan/shell/** — Application shell components
 - **@product-plan/sections/** — All section components, types, sample data, and test instructions
 

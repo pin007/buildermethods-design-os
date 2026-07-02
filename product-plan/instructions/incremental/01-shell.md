@@ -1,4 +1,4 @@
-# Milestone 1: Foundation
+# Milestone 1: Shell
 
 > **Provide alongside:** `product-overview.md`
 > **Prerequisites:** None
@@ -34,7 +34,7 @@
 
 ## Goal
 
-Set up the foundational elements: design tokens, data model types, routing structure, and application shell.
+Set up the design tokens and application shell — the persistent chrome that wraps all sections.
 
 ## What to Implement
 
@@ -58,8 +58,8 @@ Configure your styling system with the Obsidian Forge design system tokens:
 
 Create types/interfaces for the core entities:
 
-See `product-plan/data-model/types.ts` for the full type definitions.
-See `product-plan/data-model/README.md` for entity relationships.
+See `product-plan/data-shapes/overview.ts` for the full type definitions.
+See `product-plan/data-shapes/README.md` for entity relationships.
 
 Key entities to define:
 - `User` — authenticated user with role (Trader, Assistant, Viewer)
@@ -148,7 +148,7 @@ Active nav item styling: `pink-600` left border + `pink-600/10` background + `pi
 ## Files to Reference
 
 - `product-plan/design-system/` — Design tokens
-- `product-plan/data-model/` — Type definitions and entity relationships
+- `product-plan/data-shapes/` — Type definitions and entity relationships
 - `product-plan/shell/README.md` — Shell design intent and specification
 - `product-plan/shell/components/` — Shell React components
 

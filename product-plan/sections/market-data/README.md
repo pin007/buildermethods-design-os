@@ -62,3 +62,8 @@ ui.notify('Fetch retry triggered', type='info', timeout=4000)
 ui.notify('Fetch failed: <error message>', type='negative', timeout=6000)
 ui.notify('Corporate action re-triggered', type='info', timeout=4000)
 ```
+
+## Rendering Notes
+
+- Numeric table columns (quality scores, freshness ages, fetch counts) and live pipeline values render with tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits stay column-aligned and don't jitter as status metrics update.
+- Data source cards and stat grids reflow at component width using Tailwind v4 container queries (`@container`) rather than the viewport, so they adapt correctly inside the shell and any panel width.

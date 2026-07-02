@@ -222,6 +222,12 @@ Trading Core covers: dashboard with portfolio stats, order management (3 tabs), 
 - [ ] Confidence badge: green >= 75%, yellow 50-74%, gray < 50%
 - [ ] Approve button is emerald, Reject button is red
 
+### AI Provenance Chip
+
+- [ ] Renders the confidence gauge (0–100), the source badge (strategy name or "Market Analyst"), and the model/version tag when a `recommendation` is provided
+- [ ] Reasoning disclosure is collapsed by default; activating it expands to reveal the structured reasoning + target prices, and activating it again collapses them
+- [ ] Renders wherever an AI Recommendation appears (e.g. the approval card's "AI Recommendation" section) without regressing when `recommendation` is absent
+
 ---
 
 ## Edge Cases

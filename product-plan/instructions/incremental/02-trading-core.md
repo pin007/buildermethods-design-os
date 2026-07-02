@@ -1,7 +1,7 @@
 # Milestone 2: Trading Core
 
 > **Provide alongside:** `product-overview.md`
-> **Prerequisites:** Milestone 1 (Foundation) complete
+> **Prerequisites:** Milestone 1 (Shell) complete
 
 ---
 

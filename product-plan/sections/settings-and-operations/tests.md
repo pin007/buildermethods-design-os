@@ -114,6 +114,13 @@ Settings pages don't have traditional empty states (they always show forms), but
 - [ ] Order is preserved after saving
 - [ ] New order reflected in the source priority
 
+### Colorblind-Safe P&L Palette Toggle
+
+- [ ] Enabling the toggle sets `data-palette="cvd"` on the app root element
+- [ ] Disabling the toggle removes the `data-palette` attribute (default green/red palette restored)
+- [ ] With `cvd` active, P&L values render in the blue/orange pair instead of green/red
+- [ ] Directional up/down icons remain visible on P&L values in both default and `cvd` modes
+
 ## Sample Test Data
 
 ```python

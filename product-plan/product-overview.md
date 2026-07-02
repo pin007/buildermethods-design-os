@@ -39,7 +39,7 @@ An AI-powered algorithmic trading platform for personal trading across stocks, o
 
 ## Data Model
 
-Core entities (see `data-model/types.ts`):
+Core entities (see `data-shapes/overview.ts`):
 - **Order** — Order lifecycle with 12 status states, bracket support, OCO child legs
 - **Instrument** — Tradeable instrument with real-time price data
 - **Portfolio** — Portfolio with broker association and dashboard stats
@@ -72,7 +72,7 @@ Core entities (see `data-model/types.ts`):
 
 Build this product milestone by milestone:
 
-1. **Foundation** — Design tokens, data model types, routing structure, application shell
+1. **Shell** — Design tokens and application shell
 2. **Trading Core** — Dashboard, orders management, order entry, approval workflow
 3. **Portfolio & Positions** — Portfolio overview, positions, watchlists, dividends, performance
 4. **Market Data** — Pipeline health, data sources, quality monitoring, corporate actions
