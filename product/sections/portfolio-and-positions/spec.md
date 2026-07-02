@@ -46,6 +46,8 @@ All interactive elements follow the shell's focus pattern: 2px pink-600 (#db2777
 ### Typography
 Minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `text-[11px]`, or `text-[9px]` classes.
 
+All numeric table columns (quantity, prices, market value, P&L, weight, dividend amounts) and live-updating values use tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits align vertically and don't shift width as they tick. Data cards and grids (stat cards, allocation panels, positions/dividends tables) reflow at their own component width using Tailwind v4 container queries (`@container` on the wrapper, `@sm:`/`@lg:` variants on children) rather than the viewport, so they collapse cleanly inside the shell's side panels and split layouts.
+
 ## User Flows
 - View aggregated portfolio overview: total net worth across all portfolios, combined equity curve, combined allocation chart, and a list of individual portfolios with key metrics (name, value, P&L, positions count, cash balance) — click a portfolio to drill into its detail view
 - Explore a portfolio's positions: sortable, filterable table with real-time prices, P&L, tax status badges, and expandable rows showing FIFO lots, acquisition details, and quick actions (Trade, Close, Set Alert)

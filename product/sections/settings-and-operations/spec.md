@@ -38,6 +38,7 @@ Settings & Operations is the centralized configuration hub for the Trading Squad
 - Risk management: Sliders with numeric input alongside for precision, visual indicator showing current vs. default
 - Data source priority: Drag-to-reorder list with grip handles
 - Notification subscription matrix: Table with alert types as rows and channels as columns, checkbox cells
+- Colorblind-safe P&L palette: Toggle under Calendar & Display (appearance category, alongside the theme toggle). When enabled it sets `data-palette="cvd"` on the app root, swapping the green/red profit-loss semantic colors for a blue/orange pair that stays distinguishable under red-green color-vision deficiency (deuteranopia/protanopia). Directional up/down icons are always rendered on P&L values regardless of this setting, so meaning never depends on color alone.
 - All forms follow the Obsidian Forge design system — zinc backgrounds, pink-600 accents, DM Sans typography
 - Breadcrumb navigation on detail pages (Home > Settings > [Category])
 

@@ -108,6 +108,14 @@ Minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `tex
 
 ## UI Requirements
 
+### AI Provenance Chip (Shared Pattern)
+A reusable component rendered wherever an AI Recommendation appears. It surfaces the recommendation's provenance metadata so AI-originated actions are always traceable. Anatomy:
+- **Confidence gauge:** radial or bar indicator (0–100), color-scaled — green (high), yellow (medium), gray/red (low)
+- **Source badge:** the generating source — strategy name (e.g., "Golden Cross") for Trading Advisor signals or "Market Analyst" for AI Research
+- **Model/version tag:** the model and version that produced the recommendation (secondary text)
+- **Expandable disclosure:** collapsed by default; expands to reveal the structured reasoning steps and any target prices
+This chip MUST be used consistently across the recommendation lists, the approval card's AI section, and any dashboard recommendation surfaces, so every AI-originated action can be traced back to its source, confidence, and reasoning.
+
 ### Intelligence Dashboard (Top Section)
 - 4 stat cards in a responsive grid (4 columns desktop, 2 tablet, 1 mobile):
   1. **Active Recommendations:** count of actionable recommendations + "N new" badge since last visit. Icon: lightbulb. Links to Recommendations tab

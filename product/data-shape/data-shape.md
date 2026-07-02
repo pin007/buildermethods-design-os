@@ -36,7 +36,7 @@ A FIFO cost basis lot created by a purchase trade. Tracks original and remaining
 An audit record linking a sale trade to one or more cost lots consumed by that sale (FIFO order). Records the matched quantity, proceeds in CZK, cost basis in CZK, realized gain/loss, holding period in days, and whether the 3-year tax exemption applies.
 
 ### Recommendation
-An AI-generated trade suggestion produced by a strategy or the market analyst. Includes the proposed action, quantity, confidence score, risk score, and transparent reasoning. Status progresses from pending approval through approved/rejected to executed or expired.
+An AI-generated trade suggestion produced by a strategy or the market analyst. Includes the proposed action, quantity, confidence score, risk score, and transparent reasoning. Status progresses from pending approval through approved/rejected to executed or expired. Carries provenance metadata for explainable-AI display: the generating source (strategy name or "Market Analyst"), a confidence score (0–100), a risk score, model/version, generation timestamp, and structured reasoning steps.
 
 ### Strategy
 A trading strategy configuration defining entry/exit rules, indicators, position sizing, and risk parameters. Strategies are named, typed (trend following, mean reversion, etc.), and can be activated or deactivated without restart.

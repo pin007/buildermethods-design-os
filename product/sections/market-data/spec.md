@@ -52,6 +52,8 @@ All interactive elements follow the shell's focus pattern: 2px pink-600 (#db2777
 ### Typography
 Minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `text-[11px]`, or `text-[9px]` classes.
 
+All numeric table columns and live values (data-point counts, gap counts, durations, coverage dates, quality/validity percentages, error rates) use tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits align vertically down each column. Data cards and grids (pipeline stat cards, source cards, instrument/fetch-history/quality tables) reflow at their own component width using Tailwind v4 container queries (`@container` on the wrapper, `@sm:`/`@lg:` variants on children) rather than the viewport, so source-card grids and tables collapse cleanly within the shell's layouts.
+
 ## User Flows
 - View pipeline health overview: stat cards showing total tracked instruments, active sources, data freshness score, and recent quality alerts count — data source cards below showing each vendor's connection status, last successful fetch, error rate, and next scheduled fetch
 - Drill into a data source: click a source card to see its tracked instruments, fetch schedule, recent fetch history timeline, per-instrument data coverage (date ranges, intervals available, gaps), and operational controls

@@ -47,6 +47,8 @@ All interactive elements follow the shell's focus pattern: 2px pink-600 (#db2777
 ### Typography
 Minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `text-[11px]`, or `text-[9px]` classes.
 
+All numeric table columns and live metric values (Sharpe, CAGR, max drawdown, prices, P&L, returns, trade-log figures) use tabular figures (`font-variant-numeric: tabular-nums` via the `.tabular` utility) so digits align vertically across rows and metric cards. Data cards and grids (metric stat cards, comparison tables, trade logs, walk-forward windows) reflow at their own component width using Tailwind v4 container queries (`@container` on the wrapper, `@sm:`/`@lg:` variants on children) rather than the viewport, so side-by-side comparison panels collapse cleanly within the shell.
+
 ## User Flows
 - View all strategies in a card grid showing strategy name, type badge, assigned instruments, active/inactive status, last backtest summary (Sharpe, CAGR, max drawdown), and schedule info
 - View strategy detail: full configuration including entry strategy type, parameters, exit strategies (stop-loss, take-profit, trailing-stop, break-even), assigned instruments, position sizing rules, evaluation schedule, and backtest history

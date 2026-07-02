@@ -73,9 +73,11 @@ Sidebar contains all chrome. Content area is a scrollable region with 24px paddi
 - **Desktop (1024px+):** Sidebar visible and resizable (220px-400px). Content area fills remaining width.
 - **Tablet (768px-1023px):** Sidebar collapses to 64px (icons only). Expands to full width on hover with 200ms width transition. Logo shows icon-only, search shows icon-only, nav shows icons with tooltips, footer shows minimal indicators. Content area adjusts.
 - **Mobile (<768px):** Sidebar hidden. Hamburger icon in header opens sidebar as overlay with backdrop. Content is full-width.
+- **Container queries:** cards, stat grids, and the slide-over Order Panel size to their own container width (Tailwind v4 `@container`), not just the viewport — a stat card rendered in the 480px Order Panel or beside the collapsed 64px sidebar reflows to a stacked layout regardless of screen width. Use `@container` breakpoints for component-level layout; reserve viewport breakpoints for the shell frame (sidebar/content split).
 
 ## Design Notes
 - Typography: minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `text-[11px]`, or `text-[9px]` classes
+- Numeric data: all numbers in tables, prices, quantities, percentages, and live-updating values use tabular figures (`font-variant-numeric: tabular-nums`, via the `.tabular` utility) so digit width stays constant and values do not jitter on real-time updates. Monospace (JetBrains Mono) values are inherently tabular; DM Sans numerics must opt in.
 - Active nav item: pink-600 left border + pink-600/10 background tint + pink-400 text
 - Nav icons: lucide-react, 18px size, zinc-500 default / pink-400 active
 - Nav item spacing: py-1.5 for tighter density. All interactive elements meet 44px minimum touch target on mobile (min-h-[44px] lg:min-h-0)
