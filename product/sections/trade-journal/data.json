@@ -1,0 +1,896 @@
+{
+  "_meta": {
+    "models": {
+      "portfolios": "Portfolio filter options for scoping journal entries and analytics. Each portfolio represents a distinct trading account or strategy grouping.",
+      "journalEntries": "The core entity — a reflective record tied to a completed trade. Contains pre-trade thesis, post-trade review, process scores across five dimensions, tags, attachments, and related trades. Separates process quality from outcome quality.",
+      "unjournaledTrades": "Trades that have been closed but not yet journaled. Displayed in the Needs Review tab to prompt the trader to reflect on recent activity.",
+      "dashboardStats": "Aggregate statistics for the journal dashboard including total entries, average process score with trend, journal completion rate, and entries this week.",
+      "performanceMetrics": "Portfolio-scoped trading performance analytics including win rate, profit factor, Sharpe/Sortino ratios, max drawdown, P&L distribution, and cumulative P&L over time.",
+      "processScoreAnalytics": "Analytics around the five process score dimensions — overall averages, per-dimension breakdown, monthly trends, and the process-vs-outcome quadrant classification.",
+      "attributionData": "Performance attribution broken down by strategy, day of week, and time of day session to help traders identify when and how they trade best.",
+      "behavioralPatterns": "Cross-portfolio behavioral pattern detection that flags destructive habits like revenge trading, overtrading, position sizing drift, and fear of letting winners run. Each pattern has severity, occurrence count, P&L impact, and an actionable recommendation.",
+      "habitScores": "Four cross-portfolio habit gauges (0–100): consistency, emotional control, risk discipline, and patience. Each includes a trend direction and 90-day sparkline.",
+      "improvementAreas": "Prioritized actionable focus areas derived from the lowest habit scores and highest-severity behavioral patterns.",
+      "weeklyReview": "Current week summary with trades, P&L, win rate, best/worst trade references, patterns detected, goals progress tracking, and editable focus areas for the next week."
+    },
+    "relationships": [
+      "Each JournalEntry belongs to a Portfolio and references a Trade by tradeId",
+      "Each JournalEntry may link to other JournalEntries via relatedTrades (array of tradeIds)",
+      "UnjournaledTrades belong to a Portfolio and become JournalEntries when the trader completes a review",
+      "PerformanceMetrics, ProcessScoreAnalytics, and AttributionData are scoped by Portfolio filter",
+      "BehavioralPatterns span all portfolios — they detect cross-portfolio behavioral tendencies",
+      "HabitScores are cross-portfolio aggregate measures derived from all journal entries and behavioral patterns",
+      "ImprovementAreas may reference a BehavioralPattern by relatedPatternId",
+      "WeeklyReview references JournalEntries for best/worst trade via tradeId"
+    ]
+  },
+
+  "portfolios": [
+    {
+      "id": "port-active",
+      "name": "Active Trading",
+      "description": "Short-to-medium term trades across equities and crypto. Primarily swing and momentum strategies with 1–20 day holding periods."
+    },
+    {
+      "id": "port-longterm",
+      "name": "Long-Term Holdings",
+      "description": "Position trades and longer-term investments with holding periods of weeks to months. Focus on trend following and fundamental-driven entries."
+    }
+  ],
+
+  "dashboardStats": {
+    "totalEntries": 8,
+    "avgProcessScore": 3.45,
+    "avgProcessScoreTrend": "up",
+    "journalCompletionRate": 72.7,
+    "entriesThisWeek": 2,
+    "processScoreTrend": [
+      { "date": "2026-01-24", "score": 3.10 },
+      { "date": "2026-01-25", "score": 3.15 },
+      { "date": "2026-01-26", "score": 3.20 },
+      { "date": "2026-01-27", "score": 3.18 },
+      { "date": "2026-01-28", "score": 3.25 },
+      { "date": "2026-01-29", "score": 3.22 },
+      { "date": "2026-01-30", "score": 3.28 },
+      { "date": "2026-01-31", "score": 3.30 },
+      { "date": "2026-02-01", "score": 3.25 },
+      { "date": "2026-02-02", "score": 3.32 },
+      { "date": "2026-02-03", "score": 3.35 },
+      { "date": "2026-02-04", "score": 3.30 },
+      { "date": "2026-02-05", "score": 3.28 },
+      { "date": "2026-02-06", "score": 3.33 },
+      { "date": "2026-02-07", "score": 3.35 },
+      { "date": "2026-02-08", "score": 3.38 },
+      { "date": "2026-02-09", "score": 3.40 },
+      { "date": "2026-02-10", "score": 3.35 },
+      { "date": "2026-02-11", "score": 3.38 },
+      { "date": "2026-02-12", "score": 3.42 },
+      { "date": "2026-02-13", "score": 3.40 },
+      { "date": "2026-02-14", "score": 3.38 },
+      { "date": "2026-02-15", "score": 3.42 },
+      { "date": "2026-02-16", "score": 3.45 },
+      { "date": "2026-02-17", "score": 3.43 },
+      { "date": "2026-02-18", "score": 3.48 },
+      { "date": "2026-02-19", "score": 3.45 },
+      { "date": "2026-02-20", "score": 3.50 },
+      { "date": "2026-02-21", "score": 3.48 },
+      { "date": "2026-02-22", "score": 3.45 }
+    ]
+  },
+
+  "journalEntries": [
+    {
+      "id": "je-001",
+      "tradeId": "trd-je-001",
+      "portfolioId": "port-active",
+      "starred": true,
+      "tradeSummary": {
+        "instrument": "NVDA",
+        "instrumentName": "NVIDIA Corporation",
+        "side": "BUY",
+        "entryDate": "2025-12-15T10:05:00Z",
+        "exitDate": "2026-01-08T14:30:00Z",
+        "entryPrice": 128.40,
+        "exitPrice": 142.75,
+        "quantity": 25,
+        "pnl": 358.75,
+        "pnlPercent": 11.17,
+        "holdingPeriod": 24,
+        "broker": "IB",
+        "strategy": "trend_following"
+      },
+      "preTrade": {
+        "thesis": "NVIDIA is consolidating near the $128 support level after a pullback from $153 highs. The AI infrastructure spending cycle remains intact — hyperscaler CapEx guidance for 2026 has been raised across MSFT, GOOG, and AMZN. The Blackwell B200 ramp is ahead of schedule per management commentary on the Q3 call. Technically, the stock is sitting on the 100-day moving average with RSI at 42, suggesting oversold conditions in a secular uptrend. The risk/reward setup is favorable: defined downside to $118 support (previous breakout level) with upside target of $145 based on the measured move from the consolidation pattern. Institutional flow data shows net buying on the last 3 down days, indicating accumulation. Semiconductor sector ETF (SMH) is also holding its 50-day MA which provides a macro tailwind. I want to ride the next leg up as data center orders accelerate into Q1 2026 earnings.",
+        "entryCriteria": "Limit buy at $128.50 on a bounce off 100-day MA with volume confirmation. Need to see intraday RSI cross above 40.",
+        "targetPrice": 145.00,
+        "plannedStopLoss": 118.00,
+        "riskRewardRatio": 1.59,
+        "positionSizeRationale": "25 shares = ~$3,210 or 8.5% of active portfolio. Risk per share is $10.40 ($128.40 - $118), total risk $260 or 0.7% of account. Within my 1% max risk rule.",
+        "confidenceLevel": 4,
+        "marketConditions": "trending",
+        "emotionalStateBefore": "confident"
+      },
+      "postTrade": {
+        "whatWorked": "Entry timing was excellent — caught the bounce off the 100-day MA almost exactly. Thesis played out as expected with the AI spending catalyst. Held through a 3% pullback on day 8 without panicking.",
+        "whatDidntWork": "Exited slightly too early at $142.75. NVDA continued to $148 the following week. Could have used a trailing stop instead of a fixed target.",
+        "lessonsLearned": "For high-conviction trend trades, consider scaling out (e.g., sell half at target, trail the rest) instead of all-or-nothing exits. The thesis was still intact when I sold.",
+        "emotionalStateAfter": "satisfied",
+        "wouldTakeAgain": true
+      },
+      "processScores": {
+        "discipline": 5,
+        "emotionalManagement": 4,
+        "riskManagement": 5,
+        "entryQuality": 5,
+        "exitQuality": 3,
+        "overall": 4.4
+      },
+      "tags": ["AI", "semiconductor", "trend", "swing-trade", "high-conviction"],
+      "relatedTrades": [],
+      "attachments": [
+        {
+          "id": "att-001",
+          "type": "image/png",
+          "fileName": "nvda-daily-chart-entry.png",
+          "url": "/attachments/je-001/nvda-daily-chart-entry.png"
+        },
+        {
+          "id": "att-002",
+          "type": "image/png",
+          "fileName": "nvda-exit-annotation.png",
+          "url": "/attachments/je-001/nvda-exit-annotation.png"
+        }
+      ],
+      "createdAt": "2026-01-08T15:10:00Z",
+      "updatedAt": "2026-01-09T09:22:00Z"
+    },
+    {
+      "id": "je-002",
+      "tradeId": "trd-je-002",
+      "portfolioId": "port-active",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "TSLA",
+        "instrumentName": "Tesla Inc",
+        "side": "BUY",
+        "entryDate": "2026-01-06T09:35:00Z",
+        "exitDate": "2026-01-10T15:45:00Z",
+        "entryPrice": 262.30,
+        "exitPrice": 244.80,
+        "quantity": 10,
+        "pnl": -175.00,
+        "pnlPercent": -6.67,
+        "holdingPeriod": 4,
+        "broker": "IB",
+        "strategy": "breakout"
+      },
+      "preTrade": {
+        "thesis": "TSLA breaking out of a 2-week consolidation range above $258. Model 2 production rumors acting as catalyst.",
+        "entryCriteria": "Buy on breakout above $260 with above-average volume.",
+        "targetPrice": 285.00,
+        "plannedStopLoss": 250.00,
+        "riskRewardRatio": 1.85,
+        "positionSizeRationale": "10 shares, ~$2,623 exposure. Risk $12.30 per share, total risk $123. Within position limits.",
+        "confidenceLevel": 3,
+        "marketConditions": "volatile",
+        "emotionalStateBefore": "excited"
+      },
+      "postTrade": {
+        "whatWorked": "Identified the consolidation pattern correctly. Entry was on the right technical signal.",
+        "whatDidntWork": "Breakout failed — volume dried up on day 2 and the move was a false breakout. I should have exited at $255 when volume divergence appeared but held hoping for a bounce. Stopped out $5 below my planned stop because of a gap down.",
+        "lessonsLearned": "False breakouts in TSLA are common in volatile regimes. Need to add a volume confirmation filter — if day 2 volume is below average, cut the position. Also, gap risk is real with TSLA; consider smaller position sizes.",
+        "emotionalStateAfter": "disappointed",
+        "wouldTakeAgain": false
+      },
+      "processScores": {
+        "discipline": 2,
+        "emotionalManagement": 2,
+        "riskManagement": 3,
+        "entryQuality": 3,
+        "exitQuality": 2,
+        "overall": 2.4
+      },
+      "tags": ["breakout", "false-breakout", "lesson", "EV"],
+      "relatedTrades": [],
+      "attachments": [],
+      "createdAt": "2026-01-10T16:30:00Z",
+      "updatedAt": "2026-01-10T16:30:00Z"
+    },
+    {
+      "id": "je-003",
+      "tradeId": "trd-je-003",
+      "portfolioId": "port-active",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "META",
+        "instrumentName": "Meta Platforms Inc",
+        "side": "BUY",
+        "entryDate": "2026-01-20T10:15:00Z",
+        "exitDate": "2026-01-28T11:00:00Z",
+        "entryPrice": 612.50,
+        "exitPrice": 638.20,
+        "quantity": 5,
+        "pnl": 128.50,
+        "pnlPercent": 4.20,
+        "holdingPeriod": 8,
+        "broker": "IB",
+        "strategy": "momentum"
+      },
+      "preTrade": {
+        "thesis": "META showing relative strength vs NASDAQ. Advertising revenue beat consensus in Q4 preliminary data. Momentum is strong.",
+        "entryCriteria": "Buy on pullback to 20-day EMA near $612.",
+        "targetPrice": 650.00,
+        "plannedStopLoss": 595.00,
+        "riskRewardRatio": 2.14,
+        "positionSizeRationale": "5 shares = ~$3,063. Risk $17.50/share, total risk $87.50. Conservative position.",
+        "confidenceLevel": 4,
+        "marketConditions": "trending",
+        "emotionalStateBefore": "calm"
+      },
+      "postTrade": {
+        "whatWorked": "Entry at 20-day EMA worked perfectly. The pullback held and reversed as expected. Took profits methodically.",
+        "whatDidntWork": "Nothing significant. Could have let half the position run toward $650 target.",
+        "lessonsLearned": "Momentum trades in strong names work well when you respect the setup. The 20-day EMA pullback entry continues to be reliable in trending markets.",
+        "emotionalStateAfter": "satisfied",
+        "wouldTakeAgain": true
+      },
+      "processScores": {
+        "discipline": 4,
+        "emotionalManagement": 5,
+        "riskManagement": 4,
+        "entryQuality": 4,
+        "exitQuality": 4,
+        "overall": 4.2
+      },
+      "tags": ["momentum", "social-media", "advertising", "FAANG"],
+      "relatedTrades": [],
+      "attachments": [],
+      "createdAt": "2026-01-28T12:00:00Z",
+      "updatedAt": "2026-01-28T12:00:00Z"
+    },
+    {
+      "id": "je-004",
+      "tradeId": "trd-je-004",
+      "portfolioId": "port-longterm",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "MSFT",
+        "instrumentName": "Microsoft Corporation",
+        "side": "BUY",
+        "entryDate": "2025-11-18T09:45:00Z",
+        "exitDate": "2026-01-15T14:00:00Z",
+        "entryPrice": 398.20,
+        "exitPrice": 418.90,
+        "quantity": 8,
+        "pnl": 165.60,
+        "pnlPercent": 5.20,
+        "holdingPeriod": 58,
+        "broker": "IB",
+        "strategy": "trend_following"
+      },
+      "preTrade": {
+        "thesis": "Azure cloud growth reaccelerating. Enterprise AI adoption driving revenue. Long-term holding with trailing stop.",
+        "entryCriteria": "Buy on weekly close above $395 with cloud sector strength confirmed.",
+        "targetPrice": 440.00,
+        "plannedStopLoss": 380.00,
+        "riskRewardRatio": 2.30,
+        "positionSizeRationale": "8 shares = ~$3,186. Long-term position, wider stop at $380 gives $18.20 risk/share. Total risk $145.60.",
+        "confidenceLevel": 4,
+        "marketConditions": "trending",
+        "emotionalStateBefore": "calm"
+      },
+      "postTrade": {
+        "whatWorked": "Patient entry on weekly close confirmation. Held through minor pullbacks. Azure numbers came in strong as expected.",
+        "whatDidntWork": "Exited at $418.90 when my trailing stop got hit during a sector rotation out of tech. The stock recovered to $430 two weeks later.",
+        "lessonsLearned": "Trailing stops in long-term positions need wider buffers. A 5% trailing stop was too tight for a 2-month hold. Consider using weekly close below a key level instead of an intraday trailing stop.",
+        "emotionalStateAfter": "satisfied",
+        "wouldTakeAgain": true
+      },
+      "processScores": {
+        "discipline": 4,
+        "emotionalManagement": 4,
+        "riskManagement": 3,
+        "entryQuality": 4,
+        "exitQuality": 3,
+        "overall": 3.6
+      },
+      "tags": ["cloud", "enterprise", "AI", "long-term"],
+      "relatedTrades": [],
+      "attachments": [],
+      "createdAt": "2026-01-15T15:30:00Z",
+      "updatedAt": "2026-01-16T10:00:00Z"
+    },
+    {
+      "id": "je-005",
+      "tradeId": "trd-je-005",
+      "portfolioId": "port-active",
+      "starred": true,
+      "tradeSummary": {
+        "instrument": "BTC-USD",
+        "instrumentName": "Bitcoin",
+        "side": "BUY",
+        "entryDate": "2026-01-25T08:30:00Z",
+        "exitDate": "2026-02-05T19:15:00Z",
+        "entryPrice": 101250.00,
+        "exitPrice": 107800.00,
+        "quantity": 0.15,
+        "pnl": 982.50,
+        "pnlPercent": 6.47,
+        "holdingPeriod": 11,
+        "broker": "Binance",
+        "strategy": "trend_following"
+      },
+      "preTrade": {
+        "thesis": "BTC pulling back to $101K support after rejection at $108K. On-chain metrics show accumulation by long-term holders. ETF inflows remain strong. Expecting continuation of the macro uptrend.",
+        "entryCriteria": "Buy at $101,000-$102,000 support zone. RSI resetting on 4H chart.",
+        "targetPrice": 112000.00,
+        "plannedStopLoss": 96000.00,
+        "riskRewardRatio": 2.05,
+        "positionSizeRationale": "0.15 BTC = ~$15,188. Crypto allocation within 15% of total portfolio. Stop at $96K gives $787.50 max loss.",
+        "confidenceLevel": 3,
+        "marketConditions": "trending",
+        "emotionalStateBefore": "neutral"
+      },
+      "postTrade": {
+        "whatWorked": "Support zone held perfectly. Patient entry during weekend dip paid off. The on-chain thesis was validated by ETF flow data the following Monday.",
+        "whatDidntWork": "Exited at $107,800 when I got nervous about a tweet from a Fed governor. Should have stuck to my target or at least trailed the stop instead of panic-selling.",
+        "lessonsLearned": "Social media FUD should not override a working thesis. If the technical and on-chain picture hasn't changed, stick to the plan. Consider setting price alerts instead of watching the timeline.",
+        "emotionalStateAfter": "relieved",
+        "wouldTakeAgain": true
+      },
+      "processScores": {
+        "discipline": 3,
+        "emotionalManagement": 2,
+        "riskManagement": 4,
+        "entryQuality": 4,
+        "exitQuality": 2,
+        "overall": 3.0
+      },
+      "tags": ["crypto", "bitcoin", "ETF-flows", "macro", "on-chain"],
+      "relatedTrades": ["trd-je-007"],
+      "attachments": [
+        {
+          "id": "att-003",
+          "type": "image/png",
+          "fileName": "btc-support-zone-chart.png",
+          "url": "/attachments/je-005/btc-support-zone-chart.png"
+        }
+      ],
+      "createdAt": "2026-02-05T20:00:00Z",
+      "updatedAt": "2026-02-06T08:15:00Z"
+    },
+    {
+      "id": "je-006",
+      "tradeId": "trd-je-006",
+      "portfolioId": "port-active",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "AAPL",
+        "instrumentName": "Apple Inc",
+        "side": "SELL",
+        "entryDate": "2026-02-03T10:20:00Z",
+        "exitDate": "2026-02-07T14:50:00Z",
+        "entryPrice": 182.60,
+        "exitPrice": 178.90,
+        "quantity": 15,
+        "pnl": 55.50,
+        "pnlPercent": 2.03,
+        "holdingPeriod": 4,
+        "broker": "IB",
+        "strategy": "mean_reversion"
+      },
+      "preTrade": null,
+      "postTrade": {
+        "whatWorked": "The short entry was well-timed. AAPL was extended above its upper Bollinger Band and the mean reversion back to the 20-day SMA played out cleanly.",
+        "whatDidntWork": "I didn't document my pre-trade thesis at the time. Need to be more disciplined about journaling before entering trades, not just after.",
+        "lessonsLearned": "Always fill out pre-trade notes, even if brief. Having a written record of the thesis helps evaluate whether the process was sound, not just the outcome.",
+        "emotionalStateAfter": "neutral",
+        "wouldTakeAgain": true
+      },
+      "processScores": {
+        "discipline": 2,
+        "emotionalManagement": 3,
+        "riskManagement": 3,
+        "entryQuality": 4,
+        "exitQuality": 3,
+        "overall": 3.0
+      },
+      "tags": ["mean-reversion", "short", "Bollinger"],
+      "relatedTrades": [],
+      "attachments": [],
+      "createdAt": "2026-02-08T09:00:00Z",
+      "updatedAt": "2026-02-08T09:00:00Z"
+    },
+    {
+      "id": "je-007",
+      "tradeId": "trd-je-007",
+      "portfolioId": "port-longterm",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "ETH-USD",
+        "instrumentName": "Ethereum",
+        "side": "BUY",
+        "entryDate": "2025-12-20T12:00:00Z",
+        "exitDate": "2026-02-10T16:45:00Z",
+        "entryPrice": 3380.00,
+        "exitPrice": 3120.50,
+        "quantity": 1.5,
+        "pnl": -389.25,
+        "pnlPercent": -7.68,
+        "holdingPeriod": 52,
+        "broker": "Binance",
+        "strategy": "trend_following"
+      },
+      "preTrade": {
+        "thesis": "ETH showing strength with upcoming Pectra upgrade catalyst. DeFi TVL recovering. Targeting the $3,800 resistance from earlier in the year.",
+        "entryCriteria": "Buy on weekly close above $3,350 with improving network activity metrics.",
+        "targetPrice": 3800.00,
+        "plannedStopLoss": 3050.00,
+        "riskRewardRatio": 1.27,
+        "positionSizeRationale": "1.5 ETH = ~$5,070. Long-term crypto allocation. Stop at $3,050 limits loss to $495.",
+        "confidenceLevel": 3,
+        "marketConditions": "ranging",
+        "emotionalStateBefore": "neutral"
+      },
+      "postTrade": {
+        "whatWorked": "The fundamental thesis around Pectra was sound. Held patiently for the catalyst.",
+        "whatDidntWork": "The upgrade got delayed and ETH lost momentum relative to BTC. The ETH/BTC ratio deteriorated throughout the hold. My stop at $3,050 eventually got hit after a slow bleed rather than a sharp move.",
+        "lessonsLearned": "Catalyst-driven long-term trades have timeline risk. If the catalyst gets delayed, re-evaluate the position rather than just holding. Also, watch the ETH/BTC ratio as a leading indicator of relative weakness.",
+        "emotionalStateAfter": "disappointed",
+        "wouldTakeAgain": false
+      },
+      "processScores": {
+        "discipline": 4,
+        "emotionalManagement": 4,
+        "riskManagement": 4,
+        "entryQuality": 3,
+        "exitQuality": 3,
+        "overall": 3.6
+      },
+      "tags": ["crypto", "ethereum", "catalyst", "upgrade"],
+      "relatedTrades": ["trd-je-005"],
+      "attachments": [],
+      "createdAt": "2026-02-10T18:00:00Z",
+      "updatedAt": "2026-02-11T09:30:00Z"
+    },
+    {
+      "id": "je-008",
+      "tradeId": "trd-je-008",
+      "portfolioId": "port-longterm",
+      "starred": false,
+      "tradeSummary": {
+        "instrument": "AMZN",
+        "instrumentName": "Amazon.com Inc",
+        "side": "BUY",
+        "entryDate": "2026-02-12T09:32:00Z",
+        "exitDate": "2026-02-19T15:55:00Z",
+        "entryPrice": 218.40,
+        "exitPrice": 224.10,
+        "quantity": 12,
+        "pnl": 68.40,
+        "pnlPercent": 2.61,
+        "holdingPeriod": 7,
+        "broker": "IB",
+        "strategy": "manual"
+      },
+      "preTrade": {
+        "thesis": "AMZN dipped after AWS re:Invent news got fully priced in. Valuation looks reasonable at 55x forward earnings with 20%+ revenue growth. Buying the dip.",
+        "entryCriteria": "Market order on gap-down open below $220.",
+        "targetPrice": 235.00,
+        "plannedStopLoss": 210.00,
+        "riskRewardRatio": 1.98,
+        "positionSizeRationale": "12 shares = ~$2,621. Moderate position in long-term portfolio. Risk $8.40/share, total risk $100.80.",
+        "confidenceLevel": 2,
+        "marketConditions": "uncertain",
+        "emotionalStateBefore": "anxious"
+      },
+      "postTrade": {
+        "whatWorked": "The dip-buy worked out. AMZN bounced back as expected.",
+        "whatDidntWork": "Low conviction entry (confidence 2) but still took a full position. Should size down when conviction is low. Got lucky that it bounced — the thesis was vague ('buying the dip' is not a strategy).",
+        "lessonsLearned": "Match position size to conviction level. A confidence-2 trade should be half-size at most. Also, 'buying the dip' needs a more specific catalyst or technical level to be a real thesis.",
+        "emotionalStateAfter": "relieved",
+        "wouldTakeAgain": false
+      },
+      "processScores": {
+        "discipline": 1,
+        "emotionalManagement": 2,
+        "riskManagement": 2,
+        "entryQuality": 2,
+        "exitQuality": 3,
+        "overall": 2.0
+      },
+      "tags": [],
+      "relatedTrades": [],
+      "attachments": [],
+      "createdAt": "2026-02-19T17:00:00Z",
+      "updatedAt": "2026-02-19T17:00:00Z"
+    }
+  ],
+
+  "unjournaledTrades": [
+    {
+      "tradeId": "trd-uj-001",
+      "portfolioId": "port-active",
+      "instrument": "TSLA",
+      "instrumentName": "Tesla Inc",
+      "side": "BUY",
+      "entryDate": "2026-02-17T09:40:00Z",
+      "exitDate": "2026-02-20T15:30:00Z",
+      "entryPrice": 248.90,
+      "exitPrice": 256.40,
+      "quantity": 8,
+      "pnl": 60.00,
+      "pnlPercent": 3.01,
+      "broker": "IB",
+      "strategy": "momentum"
+    },
+    {
+      "tradeId": "trd-uj-002",
+      "portfolioId": "port-active",
+      "instrument": "NVDA",
+      "instrumentName": "NVIDIA Corporation",
+      "side": "SELL",
+      "entryDate": "2026-02-18T10:10:00Z",
+      "exitDate": "2026-02-21T14:45:00Z",
+      "entryPrice": 139.20,
+      "exitPrice": 141.80,
+      "quantity": 20,
+      "pnl": -52.00,
+      "pnlPercent": -1.87,
+      "broker": "IB",
+      "strategy": "mean_reversion"
+    },
+    {
+      "tradeId": "trd-uj-003",
+      "portfolioId": "port-longterm",
+      "instrument": "BTC-USD",
+      "instrumentName": "Bitcoin",
+      "side": "BUY",
+      "entryDate": "2026-02-10T07:15:00Z",
+      "exitDate": "2026-02-21T20:00:00Z",
+      "entryPrice": 97500.00,
+      "exitPrice": 96200.00,
+      "quantity": 0.1,
+      "pnl": -130.00,
+      "pnlPercent": -1.33,
+      "broker": "Binance",
+      "strategy": "trend_following"
+    }
+  ],
+
+  "performanceMetrics": {
+    "period": "YTD",
+    "totalTrades": 11,
+    "winningTrades": 7,
+    "losingTrades": 4,
+    "winRate": 63.6,
+    "averageWin": 259.82,
+    "averageLoss": -186.56,
+    "winLossRatio": 1.39,
+    "profitFactor": 2.44,
+    "totalPnl": 1194.50,
+    "sharpeRatio": 1.42,
+    "sortinoRatio": 1.87,
+    "maxDrawdownPct": 8.3,
+    "maxDrawdownDays": 12,
+    "averageHoldingPeriodDays": 14.8,
+    "winRateTrend": [
+      { "month": "Oct 2025", "winRate": 55.0 },
+      { "month": "Nov 2025", "winRate": 58.3 },
+      { "month": "Dec 2025", "winRate": 60.0 },
+      { "month": "Jan 2026", "winRate": 66.7 },
+      { "month": "Feb 2026", "winRate": 63.6 }
+    ],
+    "pnlDistribution": [
+      { "bucket": "-10% to -5%", "count": 2 },
+      { "bucket": "-5% to 0%", "count": 2 },
+      { "bucket": "0% to 5%", "count": 4 },
+      { "bucket": "5% to 10%", "count": 2 },
+      { "bucket": "10% to 15%", "count": 1 }
+    ],
+    "cumulativePnl": [
+      { "date": "2025-10-01", "pnl": 0 },
+      { "date": "2025-10-15", "pnl": 120.00 },
+      { "date": "2025-10-31", "pnl": 85.00 },
+      { "date": "2025-11-15", "pnl": 210.00 },
+      { "date": "2025-11-30", "pnl": 340.00 },
+      { "date": "2025-12-15", "pnl": 295.00 },
+      { "date": "2025-12-31", "pnl": 480.00 },
+      { "date": "2026-01-08", "pnl": 838.75 },
+      { "date": "2026-01-10", "pnl": 663.75 },
+      { "date": "2026-01-15", "pnl": 829.35 },
+      { "date": "2026-01-28", "pnl": 957.85 },
+      { "date": "2026-02-05", "pnl": 1940.35 },
+      { "date": "2026-02-07", "pnl": 1995.85 },
+      { "date": "2026-02-10", "pnl": 1606.60 },
+      { "date": "2026-02-19", "pnl": 1675.00 },
+      { "date": "2026-02-22", "pnl": 1194.50 }
+    ]
+  },
+
+  "processScoreAnalytics": {
+    "overallAverage": 3.28,
+    "trend": "up",
+    "byDimension": {
+      "discipline": 3.13,
+      "emotionalManagement": 3.25,
+      "riskManagement": 3.50,
+      "entryQuality": 3.63,
+      "exitQuality": 2.88
+    },
+    "monthlyTrend": [
+      {
+        "month": "Oct 2025",
+        "discipline": 2.80,
+        "emotionalManagement": 2.90,
+        "riskManagement": 3.10,
+        "entryQuality": 3.20,
+        "exitQuality": 2.70,
+        "overall": 2.94
+      },
+      {
+        "month": "Nov 2025",
+        "discipline": 3.00,
+        "emotionalManagement": 3.10,
+        "riskManagement": 3.30,
+        "entryQuality": 3.40,
+        "exitQuality": 2.80,
+        "overall": 3.12
+      },
+      {
+        "month": "Dec 2025",
+        "discipline": 3.20,
+        "emotionalManagement": 3.20,
+        "riskManagement": 3.50,
+        "entryQuality": 3.50,
+        "exitQuality": 2.90,
+        "overall": 3.26
+      },
+      {
+        "month": "Jan 2026",
+        "discipline": 3.30,
+        "emotionalManagement": 3.40,
+        "riskManagement": 3.60,
+        "entryQuality": 3.70,
+        "exitQuality": 3.00,
+        "overall": 3.40
+      },
+      {
+        "month": "Feb 2026",
+        "discipline": 3.00,
+        "emotionalManagement": 3.20,
+        "riskManagement": 3.50,
+        "entryQuality": 3.60,
+        "exitQuality": 2.80,
+        "overall": 3.22
+      }
+    ],
+    "processVsOutcome": {
+      "skilledCount": 3,
+      "unluckyCount": 1,
+      "luckyCount": 2,
+      "needsWorkCount": 2
+    }
+  },
+
+  "attributionData": {
+    "byStrategy": [
+      { "strategy": "trend_following", "trades": 4, "winRate": 75.0, "profitFactor": 3.18, "pnl": 1117.60 },
+      { "strategy": "momentum", "trades": 2, "winRate": 100.0, "profitFactor": null, "pnl": 188.50 },
+      { "strategy": "mean_reversion", "trades": 2, "winRate": 50.0, "profitFactor": 1.07, "pnl": 3.50 },
+      { "strategy": "breakout", "trades": 1, "winRate": 0.0, "profitFactor": 0.0, "pnl": -175.00 },
+      { "strategy": "manual", "trades": 2, "winRate": 50.0, "profitFactor": 0.82, "pnl": -60.10 }
+    ],
+    "byDayOfWeek": [
+      { "day": "Monday", "trades": 3, "winRate": 66.7, "averagePnl": 142.30 },
+      { "day": "Tuesday", "trades": 2, "winRate": 50.0, "averagePnl": -22.50 },
+      { "day": "Wednesday", "trades": 3, "winRate": 66.7, "averagePnl": 185.40 },
+      { "day": "Thursday", "trades": 2, "winRate": 50.0, "averagePnl": -45.80 },
+      { "day": "Friday", "trades": 1, "winRate": 100.0, "averagePnl": 55.50 }
+    ],
+    "byTimeOfDay": [
+      { "session": "market_open", "trades": 5, "winRate": 60.0, "averagePnl": 112.75 },
+      { "session": "mid_day", "trades": 4, "winRate": 75.0, "averagePnl": 198.30 },
+      { "session": "market_close", "trades": 2, "winRate": 50.0, "averagePnl": -15.60 }
+    ]
+  },
+
+  "behavioralPatterns": [
+    {
+      "id": "bp-001",
+      "patternType": "revenge_trading",
+      "severity": "high",
+      "occurrences": 3,
+      "description": "Entered 3 trades within 2 hours of realizing losses in Jan–Feb 2026. Two of these revenge entries resulted in additional losses totaling -$227. Pattern detected on Jan 10, Jan 28, and Feb 12.",
+      "impactPnl": -227.00,
+      "recommendation": "Implement a mandatory 4-hour cooldown period after any losing trade. Add a pre-trade checklist item: 'Am I entering this trade to recover a loss?' If yes, walk away.",
+      "acknowledged": false,
+      "acknowledgedAt": null,
+      "detectedAt": "2026-02-15T06:00:00Z"
+    },
+    {
+      "id": "bp-002",
+      "patternType": "fear_cutting_winners",
+      "severity": "moderate",
+      "occurrences": 4,
+      "description": "Exited 4 winning positions before reaching the planned target price. Average exit was at 62% of the planned move. Most exits were triggered by short-term news or social media noise rather than technical levels.",
+      "impactPnl": -485.00,
+      "recommendation": "Use trailing stops instead of discretionary exits on winning trades. Set price alerts at target levels and avoid checking positions more than twice per day.",
+      "acknowledged": true,
+      "acknowledgedAt": "2026-02-18T10:30:00Z",
+      "detectedAt": "2026-02-12T06:00:00Z"
+    },
+    {
+      "id": "bp-003",
+      "patternType": "position_size_drift",
+      "severity": "moderate",
+      "occurrences": 2,
+      "description": "Took full position sizes on 2 trades where stated confidence was 2 or below. Position sizing should scale with conviction — low-confidence trades should be half-size or less.",
+      "impactPnl": -68.40,
+      "recommendation": "Create a position sizing rule: Confidence 1-2 = 50% max size, Confidence 3 = 75% max size, Confidence 4-5 = 100% max size. Add this to the pre-trade checklist.",
+      "acknowledged": false,
+      "acknowledgedAt": null,
+      "detectedAt": "2026-02-20T06:00:00Z"
+    },
+    {
+      "id": "bp-004",
+      "patternType": "overtrading",
+      "severity": "low",
+      "occurrences": 1,
+      "description": "Placed 4 trades in a single day on Feb 12, exceeding the self-imposed limit of 3 trades per day. The 4th trade was a low-conviction entry that resulted in a small loss.",
+      "impactPnl": -32.00,
+      "recommendation": "Set a hard limit of 3 new entries per day in the trading platform. After reaching the limit, switch to analysis mode and plan tomorrow's trades instead.",
+      "acknowledged": false,
+      "acknowledgedAt": null,
+      "detectedAt": "2026-02-13T06:00:00Z"
+    }
+  ],
+
+  "habitScores": {
+    "consistency": {
+      "score": 68,
+      "trend": "up",
+      "sparkline": [
+        { "date": "2025-11-24", "score": 52 },
+        { "date": "2025-12-01", "score": 55 },
+        { "date": "2025-12-08", "score": 54 },
+        { "date": "2025-12-15", "score": 58 },
+        { "date": "2025-12-22", "score": 60 },
+        { "date": "2025-12-29", "score": 59 },
+        { "date": "2026-01-05", "score": 62 },
+        { "date": "2026-01-12", "score": 61 },
+        { "date": "2026-01-19", "score": 64 },
+        { "date": "2026-01-26", "score": 66 },
+        { "date": "2026-02-02", "score": 65 },
+        { "date": "2026-02-09", "score": 67 },
+        { "date": "2026-02-16", "score": 68 }
+      ]
+    },
+    "emotionalControl": {
+      "score": 54,
+      "trend": "flat",
+      "sparkline": [
+        { "date": "2025-11-24", "score": 48 },
+        { "date": "2025-12-01", "score": 50 },
+        { "date": "2025-12-08", "score": 52 },
+        { "date": "2025-12-15", "score": 55 },
+        { "date": "2025-12-22", "score": 53 },
+        { "date": "2025-12-29", "score": 54 },
+        { "date": "2026-01-05", "score": 56 },
+        { "date": "2026-01-12", "score": 52 },
+        { "date": "2026-01-19", "score": 55 },
+        { "date": "2026-01-26", "score": 53 },
+        { "date": "2026-02-02", "score": 56 },
+        { "date": "2026-02-09", "score": 52 },
+        { "date": "2026-02-16", "score": 54 }
+      ]
+    },
+    "riskDiscipline": {
+      "score": 72,
+      "trend": "up",
+      "sparkline": [
+        { "date": "2025-11-24", "score": 60 },
+        { "date": "2025-12-01", "score": 62 },
+        { "date": "2025-12-08", "score": 63 },
+        { "date": "2025-12-15", "score": 65 },
+        { "date": "2025-12-22", "score": 66 },
+        { "date": "2025-12-29", "score": 64 },
+        { "date": "2026-01-05", "score": 67 },
+        { "date": "2026-01-12", "score": 68 },
+        { "date": "2026-01-19", "score": 70 },
+        { "date": "2026-01-26", "score": 69 },
+        { "date": "2026-02-02", "score": 71 },
+        { "date": "2026-02-09", "score": 70 },
+        { "date": "2026-02-16", "score": 72 }
+      ]
+    },
+    "patience": {
+      "score": 45,
+      "trend": "down",
+      "sparkline": [
+        { "date": "2025-11-24", "score": 58 },
+        { "date": "2025-12-01", "score": 56 },
+        { "date": "2025-12-08", "score": 55 },
+        { "date": "2025-12-15", "score": 53 },
+        { "date": "2025-12-22", "score": 52 },
+        { "date": "2025-12-29", "score": 50 },
+        { "date": "2026-01-05", "score": 51 },
+        { "date": "2026-01-12", "score": 48 },
+        { "date": "2026-01-19", "score": 49 },
+        { "date": "2026-01-26", "score": 46 },
+        { "date": "2026-02-02", "score": 47 },
+        { "date": "2026-02-09", "score": 44 },
+        { "date": "2026-02-16", "score": 45 }
+      ]
+    }
+  },
+
+  "improvementAreas": [
+    {
+      "title": "Reduce premature exits on winning trades",
+      "description": "Your fear-of-cutting-winners pattern has cost an estimated $485 in unrealized gains. Focus on using trailing stops instead of discretionary exits, and avoid checking positions more than twice per day.",
+      "relatedPatternId": "bp-002"
+    },
+    {
+      "title": "Implement a post-loss cooldown period",
+      "description": "Revenge trading after losses has been your most impactful negative pattern. Commit to a 4-hour cooldown after any losing trade before entering a new position. Use this time for journaling and analysis instead.",
+      "relatedPatternId": "bp-001"
+    },
+    {
+      "title": "Scale position size to conviction level",
+      "description": "Two recent trades were full-sized despite low confidence ratings. Build a systematic rule: confidence 1-2 gets 50% size, confidence 3 gets 75%, and only confidence 4-5 trades get full size allocation."
+    }
+  ],
+
+  "weeklyReview": {
+    "week": "2026-W08",
+    "dateRange": "Feb 16 – Feb 22, 2026",
+    "summary": {
+      "trades": 3,
+      "pnl": -122.00,
+      "winRate": 33.3,
+      "avgProcessScore": 2.50
+    },
+    "bestTrade": {
+      "tradeId": "trd-uj-001",
+      "instrument": "TSLA",
+      "pnl": 60.00,
+      "processScore": null
+    },
+    "worstTrade": {
+      "tradeId": "trd-uj-003",
+      "instrument": "BTC-USD",
+      "pnl": -130.00,
+      "processScore": null
+    },
+    "patternsThisWeek": [
+      "Position size drift detected: full position on low-conviction BTC trade",
+      "Overtrading risk: approaching daily trade limit on Feb 18"
+    ],
+    "goalsProgress": [
+      {
+        "goalName": "Win rate above 60%",
+        "target": 60.0,
+        "actual": 33.3,
+        "status": "missed"
+      },
+      {
+        "goalName": "Average process score above 3.5",
+        "target": 3.5,
+        "actual": 2.5,
+        "status": "missed"
+      },
+      {
+        "goalName": "Max daily loss under $500",
+        "target": 500.0,
+        "actual": 130.0,
+        "status": "met"
+      }
+    ],
+    "focusForNextWeek": [
+      "Journal all 3 unjournaled trades before taking any new positions",
+      "Enforce 4-hour cooldown after any losing trade",
+      "Only take trades with confidence level 3 or higher"
+    ]
+  }
+}

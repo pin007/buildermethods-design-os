@@ -1,0 +1,1 @@
+export { AlertsDashboard } from './AlertsDashboard'

@@ -1,0 +1,635 @@
+{
+  "_meta": {
+    "models": {
+      "settingsCategories": "The 10 settings category cards shown on the overview page. Each card has an icon, name, status summary, and optional warning badge.",
+      "brokerGateways": "Connection configurations for trading platforms (Interactive Brokers and Binance). Includes encrypted credentials, connection parameters, and live status information like latency and heartbeat.",
+      "dataSources": "Market data providers that feed price and volume data into the platform. Each source can be enabled/disabled and has a priority order for fallback.",
+      "retentionTiers": "Data storage tiers that control how long market data is kept at different granularities — hot (recent, fast access), warm (older, compressed), and cold (archive).",
+      "trackedInstruments": "Instruments actively being tracked for market data collection. The pipeline fetches data for these symbols from enabled data sources.",
+      "portfolioSettings": "Global portfolio configuration including base currency, supported currencies for multi-currency portfolios, benchmark comparison, and margin alert thresholds.",
+      "riskSettings": "Risk management limits that control maximum exposure. Each setting has a current value, default value, min/max bounds, and a unit (percent or ratio).",
+      "taxSettings": "Czech tax reporting configuration including FIFO method, tax rates, the 3-year exemption rule, CNB exchange rate sync, and report generation settings.",
+      "strategySettings": "Default parameters for the strategy engine and backtesting framework, including evaluation frequency, risk-per-trade defaults, and simulation settings.",
+      "intelligenceSettings": "Configuration for AI-powered market intelligence — guru/whale tracking providers, market analyst research schedules, confidence thresholds, and scoring weights.",
+      "journalSettings": "Trade journal configuration controlling whether pre/post trade notes are required, scoring dimensions for trade evaluation, behavioral pattern detection, and review schedules.",
+      "notificationChannels": "Delivery channels for alerts and notifications. Each channel has its own configuration (credentials, endpoints) and can be individually enabled or disabled.",
+      "notificationPreferences": "Global notification preferences including quiet hours, severity thresholds, rate limits, and a per-alert-type subscription matrix mapping alert types to channels.",
+      "calendarDisplaySettings": "Trading calendar data providers, refresh schedules, alert timing before events, and display preferences like timezone and theme."
+    },
+    "relationships": [
+      "Settings Categories link to their respective detail pages (one card per category)",
+      "Broker Gateways reference the Broker entity from the global data model",
+      "Tracked Instruments reference the Instrument entity from the global data model",
+      "Data Sources feed into the Market Data pipeline and are ordered by priority",
+      "Notification Channels are referenced by the subscription matrix in Notification Preferences",
+      "Risk Settings enforce limits on Orders and Positions from the global data model",
+      "Tax Settings control how CostLots, LotMatches, and Dividends are calculated for CZK reporting"
+    ]
+  },
+
+  "settingsCategories": [
+    {
+      "id": "broker-gateways",
+      "label": "Broker Gateways",
+      "icon": "Cable",
+      "summary": "2 brokers configured, 1 degraded",
+      "badge": 1,
+      "badgeVariant": "warning"
+    },
+    {
+      "id": "market-data-pipeline",
+      "label": "Market Data Pipeline",
+      "icon": "Database",
+      "summary": "4 sources active, 98.2% quality score",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "portfolio-currency",
+      "label": "Portfolio & Currency",
+      "icon": "Wallet",
+      "summary": "Base currency CZK, 5 currencies supported",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "risk-management",
+      "label": "Risk Management",
+      "icon": "ShieldAlert",
+      "summary": "All limits active, no breaches",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "tax-configuration",
+      "label": "Tax Configuration",
+      "icon": "Receipt",
+      "summary": "Czech FIFO, 15% rate, CNB sync active",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "strategy-backtesting",
+      "label": "Strategy & Backtesting",
+      "icon": "FlaskConical",
+      "summary": "60s evaluation cycle, 8 workers available",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "intelligence-sources",
+      "label": "Intelligence Sources",
+      "icon": "Brain",
+      "summary": "5 providers active, 2 disabled",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "trade-journal",
+      "label": "Trade Journal",
+      "icon": "BookOpen",
+      "summary": "Pre-trade notes required, weekly reviews on",
+      "badge": null,
+      "badgeVariant": null
+    },
+    {
+      "id": "notifications-alerts",
+      "label": "Notifications & Alerts",
+      "icon": "Bell",
+      "summary": "3 channels active, quiet hours 22:00–08:00",
+      "badge": 2,
+      "badgeVariant": "info"
+    },
+    {
+      "id": "calendar-display",
+      "label": "Calendar & Display",
+      "icon": "CalendarCog",
+      "summary": "America/New_York timezone, dark mode",
+      "badge": null,
+      "badgeVariant": null
+    }
+  ],
+
+  "brokerGateways": [
+    {
+      "id": "broker-ib",
+      "name": "Interactive Brokers",
+      "shortName": "IB",
+      "enabled": true,
+      "config": {
+        "host": "127.0.0.1",
+        "port": 7497,
+        "clientId": 1,
+        "accountId": "DU1234567",
+        "paperTrading": false
+      },
+      "credentials": {
+        "hasApiKey": false,
+        "maskedApiKey": null,
+        "hasSecret": false,
+        "maskedSecret": null
+      },
+      "status": {
+        "connection": "connected",
+        "latencyMs": 12,
+        "lastHeartbeat": "2026-02-22T14:32:18Z",
+        "uptime": "4d 7h 23m",
+        "circuitBreaker": {
+          "state": "closed",
+          "failCount": 0,
+          "failMax": 5,
+          "timeoutDuration": 30
+        }
+      },
+      "retryConfig": {
+        "maxAttempts": 3,
+        "backoffSeconds": 5
+      }
+    },
+    {
+      "id": "broker-binance",
+      "name": "Binance",
+      "shortName": "Binance",
+      "enabled": true,
+      "config": {
+        "host": null,
+        "port": null,
+        "clientId": null,
+        "accountId": null,
+        "testnet": false
+      },
+      "credentials": {
+        "hasApiKey": true,
+        "maskedApiKey": "aBc1••••••••••••dEf9",
+        "hasSecret": true,
+        "maskedSecret": "xYz7••••••••••••mNo3"
+      },
+      "status": {
+        "connection": "degraded",
+        "latencyMs": 247,
+        "lastHeartbeat": "2026-02-22T14:31:45Z",
+        "uptime": "1d 2h 10m",
+        "circuitBreaker": {
+          "state": "half-open",
+          "failCount": 3,
+          "failMax": 5,
+          "timeoutDuration": 30
+        }
+      },
+      "retryConfig": {
+        "maxAttempts": 3,
+        "backoffSeconds": 5
+      }
+    }
+  ],
+
+  "dataSources": [
+    {
+      "id": "ds-yahoo",
+      "name": "Yahoo Finance",
+      "provider": "yahoo_finance",
+      "enabled": true,
+      "priority": 1,
+      "schedule": "*/5 * * * *",
+      "scheduleLabel": "Every 5 minutes",
+      "lastFetch": "2026-02-22T14:30:00Z",
+      "lastFetchStatus": "success",
+      "recordsFetched": 1247,
+      "qualityScore": 98.5
+    },
+    {
+      "id": "ds-ib",
+      "name": "Interactive Brokers",
+      "provider": "ib",
+      "enabled": true,
+      "priority": 2,
+      "schedule": "*/1 * * * *",
+      "scheduleLabel": "Every minute",
+      "lastFetch": "2026-02-22T14:32:00Z",
+      "lastFetchStatus": "success",
+      "recordsFetched": 856,
+      "qualityScore": 99.1
+    },
+    {
+      "id": "ds-finnhub",
+      "name": "Finnhub",
+      "provider": "finnhub",
+      "enabled": true,
+      "priority": 3,
+      "schedule": "*/15 * * * *",
+      "scheduleLabel": "Every 15 minutes",
+      "lastFetch": "2026-02-22T14:15:00Z",
+      "lastFetchStatus": "success",
+      "recordsFetched": 432,
+      "qualityScore": 96.8
+    },
+    {
+      "id": "ds-binance",
+      "name": "Binance Market Data",
+      "provider": "binance",
+      "enabled": true,
+      "priority": 4,
+      "schedule": "*/2 * * * *",
+      "scheduleLabel": "Every 2 minutes",
+      "lastFetch": "2026-02-22T14:32:00Z",
+      "lastFetchStatus": "warning",
+      "recordsFetched": 198,
+      "qualityScore": 94.2
+    }
+  ],
+
+  "retentionTiers": [
+    {
+      "id": "tier-hot",
+      "label": "Hot",
+      "description": "Recent data, full granularity, fast access",
+      "retentionDays": 30,
+      "granularity": "1min",
+      "storage": "QuestDB"
+    },
+    {
+      "id": "tier-warm",
+      "label": "Warm",
+      "description": "Older data, reduced to hourly candles",
+      "retentionDays": 365,
+      "granularity": "1hour",
+      "storage": "QuestDB (compressed)"
+    },
+    {
+      "id": "tier-cold",
+      "label": "Cold",
+      "description": "Archive data, daily candles only",
+      "retentionDays": 3650,
+      "granularity": "1day",
+      "storage": "Object storage"
+    }
+  ],
+
+  "qualityThresholds": {
+    "completeness": 95.0,
+    "timeliness": 98.0,
+    "accuracy": 99.0
+  },
+
+  "trackedInstruments": [
+    { "symbol": "AAPL", "name": "Apple Inc.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "MSFT", "name": "Microsoft Corp.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "NVDA", "name": "NVIDIA Corp.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "GOOGL", "name": "Alphabet Inc.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "AMZN", "name": "Amazon.com Inc.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "META", "name": "Meta Platforms Inc.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "TSLA", "name": "Tesla Inc.", "exchange": "NASDAQ", "type": "stock" },
+    { "symbol": "JPM", "name": "JPMorgan Chase & Co.", "exchange": "NYSE", "type": "stock" },
+    { "symbol": "BTC-USD", "name": "Bitcoin", "exchange": "Crypto", "type": "crypto" },
+    { "symbol": "ETH-USD", "name": "Ethereum", "exchange": "Crypto", "type": "crypto" },
+    { "symbol": "SOL-USD", "name": "Solana", "exchange": "Crypto", "type": "crypto" },
+    { "symbol": "EUR/USD", "name": "Euro / US Dollar", "exchange": "Forex", "type": "forex" }
+  ],
+
+  "portfolioSettings": {
+    "baseCurrency": "CZK",
+    "supportedCurrencies": ["CZK", "USD", "EUR", "GBP", "CHF"],
+    "benchmarks": [
+      { "id": "bench-sp500", "label": "S&P 500", "symbol": "^GSPC", "enabled": true },
+      { "id": "bench-nasdaq", "label": "NASDAQ Composite", "symbol": "^IXIC", "enabled": false },
+      { "id": "bench-btc", "label": "Bitcoin", "symbol": "BTC-USD", "enabled": true }
+    ],
+    "marginAlertThresholds": {
+      "warning": 70,
+      "critical": 85,
+      "unit": "percent"
+    },
+    "reconciliation": {
+      "enabled": true,
+      "intervalSeconds": 300,
+      "runOnStartup": true,
+      "lastRun": "2026-02-22T14:30:00Z",
+      "lastRunStatus": "success"
+    },
+    "cacheTtlSeconds": 300
+  },
+
+  "riskSettings": [
+    {
+      "id": "risk-position-size",
+      "label": "Max Position Size",
+      "description": "Maximum percentage of portfolio value in a single position",
+      "value": 10,
+      "defaultValue": 10,
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "unit": "percent"
+    },
+    {
+      "id": "risk-concentration",
+      "label": "Instrument Concentration",
+      "description": "Maximum exposure to a single instrument across all portfolios",
+      "value": 30,
+      "defaultValue": 30,
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "percent"
+    },
+    {
+      "id": "risk-daily-loss",
+      "label": "Daily Loss Limit",
+      "description": "Maximum allowed loss in a single trading day before circuit breaker triggers",
+      "value": 5,
+      "defaultValue": 5,
+      "min": 1,
+      "max": 20,
+      "step": 0.5,
+      "unit": "percent"
+    },
+    {
+      "id": "risk-max-drawdown",
+      "label": "Max Drawdown",
+      "description": "Maximum peak-to-trough decline before all trading is halted",
+      "value": 25,
+      "defaultValue": 25,
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "percent"
+    },
+    {
+      "id": "risk-correlation",
+      "label": "Correlation Threshold",
+      "description": "Maximum allowed correlation between held positions",
+      "value": 0.7,
+      "defaultValue": 0.7,
+      "min": 0.1,
+      "max": 1.0,
+      "step": 0.05,
+      "unit": "ratio"
+    }
+  ],
+
+  "riskCircuitBreaker": {
+    "enabled": true,
+    "cooldownMinutes": 30,
+    "autoResume": false,
+    "monitoringIntervalSeconds": 60
+  },
+
+  "taxSettings": {
+    "method": "FIFO",
+    "taxRate": 15,
+    "exemptionHoldingDays": 1095,
+    "exemptionLabel": "3-year Czech tax exemption",
+    "cnbSync": {
+      "enabled": true,
+      "apiUrl": "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/",
+      "schedule": "0 16 * * 1-5",
+      "scheduleLabel": "Weekdays at 16:00 CET",
+      "lastSync": "2026-02-21T16:00:00Z",
+      "lastSyncStatus": "success"
+    },
+    "supportedCurrencies": ["USD", "EUR", "GBP", "CHF", "JPY"],
+    "reportFormats": [
+      { "id": "fmt-pdf", "label": "PDF", "enabled": true },
+      { "id": "fmt-csv", "label": "CSV", "enabled": true },
+      { "id": "fmt-json", "label": "JSON", "enabled": false }
+    ],
+    "retentionYears": 10
+  },
+
+  "strategySettings": {
+    "evaluationIntervalSeconds": 60,
+    "evaluationScheduleLabel": "Every 60 seconds",
+    "defaultRiskPerTrade": 1.0,
+    "maxPositionSize": 10.0,
+    "strategyConfigDirectory": "/config/strategies",
+    "backtesting": {
+      "defaultCapital": 100000,
+      "commissionPercent": 0.1,
+      "slippagePercent": 0.05,
+      "executionModel": "VOLUME_BASED",
+      "executionModels": ["SIMPLE", "VOLUME_BASED", "SPREAD_BASED"],
+      "maxWorkers": 8,
+      "walkForward": {
+        "trainingMonths": 12,
+        "validationMonths": 3
+      },
+      "reportFormat": "HTML",
+      "reportFormats": ["PDF", "HTML"],
+      "resultsRetentionDays": 365
+    }
+  },
+
+  "intelligenceSettings": {
+    "guruTracker": {
+      "sec": {
+        "enabled": true,
+        "userAgent": "TradingSquad/1.0 alex@tradingsquad.io",
+        "rateLimitPerSecond": 10,
+        "form4CheckIntervalHours": 6,
+        "filing13FCheckIntervalHours": 24
+      },
+      "darkPool": {
+        "enabled": true,
+        "checkIntervalHours": 24,
+        "minVolume": 100000,
+        "unusualMultiplier": 2.0
+      },
+      "analystRatings": {
+        "enabled": true,
+        "providers": ["finnhub", "fmp"],
+        "checkIntervalHours": 12,
+        "minAccuracyPercent": 60
+      },
+      "optionsFlow": {
+        "enabled": false,
+        "note": "Requires paid subscription",
+        "providers": [],
+        "checkIntervalHours": 6
+      },
+      "whaleTracking": {
+        "enabled": true,
+        "providers": ["whale_alert", "etherscan"],
+        "minTransactionUsd": 1000000,
+        "checkIntervalMinutes": 15
+      }
+    },
+    "marketAnalyst": {
+      "schedules": [
+        { "id": "sched-stocks", "label": "Daily Stock Research", "cron": "0 6 * * 1-5", "cronLabel": "Weekdays at 06:00 ET", "enabled": true },
+        { "id": "sched-crypto", "label": "Crypto Research", "cron": "0 */12 * * *", "cronLabel": "Every 12 hours", "enabled": true }
+      ],
+      "confidenceThresholds": {
+        "stocks": 7.0,
+        "crypto": 7.5
+      },
+      "scoringWeights": {
+        "technical": 50,
+        "sentiment": 30,
+        "diversification": 20
+      },
+      "topNPublished": {
+        "stocks": 10,
+        "crypto": 5
+      },
+      "watchlistFocused": true
+    },
+    "signalGeneration": {
+      "minConsensusGurus": 2,
+      "minQualityScore": 60,
+      "expiryDays": 30
+    }
+  },
+
+  "journalSettings": {
+    "requirePreTradeNotes": true,
+    "requirePostTradeNotes": true,
+    "reviewPromptDelayHours": 24,
+    "scoringDimensions": [
+      { "id": "dim-discipline", "label": "Discipline", "weight": 25, "enabled": true },
+      { "id": "dim-emotional", "label": "Emotional Management", "weight": 25, "enabled": true },
+      { "id": "dim-risk", "label": "Risk Management", "weight": 20, "enabled": true },
+      { "id": "dim-entry", "label": "Entry Quality", "weight": 15, "enabled": true },
+      { "id": "dim-exit", "label": "Exit Quality", "weight": 15, "enabled": true }
+    ],
+    "behavioralDetection": {
+      "revengeTradingWindowMinutes": 30,
+      "overtradingThresholdPerDay": 10,
+      "positionSizeDriftPercent": 50
+    },
+    "reviewSchedule": {
+      "weekly": { "enabled": true, "dayOfWeek": "Sunday" },
+      "monthly": { "enabled": true, "dayOfMonth": 1 }
+    },
+    "habitScoring": {
+      "enabled": true,
+      "lookbackTrades": 50
+    }
+  },
+
+  "notificationChannels": [
+    {
+      "id": "ch-email",
+      "type": "email",
+      "label": "Email",
+      "icon": "Mail",
+      "enabled": true,
+      "config": {
+        "provider": "sendgrid",
+        "fromAddress": "alerts@tradingsquad.io",
+        "maskedApiKey": "SG.••••••••••••••••dK4Q"
+      }
+    },
+    {
+      "id": "ch-slack",
+      "type": "slack",
+      "label": "Slack",
+      "icon": "MessageSquare",
+      "enabled": true,
+      "config": {
+        "maskedWebhookUrl": "https://hooks.slack.com/services/T••••/B••••/••••••••",
+        "channel": "#trading-alerts",
+        "timeoutSeconds": 10
+      }
+    },
+    {
+      "id": "ch-discord",
+      "type": "discord",
+      "label": "Discord",
+      "icon": "Gamepad2",
+      "enabled": true,
+      "config": {
+        "maskedWebhookUrl": "https://discord.com/api/webhooks/••••••••/••••••••••••",
+        "timeoutSeconds": 10
+      }
+    },
+    {
+      "id": "ch-sms",
+      "type": "sms",
+      "label": "SMS",
+      "icon": "Smartphone",
+      "enabled": false,
+      "config": {
+        "provider": "twilio",
+        "fromNumber": "+1••••••7890",
+        "maskedAccountSid": "AC••••••••••••••••3f8a",
+        "maskedAuthToken": "••••••••••••••••"
+      }
+    },
+    {
+      "id": "ch-pwa",
+      "type": "pwa_push",
+      "label": "Push Notifications",
+      "icon": "BellRing",
+      "enabled": false,
+      "config": {
+        "hasVapidPublicKey": true,
+        "maskedVapidPublicKey": "BNb4••••••••••••••••kQ==",
+        "hasVapidPrivateKey": true,
+        "maskedVapidPrivateKey": "••••••••••••••••",
+        "ttlSeconds": 86400,
+        "urgency": "normal"
+      }
+    }
+  ],
+
+  "notificationPreferences": {
+    "defaultSeverityThreshold": "medium",
+    "severityLevels": ["low", "medium", "high", "critical"],
+    "quietHours": {
+      "enabled": true,
+      "start": "22:00",
+      "end": "08:00",
+      "timezone": "Europe/Prague",
+      "allowCritical": true
+    },
+    "rateLimits": {
+      "perUserPerHour": 100,
+      "perUserPerDay": 500
+    },
+    "retryConfig": {
+      "maxAttempts": 3,
+      "delaySeconds": 60,
+      "batchSize": 10
+    },
+    "subscriptionMatrix": [
+      { "alertType": "Price Alert", "email": true, "slack": true, "discord": false, "sms": false, "push": false },
+      { "alertType": "Order Filled", "email": true, "slack": true, "discord": true, "sms": false, "push": false },
+      { "alertType": "Order Rejected", "email": true, "slack": true, "discord": true, "sms": false, "push": false },
+      { "alertType": "Risk Breach", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
+      { "alertType": "Margin Warning", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
+      { "alertType": "Broker Disconnected", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
+      { "alertType": "AI Recommendation", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
+      { "alertType": "Guru/Whale Activity", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
+      { "alertType": "Earnings Alert", "email": true, "slack": false, "discord": false, "sms": false, "push": false },
+      { "alertType": "Dividend Alert", "email": true, "slack": false, "discord": false, "sms": false, "push": false },
+      { "alertType": "Data Quality Issue", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
+      { "alertType": "Reconciliation Failure", "email": true, "slack": true, "discord": false, "sms": false, "push": false }
+    ]
+  },
+
+  "calendarDisplaySettings": {
+    "calendarProviders": [
+      { "id": "cal-earnings", "eventType": "Earnings", "provider": "alpha_vantage", "providers": ["alpha_vantage", "finnhub"], "refreshCron": "0 6 * * *", "refreshLabel": "Daily at 06:00", "enabled": true },
+      { "id": "cal-economic", "eventType": "Economic Events", "provider": "finnhub", "providers": ["finnhub"], "refreshCron": "0 5 * * *", "refreshLabel": "Daily at 05:00", "enabled": true },
+      { "id": "cal-dividends", "eventType": "Dividends", "provider": "yahoo_finance", "providers": ["yahoo_finance"], "refreshCron": "0 6 * * 1", "refreshLabel": "Weekly (Monday)", "enabled": true },
+      { "id": "cal-ipos", "eventType": "IPOs", "provider": "nasdaq", "providers": ["nasdaq"], "refreshCron": "0 6 * * 1", "refreshLabel": "Weekly (Monday)", "enabled": true }
+    ],
+    "alertTiming": [
+      { "eventType": "Earnings", "daysBefore": 3 },
+      { "eventType": "Dividends", "daysBefore": 3 },
+      { "eventType": "Option Expirations", "daysBefore": 7 },
+      { "eventType": "High-Impact Economic", "hoursBefore": 24 }
+    ],
+    "economicCalendarCountries": ["US", "EU", "UK", "JP", "CN"],
+    "availableCountries": ["US", "EU", "UK", "JP", "CN", "AU", "CA", "CH", "KR", "IN"],
+    "display": {
+      "timezone": "America/New_York",
+      "availableTimezones": ["America/New_York", "Europe/Prague", "Europe/London", "Asia/Tokyo", "UTC"],
+      "weekStart": "Monday",
+      "theme": "dark",
+      "dashboardRefreshSeconds": 5,
+      "priceStalenessSeconds": 60,
+      "orderStalenessSeconds": 30
+    }
+  }
+}

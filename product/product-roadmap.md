@@ -22,3 +22,9 @@ Post-trade journaling, behavioral pattern detection, process scoring, and rollin
 
 ### 7. Settings & Operations
 Broker gateway management, data pipeline configuration, system health monitoring, user preferences, notifications, appearance, and tax settings with clear visibility into what is config-file-only vs. UI-editable.
+
+### 8. Alerts
+Centralized alert management and escalation. Individual components (broker, market data, risk, strategy) trigger alerts; this section handles viewing, acknowledging, routing, silencing, and inhibition — similar to Prometheus AlertManager.
+
+### 9. Trading Calendar
+Calendar aggregating earnings announcements, economic releases (FOMC, NFP, CPI, GDP), dividend ex-dates and payment dates, options expirations, and upcoming IPOs. Unified month/week view with color-coded event types, filters by category and impact level, and alerts integration for portfolio holdings approaching key dates.

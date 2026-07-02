@@ -1,0 +1,424 @@
+{
+  "_meta": {
+    "models": {
+      "stats": "Summary statistics for the calendar dashboard stats bar. Aggregates event counts by type, portfolio relevance, impact level, and upcoming dividend income.",
+      "events": "Calendar events across 5 types: earnings announcements, economic releases, dividend dates, options expirations, and IPOs. Each event has a type-specific details object."
+    },
+    "relationships": [
+      "Events with inPortfolio=true are for instruments held in the user's portfolios",
+      "Earnings and dividend events reference specific instruments (ticker symbols)",
+      "Economic events have no instrument — they are macro-level releases",
+      "Options events may reference affected open positions in the portfolio",
+      "IPO events reference upcoming companies not yet publicly traded"
+    ]
+  },
+
+  "stats": {
+    "thisWeekTotal": 12,
+    "thisWeekByType": {
+      "earnings": 4,
+      "economic": 3,
+      "dividend": 2,
+      "options": 1,
+      "ipo": 2
+    },
+    "portfolioEvents": 5,
+    "highImpactNext7Days": 3,
+    "upcomingDividendIncome": 187.50,
+    "upcomingDividendCurrency": "USD"
+  },
+
+  "events": [
+    {
+      "id": "evt-earn-001",
+      "type": "earnings",
+      "title": "Apple Q1 2026 Earnings",
+      "date": "2026-02-27",
+      "instrument": "AAPL",
+      "impact": "high",
+      "inPortfolio": true,
+      "details": {
+        "companyName": "Apple Inc.",
+        "fiscalQuarter": "Q1 2026",
+        "timing": "after_market",
+        "epsEstimate": 2.35,
+        "epsPrior": 2.18,
+        "revenueEstimate": 95000000000,
+        "revenuePrior": 89500000000,
+        "confirmed": true
+      }
+    },
+    {
+      "id": "evt-earn-002",
+      "type": "earnings",
+      "title": "NVIDIA Q4 2026 Earnings",
+      "date": "2026-02-26",
+      "instrument": "NVDA",
+      "impact": "high",
+      "inPortfolio": true,
+      "details": {
+        "companyName": "NVIDIA Corporation",
+        "fiscalQuarter": "Q4 2026",
+        "timing": "after_market",
+        "epsEstimate": 0.89,
+        "epsPrior": 0.78,
+        "revenueEstimate": 38000000000,
+        "revenuePrior": 35100000000,
+        "confirmed": true
+      }
+    },
+    {
+      "id": "evt-earn-003",
+      "type": "earnings",
+      "title": "Salesforce Q4 2026 Earnings",
+      "date": "2026-03-03",
+      "instrument": "CRM",
+      "impact": "medium",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "Salesforce Inc.",
+        "fiscalQuarter": "Q4 2026",
+        "timing": "after_market",
+        "epsEstimate": 2.61,
+        "epsPrior": 2.29,
+        "revenueEstimate": 10040000000,
+        "revenuePrior": 9290000000,
+        "confirmed": true
+      }
+    },
+    {
+      "id": "evt-earn-004",
+      "type": "earnings",
+      "title": "Dollar General Q4 2026 Earnings",
+      "date": "2026-03-04",
+      "instrument": "DG",
+      "impact": "low",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "Dollar General Corporation",
+        "fiscalQuarter": "Q4 2026",
+        "timing": "before_market",
+        "epsEstimate": 1.58,
+        "epsPrior": 1.83,
+        "revenueEstimate": 9800000000,
+        "revenuePrior": 9860000000,
+        "confirmed": false
+      }
+    },
+    {
+      "id": "evt-econ-001",
+      "type": "economic",
+      "title": "US Non-Farm Payrolls",
+      "date": "2026-03-06",
+      "instrument": null,
+      "impact": "high",
+      "inPortfolio": false,
+      "details": {
+        "indicator": "NFP",
+        "country": "US",
+        "eventTime": "08:30:00",
+        "timeZone": "America/New_York",
+        "consensus": 180000,
+        "prior": 150000,
+        "unit": "jobs",
+        "description": "US Bureau of Labor Statistics monthly employment report. Measures the number of new jobs added, excluding farm workers and government employees."
+      }
+    },
+    {
+      "id": "evt-econ-002",
+      "type": "economic",
+      "title": "US Consumer Price Index (YoY)",
+      "date": "2026-03-11",
+      "instrument": null,
+      "impact": "high",
+      "inPortfolio": false,
+      "details": {
+        "indicator": "CPI",
+        "country": "US",
+        "eventTime": "08:30:00",
+        "timeZone": "America/New_York",
+        "consensus": 3.0,
+        "prior": 3.2,
+        "unit": "percent",
+        "description": "Measures the average change in prices paid by consumers for a basket of goods and services. Key inflation indicator watched by the Federal Reserve."
+      }
+    },
+    {
+      "id": "evt-econ-003",
+      "type": "economic",
+      "title": "Federal Reserve Interest Rate Decision",
+      "date": "2026-03-18",
+      "instrument": null,
+      "impact": "high",
+      "inPortfolio": false,
+      "details": {
+        "indicator": "FOMC",
+        "country": "US",
+        "eventTime": "14:00:00",
+        "timeZone": "America/New_York",
+        "consensus": 4.50,
+        "prior": 4.50,
+        "unit": "percent",
+        "description": "Federal Open Market Committee rate decision and policy statement. Followed by press conference at 14:30 ET."
+      }
+    },
+    {
+      "id": "evt-div-001",
+      "type": "dividend",
+      "title": "Microsoft Ex-Dividend Date",
+      "date": "2026-02-27",
+      "instrument": "MSFT",
+      "impact": "medium",
+      "inPortfolio": true,
+      "details": {
+        "companyName": "Microsoft Corporation",
+        "exDate": "2026-02-27",
+        "recordDate": "2026-02-28",
+        "paymentDate": "2026-03-12",
+        "amount": 0.83,
+        "currency": "USD",
+        "yield": 0.80,
+        "frequency": "quarterly",
+        "portfolioShares": 100,
+        "expectedPayment": 83.00
+      }
+    },
+    {
+      "id": "evt-div-002",
+      "type": "dividend",
+      "title": "Johnson & Johnson Ex-Dividend Date",
+      "date": "2026-03-02",
+      "instrument": "JNJ",
+      "impact": "medium",
+      "inPortfolio": true,
+      "details": {
+        "companyName": "Johnson & Johnson",
+        "exDate": "2026-03-02",
+        "recordDate": "2026-03-03",
+        "paymentDate": "2026-03-17",
+        "amount": 1.24,
+        "currency": "USD",
+        "yield": 3.15,
+        "frequency": "quarterly",
+        "portfolioShares": 50,
+        "expectedPayment": 62.00
+      }
+    },
+    {
+      "id": "evt-div-003",
+      "type": "dividend",
+      "title": "Coca-Cola Ex-Dividend Date",
+      "date": "2026-03-13",
+      "instrument": "KO",
+      "impact": "low",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "The Coca-Cola Company",
+        "exDate": "2026-03-13",
+        "recordDate": "2026-03-14",
+        "paymentDate": "2026-04-01",
+        "amount": 0.485,
+        "currency": "USD",
+        "yield": 2.90,
+        "frequency": "quarterly",
+        "portfolioShares": null,
+        "expectedPayment": null
+      }
+    },
+    {
+      "id": "evt-opt-001",
+      "type": "options",
+      "title": "Monthly Options Expiration",
+      "date": "2026-03-20",
+      "instrument": null,
+      "impact": "medium",
+      "inPortfolio": true,
+      "details": {
+        "expirationType": "monthly",
+        "exchange": "CBOE",
+        "isThirdFriday": true,
+        "affectedPositions": [
+          {
+            "instrument": "AAPL",
+            "option": "AAPL 180C 03/20",
+            "quantity": 5,
+            "currentValue": 340.00,
+            "itm": false
+          },
+          {
+            "instrument": "NVDA",
+            "option": "NVDA 120P 03/20",
+            "quantity": 3,
+            "currentValue": 45.00,
+            "itm": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "evt-opt-002",
+      "type": "options",
+      "title": "Weekly Options Expiration",
+      "date": "2026-02-27",
+      "instrument": null,
+      "impact": "low",
+      "inPortfolio": false,
+      "details": {
+        "expirationType": "weekly",
+        "exchange": "CBOE",
+        "isThirdFriday": false,
+        "affectedPositions": []
+      }
+    },
+    {
+      "id": "evt-ipo-001",
+      "type": "ipo",
+      "title": "CoreWeave IPO",
+      "date": "2026-03-10",
+      "instrument": null,
+      "impact": "medium",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "CoreWeave Inc.",
+        "ticker": "CRWV",
+        "exchange": "NASDAQ",
+        "priceLow": 40.00,
+        "priceHigh": 47.00,
+        "sharesOffered": 49000000,
+        "valuation": 23500000000,
+        "leadUnderwriters": ["Morgan Stanley", "Goldman Sachs", "JPMorgan"],
+        "industry": "Cloud Infrastructure / AI",
+        "status": "upcoming"
+      }
+    },
+    {
+      "id": "evt-ipo-002",
+      "type": "ipo",
+      "title": "Cerebras Systems IPO",
+      "date": "2026-03-17",
+      "instrument": null,
+      "impact": "medium",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "Cerebras Systems Inc.",
+        "ticker": "CBRS",
+        "exchange": "NASDAQ",
+        "priceLow": 36.00,
+        "priceHigh": 42.00,
+        "sharesOffered": 25000000,
+        "valuation": 8000000000,
+        "leadUnderwriters": ["Citigroup", "Barclays"],
+        "industry": "AI Semiconductors",
+        "status": "upcoming"
+      }
+    },
+    {
+      "id": "evt-earn-005",
+      "type": "earnings",
+      "title": "Broadcom Q1 2026 Earnings",
+      "date": "2026-03-06",
+      "instrument": "AVGO",
+      "impact": "high",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "Broadcom Inc.",
+        "fiscalQuarter": "Q1 2026",
+        "timing": "after_market",
+        "epsEstimate": 1.49,
+        "epsPrior": 1.33,
+        "revenueEstimate": 14600000000,
+        "revenuePrior": 12800000000,
+        "confirmed": true
+      }
+    },
+    {
+      "id": "evt-earn-006",
+      "type": "earnings",
+      "title": "Costco Q2 2026 Earnings",
+      "date": "2026-03-06",
+      "instrument": "COST",
+      "impact": "medium",
+      "inPortfolio": false,
+      "details": {
+        "companyName": "Costco Wholesale Corporation",
+        "fiscalQuarter": "Q2 2026",
+        "timing": "after_market",
+        "epsEstimate": 4.11,
+        "epsPrior": 3.92,
+        "revenueEstimate": 62500000000,
+        "revenuePrior": 58440000000,
+        "confirmed": true
+      }
+    },
+    {
+      "id": "evt-econ-004",
+      "type": "economic",
+      "title": "US GDP (Q4 2025 Final)",
+      "date": "2026-03-26",
+      "instrument": null,
+      "impact": "medium",
+      "inPortfolio": false,
+      "details": {
+        "indicator": "GDP",
+        "country": "US",
+        "eventTime": "08:30:00",
+        "timeZone": "America/New_York",
+        "consensus": 2.5,
+        "prior": 2.3,
+        "unit": "percent",
+        "description": "Third and final estimate of US Gross Domestic Product for Q4 2025. Measures the total value of goods and services produced."
+      }
+    },
+    {
+      "id": "evt-div-004",
+      "type": "dividend",
+      "title": "Apple Ex-Dividend Date",
+      "date": "2026-03-09",
+      "instrument": "AAPL",
+      "impact": "low",
+      "inPortfolio": true,
+      "details": {
+        "companyName": "Apple Inc.",
+        "exDate": "2026-03-09",
+        "recordDate": "2026-03-10",
+        "paymentDate": "2026-03-19",
+        "amount": 0.25,
+        "currency": "USD",
+        "yield": 0.56,
+        "frequency": "quarterly",
+        "portfolioShares": 30,
+        "expectedPayment": 7.50
+      }
+    },
+    {
+      "id": "evt-opt-003",
+      "type": "options",
+      "title": "Weekly Options Expiration",
+      "date": "2026-03-06",
+      "instrument": null,
+      "impact": "low",
+      "inPortfolio": false,
+      "details": {
+        "expirationType": "weekly",
+        "exchange": "CBOE",
+        "isThirdFriday": false,
+        "affectedPositions": []
+      }
+    },
+    {
+      "id": "evt-opt-004",
+      "type": "options",
+      "title": "Weekly Options Expiration",
+      "date": "2026-03-13",
+      "instrument": null,
+      "impact": "low",
+      "inPortfolio": false,
+      "details": {
+        "expirationType": "weekly",
+        "exchange": "CBOE",
+        "isThirdFriday": false,
+        "affectedPositions": []
+      }
+    }
+  ]
+}

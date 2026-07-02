@@ -1,0 +1,362 @@
+{
+  "_meta": {
+    "models": {
+      "alerts": "An alert is a notification from a component about an issue that requires attention. Each alert has severity, source, and labels for matching.",
+      "silences": "A silence temporarily mutes alerts matching specific label criteria. Used during maintenance windows or known issues.",
+      "routes": "A route defines how alerts are delivered to the user — through which channel and with what grouping and timing.",
+      "inhibitionRules": "An inhibition rule suppresses certain alerts when more severe related alerts are already firing, reducing noise.",
+      "alertStats": "Summary statistics about the current state of the alert system."
+    },
+    "relationships": [
+      "Alerts can be silenced by Silences (matched by labels)",
+      "Alerts are delivered via Routes (matched by labels)",
+      "Alerts can be suppressed by Inhibition Rules (source/target label matching)",
+      "Each Alert belongs to a source component (broker, market-data, risk, strategy, portfolio, system)"
+    ]
+  },
+  "alertStats": {
+    "firingCount": 7,
+    "criticalCount": 2,
+    "warningCount": 3,
+    "infoCount": 2,
+    "silencedCount": 1,
+    "resolvedLast24h": 12,
+    "activeSilenceCount": 2,
+    "activeInhibitionCount": 1
+  },
+  "alerts": [
+    {
+      "id": "alert-001",
+      "fingerprint": "broker-ib-disconnected",
+      "name": "BrokerDisconnected",
+      "summary": "Interactive Brokers connection lost",
+      "description": "IB TWS gateway has not responded to heartbeat for 5 minutes. Last successful heartbeat at 14:23 UTC. Orders cannot be routed to IB until connection is restored.",
+      "severity": "critical",
+      "status": "firing",
+      "source": "broker",
+      "labels": {
+        "broker": "interactive-brokers",
+        "component": "broker-gateway",
+        "instance": "ib-gw-01"
+      },
+      "startsAt": "2026-02-26T14:28:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    },
+    {
+      "id": "alert-002",
+      "fingerprint": "risk-drawdown-exceeded",
+      "name": "DrawdownThresholdBreached",
+      "summary": "Portfolio drawdown exceeds -5% limit",
+      "description": "Current portfolio drawdown is -6.2%, exceeding the configured -5% threshold. Risk exposure should be reviewed and reduced.",
+      "severity": "critical",
+      "status": "firing",
+      "source": "risk",
+      "labels": {
+        "portfolio": "main",
+        "component": "risk-management",
+        "threshold": "-5%",
+        "current": "-6.2%"
+      },
+      "startsAt": "2026-02-26T10:15:00Z",
+      "endsAt": null,
+      "acknowledgedAt": "2026-02-26T10:22:00Z",
+      "acknowledgedBy": "Alex Morgan",
+      "silenceId": null
+    },
+    {
+      "id": "alert-003",
+      "fingerprint": "binance-rate-limited",
+      "name": "BrokerRateLimited",
+      "summary": "Binance API rate limited — degraded performance",
+      "description": "Binance API is returning 429 Too Many Requests. Order submissions may be delayed. Current request rate: 1,200/min (limit: 1,000/min).",
+      "severity": "warning",
+      "status": "firing",
+      "source": "broker",
+      "labels": {
+        "broker": "binance",
+        "component": "broker-gateway",
+        "instance": "binance-gw-01"
+      },
+      "startsAt": "2026-02-26T13:45:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    },
+    {
+      "id": "alert-004",
+      "fingerprint": "market-data-stale-instruments",
+      "name": "StaleMarketData",
+      "summary": "Market data stale for 3 instruments",
+      "description": "OHLCV data for MSFT, GOOGL, and AMZN has not been updated in over 15 minutes. Data pipeline may be experiencing issues with the Yahoo Finance provider.",
+      "severity": "warning",
+      "status": "silenced",
+      "source": "market-data",
+      "labels": {
+        "provider": "yahoo-finance",
+        "component": "market-data-pipeline",
+        "instruments": "MSFT,GOOGL,AMZN"
+      },
+      "startsAt": "2026-02-26T14:10:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": "silence-001"
+    },
+    {
+      "id": "alert-005",
+      "fingerprint": "strategy-underperform",
+      "name": "StrategyUnderperforming",
+      "summary": "\"Momentum Alpha\" below -2σ benchmark",
+      "description": "Strategy 'Momentum Alpha' has returned -4.8% MTD vs benchmark +1.2%. Performance deviation exceeds 2 standard deviations.",
+      "severity": "warning",
+      "status": "firing",
+      "source": "strategy",
+      "labels": {
+        "strategy": "momentum-alpha",
+        "component": "strategy-engine",
+        "deviation": "-2.3σ"
+      },
+      "startsAt": "2026-02-25T09:30:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    },
+    {
+      "id": "alert-006",
+      "fingerprint": "corporate-action-nvda-split",
+      "name": "CorporateActionDetected",
+      "summary": "NVDA stock split 10:1 effective March 10",
+      "description": "NVIDIA Corporation (NVDA) has announced a 10-for-1 stock split with a record date of March 7, 2026. Position adjustments will be applied automatically.",
+      "severity": "info",
+      "status": "firing",
+      "source": "portfolio",
+      "labels": {
+        "symbol": "NVDA",
+        "component": "portfolio-manager",
+        "action_type": "stock_split"
+      },
+      "startsAt": "2026-02-26T08:00:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    },
+    {
+      "id": "alert-007",
+      "fingerprint": "dividend-aapl-upcoming",
+      "name": "DividendExDateApproaching",
+      "summary": "AAPL ex-dividend date is tomorrow",
+      "description": "Apple Inc. (AAPL) ex-dividend date is February 27, 2026. Dividend: $0.25/share. Your position of 150 shares will receive ~$37.50.",
+      "severity": "info",
+      "status": "firing",
+      "source": "portfolio",
+      "labels": {
+        "symbol": "AAPL",
+        "component": "portfolio-manager",
+        "action_type": "dividend"
+      },
+      "startsAt": "2026-02-26T07:00:00Z",
+      "endsAt": null,
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    }
+  ],
+  "recentlyResolved": [
+    {
+      "id": "alert-r001",
+      "fingerprint": "system-high-latency",
+      "name": "HighAPILatency",
+      "summary": "API response time exceeded 2s threshold",
+      "description": "Portfolio Manager API average response time was 3.4s (threshold: 2s). Resolved after database connection pool was increased.",
+      "severity": "warning",
+      "status": "resolved",
+      "source": "system",
+      "labels": {
+        "component": "portfolio-manager",
+        "metric": "api_latency_p95"
+      },
+      "startsAt": "2026-02-26T06:30:00Z",
+      "endsAt": "2026-02-26T07:15:00Z",
+      "acknowledgedAt": "2026-02-26T06:35:00Z",
+      "acknowledgedBy": "Alex Morgan",
+      "silenceId": null
+    },
+    {
+      "id": "alert-r002",
+      "fingerprint": "market-data-provider-outage",
+      "name": "DataProviderOutage",
+      "summary": "Alpha Vantage provider temporarily unavailable",
+      "description": "Alpha Vantage API returned 503 errors for 20 minutes. Fallback to cached data was used. Provider has recovered.",
+      "severity": "critical",
+      "status": "resolved",
+      "source": "market-data",
+      "labels": {
+        "provider": "alpha-vantage",
+        "component": "market-data-pipeline"
+      },
+      "startsAt": "2026-02-25T22:10:00Z",
+      "endsAt": "2026-02-25T22:30:00Z",
+      "acknowledgedAt": null,
+      "acknowledgedBy": null,
+      "silenceId": null
+    },
+    {
+      "id": "alert-r003",
+      "fingerprint": "risk-position-limit",
+      "name": "PositionLimitWarning",
+      "summary": "TSLA position approaching 10% portfolio limit",
+      "description": "TSLA position reached 9.2% of portfolio (limit: 10%). Position naturally reduced to 8.8% via market movement.",
+      "severity": "warning",
+      "status": "resolved",
+      "source": "risk",
+      "labels": {
+        "symbol": "TSLA",
+        "component": "risk-management",
+        "threshold": "10%"
+      },
+      "startsAt": "2026-02-25T15:30:00Z",
+      "endsAt": "2026-02-25T16:45:00Z",
+      "acknowledgedAt": "2026-02-25T15:35:00Z",
+      "acknowledgedBy": "Alex Morgan",
+      "silenceId": null
+    }
+  ],
+  "silences": [
+    {
+      "id": "silence-001",
+      "matchers": [
+        { "label": "component", "value": "market-data-pipeline", "isRegex": false },
+        { "label": "severity", "value": "warning|info", "isRegex": true }
+      ],
+      "createdBy": "Alex Morgan",
+      "comment": "Scheduled maintenance — Yahoo Finance provider migration",
+      "startsAt": "2026-02-26T14:00:00Z",
+      "endsAt": "2026-02-26T16:00:00Z",
+      "status": "active",
+      "matchedAlertCount": 1
+    },
+    {
+      "id": "silence-002",
+      "matchers": [
+        { "label": "source", "value": "strategy", "isRegex": false },
+        { "label": "strategy", "value": "mean-reversion-.*", "isRegex": true }
+      ],
+      "createdBy": "Alex Morgan",
+      "comment": "Known underperformance during high volatility — monitoring manually",
+      "startsAt": "2026-02-25T09:00:00Z",
+      "endsAt": "2026-02-28T17:00:00Z",
+      "status": "active",
+      "matchedAlertCount": 0
+    }
+  ],
+  "routes": [
+    {
+      "id": "route-001",
+      "name": "Critical → Immediate",
+      "matchers": [
+        { "label": "severity", "value": "critical" }
+      ],
+      "receiver": "email+push",
+      "groupBy": ["source", "component"],
+      "groupWait": "30s",
+      "groupInterval": "5m",
+      "repeatInterval": "1h",
+      "enabled": true,
+      "lastDeliveredAt": "2026-02-26T14:28:30Z"
+    },
+    {
+      "id": "route-002",
+      "name": "Warnings → Digest",
+      "matchers": [
+        { "label": "severity", "value": "warning" }
+      ],
+      "receiver": "email",
+      "groupBy": ["source"],
+      "groupWait": "5m",
+      "groupInterval": "30m",
+      "repeatInterval": "4h",
+      "enabled": true,
+      "lastDeliveredAt": "2026-02-26T13:50:00Z"
+    },
+    {
+      "id": "route-003",
+      "name": "Broker Alerts → Slack",
+      "matchers": [
+        { "label": "source", "value": "broker" }
+      ],
+      "receiver": "slack",
+      "groupBy": ["broker"],
+      "groupWait": "15s",
+      "groupInterval": "5m",
+      "repeatInterval": "30m",
+      "enabled": true,
+      "lastDeliveredAt": "2026-02-26T14:28:15Z"
+    },
+    {
+      "id": "route-004",
+      "name": "Risk Alerts → Push",
+      "matchers": [
+        { "label": "source", "value": "risk" }
+      ],
+      "receiver": "push",
+      "groupBy": ["portfolio"],
+      "groupWait": "0s",
+      "groupInterval": "5m",
+      "repeatInterval": "2h",
+      "enabled": true,
+      "lastDeliveredAt": "2026-02-26T10:15:30Z"
+    },
+    {
+      "id": "route-005",
+      "name": "Info → In-App Only",
+      "matchers": [
+        { "label": "severity", "value": "info" }
+      ],
+      "receiver": "in-app",
+      "groupBy": ["source"],
+      "groupWait": "10m",
+      "groupInterval": "1h",
+      "repeatInterval": "24h",
+      "enabled": true,
+      "lastDeliveredAt": "2026-02-26T08:00:30Z"
+    }
+  ],
+  "inhibitionRules": [
+    {
+      "id": "inhibit-001",
+      "name": "Broker down → suppress trading warnings",
+      "description": "When a broker is disconnected (critical), suppress all trading-related warnings for that broker to reduce noise.",
+      "sourceMatch": { "name": "BrokerDisconnected", "severity": "critical" },
+      "targetMatch": { "source": "broker", "severity": "warning" },
+      "equal": ["broker"],
+      "enabled": true,
+      "suppressedCount": 0
+    },
+    {
+      "id": "inhibit-002",
+      "name": "Pipeline down → suppress stale data",
+      "description": "When the market data pipeline is down, suppress individual stale data warnings since they are a symptom.",
+      "sourceMatch": { "name": "DataProviderOutage", "severity": "critical" },
+      "targetMatch": { "name": "StaleMarketData" },
+      "equal": ["provider"],
+      "enabled": true,
+      "suppressedCount": 0
+    },
+    {
+      "id": "inhibit-003",
+      "name": "System critical → suppress strategy alerts",
+      "description": "When system health is critical, suppress all strategy performance alerts since performance data may be unreliable.",
+      "sourceMatch": { "source": "system", "severity": "critical" },
+      "targetMatch": { "source": "strategy" },
+      "equal": [],
+      "enabled": false,
+      "suppressedCount": 0
+    }
+  ]
+}
