@@ -101,7 +101,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
             className="h-7 w-7 rounded-full object-cover"
           />
         ) : (
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-[10px] font-semibold text-primary dark:text-pink-400">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary dark:text-pink-400">
             {initials}
           </div>
         )}
@@ -110,7 +110,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
             <div className="flex-1 min-w-0">
               <p className="truncate text-xs font-medium text-foreground">{user.name}</p>
               {user.email && (
-                <p className="truncate text-[10px] text-faint">{user.email}</p>
+                <p className="truncate text-xs text-faint">{user.email}</p>
               )}
             </div>
             <ChevronUp

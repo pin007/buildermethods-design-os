@@ -120,7 +120,7 @@ export function OrderPanel({ state, onClose, onMinimize, onRestore, children }: 
         >
           <Maximize2 size={16} />
           <span
-            className="text-[10px] font-semibold uppercase tracking-widest text-hint"
+            className="text-xs font-semibold uppercase tracking-widest text-hint"
             style={{ writingMode: 'vertical-rl' }}
           >
             Order
@@ -170,9 +170,9 @@ export function OrderPanel({ state, onClose, onMinimize, onRestore, children }: 
           </button>
         </div>
 
-        {/* Scrollable content */}
+        {/* Scrollable content — no padding; content manages its own layout */}
         <div
-          className="flex-1 overflow-y-auto p-4"
+          className="flex-1 overflow-y-auto"
           onChange={handleContentChange}
           onInput={handleContentChange}
         >
@@ -181,11 +181,11 @@ export function OrderPanel({ state, onClose, onMinimize, onRestore, children }: 
 
         {/* Footer */}
         <div className="flex shrink-0 items-center gap-4 border-t border-border px-4 py-2">
-          <span className="flex items-center gap-1 text-[10px] text-faint">
+          <span className="flex items-center gap-1 text-xs text-faint">
             <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono">esc</kbd>
             close
           </span>
-          <span className="flex items-center gap-1 text-[10px] text-faint">
+          <span className="flex items-center gap-1 text-xs text-faint">
             <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">
               {'\u2318'}N
             </kbd>

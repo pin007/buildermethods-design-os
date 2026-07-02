@@ -140,7 +140,7 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
             placeholder="Search pages, instruments, actions..."
             className="h-12 flex-1 bg-transparent text-sm text-foreground placeholder:text-faint outline-none"
           />
-          <kbd className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-hint">
+          <kbd className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 text-xs font-medium text-hint">
             ESC
           </kbd>
         </div>
@@ -154,7 +154,7 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
           ) : (
             Object.entries(grouped).map(([category, categoryItems]) => (
               <div key={category}>
-                <p className="px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-faint">
+                <p className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-faint">
                   {category}
                 </p>
                 {categoryItems.map((item) => {
@@ -200,15 +200,15 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
 
         {/* Footer hint */}
         <div className="flex items-center gap-4 border-t border-border px-4 py-2">
-          <span className="flex items-center gap-1 text-[10px] text-faint">
+          <span className="flex items-center gap-1 text-xs text-faint">
             <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono">{'\u2191\u2193'}</kbd>
             navigate
           </span>
-          <span className="flex items-center gap-1 text-[10px] text-faint">
+          <span className="flex items-center gap-1 text-xs text-faint">
             <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono">{'\u21B5'}</kbd>
             select
           </span>
-          <span className="flex items-center gap-1 text-[10px] text-faint">
+          <span className="flex items-center gap-1 text-xs text-faint">
             <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono">esc</kbd>
             close
           </span>

@@ -14,26 +14,35 @@ Following specifications must be followed:
 
 ## Navigation Structure
 - Dashboard → Trading Core (home/default view, portfolio summary, pending approvals)
+- Alerts → Alerts (alert management, silences, routing, inhibition rules)
 - Orders → Trading Core (order entry, order history, pending approvals)
-- Positions → Portfolio & Positions (open positions, P&L, watchlists, dividends)
-- Charts → Market Data (price charts, OHLCV, instrument search, data source status)
+- Calendar → Trading Calendar (earnings, economic releases, dividends, options expirations, IPOs)
+- Portfolios → Portfolio & Positions (multi-portfolio overview, positions, watchlists, dividends, performance)
+- Market Data → Market Data (pipeline health dashboard, data source overview)
+  - Data Quality → Data quality monitoring and metrics
+  - Corporate Actions → Corporate actions log and tracking
 - Market Analysis → Market Intelligence (AI recommendations, sentiment, guru/whale tracking)
-- Strategies → Strategy Engine (backtesting, strategy config, walk-forward optimization)
-- Trade Journal → Trade Journal (journaling, behavioral patterns, process scoring)
+- Strategies → Strategy Engine (strategy list, backtesting, configuration)
+  - Comparison → Side-by-side strategy comparison view
+- Trade Journal → Trade Journal (dashboard with summary stats and recent entries)
+  - Entries → Trade Journal entries list (Needs Review, All Entries, Starred tabs)
+  - Analytics → Trade Journal analytics (Performance, Process Scores, Attribution sub-tabs)
+  - Behavioral → Behavioral pattern detection and habit scores
+  - Weekly Review → Weekly review with goals progress and focus areas
 - Settings → Settings & Operations (broker gateways, data pipelines, preferences, tax)
 
 ## Navigation Groups
 - **Overview:** Dashboard, Alerts
-- **Trading:** Orders, Positions, Charts (collapsible)
-- **Intelligence:** Market Analysis, Strategies (collapsible)
-- **Review:** Trade Journal (collapsible)
+- **Trading:** Orders, Calendar, Portfolios, Market Data (collapsible, with sub-items: Data Quality, Corporate Actions)
+- **Intelligence:** Market Analysis, Strategies (collapsible, with sub-item: Comparison)
+- **Review:** Trade Journal (collapsible, with sub-items: Entries, Analytics, Behavioral, Weekly Review)
 - **System:** Settings, Light/Dark Mode toggle (collapsible)
 
 ## Sidebar
 All navigation chrome consolidated in the sidebar:
 - **Logo:** The Formation icon + "Trading Squad" wordmark at top
 - **Search trigger:** Click or Cmd+K opens command palette
-- **Navigation:** Grouped nav items with collapsible groups (Intelligence, Review)
+- **Navigation:** Grouped nav items with collapsible groups (Trading, Intelligence, Review, System). Items with sub-pages (Market Data, Strategies, Trade Journal) show their children inline beneath the parent item.
 - **Badge counts:** Pink badges on nav items (e.g., pending approvals on Orders, unread on Market Analysis)
 - **Broker status:** Connection dots (green/amber/red) for IB and Binance in footer
 - **Alerts:** Nav item in Overview group with badge count (same style as Orders/Market Analysis badges)
@@ -66,6 +75,7 @@ Sidebar contains all chrome. Content area is a scrollable region with 24px paddi
 - **Mobile (<768px):** Sidebar hidden. Hamburger icon in header opens sidebar as overlay with backdrop. Content is full-width.
 
 ## Design Notes
+- Typography: minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `text-[11px]`, or `text-[9px]` classes
 - Active nav item: pink-600 left border + pink-600/10 background tint + pink-400 text
 - Nav icons: lucide-react, 18px size, zinc-500 default / pink-400 active
 - Nav item spacing: py-1.5 for tighter density. All interactive elements meet 44px minimum touch target on mobile (min-h-[44px] lg:min-h-0)

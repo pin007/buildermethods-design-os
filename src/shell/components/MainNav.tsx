@@ -3,13 +3,21 @@ import {
   LayoutDashboard,
   ShoppingCart,
   Wallet,
-  CandlestickChart,
+  Database,
   Brain,
   FlaskConical,
   BookOpen,
   Settings,
   Bell,
   ChevronDown,
+  FileText,
+  BarChart3,
+  Activity,
+  CalendarDays,
+  ShieldCheck,
+  Landmark,
+  ArrowLeftRight,
+  Calendar,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -20,6 +28,7 @@ export interface NavItem {
   isActive?: boolean
   badge?: number | string
   action?: () => void
+  children?: NavItem[]
 }
 
 export interface NavGroup {
@@ -41,6 +50,7 @@ export const navigationGroups: NavGroup[] = [
     items: [
       { label: 'Dashboard', href: '/', icon: LayoutDashboard },
       { label: 'Alerts', href: '/alerts', icon: Bell },
+      { label: 'Calendar', href: '/calendar', icon: Calendar },
     ],
   },
   {
@@ -48,8 +58,16 @@ export const navigationGroups: NavGroup[] = [
     collapsible: true,
     items: [
       { label: 'Orders', href: '/orders', icon: ShoppingCart },
-      { label: 'Positions', href: '/positions', icon: Wallet },
-      { label: 'Charts', href: '/charts', icon: CandlestickChart },
+      { label: 'Portfolios', href: '/portfolios', icon: Wallet },
+      {
+        label: 'Market Data',
+        href: '/market-data',
+        icon: Database,
+        children: [
+          { label: 'Data Quality', href: '/market-data/quality', icon: ShieldCheck },
+          { label: 'Corporate Actions', href: '/market-data/corporate-actions', icon: Landmark },
+        ],
+      },
     ],
   },
   {
@@ -57,14 +75,31 @@ export const navigationGroups: NavGroup[] = [
     collapsible: true,
     items: [
       { label: 'Market Analysis', href: '/market-analysis', icon: Brain },
-      { label: 'Strategies', href: '/strategies', icon: FlaskConical },
+      {
+        label: 'Strategies',
+        href: '/strategies',
+        icon: FlaskConical,
+        children: [
+          { label: 'Comparison', href: '/strategies/comparison', icon: ArrowLeftRight },
+        ],
+      },
     ],
   },
   {
     label: 'Review',
     collapsible: true,
     items: [
-      { label: 'Trade Journal', href: '/trade-journal', icon: BookOpen },
+      {
+        label: 'Trade Journal',
+        href: '/trade-journal',
+        icon: BookOpen,
+        children: [
+          { label: 'Entries', href: '/trade-journal/entries', icon: FileText },
+          { label: 'Analytics', href: '/trade-journal/analytics', icon: BarChart3 },
+          { label: 'Behavioral', href: '/trade-journal/behavioral', icon: Activity },
+          { label: 'Weekly Review', href: '/trade-journal/review', icon: CalendarDays },
+        ],
+      },
     ],
   },
   {
@@ -107,7 +142,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                 aria-expanded={group.collapsible ? !isGroupCollapsed : undefined}
                 className={`
                   mb-1.5 flex w-full items-center justify-between px-3
-                  text-[11px] font-semibold uppercase tracking-wider text-hint
+                  text-xs font-semibold uppercase tracking-wider text-hint
                   ${group.collapsible ? 'cursor-pointer hover:text-muted-foreground' : 'cursor-default'}
                 `}
               >
@@ -126,6 +161,8 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                 {group.items.map((item) => {
                   const Icon = item.icon
                   const isActive = item.isActive ?? false
+                  const hasActiveChild = item.children?.some((child) => child.isActive) ?? false
+                  const isParentHighlighted = isActive || hasActiveChild
 
                   return (
                     <li key={item.href}>
@@ -141,13 +178,15 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                           ${
                             isActive
                               ? 'border-l-2 border-primary bg-primary/10 text-primary dark:text-pink-400'
-                              : 'border-l-2 border-transparent text-muted-foreground hover:bg-accent hover:text-foreground'
+                              : hasActiveChild
+                                ? 'border-l-2 border-primary/40 text-foreground'
+                                : 'border-l-2 border-transparent text-muted-foreground hover:bg-accent hover:text-foreground'
                           }
                         `}
                       >
                         <Icon
                           size={18}
-                          className={isActive ? 'text-primary dark:text-pink-400' : 'text-hint group-hover:text-muted-foreground'}
+                          className={isParentHighlighted ? 'text-primary dark:text-pink-400' : 'text-hint group-hover:text-muted-foreground'}
                         />
                         {!collapsed && (
                           <>
@@ -156,7 +195,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                               <span
                                 className={`
                                   flex h-5 min-w-5 items-center justify-center rounded-full px-1.5
-                                  text-[10px] font-bold
+                                  text-xs font-bold
                                   ${
                                     typeof item.badge === 'number' && item.badge > 0
                                       ? 'bg-primary/20 text-primary dark:text-pink-400'
@@ -172,6 +211,40 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                           </>
                         )}
                       </button>
+
+                      {item.children && !collapsed && (
+                        <ul className="mt-0.5 space-y-0.5">
+                          {item.children.map((child) => {
+                            const ChildIcon = child.icon
+                            const isChildActive = child.isActive ?? false
+
+                            return (
+                              <li key={child.href}>
+                                <button
+                                  onClick={() => child.action ? child.action() : onNavigate?.(child.href)}
+                                  aria-current={isChildActive ? 'page' : undefined}
+                                  className={`
+                                    group flex w-full items-center gap-2.5 rounded-lg py-1.5 pl-10 pr-3 text-sm
+                                    min-h-[44px] lg:min-h-0
+                                    transition-colors duration-150
+                                    ${
+                                      isChildActive
+                                        ? 'font-medium text-primary dark:text-pink-400'
+                                        : 'text-muted-foreground/80 hover:bg-accent hover:text-foreground'
+                                    }
+                                  `}
+                                >
+                                  <ChildIcon
+                                    size={15}
+                                    className={isChildActive ? 'text-primary dark:text-pink-400' : 'text-hint group-hover:text-muted-foreground'}
+                                  />
+                                  <span className="flex-1 text-left">{child.label}</span>
+                                </button>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      )}
                     </li>
                   )
                 })}

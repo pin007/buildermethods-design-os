@@ -304,7 +304,7 @@ export default function AppShell({
             {!collapsed && (
               <>
                 <span className="flex-1 text-left text-xs">Search...</span>
-                <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-[10px] font-medium text-faint">
+                <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-xs font-medium text-faint">
                   {'\u2318'}K
                 </kbd>
               </>
@@ -370,7 +370,7 @@ export default function AppShell({
                 >
                   <span className={`h-1.5 w-1.5 rounded-full ${statusColor[broker.status]}`} />
                   {!collapsed && (
-                    <span className="text-[10px] font-medium text-faint">
+                    <span className="text-xs font-medium text-faint">
                       {broker.name}
                     </span>
                   )}
