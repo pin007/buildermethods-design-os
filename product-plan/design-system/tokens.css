@@ -1,0 +1,124 @@
+/* =========================================================
+   Design Tokens — Trading Squad / Obsidian Forge
+   Dark-first professional trading aesthetic
+   ========================================================= */
+
+:root {
+  /* --- Color Palette --- */
+
+  /* Backgrounds */
+  --bg-primary:     #09090b;   /* zinc-950 — main app background */
+  --bg-secondary:   #18181b;   /* zinc-900 — card backgrounds */
+  --bg-tertiary:    #27272a;   /* zinc-800 — elevated cards, inputs */
+  --bg-muted:       #3f3f46;   /* zinc-700 — hover states */
+
+  /* Borders */
+  --border-default: #27272a;   /* zinc-800 */
+  --border-muted:   #3f3f46;   /* zinc-700 */
+
+  /* Text */
+  --text-primary:   #fafafa;   /* zinc-50 */
+  --text-secondary: #a1a1aa;   /* zinc-400 */
+  --text-muted:     #71717a;   /* zinc-500 */
+  --text-disabled:  #52525b;   /* zinc-600 */
+
+  /* Accent — Pink (primary brand color) */
+  --accent-primary:       #db2777;   /* pink-600 */
+  --accent-primary-hover: #be185d;   /* pink-700 */
+  --accent-primary-light: #f9a8d4;   /* pink-300 */
+  --accent-primary-muted: #1f0614;   /* pink-600/10 tint */
+
+  /* Semantic — Positive / Profit */
+  --color-positive:       #10b981;   /* emerald-500 */
+  --color-positive-bg:    #064e3b;   /* emerald-900 */
+  --color-positive-text:  #6ee7b7;   /* emerald-300 */
+
+  /* Semantic — Negative / Loss */
+  --color-negative:       #ef4444;   /* red-500 */
+  --color-negative-bg:    #7f1d1d;   /* red-900 */
+  --color-negative-text:  #fca5a5;   /* red-300 */
+
+  /* Semantic — Warning */
+  --color-warning:        #f59e0b;   /* amber-500 */
+  --color-warning-bg:     #78350f;   /* amber-900 */
+  --color-warning-text:   #fcd34d;   /* amber-300 */
+
+  /* Semantic — Info */
+  --color-info:           #3b82f6;   /* blue-500 */
+  --color-info-bg:        #1e3a5f;   /* blue-900 */
+  --color-info-text:      #93c5fd;   /* blue-300 */
+
+  /* --- Typography --- */
+  --font-sans:  'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  --font-size-xs:   0.75rem;    /* 12px — minimum allowed size */
+  --font-size-sm:   0.875rem;   /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg:   1.125rem;   /* 18px */
+  --font-size-xl:   1.25rem;    /* 20px */
+  --font-size-2xl:  1.5rem;     /* 24px */
+  --font-size-3xl:  1.875rem;   /* 30px */
+
+  /* --- Spacing --- */
+  --spacing-1:  0.25rem;
+  --spacing-2:  0.5rem;
+  --spacing-3:  0.75rem;
+  --spacing-4:  1rem;
+  --spacing-5:  1.25rem;
+  --spacing-6:  1.5rem;
+  --spacing-8:  2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+
+  /* --- Borders --- */
+  --radius-sm:  0.25rem;
+  --radius-md:  0.375rem;
+  --radius-lg:  0.5rem;
+  --radius-xl:  0.75rem;
+  --radius-full: 9999px;
+
+  /* --- Layout --- */
+  --sidebar-default-width: 280px;
+  --sidebar-min-width:     220px;
+  --sidebar-max-width:     400px;
+  --sidebar-collapsed:     64px;
+  --order-panel-width:     480px;
+  --content-padding:       24px;
+
+  /* --- Animation --- */
+  --duration-fast:   150ms;
+  --duration-normal: 200ms;
+  --duration-slow:   300ms;
+  --ease-default:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* --- Focus Ring --- */
+  --focus-ring-color:  #db2777;   /* pink-600 */
+  --focus-ring-offset: 4px;
+  --focus-ring-width:  2px;
+}
+
+/* Flash animations for real-time price updates */
+@keyframes flash-green {
+  0%, 100% { background-color: transparent; }
+  50%       { background-color: rgba(16, 185, 129, 0.2); }
+}
+
+@keyframes flash-red {
+  0%, 100% { background-color: transparent; }
+  50%       { background-color: rgba(239, 68, 68, 0.2); }
+}
+
+.flash-positive { animation: flash-green 300ms ease-out; }
+.flash-negative { animation: flash-red   300ms ease-out; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

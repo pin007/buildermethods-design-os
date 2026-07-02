@@ -1,0 +1,266 @@
+{
+  "brokers": [
+    {
+      "id": "ib-1",
+      "name": "Interactive Brokers",
+      "shortName": "IB",
+      "status": "connected",
+      "assetTypes": ["stock", "option", "forex", "futures"],
+      "baseCurrency": "USD",
+      "connectedAt": "2025-01-15T08:00:00Z"
+    },
+    {
+      "id": "binance-1",
+      "name": "Binance",
+      "shortName": "BNB",
+      "status": "connected",
+      "assetTypes": ["crypto"],
+      "baseCurrency": "USD",
+      "connectedAt": "2025-01-15T08:01:00Z"
+    }
+  ],
+  "portfolios": [
+    {
+      "id": "port-1",
+      "name": "US Equities",
+      "currency": "USD",
+      "brokerId": "ib-1",
+      "dashboardStats": {
+        "portfolioValue": 47231.89,
+        "dayPnL": 1234.56,
+        "dayPnLPercent": 2.68,
+        "cashAvailable": 8420.00,
+        "pendingApprovals": 2,
+        "openOrders": 1
+      }
+    },
+    {
+      "id": "port-2",
+      "name": "Crypto",
+      "currency": "USD",
+      "brokerId": "binance-1",
+      "dashboardStats": {
+        "portfolioValue": 12850.00,
+        "dayPnL": -320.00,
+        "dayPnLPercent": -2.43,
+        "cashAvailable": 2100.00,
+        "pendingApprovals": 0,
+        "openOrders": 0
+      }
+    }
+  ],
+  "instruments": [
+    {
+      "id": "instr-aapl",
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 185.50,
+      "dayChange": 2.30,
+      "dayChangePercent": 1.26,
+      "week52High": 199.62,
+      "week52Low": 124.17,
+      "recentVolatility": 0.018
+    },
+    {
+      "id": "instr-msft",
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 415.20,
+      "dayChange": -1.80,
+      "dayChangePercent": -0.43,
+      "week52High": 430.82,
+      "week52Low": 309.45,
+      "recentVolatility": 0.015
+    },
+    {
+      "id": "instr-btc",
+      "symbol": "BTC-USDT",
+      "name": "Bitcoin",
+      "assetType": "crypto",
+      "exchange": "Binance",
+      "currency": "USD",
+      "currentPrice": 67250.00,
+      "dayChange": -850.00,
+      "dayChangePercent": -1.25,
+      "week52High": 73750.00,
+      "week52Low": 26000.00,
+      "recentVolatility": 0.042
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-001",
+      "portfolioId": "port-1",
+      "instrumentId": "instr-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc.",
+      "side": "BUY",
+      "orderType": "limit",
+      "quantity": 10,
+      "limitPrice": 184.00,
+      "stopPrice": null,
+      "status": "pending_approval",
+      "brokerId": "ib-1",
+      "brokerShortName": "IB",
+      "timeInForce": "DAY",
+      "bracketGroupId": null,
+      "bracketRole": null,
+      "recommendationId": "rec-001",
+      "fillPrice": null,
+      "filledQuantity": 0,
+      "commission": null,
+      "createdAt": "2025-01-20T14:30:00Z",
+      "updatedAt": "2025-01-20T14:30:00Z",
+      "approvalContext": {
+        "expiresAt": "2025-01-20T14:45:00Z",
+        "riskAnalysis": {
+          "portfolioImpactPercent": 3.89,
+          "positionSizePercent": 8.2,
+          "cashBalanceAfter": 6580.00,
+          "riskLevel": "medium",
+          "warnings": []
+        }
+      }
+    },
+    {
+      "id": "ord-002",
+      "portfolioId": "port-1",
+      "instrumentId": "instr-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "side": "BUY",
+      "orderType": "limit",
+      "quantity": 5,
+      "limitPrice": 413.00,
+      "stopPrice": null,
+      "status": "pending_approval",
+      "brokerId": "ib-1",
+      "brokerShortName": "IB",
+      "timeInForce": "DAY",
+      "bracketGroupId": null,
+      "bracketRole": null,
+      "recommendationId": null,
+      "fillPrice": null,
+      "filledQuantity": 0,
+      "commission": null,
+      "createdAt": "2025-01-20T14:00:00Z",
+      "updatedAt": "2025-01-20T14:00:00Z",
+      "approvalContext": {
+        "expiresAt": "2025-01-20T14:15:00Z",
+        "riskAnalysis": {
+          "portfolioImpactPercent": 4.37,
+          "positionSizePercent": 11.2,
+          "cashBalanceAfter": 4215.00,
+          "riskLevel": "medium",
+          "warnings": ["Position size exceeds 10% portfolio concentration"]
+        }
+      }
+    },
+    {
+      "id": "ord-003",
+      "portfolioId": "port-1",
+      "instrumentId": "instr-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc.",
+      "side": "BUY",
+      "orderType": "limit",
+      "quantity": 20,
+      "limitPrice": 182.50,
+      "stopPrice": null,
+      "status": "filled",
+      "brokerId": "ib-1",
+      "brokerShortName": "IB",
+      "timeInForce": "DAY",
+      "bracketGroupId": null,
+      "bracketRole": null,
+      "recommendationId": null,
+      "fillPrice": 182.48,
+      "filledQuantity": 20,
+      "commission": 1.00,
+      "createdAt": "2025-01-19T10:15:00Z",
+      "updatedAt": "2025-01-19T10:16:32Z"
+    }
+  ],
+  "orderEvents": [
+    {
+      "id": "evt-001",
+      "orderId": "ord-003",
+      "status": "draft",
+      "timestamp": "2025-01-19T10:15:00Z",
+      "message": "Order created",
+      "data": {}
+    },
+    {
+      "id": "evt-002",
+      "orderId": "ord-003",
+      "status": "approved",
+      "timestamp": "2025-01-19T10:15:45Z",
+      "message": "Order auto-approved (risk < 1%)",
+      "data": { "riskPercent": 0.77 }
+    },
+    {
+      "id": "evt-003",
+      "orderId": "ord-003",
+      "status": "submitted",
+      "timestamp": "2025-01-19T10:15:46Z",
+      "message": "Order submitted to IB",
+      "data": { "brokerOrderId": "IB-98765" }
+    },
+    {
+      "id": "evt-004",
+      "orderId": "ord-003",
+      "status": "filled",
+      "timestamp": "2025-01-19T10:16:32Z",
+      "message": "Order filled at $182.48",
+      "data": { "fillPrice": 182.48, "quantity": 20 }
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "rec-001",
+      "instrumentId": "instr-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc.",
+      "portfolioId": "port-1",
+      "action": "BUY",
+      "quantity": 10,
+      "orderType": "limit",
+      "confidence": 82,
+      "riskScore": 35,
+      "status": "pending_approval",
+      "strategyName": "Trend Following v2",
+      "reasoning": "Golden cross detected (SMA50 crossed above SMA200). RSI at 58 showing momentum. Positive sentiment score 0.75 from 24 recent articles.",
+      "targetPrices": {
+        "entry": 184.00,
+        "target": 195.00,
+        "stopLoss": 178.00
+      },
+      "orderId": "ord-001",
+      "createdAt": "2025-01-20T14:25:00Z"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "act-001",
+      "type": "fill",
+      "message": "AAPL BUY 20 filled at $182.48",
+      "orderId": "ord-003",
+      "symbol": "AAPL",
+      "timestamp": "2025-01-19T10:16:32Z"
+    },
+    {
+      "id": "act-002",
+      "type": "submitted",
+      "message": "MSFT BUY 5 submitted to IB",
+      "orderId": "ord-002",
+      "symbol": "MSFT",
+      "timestamp": "2025-01-20T14:00:01Z"
+    }
+  ]
+}

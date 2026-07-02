@@ -1,0 +1,1371 @@
+{
+  "_meta": {
+    "models": {
+      "recommendations": "AI-generated trade suggestions from two sources: Market Analyst (AI Research — technical analysis, sentiment, and correlation scoring) and Trading Advisor (Strategy Signals — pattern-based entry/exit signals from configured strategies). Each includes transparent reasoning, confidence scores, target prices, and expiry countdowns.",
+      "sentimentOverview": "Aggregated market sentiment data powered by FinBERT natural language processing of news articles. Shows an overall score (0–100), breakdowns by asset class (stocks vs crypto), and trend indicators.",
+      "sectorSentiment": "Per-sector sentiment scores used to render the horizontal bar chart. Each sector aggregates sentiment from its member instruments.",
+      "topMovers": "Instruments with the largest positive or negative sentiment changes over the selected time range. Split into bullish (biggest gainers) and bearish (biggest losers).",
+      "newsArticles": "Recent news headlines with FinBERT sentiment classification (positive/negative/neutral), confidence scores, and detected instrument tags. Feeds the scrollable news list.",
+      "newsSources": "Configurable news feed sources with health status and volume metrics. Users can enable/disable sources and manage feed endpoints.",
+      "sentimentWatchlist": "Instruments pinned by the user for persistent sentiment tracking. Shows live sentiment scores with trend arrows and optional alert indicators.",
+      "sentimentAlerts": "Threshold-based alerts configured per instrument. Trigger when an instrument's sentiment score crosses above or below a set value.",
+      "guruTrades": "Notable trades by institutional investors, hedge funds, and crypto whales. Each trade shows the instrument, action, size, date, and source attribution (SEC filing or on-chain analysis).",
+      "trackedGurus": "Gurus (institutional investors, hedge funds, crypto whales) the user is actively monitoring. Each has a display name, type, enabled/disabled state, and trade count.",
+      "guruAlerts": "Per-guru alert configurations defining what trades trigger notifications — by instrument, action type, or trade size threshold.",
+      "researchJobs": "Scheduled automated analysis jobs that scan instrument universes and publish opportunities to the recommendations feed. Each job has a schedule, universe configuration, and run history.",
+      "sectors": "Sector groupings mapping instruments to industry sectors for the sentiment-by-sector chart. Includes system-default sectors and user-customizable groupings."
+    },
+    "relationships": [
+      "Each Recommendation targets an Instrument and may reference a Strategy (for Trading Advisor signals)",
+      "Sentiment scores are computed from NewsArticles analyzed by FinBERT",
+      "SectorSentiment aggregates sentiment from Instruments assigned to each Sector",
+      "TopMovers reference Instruments and their sentiment change data",
+      "SentimentWatchlist items reference Instruments and may have SentimentAlerts configured",
+      "GuruTrades are linked to TrackedGurus and reference Instruments",
+      "GuruAlerts belong to a TrackedGuru and may filter by specific Instruments",
+      "ResearchJobs produce Recommendations when they run (results flow into the recommendations feed)",
+      "NewsSources feed NewsArticles — source health affects article flow"
+    ]
+  },
+
+  "recommendations": [
+    {
+      "id": "rec-001",
+      "instrumentId": "inst-nvda",
+      "symbol": "NVDA",
+      "instrumentName": "NVIDIA Corporation",
+      "action": "BUY",
+      "confidence": 92,
+      "source": "ai-research",
+      "status": "active",
+      "reasoningSummary": "Golden cross on daily chart + strong positive sentiment (0.82) + low portfolio correlation (0.15)",
+      "reasoning": {
+        "technical": [
+          "SMA 50 crossed above SMA 200 (golden cross) on daily timeframe",
+          "RSI at 62 — bullish momentum without overbought condition",
+          "MACD histogram turning positive with increasing volume",
+          "Price holding above 20-day EMA as support"
+        ],
+        "sentiment": {
+          "score": 0.82,
+          "positive": 0.74,
+          "negative": 0.08,
+          "neutral": 0.18,
+          "articleCount": 47
+        },
+        "correlation": {
+          "coefficient": 0.15,
+          "assessment": "Low correlation with current holdings — good diversification"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 8.5,
+        "sentiment": 8.2,
+        "diversification": 9.0,
+        "overall": 8.52
+      },
+      "targets": {
+        "entryPrice": 133.50,
+        "currentPrice": 131.80,
+        "takeProfit": 152.00,
+        "takeProfitPercent": 13.86,
+        "stopLoss": 122.50,
+        "stopLossPercent": -6.96
+      },
+      "strategyContext": null,
+      "expiresAt": "2026-02-22T14:00:00Z",
+      "createdAt": "2026-02-21T08:15:00Z"
+    },
+    {
+      "id": "rec-002",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc",
+      "action": "BUY",
+      "confidence": 87,
+      "source": "strategy-signal",
+      "status": "active",
+      "reasoningSummary": "Trend Following strategy entry — breakout above 175 resistance with volume confirmation",
+      "reasoning": {
+        "technical": [
+          "Price broke above 175 resistance level with 2.3x average volume",
+          "ADX at 28 — strong trending condition confirmed",
+          "Bollinger Bands expanding — volatility breakout pattern",
+          "On-balance volume trending up for 5 consecutive sessions"
+        ],
+        "sentiment": {
+          "score": 0.68,
+          "positive": 0.52,
+          "negative": 0.12,
+          "neutral": 0.36,
+          "articleCount": 31
+        },
+        "correlation": {
+          "coefficient": 0.42,
+          "assessment": "Moderate correlation with MSFT holding — acceptable for portfolio"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 8.8,
+        "sentiment": 6.8,
+        "diversification": 6.5,
+        "overall": 7.82
+      },
+      "targets": {
+        "entryPrice": 180.00,
+        "currentPrice": 179.45,
+        "takeProfit": 198.00,
+        "takeProfitPercent": 10.0,
+        "stopLoss": 170.00,
+        "stopLossPercent": -5.56
+      },
+      "strategyContext": {
+        "strategyName": "Trend Following — US Large Cap",
+        "timeframe": "daily",
+        "positionSizing": "Risk 2% of portfolio ($116.94) → ~6 shares at entry"
+      },
+      "expiresAt": "2026-02-22T08:15:00Z",
+      "createdAt": "2026-02-21T06:00:00Z"
+    },
+    {
+      "id": "rec-003",
+      "instrumentId": "inst-eth-eur",
+      "symbol": "ETH/EUR",
+      "instrumentName": "Ethereum",
+      "action": "BUY",
+      "confidence": 78,
+      "source": "ai-research",
+      "status": "active",
+      "reasoningSummary": "Oversold bounce + improving network metrics + positive DeFi sentiment",
+      "reasoning": {
+        "technical": [
+          "RSI bounced from 28 (oversold) with bullish divergence on 4h chart",
+          "Price testing support at 2,800 EUR — held on 3 previous occasions",
+          "Volume spike on last green candle suggests accumulation",
+          "Stochastic RSI crossing up from oversold territory"
+        ],
+        "sentiment": {
+          "score": 0.71,
+          "positive": 0.58,
+          "negative": 0.14,
+          "neutral": 0.28,
+          "articleCount": 22
+        },
+        "correlation": {
+          "coefficient": 0.85,
+          "assessment": "High correlation with existing BTC holding — increases crypto concentration"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 7.8,
+        "sentiment": 7.1,
+        "diversification": 3.5,
+        "overall": 6.58
+      },
+      "targets": {
+        "entryPrice": 2900.00,
+        "currentPrice": 2876.40,
+        "takeProfit": 3400.00,
+        "takeProfitPercent": 17.24,
+        "stopLoss": 2650.00,
+        "stopLossPercent": -8.62
+      },
+      "strategyContext": null,
+      "expiresAt": "2026-02-21T20:00:00Z",
+      "createdAt": "2026-02-21T08:00:00Z"
+    },
+    {
+      "id": "rec-004",
+      "instrumentId": "inst-tsla",
+      "symbol": "TSLA",
+      "instrumentName": "Tesla Inc",
+      "action": "SELL",
+      "confidence": 73,
+      "source": "strategy-signal",
+      "status": "active",
+      "reasoningSummary": "Mean Reversion exit signal — price extended 2.1σ above 20-day mean",
+      "reasoning": {
+        "technical": [
+          "Price at 2.1 standard deviations above 20-day moving average",
+          "RSI at 78 — overbought territory",
+          "Bearish divergence forming on MACD daily chart",
+          "Volume declining on recent up-moves — weakening conviction"
+        ],
+        "sentiment": {
+          "score": 0.45,
+          "positive": 0.32,
+          "negative": 0.28,
+          "neutral": 0.40,
+          "articleCount": 56
+        },
+        "correlation": {
+          "coefficient": 0.31,
+          "assessment": "Low-moderate correlation — selling reduces overall portfolio risk"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 7.5,
+        "sentiment": 4.5,
+        "diversification": 7.0,
+        "overall": 6.50
+      },
+      "targets": {
+        "entryPrice": 245.00,
+        "currentPrice": 248.50,
+        "takeProfit": 225.00,
+        "takeProfitPercent": -8.16,
+        "stopLoss": 260.00,
+        "stopLossPercent": 6.12
+      },
+      "strategyContext": {
+        "strategyName": "Mean Reversion — High Vol Tech",
+        "timeframe": "daily",
+        "positionSizing": "Close full position — 4 shares"
+      },
+      "expiresAt": "2026-02-22T06:00:00Z",
+      "createdAt": "2026-02-21T06:00:00Z"
+    },
+    {
+      "id": "rec-005",
+      "instrumentId": "inst-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "action": "BUY",
+      "confidence": 85,
+      "source": "ai-research",
+      "status": "accepted",
+      "reasoningSummary": "Strong earnings beat + sector momentum + undervalued vs DCF model",
+      "reasoning": {
+        "technical": [
+          "Price consolidating in a bull flag pattern above 410 support",
+          "RSI at 55 — neutral with upward bias",
+          "All major moving averages aligned bullishly (20 > 50 > 200)",
+          "Accumulation/Distribution line trending higher"
+        ],
+        "sentiment": {
+          "score": 0.88,
+          "positive": 0.78,
+          "negative": 0.04,
+          "neutral": 0.18,
+          "articleCount": 38
+        },
+        "correlation": {
+          "coefficient": 0.42,
+          "assessment": "Moderate correlation with AAPL — acceptable tech sector overlap"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 7.8,
+        "sentiment": 8.8,
+        "diversification": 6.5,
+        "overall": 7.80
+      },
+      "targets": {
+        "entryPrice": 416.00,
+        "currentPrice": 415.60,
+        "takeProfit": 445.00,
+        "takeProfitPercent": 6.97,
+        "stopLoss": 398.00,
+        "stopLossPercent": -4.33
+      },
+      "strategyContext": null,
+      "expiresAt": "2026-02-22T08:15:00Z",
+      "createdAt": "2026-02-21T08:15:00Z"
+    },
+    {
+      "id": "rec-006",
+      "instrumentId": "inst-sol-eur",
+      "symbol": "SOL/EUR",
+      "instrumentName": "Solana",
+      "action": "BUY",
+      "confidence": 68,
+      "source": "ai-research",
+      "status": "dismissed",
+      "reasoningSummary": "Network activity surge + DeFi TVL growth + breakout above 140 EUR",
+      "reasoning": {
+        "technical": [
+          "Price broke above descending trendline resistance at 140 EUR",
+          "RSI at 58 — bullish bias with room to run",
+          "Volume 1.8x average on breakout candle",
+          "Fibonacci 61.8% retracement held as support"
+        ],
+        "sentiment": {
+          "score": 0.65,
+          "positive": 0.48,
+          "negative": 0.16,
+          "neutral": 0.36,
+          "articleCount": 15
+        },
+        "correlation": {
+          "coefficient": 0.78,
+          "assessment": "High correlation with BTC and ETH — significantly increases crypto risk"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 7.0,
+        "sentiment": 6.5,
+        "diversification": 3.0,
+        "overall": 5.85
+      },
+      "targets": {
+        "entryPrice": 143.00,
+        "currentPrice": 142.30,
+        "takeProfit": 170.00,
+        "takeProfitPercent": 18.88,
+        "stopLoss": 128.00,
+        "stopLossPercent": -10.49
+      },
+      "strategyContext": null,
+      "expiresAt": "2026-02-21T20:00:00Z",
+      "createdAt": "2026-02-21T08:00:00Z"
+    },
+    {
+      "id": "rec-007",
+      "instrumentId": "inst-amzn",
+      "symbol": "AMZN",
+      "instrumentName": "Amazon.com Inc",
+      "action": "BUY",
+      "confidence": 61,
+      "source": "strategy-signal",
+      "status": "snoozed",
+      "reasoningSummary": "Trend Following entry — 50-day MA cross approaching, awaiting confirmation",
+      "reasoning": {
+        "technical": [
+          "50-day SMA approaching 200-day SMA from below — potential golden cross",
+          "Price above 20-day EMA with increasing momentum",
+          "RSI at 52 — neutral, waiting for directional confirmation",
+          "Volume slightly above average on recent sessions"
+        ],
+        "sentiment": {
+          "score": 0.55,
+          "positive": 0.38,
+          "negative": 0.18,
+          "neutral": 0.44,
+          "articleCount": 24
+        },
+        "correlation": {
+          "coefficient": 0.35,
+          "assessment": "Low-moderate correlation — decent diversification benefit"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 5.8,
+        "sentiment": 5.5,
+        "diversification": 7.5,
+        "overall": 6.13
+      },
+      "targets": {
+        "entryPrice": 200.00,
+        "currentPrice": 198.75,
+        "takeProfit": 220.00,
+        "takeProfitPercent": 10.0,
+        "stopLoss": 188.00,
+        "stopLossPercent": -6.0
+      },
+      "strategyContext": {
+        "strategyName": "Trend Following — US Large Cap",
+        "timeframe": "daily",
+        "positionSizing": "Risk 2% of portfolio ($116.94) → ~5 shares at entry"
+      },
+      "snoozedUntil": "2026-02-22T09:30:00Z",
+      "expiresAt": "2026-02-23T06:00:00Z",
+      "createdAt": "2026-02-20T06:00:00Z"
+    },
+    {
+      "id": "rec-008",
+      "instrumentId": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "instrumentName": "Bitcoin",
+      "action": "SELL",
+      "confidence": 54,
+      "source": "ai-research",
+      "status": "expired",
+      "reasoningSummary": "Bearish head-and-shoulders forming + declining on-chain activity",
+      "reasoning": {
+        "technical": [
+          "Potential head-and-shoulders pattern on daily chart — neckline at 87,500 EUR",
+          "RSI showing bearish divergence from 72 to 65",
+          "MACD about to cross below signal line",
+          "Declining volume on last 3 up-moves"
+        ],
+        "sentiment": {
+          "score": 0.38,
+          "positive": 0.22,
+          "negative": 0.38,
+          "neutral": 0.40,
+          "articleCount": 64
+        },
+        "correlation": {
+          "coefficient": 0.92,
+          "assessment": "Highest-correlated asset in portfolio — selling reduces total crypto exposure"
+        }
+      },
+      "scoreBreakdown": {
+        "technical": 5.5,
+        "sentiment": 3.8,
+        "diversification": 8.5,
+        "overall": 5.60
+      },
+      "targets": {
+        "entryPrice": 88000.00,
+        "currentPrice": 89234.50,
+        "takeProfit": 80000.00,
+        "takeProfitPercent": -9.09,
+        "stopLoss": 93000.00,
+        "stopLossPercent": 5.68
+      },
+      "strategyContext": null,
+      "expiresAt": "2026-02-20T20:00:00Z",
+      "createdAt": "2026-02-20T08:00:00Z"
+    }
+  ],
+
+  "sentimentOverview": {
+    "overallScore": 62,
+    "overallLabel": "neutral",
+    "trend": "up",
+    "trendDelta": 4,
+    "previousScore": 58,
+    "articleCount24h": 342,
+    "lastUpdated": "2026-02-21T09:45:00Z",
+    "assetClassBreakdown": {
+      "stocks": {
+        "score": 68,
+        "label": "bullish",
+        "trend": "up",
+        "trendDelta": 5,
+        "articleCount": 248
+      },
+      "crypto": {
+        "score": 49,
+        "label": "neutral",
+        "trend": "down",
+        "trendDelta": -3,
+        "articleCount": 94
+      }
+    },
+    "finbertSensitivity": "balanced"
+  },
+
+  "sectorSentiment": [
+    { "id": "sector-tech", "name": "Technology", "score": 74, "label": "bullish", "instrumentCount": 12, "isSystem": true },
+    { "id": "sector-healthcare", "name": "Healthcare", "score": 61, "label": "neutral", "instrumentCount": 8, "isSystem": true },
+    { "id": "sector-finance", "name": "Finance", "score": 55, "label": "neutral", "instrumentCount": 10, "isSystem": true },
+    { "id": "sector-energy", "name": "Energy", "score": 42, "label": "neutral", "instrumentCount": 6, "isSystem": true },
+    { "id": "sector-consumer", "name": "Consumer", "score": 67, "label": "bullish", "instrumentCount": 9, "isSystem": true },
+    { "id": "sector-industrial", "name": "Industrial", "score": 51, "label": "neutral", "instrumentCount": 7, "isSystem": true },
+    { "id": "sector-realestate", "name": "Real Estate", "score": 38, "label": "bearish", "instrumentCount": 5, "isSystem": true },
+    { "id": "sector-utilities", "name": "Utilities", "score": 45, "label": "neutral", "instrumentCount": 4, "isSystem": true },
+    { "id": "sector-defi", "name": "DeFi", "score": 58, "label": "neutral", "instrumentCount": 3, "isSystem": false }
+  ],
+
+  "topMovers": {
+    "bullish": [
+      {
+        "instrumentId": "inst-nvda",
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "sentimentScore": 8.2,
+        "change24h": 1.8,
+        "articleCount": 47,
+        "sparkline": [6.1, 6.4, 6.8, 7.2, 7.5, 7.9, 8.2]
+      },
+      {
+        "instrumentId": "inst-msft",
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "sentimentScore": 8.8,
+        "change24h": 1.2,
+        "articleCount": 38,
+        "sparkline": [7.2, 7.4, 7.8, 8.0, 8.2, 8.5, 8.8]
+      },
+      {
+        "instrumentId": "inst-sol-eur",
+        "symbol": "SOL/EUR",
+        "name": "Solana",
+        "sentimentScore": 6.5,
+        "change24h": 1.1,
+        "articleCount": 15,
+        "sparkline": [4.8, 5.0, 5.2, 5.5, 5.8, 6.2, 6.5]
+      },
+      {
+        "instrumentId": "inst-meta",
+        "symbol": "META",
+        "name": "Meta Platforms Inc",
+        "sentimentScore": 7.4,
+        "change24h": 0.9,
+        "articleCount": 29,
+        "sparkline": [6.2, 6.3, 6.5, 6.8, 7.0, 7.2, 7.4]
+      },
+      {
+        "instrumentId": "inst-googl",
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc",
+        "sentimentScore": 7.1,
+        "change24h": 0.7,
+        "articleCount": 33,
+        "sparkline": [6.0, 6.1, 6.3, 6.5, 6.7, 6.9, 7.1]
+      }
+    ],
+    "bearish": [
+      {
+        "instrumentId": "inst-btc-eur",
+        "symbol": "BTC/EUR",
+        "name": "Bitcoin",
+        "sentimentScore": 3.8,
+        "change24h": -1.5,
+        "articleCount": 64,
+        "sparkline": [5.8, 5.5, 5.2, 4.8, 4.5, 4.1, 3.8]
+      },
+      {
+        "instrumentId": "inst-baba",
+        "symbol": "BABA",
+        "name": "Alibaba Group",
+        "sentimentScore": 3.2,
+        "change24h": -1.3,
+        "articleCount": 18,
+        "sparkline": [5.0, 4.8, 4.5, 4.2, 3.8, 3.5, 3.2]
+      },
+      {
+        "instrumentId": "inst-xrp-eur",
+        "symbol": "XRP/EUR",
+        "name": "Ripple",
+        "sentimentScore": 4.1,
+        "change24h": -1.0,
+        "articleCount": 12,
+        "sparkline": [5.5, 5.3, 5.0, 4.8, 4.5, 4.3, 4.1]
+      },
+      {
+        "instrumentId": "inst-intc",
+        "symbol": "INTC",
+        "name": "Intel Corporation",
+        "sentimentScore": 3.5,
+        "change24h": -0.8,
+        "articleCount": 21,
+        "sparkline": [4.8, 4.6, 4.3, 4.1, 3.9, 3.7, 3.5]
+      },
+      {
+        "instrumentId": "inst-ba",
+        "symbol": "BA",
+        "name": "Boeing Company",
+        "sentimentScore": 2.9,
+        "change24h": -0.6,
+        "articleCount": 14,
+        "sparkline": [3.8, 3.7, 3.5, 3.4, 3.2, 3.1, 2.9]
+      }
+    ]
+  },
+
+  "newsArticles": [
+    {
+      "id": "news-001",
+      "headline": "NVIDIA Reports Record Data Center Revenue Driven by AI Demand",
+      "summary": "NVIDIA's data center segment posted $18.4B in quarterly revenue, up 279% year-over-year, fueled by surging demand for AI training and inference chips. CEO Jensen Huang described the current moment as 'the beginning of a new industrial revolution.'",
+      "source": "Reuters",
+      "sourceId": "src-reuters",
+      "sentiment": "positive",
+      "sentimentConfidence": 0.94,
+      "instrumentTags": ["NVDA"],
+      "publishedAt": "2026-02-21T08:30:00Z"
+    },
+    {
+      "id": "news-002",
+      "headline": "Bitcoin Drops Below Key Support as Regulatory Concerns Mount",
+      "summary": "Bitcoin fell 3.2% to trade below the psychologically important 90,000 EUR level after reports emerged of proposed cryptocurrency transaction reporting requirements in the EU. Analysts note the decline follows three weeks of declining on-chain transaction volume.",
+      "source": "CoinDesk",
+      "sourceId": "src-coindesk",
+      "sentiment": "negative",
+      "sentimentConfidence": 0.89,
+      "instrumentTags": ["BTC/EUR"],
+      "publishedAt": "2026-02-21T07:45:00Z"
+    },
+    {
+      "id": "news-003",
+      "headline": "Microsoft Azure AI Services Surpass $10B Annual Run Rate",
+      "summary": "Microsoft reported that its Azure AI services have crossed the $10 billion annual revenue run rate milestone, growing 67% year-over-year. The company attributed the growth to enterprise adoption of GPT-4 integration and custom copilot deployments.",
+      "source": "Bloomberg",
+      "sourceId": "src-bloomberg",
+      "sentiment": "positive",
+      "sentimentConfidence": 0.91,
+      "instrumentTags": ["MSFT"],
+      "publishedAt": "2026-02-21T06:15:00Z"
+    },
+    {
+      "id": "news-004",
+      "headline": "Fed Minutes Signal Caution on Rate Cuts, Markets React",
+      "summary": "Minutes from the latest Federal Reserve meeting revealed a more cautious stance on rate cuts than markets had priced in. Several committee members expressed concern about persistent services inflation, suggesting cuts may be delayed until Q3 2026.",
+      "source": "Reuters",
+      "sourceId": "src-reuters",
+      "sentiment": "negative",
+      "sentimentConfidence": 0.76,
+      "instrumentTags": [],
+      "publishedAt": "2026-02-21T05:00:00Z"
+    },
+    {
+      "id": "news-005",
+      "headline": "Apple Vision Pro Enterprise Adoption Exceeds Expectations",
+      "summary": "Apple reported that Vision Pro enterprise deployments have doubled quarter-over-quarter, with major wins in healthcare training, architecture visualization, and manufacturing quality control. The company is now developing industry-specific software bundles.",
+      "source": "Bloomberg",
+      "sourceId": "src-bloomberg",
+      "sentiment": "positive",
+      "sentimentConfidence": 0.85,
+      "instrumentTags": ["AAPL"],
+      "publishedAt": "2026-02-21T04:30:00Z"
+    },
+    {
+      "id": "news-006",
+      "headline": "Solana DeFi TVL Hits New All-Time High Amid Memecoin Mania",
+      "summary": "Total value locked in Solana DeFi protocols surpassed $28 billion, driven by a surge in memecoin trading activity and the launch of several high-profile token projects. Network transactions per second averaged 4,200 over the past week.",
+      "source": "CoinDesk",
+      "sourceId": "src-coindesk",
+      "sentiment": "positive",
+      "sentimentConfidence": 0.72,
+      "instrumentTags": ["SOL/EUR"],
+      "publishedAt": "2026-02-20T22:00:00Z"
+    },
+    {
+      "id": "news-007",
+      "headline": "Tesla Faces Production Delays at Berlin Gigafactory Over Supply Chain Issues",
+      "summary": "Tesla's Berlin facility reported a two-week production slowdown due to semiconductor shortages affecting its latest Model Y refresh. The company expects to resume full production by early March but warned of Q1 delivery shortfalls in Europe.",
+      "source": "Reuters",
+      "sourceId": "src-reuters",
+      "sentiment": "negative",
+      "sentimentConfidence": 0.82,
+      "instrumentTags": ["TSLA"],
+      "publishedAt": "2026-02-20T18:30:00Z"
+    },
+    {
+      "id": "news-008",
+      "headline": "Ethereum Layer-2 Ecosystem Consolidation Expected as Competition Intensifies",
+      "summary": "Industry analysts predict that the crowded Ethereum L2 landscape will see significant consolidation in 2026, with smaller rollups struggling to maintain developer mindshare against established players like Arbitrum and Optimism.",
+      "source": "CoinDesk",
+      "sourceId": "src-coindesk",
+      "sentiment": "neutral",
+      "sentimentConfidence": 0.68,
+      "instrumentTags": ["ETH/EUR"],
+      "publishedAt": "2026-02-20T16:00:00Z"
+    },
+    {
+      "id": "news-009",
+      "headline": "Amazon AWS Launches New Custom AI Chips Challenging NVIDIA Dominance",
+      "summary": "Amazon Web Services unveiled Trainium3, its third-generation custom AI training chip, claiming 2x performance-per-dollar compared to NVIDIA's H100. Several large enterprise customers announced commitments to the new platform at re:Invent.",
+      "source": "Bloomberg",
+      "sourceId": "src-bloomberg",
+      "sentiment": "neutral",
+      "sentimentConfidence": 0.61,
+      "instrumentTags": ["AMZN", "NVDA"],
+      "publishedAt": "2026-02-20T14:00:00Z"
+    },
+    {
+      "id": "news-010",
+      "headline": "Global Semiconductor Demand Forecast Revised Upward for 2026",
+      "summary": "The Semiconductor Industry Association raised its 2026 global chip revenue forecast to $735 billion, up 18% from the previous year, citing sustained AI infrastructure investment and a recovery in consumer electronics demand.",
+      "source": "Reuters",
+      "sourceId": "src-reuters",
+      "sentiment": "positive",
+      "sentimentConfidence": 0.88,
+      "instrumentTags": ["NVDA", "INTC"],
+      "publishedAt": "2026-02-20T11:00:00Z"
+    }
+  ],
+
+  "newsSources": [
+    {
+      "id": "src-reuters",
+      "name": "Reuters",
+      "type": "news-wire",
+      "status": "active",
+      "enabled": true,
+      "feedUrl": "https://feeds.reuters.com/markets",
+      "articleVolume24h": 124,
+      "avgArticlesPerDay": 118,
+      "lastFetchAt": "2026-02-21T09:40:00Z",
+      "errorCount24h": 0
+    },
+    {
+      "id": "src-bloomberg",
+      "name": "Bloomberg",
+      "type": "news-wire",
+      "status": "active",
+      "enabled": true,
+      "feedUrl": "https://feeds.bloomberg.com/markets",
+      "articleVolume24h": 98,
+      "avgArticlesPerDay": 105,
+      "lastFetchAt": "2026-02-21T09:38:00Z",
+      "errorCount24h": 0
+    },
+    {
+      "id": "src-coindesk",
+      "name": "CoinDesk",
+      "type": "news-wire",
+      "status": "active",
+      "enabled": true,
+      "feedUrl": "https://feeds.coindesk.com/v1/news",
+      "articleVolume24h": 42,
+      "avgArticlesPerDay": 38,
+      "lastFetchAt": "2026-02-21T09:35:00Z",
+      "errorCount24h": 0
+    },
+    {
+      "id": "src-reddit",
+      "name": "Reddit r/wallstreetbets",
+      "type": "social",
+      "status": "degraded",
+      "enabled": true,
+      "feedUrl": "https://api.reddit.com/r/wallstreetbets",
+      "articleVolume24h": 67,
+      "avgArticlesPerDay": 210,
+      "lastFetchAt": "2026-02-21T08:15:00Z",
+      "errorCount24h": 3
+    },
+    {
+      "id": "src-twitter",
+      "name": "X/Twitter Crypto",
+      "type": "social",
+      "status": "active",
+      "enabled": false,
+      "feedUrl": "https://api.twitter.com/2/crypto-accounts",
+      "articleVolume24h": 0,
+      "avgArticlesPerDay": 345,
+      "lastFetchAt": null,
+      "errorCount24h": 0
+    },
+    {
+      "id": "src-onchain",
+      "name": "Glassnode On-Chain",
+      "type": "blockchain",
+      "status": "active",
+      "enabled": true,
+      "feedUrl": "https://api.glassnode.com/v1/alerts",
+      "articleVolume24h": 11,
+      "avgArticlesPerDay": 14,
+      "lastFetchAt": "2026-02-21T09:30:00Z",
+      "errorCount24h": 0
+    }
+  ],
+
+  "sentimentWatchlist": [
+    {
+      "instrumentId": "inst-nvda",
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "sentimentScore": 8.2,
+      "trend": "up",
+      "hasAlert": true
+    },
+    {
+      "instrumentId": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "name": "Bitcoin",
+      "sentimentScore": 3.8,
+      "trend": "down",
+      "hasAlert": true
+    },
+    {
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "sentimentScore": 6.8,
+      "trend": "up",
+      "hasAlert": false
+    },
+    {
+      "instrumentId": "inst-tsla",
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
+      "sentimentScore": 4.5,
+      "trend": "down",
+      "hasAlert": false
+    }
+  ],
+
+  "sentimentAlerts": [
+    {
+      "id": "salert-001",
+      "instrumentId": "inst-nvda",
+      "symbol": "NVDA",
+      "direction": "below",
+      "threshold": 5.0,
+      "status": "active",
+      "lastTriggeredAt": null,
+      "createdAt": "2026-02-18T10:00:00Z"
+    },
+    {
+      "id": "salert-002",
+      "instrumentId": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "direction": "below",
+      "threshold": 3.0,
+      "status": "active",
+      "lastTriggeredAt": null,
+      "createdAt": "2026-02-19T14:30:00Z"
+    },
+    {
+      "id": "salert-003",
+      "instrumentId": "inst-eth-eur",
+      "symbol": "ETH/EUR",
+      "direction": "above",
+      "threshold": 8.0,
+      "status": "disabled",
+      "lastTriggeredAt": "2026-02-15T06:00:00Z",
+      "createdAt": "2026-02-10T09:00:00Z"
+    }
+  ],
+
+  "guruTrades": [
+    {
+      "id": "gtrade-001",
+      "guruId": "guru-berkshire",
+      "guruName": "Berkshire Hathaway",
+      "guruType": "institutional",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc",
+      "action": "INCREASE",
+      "shareCount": 12500000,
+      "dollarValue": 2243125000,
+      "holdingChangePercent": 15.2,
+      "filedAt": "2026-02-20T00:00:00Z",
+      "sourceAttribution": "SEC 13F Filing"
+    },
+    {
+      "id": "gtrade-002",
+      "guruId": "guru-ark",
+      "guruName": "ARK Invest",
+      "guruType": "hedge-fund",
+      "instrumentId": "inst-tsla",
+      "symbol": "TSLA",
+      "instrumentName": "Tesla Inc",
+      "action": "BUY",
+      "shareCount": 850000,
+      "dollarValue": 211225000,
+      "holdingChangePercent": 100,
+      "filedAt": "2026-02-19T00:00:00Z",
+      "sourceAttribution": "SEC 13F Filing"
+    },
+    {
+      "id": "gtrade-003",
+      "guruId": "guru-whale-01",
+      "guruName": "Whale 0x7a2...f3e1",
+      "guruType": "crypto-whale",
+      "instrumentId": "inst-eth-eur",
+      "symbol": "ETH/EUR",
+      "instrumentName": "Ethereum",
+      "action": "BUY",
+      "shareCount": 15000,
+      "dollarValue": 43146000,
+      "holdingChangePercent": 28.5,
+      "filedAt": "2026-02-21T03:22:00Z",
+      "sourceAttribution": "On-Chain Analysis"
+    },
+    {
+      "id": "gtrade-004",
+      "guruId": "guru-bridgewater",
+      "guruName": "Bridgewater Associates",
+      "guruType": "hedge-fund",
+      "instrumentId": "inst-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "action": "INCREASE",
+      "shareCount": 3200000,
+      "dollarValue": 1329920000,
+      "holdingChangePercent": 8.7,
+      "filedAt": "2026-02-18T00:00:00Z",
+      "sourceAttribution": "SEC 13F Filing"
+    },
+    {
+      "id": "gtrade-005",
+      "guruId": "guru-soros",
+      "guruName": "Soros Fund Management",
+      "guruType": "hedge-fund",
+      "instrumentId": "inst-nvda",
+      "symbol": "NVDA",
+      "instrumentName": "NVIDIA Corporation",
+      "action": "SELL",
+      "shareCount": 1800000,
+      "dollarValue": 237240000,
+      "holdingChangePercent": -22.3,
+      "filedAt": "2026-02-17T00:00:00Z",
+      "sourceAttribution": "SEC 13F Filing"
+    },
+    {
+      "id": "gtrade-006",
+      "guruId": "guru-whale-02",
+      "guruName": "Whale 0xb8e...91a4",
+      "guruType": "crypto-whale",
+      "instrumentId": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "instrumentName": "Bitcoin",
+      "action": "SELL",
+      "shareCount": 450,
+      "dollarValue": 40155525,
+      "holdingChangePercent": -12.1,
+      "filedAt": "2026-02-20T18:45:00Z",
+      "sourceAttribution": "On-Chain Analysis"
+    },
+    {
+      "id": "gtrade-007",
+      "guruId": "guru-berkshire",
+      "guruName": "Berkshire Hathaway",
+      "guruType": "institutional",
+      "instrumentId": "inst-amzn",
+      "symbol": "AMZN",
+      "instrumentName": "Amazon.com Inc",
+      "action": "DECREASE",
+      "shareCount": 5000000,
+      "dollarValue": 993750000,
+      "holdingChangePercent": -6.8,
+      "filedAt": "2026-02-15T00:00:00Z",
+      "sourceAttribution": "SEC 13F Filing"
+    },
+    {
+      "id": "gtrade-008",
+      "guruId": "guru-whale-01",
+      "guruName": "Whale 0x7a2...f3e1",
+      "guruType": "crypto-whale",
+      "instrumentId": "inst-sol-eur",
+      "symbol": "SOL/EUR",
+      "instrumentName": "Solana",
+      "action": "BUY",
+      "shareCount": 125000,
+      "dollarValue": 17787500,
+      "holdingChangePercent": 45.0,
+      "filedAt": "2026-02-19T11:08:00Z",
+      "sourceAttribution": "On-Chain Analysis"
+    }
+  ],
+
+  "trackedGurus": [
+    {
+      "id": "guru-berkshire",
+      "name": "Berkshire Hathaway",
+      "displayName": "Berkshire Hathaway",
+      "type": "institutional",
+      "enabled": true,
+      "recentTradeCount": 2,
+      "avatarUrl": null,
+      "addedAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "guru-ark",
+      "name": "ARK Invest",
+      "displayName": "ARK Invest",
+      "type": "hedge-fund",
+      "enabled": true,
+      "recentTradeCount": 1,
+      "avatarUrl": null,
+      "addedAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "guru-bridgewater",
+      "name": "Bridgewater Associates",
+      "displayName": "Bridgewater",
+      "type": "hedge-fund",
+      "enabled": true,
+      "recentTradeCount": 1,
+      "avatarUrl": null,
+      "addedAt": "2026-01-20T14:00:00Z"
+    },
+    {
+      "id": "guru-soros",
+      "name": "Soros Fund Management",
+      "displayName": "Soros Fund",
+      "type": "hedge-fund",
+      "enabled": false,
+      "recentTradeCount": 1,
+      "avatarUrl": null,
+      "addedAt": "2026-02-01T09:00:00Z"
+    },
+    {
+      "id": "guru-whale-01",
+      "name": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "displayName": "Whale 0x7a2...f3e1",
+      "type": "crypto-whale",
+      "enabled": true,
+      "recentTradeCount": 2,
+      "avatarUrl": null,
+      "addedAt": "2026-02-05T16:30:00Z"
+    },
+    {
+      "id": "guru-whale-02",
+      "name": "0xb8e2a0e8f5bCf6147bF2963f3e9b3E7e3891a4D5",
+      "displayName": "Whale 0xb8e...91a4",
+      "type": "crypto-whale",
+      "enabled": true,
+      "recentTradeCount": 1,
+      "avatarUrl": null,
+      "addedAt": "2026-02-10T11:00:00Z"
+    }
+  ],
+
+  "guruAlerts": [
+    {
+      "id": "galert-001",
+      "guruId": "guru-berkshire",
+      "guruName": "Berkshire Hathaway",
+      "triggers": {
+        "anyTrade": true,
+        "specificInstruments": [],
+        "minTradeSize": null,
+        "actionFilter": "any"
+      },
+      "status": "active",
+      "lastTriggeredAt": "2026-02-20T00:00:00Z",
+      "triggerCount": 4,
+      "createdAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "galert-002",
+      "guruId": "guru-ark",
+      "guruName": "ARK Invest",
+      "triggers": {
+        "anyTrade": false,
+        "specificInstruments": ["TSLA", "NVDA", "SQ"],
+        "minTradeSize": null,
+        "actionFilter": "buy"
+      },
+      "status": "active",
+      "lastTriggeredAt": "2026-02-19T00:00:00Z",
+      "triggerCount": 2,
+      "createdAt": "2026-01-15T10:30:00Z"
+    },
+    {
+      "id": "galert-003",
+      "guruId": "guru-whale-01",
+      "guruName": "Whale 0x7a2...f3e1",
+      "triggers": {
+        "anyTrade": false,
+        "specificInstruments": [],
+        "minTradeSize": 10000000,
+        "actionFilter": "any"
+      },
+      "status": "active",
+      "lastTriggeredAt": "2026-02-21T03:22:00Z",
+      "triggerCount": 3,
+      "createdAt": "2026-02-05T16:30:00Z"
+    },
+    {
+      "id": "galert-004",
+      "guruId": "guru-bridgewater",
+      "guruName": "Bridgewater Associates",
+      "triggers": {
+        "anyTrade": true,
+        "specificInstruments": [],
+        "minTradeSize": null,
+        "actionFilter": "any"
+      },
+      "status": "disabled",
+      "lastTriggeredAt": "2026-02-18T00:00:00Z",
+      "triggerCount": 1,
+      "createdAt": "2026-01-20T14:00:00Z"
+    }
+  ],
+
+  "researchJobs": [
+    {
+      "id": "job-daily-stocks",
+      "name": "Daily Stock Research",
+      "isSystem": true,
+      "scheduleType": "daily",
+      "scheduleTime": "06:00",
+      "scheduleTimezone": "America/New_York",
+      "scheduleInterval": null,
+      "universe": "full",
+      "customInstruments": [],
+      "confidenceThreshold": 7.0,
+      "maxResults": 10,
+      "enabled": true,
+      "status": "idle",
+      "lastRun": {
+        "timestamp": "2026-02-21T06:00:00Z",
+        "duration": "12m 0s",
+        "durationMs": 720000,
+        "opportunitiesFound": 14,
+        "opportunitiesPublished": 10,
+        "status": "completed"
+      },
+      "nextRunAt": "2026-02-22T06:00:00Z",
+      "history": [
+        {
+          "id": "run-001",
+          "timestamp": "2026-02-21T06:00:00Z",
+          "duration": "12m 0s",
+          "opportunitiesFound": 14,
+          "opportunitiesPublished": 10,
+          "status": "completed",
+          "triggerType": "scheduled"
+        },
+        {
+          "id": "run-002",
+          "timestamp": "2026-02-20T06:00:00Z",
+          "duration": "11m 45s",
+          "opportunitiesFound": 11,
+          "opportunitiesPublished": 8,
+          "status": "completed",
+          "triggerType": "scheduled"
+        },
+        {
+          "id": "run-003",
+          "timestamp": "2026-02-19T06:00:00Z",
+          "duration": "13m 22s",
+          "opportunitiesFound": 18,
+          "opportunitiesPublished": 10,
+          "status": "completed",
+          "triggerType": "scheduled"
+        }
+      ]
+    },
+    {
+      "id": "job-crypto-hc",
+      "name": "Crypto High Cap",
+      "isSystem": true,
+      "scheduleType": "interval",
+      "scheduleTime": null,
+      "scheduleTimezone": "UTC",
+      "scheduleInterval": 12,
+      "universe": "custom",
+      "customInstruments": ["BTC/EUR", "ETH/EUR", "SOL/EUR", "BNB/EUR", "ADA/EUR"],
+      "confidenceThreshold": 6.0,
+      "maxResults": 5,
+      "enabled": true,
+      "status": "idle",
+      "lastRun": {
+        "timestamp": "2026-02-21T08:00:00Z",
+        "duration": "3m 15s",
+        "durationMs": 195000,
+        "opportunitiesFound": 4,
+        "opportunitiesPublished": 3,
+        "status": "completed"
+      },
+      "nextRunAt": "2026-02-21T20:00:00Z",
+      "history": [
+        {
+          "id": "run-004",
+          "timestamp": "2026-02-21T08:00:00Z",
+          "duration": "3m 15s",
+          "opportunitiesFound": 4,
+          "opportunitiesPublished": 3,
+          "status": "completed",
+          "triggerType": "scheduled"
+        },
+        {
+          "id": "run-005",
+          "timestamp": "2026-02-20T20:00:00Z",
+          "duration": "3m 8s",
+          "opportunitiesFound": 3,
+          "opportunitiesPublished": 2,
+          "status": "completed",
+          "triggerType": "scheduled"
+        }
+      ]
+    },
+    {
+      "id": "job-crypto-lc",
+      "name": "Crypto Low Cap",
+      "isSystem": true,
+      "scheduleType": "interval",
+      "scheduleTime": null,
+      "scheduleTimezone": "UTC",
+      "scheduleInterval": 12,
+      "universe": "custom",
+      "customInstruments": ["DOT/EUR", "LINK/EUR", "AVAX/EUR", "ATOM/EUR", "NEAR/EUR", "FTM/EUR", "MATIC/EUR"],
+      "confidenceThreshold": 7.5,
+      "maxResults": 5,
+      "enabled": false,
+      "status": "disabled",
+      "lastRun": {
+        "timestamp": "2026-02-18T08:00:00Z",
+        "duration": "4m 52s",
+        "durationMs": 292000,
+        "opportunitiesFound": 2,
+        "opportunitiesPublished": 1,
+        "status": "completed"
+      },
+      "nextRunAt": null,
+      "history": [
+        {
+          "id": "run-006",
+          "timestamp": "2026-02-18T08:00:00Z",
+          "duration": "4m 52s",
+          "opportunitiesFound": 2,
+          "opportunitiesPublished": 1,
+          "status": "completed",
+          "triggerType": "scheduled"
+        }
+      ]
+    },
+    {
+      "id": "job-watchlist-scan",
+      "name": "Watchlist Quick Scan",
+      "isSystem": false,
+      "scheduleType": "interval",
+      "scheduleTime": null,
+      "scheduleTimezone": "America/New_York",
+      "scheduleInterval": 4,
+      "universe": "watchlist",
+      "customInstruments": [],
+      "confidenceThreshold": 5.0,
+      "maxResults": 20,
+      "enabled": true,
+      "status": "running",
+      "lastRun": {
+        "timestamp": "2026-02-21T05:30:00Z",
+        "duration": "1m 42s",
+        "durationMs": 102000,
+        "opportunitiesFound": 6,
+        "opportunitiesPublished": 4,
+        "status": "completed"
+      },
+      "nextRunAt": null,
+      "runningElapsedMs": 47000,
+      "history": [
+        {
+          "id": "run-007",
+          "timestamp": "2026-02-21T05:30:00Z",
+          "duration": "1m 42s",
+          "opportunitiesFound": 6,
+          "opportunitiesPublished": 4,
+          "status": "completed",
+          "triggerType": "manual"
+        },
+        {
+          "id": "run-008",
+          "timestamp": "2026-02-21T01:30:00Z",
+          "duration": "1m 38s",
+          "opportunitiesFound": 3,
+          "opportunitiesPublished": 2,
+          "status": "completed",
+          "triggerType": "scheduled"
+        }
+      ]
+    },
+    {
+      "id": "job-sector-deep",
+      "name": "Tech Sector Deep Dive",
+      "isSystem": false,
+      "scheduleType": "daily",
+      "scheduleTime": "07:30",
+      "scheduleTimezone": "America/New_York",
+      "scheduleInterval": null,
+      "universe": "custom",
+      "customInstruments": ["AAPL", "MSFT", "NVDA", "GOOGL", "META", "AMZN", "CRM", "ADBE", "ORCL", "INTC"],
+      "confidenceThreshold": 6.5,
+      "maxResults": 10,
+      "enabled": true,
+      "status": "error",
+      "lastRun": {
+        "timestamp": "2026-02-21T07:30:00Z",
+        "duration": "0m 45s",
+        "durationMs": 45000,
+        "opportunitiesFound": 0,
+        "opportunitiesPublished": 0,
+        "status": "failed",
+        "error": "FinBERT model timeout — sentiment analysis service unresponsive after 30s"
+      },
+      "nextRunAt": "2026-02-22T07:30:00Z",
+      "history": [
+        {
+          "id": "run-009",
+          "timestamp": "2026-02-21T07:30:00Z",
+          "duration": "0m 45s",
+          "opportunitiesFound": 0,
+          "opportunitiesPublished": 0,
+          "status": "failed",
+          "triggerType": "scheduled"
+        },
+        {
+          "id": "run-010",
+          "timestamp": "2026-02-20T07:30:00Z",
+          "duration": "8m 12s",
+          "opportunitiesFound": 9,
+          "opportunitiesPublished": 7,
+          "status": "completed",
+          "triggerType": "scheduled"
+        },
+        {
+          "id": "run-011",
+          "timestamp": "2026-02-19T12:00:00Z",
+          "duration": "7m 55s",
+          "opportunitiesFound": 7,
+          "opportunitiesPublished": 5,
+          "status": "completed",
+          "triggerType": "manual"
+        }
+      ]
+    }
+  ],
+
+  "sectors": [
+    {
+      "id": "sector-tech",
+      "name": "Technology",
+      "isSystem": true,
+      "instruments": ["AAPL", "MSFT", "NVDA", "GOOGL", "META", "AMZN", "CRM", "ADBE", "ORCL", "INTC", "AMD", "AVGO"]
+    },
+    {
+      "id": "sector-healthcare",
+      "name": "Healthcare",
+      "isSystem": true,
+      "instruments": ["JNJ", "UNH", "PFE", "ABBV", "MRK", "LLY", "TMO", "ABT"]
+    },
+    {
+      "id": "sector-finance",
+      "name": "Finance",
+      "isSystem": true,
+      "instruments": ["JPM", "BAC", "WFC", "GS", "MS", "BLK", "C", "AXP", "V", "MA"]
+    },
+    {
+      "id": "sector-energy",
+      "name": "Energy",
+      "isSystem": true,
+      "instruments": ["XOM", "CVX", "COP", "SLB", "EOG", "MPC"]
+    },
+    {
+      "id": "sector-consumer",
+      "name": "Consumer",
+      "isSystem": true,
+      "instruments": ["TSLA", "NKE", "SBUX", "MCD", "DIS", "HD", "LOW", "TGT", "COST"]
+    },
+    {
+      "id": "sector-industrial",
+      "name": "Industrial",
+      "isSystem": true,
+      "instruments": ["BA", "CAT", "HON", "UPS", "RTX", "DE", "GE"]
+    },
+    {
+      "id": "sector-realestate",
+      "name": "Real Estate",
+      "isSystem": true,
+      "instruments": ["AMT", "PLD", "CCI", "SPG", "O"]
+    },
+    {
+      "id": "sector-utilities",
+      "name": "Utilities",
+      "isSystem": true,
+      "instruments": ["NEE", "DUK", "SO", "D"]
+    },
+    {
+      "id": "sector-defi",
+      "name": "DeFi",
+      "isSystem": false,
+      "instruments": ["ETH/EUR", "SOL/EUR", "AVAX/EUR"]
+    }
+  ],
+
+  "dashboardStats": {
+    "activeRecommendations": 5,
+    "newSinceLastVisit": 3,
+    "marketSentiment": 62,
+    "marketSentimentLabel": "neutral",
+    "nextResearchRun": {
+      "jobName": "Crypto High Cap",
+      "countdownMs": 37020000,
+      "isRunning": false
+    },
+    "topGuruMove": {
+      "guruName": "Berkshire",
+      "action": "+15%",
+      "symbol": "AAPL"
+    }
+  }
+}

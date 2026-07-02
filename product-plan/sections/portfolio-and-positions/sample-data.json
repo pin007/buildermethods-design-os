@@ -1,0 +1,996 @@
+{
+  "_meta": {
+    "models": {
+      "brokers": "A connected trading platform (Interactive Brokers for stocks/options, Binance for crypto). Same brokers used across Trading Core and Portfolio & Positions.",
+      "instruments": "Tradable assets with real-time price data. Extended from Trading Core with additional instruments used in watchlists.",
+      "portfolios": "Named collections of positions and cash. Each portfolio has summary stats, an equity curve for charting, and allocation breakdowns.",
+      "positions": "Open holdings within a portfolio, each with FIFO cost lots, tax status, and real-time P&L calculations.",
+      "costLots": "Individual FIFO purchase lots within a position. Each lot tracks original quantity, remaining quantity, per-unit cost, and acquisition date for tax purposes.",
+      "watchlists": "Named lists of instruments a user is monitoring, with items that include notes and optional price alerts.",
+      "dividends": "Income events from held positions. Records gross amount, withholding tax, ex-date, pay-date, and CZK conversion for Czech tax reporting.",
+      "dividendSummaries": "Pre-computed income totals grouped by period (monthly, quarterly, annual).",
+      "upcomingDividends": "Projected dividend payments based on upcoming ex-dates for currently held positions.",
+      "yieldMetrics": "Dividend yield calculations per position: yield on cost vs current yield, and annualized income.",
+      "benchmarkComparison": "Portfolio performance vs a benchmark index (e.g., SPY) using time-weighted returns.",
+      "marginInfo": "Margin usage, buying power, and margin call risk for portfolios with leverage enabled."
+    },
+    "relationships": [
+      "Each Portfolio contains many Positions and CashBalances across one or more Brokers",
+      "Each Position contains one or more CostLots representing FIFO purchase lots",
+      "Each Position belongs to a Portfolio, a Broker, and an Instrument",
+      "Each Watchlist contains many WatchlistItems, each targeting an Instrument",
+      "Each Dividend belongs to a Position and records income from that holding",
+      "BenchmarkComparison is computed per Portfolio for a selected benchmark and time period",
+      "MarginInfo is computed per Portfolio from broker-reported margin data",
+      "Equity curve and allocation data are computed per Portfolio and aggregated across all Portfolios for the overview"
+    ]
+  },
+
+  "brokers": [
+    {
+      "id": "broker-ib",
+      "name": "Interactive Brokers",
+      "shortName": "IB",
+      "status": "connected",
+      "assetTypes": ["stock", "option"],
+      "baseCurrency": "USD",
+      "connectedAt": "2025-11-15T08:00:00Z"
+    },
+    {
+      "id": "broker-binance",
+      "name": "Binance",
+      "shortName": "Binance",
+      "status": "connected",
+      "assetTypes": ["crypto"],
+      "baseCurrency": "EUR",
+      "connectedAt": "2025-12-02T10:30:00Z"
+    }
+  ],
+
+  "instruments": [
+    {
+      "id": "inst-aapl",
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 179.45,
+      "dayChange": 1.23,
+      "dayChangePercent": 0.69
+    },
+    {
+      "id": "inst-nvda",
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 131.80,
+      "dayChange": 3.45,
+      "dayChangePercent": 2.69
+    },
+    {
+      "id": "inst-tsla",
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 248.50,
+      "dayChange": -4.20,
+      "dayChangePercent": -1.66
+    },
+    {
+      "id": "inst-msft",
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 415.60,
+      "dayChange": 2.10,
+      "dayChangePercent": 0.51
+    },
+    {
+      "id": "inst-amzn",
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 198.75,
+      "dayChange": 0.85,
+      "dayChangePercent": 0.43
+    },
+    {
+      "id": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "name": "Bitcoin",
+      "assetType": "crypto",
+      "exchange": "Binance",
+      "currency": "EUR",
+      "currentPrice": 89234.50,
+      "dayChange": -1245.30,
+      "dayChangePercent": -1.38
+    },
+    {
+      "id": "inst-eth-eur",
+      "symbol": "ETH/EUR",
+      "name": "Ethereum",
+      "assetType": "crypto",
+      "exchange": "Binance",
+      "currency": "EUR",
+      "currentPrice": 2876.40,
+      "dayChange": 45.80,
+      "dayChangePercent": 1.62
+    },
+    {
+      "id": "inst-sol-eur",
+      "symbol": "SOL/EUR",
+      "name": "Solana",
+      "assetType": "crypto",
+      "exchange": "Binance",
+      "currency": "EUR",
+      "currentPrice": 142.30,
+      "dayChange": 8.50,
+      "dayChangePercent": 6.35
+    },
+    {
+      "id": "inst-googl",
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 175.30,
+      "dayChange": 0.95,
+      "dayChangePercent": 0.54
+    },
+    {
+      "id": "inst-meta",
+      "symbol": "META",
+      "name": "Meta Platforms Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 612.40,
+      "dayChange": 8.75,
+      "dayChangePercent": 1.45
+    },
+    {
+      "id": "inst-amd",
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 118.90,
+      "dayChange": -2.30,
+      "dayChangePercent": -1.90
+    },
+    {
+      "id": "inst-nflx",
+      "symbol": "NFLX",
+      "name": "Netflix Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 925.60,
+      "dayChange": 12.40,
+      "dayChangePercent": 1.36
+    },
+    {
+      "id": "inst-dis",
+      "symbol": "DIS",
+      "name": "Walt Disney Co",
+      "assetType": "stock",
+      "exchange": "NYSE",
+      "currency": "USD",
+      "currentPrice": 112.80,
+      "dayChange": -0.45,
+      "dayChangePercent": -0.40
+    },
+    {
+      "id": "inst-coin",
+      "symbol": "COIN",
+      "name": "Coinbase Global Inc",
+      "assetType": "stock",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "currentPrice": 265.70,
+      "dayChange": 15.30,
+      "dayChangePercent": 6.11
+    }
+  ],
+
+  "aggregatedOverview": {
+    "totalNetWorthUsd": 23301.00,
+    "totalDayPnLUsd": 133.20,
+    "totalDayPnLPercent": 0.57,
+    "totalCashUsd": 3014.20,
+    "totalUnrealizedPnLUsd": 4236.78,
+    "totalUnrealizedPnLPercent": 28.61,
+    "portfolioCount": 2,
+    "positionCount": 8,
+    "combinedEquityCurve": [
+      { "date": "2025-03-01", "valueUsd": 13057 },
+      { "date": "2025-04-01", "valueUsd": 13958 },
+      { "date": "2025-05-01", "valueUsd": 15068 },
+      { "date": "2025-06-01", "valueUsd": 14434 },
+      { "date": "2025-07-01", "valueUsd": 15693 },
+      { "date": "2025-08-01", "valueUsd": 16144 },
+      { "date": "2025-09-01", "valueUsd": 16419 },
+      { "date": "2025-10-01", "valueUsd": 17912 },
+      { "date": "2025-11-01", "valueUsd": 18913 },
+      { "date": "2025-12-01", "valueUsd": 19689 },
+      { "date": "2026-01-01", "valueUsd": 21457 },
+      { "date": "2026-02-20", "valueUsd": 23301 }
+    ],
+    "allocationByPortfolio": [
+      { "name": "US Equities", "valueUsd": 12915.05, "percent": 55.4 },
+      { "name": "Crypto Trading", "valueUsd": 10385.95, "percent": 44.6 }
+    ],
+    "allocationByBroker": [
+      { "name": "Interactive Brokers", "valueUsd": 12915.05, "percent": 55.4 },
+      { "name": "Binance", "valueUsd": 10385.95, "percent": 44.6 }
+    ],
+    "allocationByAssetType": [
+      { "name": "Stocks", "valueUsd": 10465.05, "percent": 44.9 },
+      { "name": "Crypto", "valueUsd": 9821.75, "percent": 42.1 },
+      { "name": "Cash", "valueUsd": 3014.20, "percent": 12.9 }
+    ]
+  },
+
+  "portfolios": [
+    {
+      "id": "port-us-equities",
+      "name": "US Equities",
+      "currency": "USD",
+      "brokerId": "broker-ib",
+      "totalValue": 12915.05,
+      "totalPositionsValue": 10465.05,
+      "cashBalance": 2450.00,
+      "dayPnL": 67.35,
+      "dayPnLPercent": 0.52,
+      "unrealizedPnL": 1599.85,
+      "unrealizedPnLPercent": 18.04,
+      "positionCount": 5,
+      "hasMargin": true,
+      "equityCurve": [
+        { "date": "2025-03-01", "value": 8500 },
+        { "date": "2025-04-01", "value": 8750 },
+        { "date": "2025-05-01", "value": 9100 },
+        { "date": "2025-06-01", "value": 8900 },
+        { "date": "2025-07-01", "value": 9400 },
+        { "date": "2025-08-01", "value": 9200 },
+        { "date": "2025-09-01", "value": 9800 },
+        { "date": "2025-10-01", "value": 10100 },
+        { "date": "2025-11-01", "value": 10450 },
+        { "date": "2025-12-01", "value": 10900 },
+        { "date": "2026-01-01", "value": 11800 },
+        { "date": "2026-02-20", "value": 12915 }
+      ],
+      "allocation": [
+        { "name": "MSFT", "value": 3324.80, "percent": 25.7 },
+        { "name": "AAPL", "value": 2691.75, "percent": 20.8 },
+        { "name": "AMZN", "value": 2385.00, "percent": 18.5 },
+        { "name": "Cash", "value": 2450.00, "percent": 19.0 },
+        { "name": "NVDA", "value": 1318.00, "percent": 10.2 },
+        { "name": "TSLA", "value": 745.50, "percent": 5.8 }
+      ]
+    },
+    {
+      "id": "port-crypto",
+      "name": "Crypto Trading",
+      "currency": "EUR",
+      "brokerId": "broker-binance",
+      "totalValue": 9571.81,
+      "totalPositionsValue": 9051.81,
+      "cashBalance": 520.00,
+      "dayPnL": 60.69,
+      "dayPnLPercent": 0.64,
+      "unrealizedPnL": 2685.81,
+      "unrealizedPnLPercent": 42.17,
+      "positionCount": 3,
+      "hasMargin": false,
+      "equityCurve": [
+        { "date": "2025-03-01", "value": 4200 },
+        { "date": "2025-04-01", "value": 4800 },
+        { "date": "2025-05-01", "value": 5500 },
+        { "date": "2025-06-01", "value": 5100 },
+        { "date": "2025-07-01", "value": 5800 },
+        { "date": "2025-08-01", "value": 6400 },
+        { "date": "2025-09-01", "value": 6100 },
+        { "date": "2025-10-01", "value": 7200 },
+        { "date": "2025-11-01", "value": 7800 },
+        { "date": "2025-12-01", "value": 8100 },
+        { "date": "2026-01-01", "value": 8900 },
+        { "date": "2026-02-20", "value": 9572 }
+      ],
+      "allocation": [
+        { "name": "BTC/EUR", "value": 4461.73, "percent": 46.6 },
+        { "name": "ETH/EUR", "value": 3451.68, "percent": 36.1 },
+        { "name": "SOL/EUR", "value": 1138.40, "percent": 11.9 },
+        { "name": "Cash", "value": 520.00, "percent": 5.4 }
+      ]
+    }
+  ],
+
+  "positions": [
+    {
+      "id": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc",
+      "brokerId": "broker-ib",
+      "brokerShortName": "IB",
+      "quantity": 15,
+      "avgCostBasis": 152.60,
+      "currentPrice": 179.45,
+      "marketValue": 2691.75,
+      "unrealizedPnL": 402.75,
+      "unrealizedPnLPercent": 17.59,
+      "dayChange": 18.45,
+      "dayChangePercent": 0.69,
+      "weightPercent": 20.8,
+      "currency": "USD",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2024-03-15",
+      "daysHeld": 707,
+      "taxExemptionDate": "2027-03-15",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-aapl-1",
+          "acquiredAt": "2024-03-15",
+          "originalQuantity": 12,
+          "remainingQuantity": 10,
+          "costPerUnit": 142.50,
+          "totalCost": 1425.00,
+          "currentValue": 1794.50,
+          "unrealizedPnL": 369.50,
+          "daysHeld": 707,
+          "taxExemptionDate": "2027-03-15"
+        },
+        {
+          "id": "lot-aapl-2",
+          "acquiredAt": "2025-09-22",
+          "originalQuantity": 5,
+          "remainingQuantity": 5,
+          "costPerUnit": 172.80,
+          "totalCost": 864.00,
+          "currentValue": 897.25,
+          "unrealizedPnL": 33.25,
+          "daysHeld": 151,
+          "taxExemptionDate": "2028-09-22"
+        }
+      ]
+    },
+    {
+      "id": "pos-msft",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "brokerId": "broker-ib",
+      "brokerShortName": "IB",
+      "quantity": 8,
+      "avgCostBasis": 412.30,
+      "currentPrice": 415.60,
+      "marketValue": 3324.80,
+      "unrealizedPnL": 26.40,
+      "unrealizedPnLPercent": 0.80,
+      "dayChange": 16.80,
+      "dayChangePercent": 0.51,
+      "weightPercent": 25.7,
+      "currency": "USD",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2026-02-09",
+      "daysHeld": 11,
+      "taxExemptionDate": "2029-02-09",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-msft-1",
+          "acquiredAt": "2026-02-09",
+          "originalQuantity": 8,
+          "remainingQuantity": 8,
+          "costPerUnit": 412.30,
+          "totalCost": 3298.40,
+          "currentValue": 3324.80,
+          "unrealizedPnL": 26.40,
+          "daysHeld": 11,
+          "taxExemptionDate": "2029-02-09"
+        }
+      ]
+    },
+    {
+      "id": "pos-nvda",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-nvda",
+      "symbol": "NVDA",
+      "instrumentName": "NVIDIA Corporation",
+      "brokerId": "broker-ib",
+      "brokerShortName": "IB",
+      "quantity": 10,
+      "avgCostBasis": 130.05,
+      "currentPrice": 131.80,
+      "marketValue": 1318.00,
+      "unrealizedPnL": 17.50,
+      "unrealizedPnLPercent": 1.35,
+      "dayChange": 34.50,
+      "dayChangePercent": 2.69,
+      "weightPercent": 10.2,
+      "currency": "USD",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2026-02-03",
+      "daysHeld": 17,
+      "taxExemptionDate": "2029-02-03",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-nvda-1",
+          "acquiredAt": "2026-02-03",
+          "originalQuantity": 10,
+          "remainingQuantity": 10,
+          "costPerUnit": 130.05,
+          "totalCost": 1300.50,
+          "currentValue": 1318.00,
+          "unrealizedPnL": 17.50,
+          "daysHeld": 17,
+          "taxExemptionDate": "2029-02-03"
+        }
+      ]
+    },
+    {
+      "id": "pos-amzn",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-amzn",
+      "symbol": "AMZN",
+      "instrumentName": "Amazon.com Inc",
+      "brokerId": "broker-ib",
+      "brokerShortName": "IB",
+      "quantity": 12,
+      "avgCostBasis": 98.45,
+      "currentPrice": 198.75,
+      "marketValue": 2385.00,
+      "unrealizedPnL": 1203.60,
+      "unrealizedPnLPercent": 101.89,
+      "dayChange": 10.20,
+      "dayChangePercent": 0.43,
+      "weightPercent": 18.5,
+      "currency": "USD",
+      "taxStatus": "exempt",
+      "earliestAcquisition": "2022-11-20",
+      "daysHeld": 1188,
+      "taxExemptionDate": "2025-11-20",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-amzn-1",
+          "acquiredAt": "2022-11-20",
+          "originalQuantity": 12,
+          "remainingQuantity": 12,
+          "costPerUnit": 98.45,
+          "totalCost": 1181.40,
+          "currentValue": 2385.00,
+          "unrealizedPnL": 1203.60,
+          "daysHeld": 1188,
+          "taxExemptionDate": "2025-11-20"
+        }
+      ]
+    },
+    {
+      "id": "pos-tsla",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-tsla",
+      "symbol": "TSLA",
+      "instrumentName": "Tesla Inc",
+      "brokerId": "broker-ib",
+      "brokerShortName": "IB",
+      "quantity": 3,
+      "avgCostBasis": 265.30,
+      "currentPrice": 248.50,
+      "marketValue": 745.50,
+      "unrealizedPnL": -50.40,
+      "unrealizedPnLPercent": -6.33,
+      "dayChange": -12.60,
+      "dayChangePercent": -1.66,
+      "weightPercent": 5.8,
+      "currency": "USD",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2025-12-05",
+      "daysHeld": 77,
+      "taxExemptionDate": "2028-12-05",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-tsla-1",
+          "acquiredAt": "2025-12-05",
+          "originalQuantity": 3,
+          "remainingQuantity": 3,
+          "costPerUnit": 265.30,
+          "totalCost": 795.90,
+          "currentValue": 745.50,
+          "unrealizedPnL": -50.40,
+          "daysHeld": 77,
+          "taxExemptionDate": "2028-12-05"
+        }
+      ]
+    },
+    {
+      "id": "pos-btc",
+      "portfolioId": "port-crypto",
+      "instrumentId": "inst-btc-eur",
+      "symbol": "BTC/EUR",
+      "instrumentName": "Bitcoin",
+      "brokerId": "broker-binance",
+      "brokerShortName": "Binance",
+      "quantity": 0.05,
+      "avgCostBasis": 75400.00,
+      "currentPrice": 89234.50,
+      "marketValue": 4461.73,
+      "unrealizedPnL": 691.73,
+      "unrealizedPnLPercent": 18.35,
+      "dayChange": -62.27,
+      "dayChangePercent": -1.38,
+      "weightPercent": 46.6,
+      "currency": "EUR",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2025-06-10",
+      "daysHeld": 255,
+      "taxExemptionDate": "2028-06-10",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-btc-1",
+          "acquiredAt": "2025-06-10",
+          "originalQuantity": 0.03,
+          "remainingQuantity": 0.03,
+          "costPerUnit": 68200.00,
+          "totalCost": 2046.00,
+          "currentValue": 2677.04,
+          "unrealizedPnL": 631.04,
+          "daysHeld": 255,
+          "taxExemptionDate": "2028-06-10"
+        },
+        {
+          "id": "lot-btc-2",
+          "acquiredAt": "2026-02-10",
+          "originalQuantity": 0.01,
+          "remainingQuantity": 0.01,
+          "costPerUnit": 88500.00,
+          "totalCost": 885.00,
+          "currentValue": 892.35,
+          "unrealizedPnL": 7.35,
+          "daysHeld": 10,
+          "taxExemptionDate": "2029-02-10"
+        },
+        {
+          "id": "lot-btc-3",
+          "acquiredAt": "2026-02-10",
+          "originalQuantity": 0.01,
+          "remainingQuantity": 0.01,
+          "costPerUnit": 88490.00,
+          "totalCost": 884.90,
+          "currentValue": 892.35,
+          "unrealizedPnL": 7.45,
+          "daysHeld": 10,
+          "taxExemptionDate": "2029-02-10"
+        }
+      ]
+    },
+    {
+      "id": "pos-eth",
+      "portfolioId": "port-crypto",
+      "instrumentId": "inst-eth-eur",
+      "symbol": "ETH/EUR",
+      "instrumentName": "Ethereum",
+      "brokerId": "broker-binance",
+      "brokerShortName": "Binance",
+      "quantity": 1.2,
+      "avgCostBasis": 2340.00,
+      "currentPrice": 2876.40,
+      "marketValue": 3451.68,
+      "unrealizedPnL": 643.68,
+      "unrealizedPnLPercent": 22.92,
+      "dayChange": 54.96,
+      "dayChangePercent": 1.62,
+      "weightPercent": 36.1,
+      "currency": "EUR",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2025-04-22",
+      "daysHeld": 304,
+      "taxExemptionDate": "2028-04-22",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-eth-1",
+          "acquiredAt": "2025-04-22",
+          "originalQuantity": 1.2,
+          "remainingQuantity": 1.2,
+          "costPerUnit": 2340.00,
+          "totalCost": 2808.00,
+          "currentValue": 3451.68,
+          "unrealizedPnL": 643.68,
+          "daysHeld": 304,
+          "taxExemptionDate": "2028-04-22"
+        }
+      ]
+    },
+    {
+      "id": "pos-sol",
+      "portfolioId": "port-crypto",
+      "instrumentId": "inst-sol-eur",
+      "symbol": "SOL/EUR",
+      "instrumentName": "Solana",
+      "brokerId": "broker-binance",
+      "brokerShortName": "Binance",
+      "quantity": 8,
+      "avgCostBasis": 98.50,
+      "currentPrice": 142.30,
+      "marketValue": 1138.40,
+      "unrealizedPnL": 350.40,
+      "unrealizedPnLPercent": 44.47,
+      "dayChange": 68.00,
+      "dayChangePercent": 6.35,
+      "weightPercent": 11.9,
+      "currency": "EUR",
+      "taxStatus": "taxable",
+      "earliestAcquisition": "2025-09-03",
+      "daysHeld": 170,
+      "taxExemptionDate": "2028-09-03",
+      "status": "open",
+      "costLots": [
+        {
+          "id": "lot-sol-1",
+          "acquiredAt": "2025-09-03",
+          "originalQuantity": 8,
+          "remainingQuantity": 8,
+          "costPerUnit": 98.50,
+          "totalCost": 788.00,
+          "currentValue": 1138.40,
+          "unrealizedPnL": 350.40,
+          "daysHeld": 170,
+          "taxExemptionDate": "2028-09-03"
+        }
+      ]
+    }
+  ],
+
+  "watchlists": [
+    {
+      "id": "wl-tech-earnings",
+      "name": "Tech Earnings",
+      "itemCount": 4,
+      "createdAt": "2025-12-10T09:00:00Z",
+      "items": [
+        {
+          "id": "wli-001",
+          "instrumentId": "inst-googl",
+          "symbol": "GOOGL",
+          "instrumentName": "Alphabet Inc",
+          "currentPrice": 175.30,
+          "dayChange": 0.95,
+          "dayChangePercent": 0.54,
+          "notes": "Q4 earnings Feb 4 — strong cloud growth expected. Wait for post-earnings pullback.",
+          "alertPriceAbove": 180.00,
+          "alertPriceBelow": 165.00,
+          "alertTriggered": false,
+          "addedAt": "2025-12-10T09:05:00Z"
+        },
+        {
+          "id": "wli-002",
+          "instrumentId": "inst-meta",
+          "symbol": "META",
+          "instrumentName": "Meta Platforms Inc",
+          "currentPrice": 612.40,
+          "dayChange": 8.75,
+          "dayChangePercent": 1.45,
+          "notes": "Reels monetization improving. Entry target $580.",
+          "alertPriceAbove": null,
+          "alertPriceBelow": 580.00,
+          "alertTriggered": false,
+          "addedAt": "2025-12-15T14:20:00Z"
+        },
+        {
+          "id": "wli-003",
+          "instrumentId": "inst-amd",
+          "symbol": "AMD",
+          "instrumentName": "Advanced Micro Devices",
+          "currentPrice": 118.90,
+          "dayChange": -2.30,
+          "dayChangePercent": -1.90,
+          "notes": "MI300X AI chip ramp. Competitor to NVDA at lower valuation.",
+          "alertPriceAbove": null,
+          "alertPriceBelow": 110.00,
+          "alertTriggered": false,
+          "addedAt": "2026-01-08T11:30:00Z"
+        },
+        {
+          "id": "wli-004",
+          "instrumentId": "inst-nvda",
+          "symbol": "NVDA",
+          "instrumentName": "NVIDIA Corporation",
+          "currentPrice": 131.80,
+          "dayChange": 3.45,
+          "dayChangePercent": 2.69,
+          "notes": "Already holding 10 shares. Watch for add opportunity on dip below $125.",
+          "alertPriceAbove": null,
+          "alertPriceBelow": 125.00,
+          "alertTriggered": false,
+          "addedAt": "2026-02-05T10:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "wl-watching-entry",
+      "name": "Watching for Entry",
+      "itemCount": 3,
+      "createdAt": "2026-01-15T08:00:00Z",
+      "items": [
+        {
+          "id": "wli-005",
+          "instrumentId": "inst-nflx",
+          "symbol": "NFLX",
+          "instrumentName": "Netflix Inc",
+          "currentPrice": 925.60,
+          "dayChange": 12.40,
+          "dayChangePercent": 1.36,
+          "notes": "Overextended at $925. Wait for mean reversion to $850 range.",
+          "alertPriceAbove": null,
+          "alertPriceBelow": 850.00,
+          "alertTriggered": false,
+          "addedAt": "2026-01-15T08:10:00Z"
+        },
+        {
+          "id": "wli-006",
+          "instrumentId": "inst-dis",
+          "symbol": "DIS",
+          "instrumentName": "Walt Disney Co",
+          "currentPrice": 112.80,
+          "dayChange": -0.45,
+          "dayChangePercent": -0.40,
+          "notes": "Streaming profitability turning corner. Parks revenue strong.",
+          "alertPriceAbove": 120.00,
+          "alertPriceBelow": null,
+          "alertTriggered": false,
+          "addedAt": "2026-01-20T16:00:00Z"
+        },
+        {
+          "id": "wli-007",
+          "instrumentId": "inst-coin",
+          "symbol": "COIN",
+          "instrumentName": "Coinbase Global Inc",
+          "currentPrice": 265.70,
+          "dayChange": 15.30,
+          "dayChangePercent": 6.11,
+          "notes": "",
+          "alertPriceAbove": 280.00,
+          "alertPriceBelow": 220.00,
+          "alertTriggered": false,
+          "addedAt": "2026-02-01T09:30:00Z"
+        }
+      ]
+    },
+    {
+      "id": "wl-macro-plays",
+      "name": "Macro Plays",
+      "itemCount": 0,
+      "createdAt": "2026-02-18T12:00:00Z",
+      "items": []
+    }
+  ],
+
+  "dividends": [
+    {
+      "id": "div-001",
+      "positionId": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "exDate": "2025-02-07",
+      "payDate": "2025-02-13",
+      "amountPerShare": 0.24,
+      "quantity": 10,
+      "totalUsd": 2.40,
+      "totalCzk": 56.28,
+      "withholdingTaxUsd": 0.36,
+      "exchangeRateCzkUsd": 23.45,
+      "isDrip": false
+    },
+    {
+      "id": "div-002",
+      "positionId": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "exDate": "2025-05-09",
+      "payDate": "2025-05-15",
+      "amountPerShare": 0.24,
+      "quantity": 10,
+      "totalUsd": 2.40,
+      "totalCzk": 55.92,
+      "withholdingTaxUsd": 0.36,
+      "exchangeRateCzkUsd": 23.30,
+      "isDrip": false
+    },
+    {
+      "id": "div-003",
+      "positionId": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "exDate": "2025-08-08",
+      "payDate": "2025-08-14",
+      "amountPerShare": 0.25,
+      "quantity": 10,
+      "totalUsd": 2.50,
+      "totalCzk": 58.63,
+      "withholdingTaxUsd": 0.38,
+      "exchangeRateCzkUsd": 23.45,
+      "isDrip": false
+    },
+    {
+      "id": "div-004",
+      "positionId": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "exDate": "2025-11-07",
+      "payDate": "2025-11-14",
+      "amountPerShare": 0.25,
+      "quantity": 15,
+      "totalUsd": 3.75,
+      "totalCzk": 86.63,
+      "withholdingTaxUsd": 0.56,
+      "exchangeRateCzkUsd": 23.10,
+      "isDrip": true
+    },
+    {
+      "id": "div-005",
+      "positionId": "pos-aapl",
+      "portfolioId": "port-us-equities",
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "exDate": "2026-02-06",
+      "payDate": "2026-02-13",
+      "amountPerShare": 0.25,
+      "quantity": 15,
+      "totalUsd": 3.75,
+      "totalCzk": 87.94,
+      "withholdingTaxUsd": 0.56,
+      "exchangeRateCzkUsd": 23.45,
+      "isDrip": false
+    }
+  ],
+
+  "dividendSummaries": [
+    {
+      "portfolioId": "port-us-equities",
+      "period": "quarterly",
+      "summaries": [
+        { "periodStart": "2025-01-01", "periodEnd": "2025-03-31", "totalUsd": 2.40, "totalCzk": 56.28 },
+        { "periodStart": "2025-04-01", "periodEnd": "2025-06-30", "totalUsd": 2.40, "totalCzk": 55.92 },
+        { "periodStart": "2025-07-01", "periodEnd": "2025-09-30", "totalUsd": 2.50, "totalCzk": 58.63 },
+        { "periodStart": "2025-10-01", "periodEnd": "2025-12-31", "totalUsd": 3.75, "totalCzk": 86.63 },
+        { "periodStart": "2026-01-01", "periodEnd": "2026-03-31", "totalUsd": 3.75, "totalCzk": 87.94 }
+      ]
+    }
+  ],
+
+  "upcomingDividends": [
+    {
+      "instrumentId": "inst-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "exDate": "2026-03-19",
+      "estimatedAmountPerShare": 0.75,
+      "quantityHeld": 8,
+      "estimatedTotal": 6.00
+    },
+    {
+      "instrumentId": "inst-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc",
+      "exDate": "2026-05-09",
+      "estimatedAmountPerShare": 0.26,
+      "quantityHeld": 15,
+      "estimatedTotal": 3.90
+    }
+  ],
+
+  "yieldMetrics": [
+    {
+      "positionId": "pos-aapl",
+      "symbol": "AAPL",
+      "instrumentName": "Apple Inc",
+      "yieldOnCostPercent": 0.66,
+      "currentYieldPercent": 0.56,
+      "annualIncomeUsd": 15.00,
+      "annualIncomeCzk": 351.75
+    },
+    {
+      "positionId": "pos-msft",
+      "symbol": "MSFT",
+      "instrumentName": "Microsoft Corporation",
+      "yieldOnCostPercent": 0.73,
+      "currentYieldPercent": 0.72,
+      "annualIncomeUsd": 24.00,
+      "annualIncomeCzk": 562.80
+    },
+    {
+      "positionId": "pos-nvda",
+      "symbol": "NVDA",
+      "instrumentName": "NVIDIA Corporation",
+      "yieldOnCostPercent": 0.03,
+      "currentYieldPercent": 0.03,
+      "annualIncomeUsd": 0.40,
+      "annualIncomeCzk": 9.38
+    },
+    {
+      "positionId": "pos-amzn",
+      "symbol": "AMZN",
+      "instrumentName": "Amazon.com Inc",
+      "yieldOnCostPercent": 0,
+      "currentYieldPercent": 0,
+      "annualIncomeUsd": 0,
+      "annualIncomeCzk": 0
+    },
+    {
+      "positionId": "pos-tsla",
+      "symbol": "TSLA",
+      "instrumentName": "Tesla Inc",
+      "yieldOnCostPercent": 0,
+      "currentYieldPercent": 0,
+      "annualIncomeUsd": 0,
+      "annualIncomeCzk": 0
+    }
+  ],
+
+  "benchmarkComparison": {
+    "portfolioId": "port-us-equities",
+    "benchmark": "SPY",
+    "benchmarkName": "S&P 500 ETF",
+    "period": "YTD",
+    "portfolioReturnPercent": 8.59,
+    "benchmarkReturnPercent": 5.21,
+    "alphaPercent": 3.38,
+    "series": [
+      { "date": "2026-01-01", "portfolioReturn": 0, "benchmarkReturn": 0 },
+      { "date": "2026-01-08", "portfolioReturn": 1.2, "benchmarkReturn": 0.8 },
+      { "date": "2026-01-15", "portfolioReturn": 2.1, "benchmarkReturn": 1.4 },
+      { "date": "2026-01-22", "portfolioReturn": 3.5, "benchmarkReturn": 2.0 },
+      { "date": "2026-01-29", "portfolioReturn": 4.8, "benchmarkReturn": 2.9 },
+      { "date": "2026-02-05", "portfolioReturn": 5.3, "benchmarkReturn": 3.2 },
+      { "date": "2026-02-12", "portfolioReturn": 7.1, "benchmarkReturn": 4.5 },
+      { "date": "2026-02-20", "portfolioReturn": 8.59, "benchmarkReturn": 5.21 }
+    ],
+    "attribution": [
+      { "symbol": "AMZN", "instrumentName": "Amazon.com Inc", "contributionPercent": 1.85 },
+      { "symbol": "NVDA", "instrumentName": "NVIDIA Corporation", "contributionPercent": 0.62 },
+      { "symbol": "AAPL", "instrumentName": "Apple Inc", "contributionPercent": 0.41 },
+      { "symbol": "MSFT", "instrumentName": "Microsoft Corporation", "contributionPercent": 0.12 },
+      { "symbol": "Cash", "instrumentName": "Cash (opportunity cost)", "contributionPercent": -0.07 },
+      { "symbol": "TSLA", "instrumentName": "Tesla Inc", "contributionPercent": -0.18 }
+    ]
+  },
+
+  "marginInfo": {
+    "portfolioId": "port-us-equities",
+    "marginUsed": 3200.00,
+    "marginAvailable": 9700.00,
+    "marginUsagePercent": 24.8,
+    "buyingPower": 16100.00,
+    "marginCallDistancePercent": 58.2,
+    "alertThresholdPercent": 50.0,
+    "alertTriggered": false,
+    "marginCallRisk": [
+      { "symbol": "MSFT", "priceDropPercentToCall": -42.5 },
+      { "symbol": "AAPL", "priceDropPercentToCall": -55.8 },
+      { "symbol": "NVDA", "priceDropPercentToCall": -61.3 }
+    ]
+  }
+}
