@@ -8,6 +8,12 @@ import type {
 } from '@/../product/sections/trade-journal/types'
 import { JournalDashboard } from './components/JournalDashboard'
 
+const BASE = '/sections/trade-journal/screen-designs'
+
+function navigate(screen: string) {
+  window.location.href = `${BASE}/${screen}/fullscreen`
+}
+
 export default function JournalDashboardPreview() {
   return (
     <JournalDashboard
@@ -17,9 +23,9 @@ export default function JournalDashboardPreview() {
       habitScores={data.habitScores as unknown as HabitScores}
       portfolios={data.portfolios as unknown as Portfolio[]}
       onPortfolioFilter={(id) => console.log('Portfolio filter:', id)}
-      onViewEntry={(id) => console.log('View entry:', id)}
-      onCreateEntry={() => console.log('Create entry')}
-      onViewBehavioralPatterns={() => console.log('View behavioral patterns')}
+      onViewEntry={() => navigate('EntryDetail')}
+      onCreateEntry={() => navigate('Editor')}
+      onViewBehavioralPatterns={() => navigate('Behavioral')}
     />
   )
 }

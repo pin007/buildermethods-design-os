@@ -3,8 +3,9 @@ import { MarketDataOverview } from './components/MarketDataOverview'
 
 const BASE = '/sections/market-data/screen-designs'
 
-function navigate(screen: string) {
-  window.location.href = `${BASE}/${screen}/fullscreen`
+function navigate(screen: string, id?: string) {
+  const q = id ? `?id=${encodeURIComponent(id)}` : ''
+  window.location.href = `${BASE}/${screen}/fullscreen${q}`
 }
 
 export default function OverviewPreview() {
@@ -14,7 +15,7 @@ export default function OverviewPreview() {
       dataSources={data.dataSources as any}
       recentCorporateActions={data.corporateActions as any}
       recentQualityAlerts={data.qualityAlerts as any}
-      onViewSource={(sourceId) => console.log('View source:', sourceId)}
+      onViewSource={(id) => navigate('SourceDetail', id)}
       onViewAllCorporateActions={() => navigate('CorporateActions')}
       onViewAllQualityAlerts={() => navigate('DataQuality')}
       onConfigureSources={() => console.log('Configure sources')}

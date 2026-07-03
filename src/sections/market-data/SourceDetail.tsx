@@ -1,17 +1,23 @@
 import data from '@/../product/sections/market-data/data.json'
 import { SourceDetail } from './components/SourceDetail'
 
-// Show Yahoo Finance as the example source — it has the richest data:
-// 5 subscriptions, running + failed backfills, and quality alerts.
-const SOURCE_ID = 'src-yahoo'
-
-const dataSource = data.dataSources.find((s) => s.id === SOURCE_ID)!
-const subscriptions = data.instrumentSubscriptions.filter((s) => s.dataSourceId === SOURCE_ID)
-const fetchOperations = data.fetchOperations.filter((f) => f.dataSourceId === SOURCE_ID)
-const backfillTasks = data.backfillTasks.filter((t) => t.dataSourceId === SOURCE_ID)
-const qualityAlerts = data.qualityAlerts.filter((a) => a.dataSourceId === SOURCE_ID)
+// Default to Yahoo Finance — the richest example source (5 subscriptions,
+// running + failed backfills, quality alerts) — when no source is drilled into.
+const DEFAULT_SOURCE_ID = 'src-yahoo'
 
 export default function SourceDetailPreview() {
+  // Match the source the user drilled into (rec #5).
+  const selectedId = new URLSearchParams(window.location.search).get('id')
+  const SOURCE_ID = data.dataSources.some((s) => s.id === selectedId)
+    ? (selectedId as string)
+    : DEFAULT_SOURCE_ID
+
+  const dataSource = data.dataSources.find((s) => s.id === SOURCE_ID)!
+  const subscriptions = data.instrumentSubscriptions.filter((s) => s.dataSourceId === SOURCE_ID)
+  const fetchOperations = data.fetchOperations.filter((f) => f.dataSourceId === SOURCE_ID)
+  const backfillTasks = data.backfillTasks.filter((t) => t.dataSourceId === SOURCE_ID)
+  const qualityAlerts = data.qualityAlerts.filter((a) => a.dataSourceId === SOURCE_ID)
+
   return (
     <SourceDetail
       dataSource={dataSource as any}

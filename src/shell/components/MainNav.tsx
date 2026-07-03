@@ -50,7 +50,6 @@ export const navigationGroups: NavGroup[] = [
     items: [
       { label: 'Dashboard', href: '/', icon: LayoutDashboard },
       { label: 'Alerts', href: '/alerts', icon: Bell },
-      { label: 'Calendar', href: '/calendar', icon: Calendar },
     ],
   },
   {
@@ -58,6 +57,7 @@ export const navigationGroups: NavGroup[] = [
     collapsible: true,
     items: [
       { label: 'Orders', href: '/orders', icon: ShoppingCart },
+      { label: 'Calendar', href: '/calendar', icon: Calendar },
       { label: 'Portfolios', href: '/portfolios', icon: Wallet },
       {
         label: 'Market Data',

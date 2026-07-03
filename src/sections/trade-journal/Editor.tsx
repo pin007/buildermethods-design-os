@@ -2,6 +2,12 @@ import data from '@/../product/sections/trade-journal/data.json'
 import type { JournalEntry, UnjournaledTrade } from '@/../product/sections/trade-journal/types'
 import { JournalEntryEditor } from './components/JournalEntryEditor'
 
+const BASE = '/sections/trade-journal/screen-designs'
+
+function navigate(screen: string) {
+  window.location.href = `${BASE}/${screen}/fullscreen`
+}
+
 export default function JournalEntryEditorPreview() {
   // Edit mode: use the first entry (NVDA) — most complete with pre-trade, post-trade, tags
   const entry = data.journalEntries[0] as unknown as JournalEntry
@@ -23,8 +29,8 @@ export default function JournalEntryEditorPreview() {
       entry={entry}
       trade={null}
       availableTags={availableTags}
-      onSave={(formData) => console.log('Save entry:', formData)}
-      onCancel={() => console.log('Cancel editing')}
+      onSave={() => navigate('Entries')}
+      onCancel={() => navigate('Entries')}
       onDirtyChange={(isDirty) => console.log('Dirty state:', isDirty)}
     />
   )
