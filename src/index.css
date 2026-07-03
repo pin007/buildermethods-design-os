@@ -215,6 +215,54 @@
   }
 }
 
+/*
+  Tabular figures (referenced across tables/prices/P&L per the shell spec).
+  Keeps digit width constant so live-updating values don't jitter.
+*/
+@layer utilities {
+  .tabular,
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+}
+
+/*
+  Density system — recommendation #3.
+  Comfortable (default) vs Compact, toggled via `data-density` on the root and
+  persisted by the shell. Compact reduces Tailwind v4's `--spacing` unit *within
+  the content region only* (padding / gaps / margins shrink; the nav chrome and
+  type scale stay put), giving pro traders a denser scan without a rewrite.
+*/
+:root[data-density="compact"] #main-content {
+  --spacing: 0.208rem; /* ~17% tighter than the 0.25rem default */
+}
+
+/*
+  Skeleton loader — recommendation #7. Shimmer sweep with a reduced-motion
+  fallback to a static tint.
+*/
+@layer utilities {
+  .skeleton {
+    background-color: var(--muted);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--foreground) 8%, transparent),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  }
+  @keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none; background-image: none; }
+  }
+}
+
 /* Subtle page fade-in animation */
 @layer utilities {
   .animate-fade-in {
