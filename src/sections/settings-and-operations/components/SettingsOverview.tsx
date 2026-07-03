@@ -41,6 +41,36 @@ export function SettingsOverview({
         </p>
       </div>
 
+      {/* System Health */}
+      <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-5 py-4">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          System Health
+        </h3>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-emerald-500" />
+            <div>
+              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Brokers</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">1 connected, 1 degraded</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-emerald-500" />
+            <div>
+              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Data Pipeline</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">4 sources active</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-emerald-500" />
+            <div>
+              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Risk Limits</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">All within bounds</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Search bar */}
       <div className="relative">
         <Search
@@ -94,36 +124,6 @@ export function SettingsOverview({
           </button>
         </div>
       )}
-
-      {/* Quick status footer */}
-      <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-5 py-4">
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-          System Health
-        </h3>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" />
-            <div>
-              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Brokers</p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">1 connected, 1 degraded</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" />
-            <div>
-              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Data Pipeline</p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">4 sources active</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-emerald-500" />
-            <div>
-              <p className="text-xs font-medium text-zinc-900 dark:text-zinc-50">Risk Limits</p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">All within bounds</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
