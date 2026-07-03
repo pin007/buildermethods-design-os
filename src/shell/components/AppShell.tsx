@@ -392,7 +392,7 @@ export default function AppShell({
                       action: () => setDarkMode(!darkMode),
                     },
                     {
-                      label: density === 'comfortable' ? 'Compact Density' : 'Comfortable Density',
+                      label: density === 'comfortable' ? 'Compact' : 'Comfortable',
                       href: '#density',
                       icon: density === 'comfortable' ? Rows2 : Rows3,
                       action: () => setDensity(density === 'comfortable' ? 'compact' : 'comfortable'),

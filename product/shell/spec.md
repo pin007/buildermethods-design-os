@@ -70,7 +70,7 @@ A persistent, unmistakable indicator of the active trading environment, rendered
 - **Reduced motion:** the Live pulsing dot is suppressed under `prefers-reduced-motion`
 
 ## Content Density
-A per-user Comfortable/Compact density setting for the content region, letting power traders tighten tables and cards for scanning without a rebuild. Rendered as a toggle nav item in the **System** group directly beneath the Light/Dark theme toggle, mirroring that item's behavior: a single row whose label/icon name the mode it will switch to (Comfortable active → "Compact Density" + `Rows2` icon; Compact active → "Comfortable Density" + `Rows3` icon). Collapses to an icon-only row on the tablet/collapsed sidebar.
+A per-user Comfortable/Compact density setting for the content region, letting power traders tighten tables and cards for scanning without a rebuild. Rendered as a toggle nav item in the **System** group directly beneath the Light/Dark theme toggle, mirroring that item's behavior: a single row whose label/icon name the mode it will switch to (Comfortable active → "Compact" + `Rows2` icon; Compact active → "Comfortable" + `Rows3` icon). Collapses to an icon-only row on the tablet/collapsed sidebar.
 - **Mechanism:** sets `data-density="comfortable" | "compact"` on the document root; Compact reduces Tailwind's `--spacing` unit within the content region only (`#main-content`), so padding/gaps/margins shrink while the nav chrome and type scale stay fixed
 - **Default:** `comfortable`
 - **Persistence:** stored in `localStorage` (`density`)

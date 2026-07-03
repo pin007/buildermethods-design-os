@@ -131,20 +131,20 @@
    affects the *content region only* — navigation chrome and the
    type scale are unchanged. In the Tailwind v4 build this is
    implemented by reducing the base --spacing unit within
-   #main-content (~17% tighter); the equivalent scaled spacing
+   #main-content (~32% tighter); the equivalent scaled spacing
    tokens are shown here for reference.
    ========================================================= */
 [data-density="compact"] {
-  --spacing-1:  0.208rem;
-  --spacing-2:  0.417rem;
-  --spacing-3:  0.625rem;
-  --spacing-4:  0.833rem;
-  --spacing-5:  1.042rem;
-  --spacing-6:  1.25rem;
-  --spacing-8:  1.667rem;
-  --spacing-10: 2.083rem;
-  --spacing-12: 2.5rem;
-  --spacing-16: 3.333rem;
+  --spacing-1:  0.17rem;
+  --spacing-2:  0.34rem;
+  --spacing-3:  0.51rem;
+  --spacing-4:  0.68rem;
+  --spacing-5:  0.85rem;
+  --spacing-6:  1.02rem;
+  --spacing-8:  1.36rem;
+  --spacing-10: 1.7rem;
+  --spacing-12: 2.04rem;
+  --spacing-16: 2.72rem;
 }
 
 /* =========================================================
