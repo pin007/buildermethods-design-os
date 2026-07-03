@@ -22,7 +22,6 @@ interface AppShellProps {
   commandItems?: CommandItem[]
   orderPanelContent?: React.ReactNode
   banners?: Banner[]
-  breadcrumb?: React.ReactNode
   pageTitle?: string
   /** Trading environment — drives the persistent Paper/Live safety indicator. */
   tradingMode?: 'paper' | 'live'
@@ -113,7 +112,6 @@ export default function AppShell({
   commandItems = [],
   orderPanelContent,
   banners = [],
-  breadcrumb,
   pageTitle,
   tradingMode: tradingModeProp = 'paper',
   onNavigate,
@@ -532,12 +530,6 @@ export default function AppShell({
 
         {/* Scrollable content area — 24px padding */}
         <main id="main-content" className="flex-1 overflow-y-auto bg-background p-6">
-          {/* Optional breadcrumb area */}
-          {breadcrumb && (
-            <nav aria-label="Breadcrumb" className="mb-4">
-              {breadcrumb}
-            </nav>
-          )}
           {children}
         </main>
       </div>

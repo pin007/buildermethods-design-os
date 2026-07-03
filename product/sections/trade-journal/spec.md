@@ -16,21 +16,6 @@ Following specifications must be followed:
 
 Trade Journal MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Journal Dashboard: `Home > Trade Journal`
-- Journal Entries — Needs Review tab: `Home > Trade Journal > Entries > Needs Review`
-- Journal Entries — All Entries tab: `Home > Trade Journal > Entries > All Entries`
-- Journal Entries — Starred tab: `Home > Trade Journal > Entries > Starred`
-- Journal Entry Detail: `Home > Trade Journal > Entries > {Instrument} {Date}`
-- Journal Entry Editor (create): `Home > Trade Journal > Entries > New Entry`
-- Journal Entry Editor (edit): `Home > Trade Journal > Entries > {Instrument} {Date} > Edit`
-- Analytics — Performance tab: `Home > Trade Journal > Analytics > Performance`
-- Analytics — Process Scores tab: `Home > Trade Journal > Analytics > Process Scores`
-- Analytics — Attribution tab: `Home > Trade Journal > Analytics > Attribution`
-- Behavioral Patterns: `Home > Trade Journal > Behavioral Patterns`
-- Weekly Review: `Home > Trade Journal > Weekly Review`
-
 ### Toast Notifications
 All user-facing notifications use the shell's toast API (`toastRef.current()`). No inline notification rendering within section components. Toast variants:
 - Journal entry saved: success (green, 4s)
@@ -104,7 +89,7 @@ Minimum font size is 12px (`text-xs` / `--font-size-xs`). No `text-[10px]`, `tex
 - Tags displayed as badge pills; related trades shown as linked cards (click navigates to that entry's detail)
 - Attachments section: uploaded charts/screenshots displayed as thumbnails with lightbox view on click
 - Action buttons: Edit (primary, opens editor), Delete (danger, with Level 3 confirmation modal), Star/Unstar toggle (ghost)
-- Back navigation via breadcrumb
+- Back navigation via the browser Back button (shell integrates with browser history)
 - Empty sections (e.g., no pre-trade data) show subtle placeholder: "No pre-trade notes recorded" with "Edit to add" link
 
 ### Journal Entry Editor

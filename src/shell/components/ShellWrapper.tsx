@@ -10,8 +10,6 @@ import {
   Settings,
   Bell,
   Calendar,
-  Home,
-  ChevronRight,
 } from 'lucide-react'
 import AppShell from './AppShell'
 import { navigationGroups } from './MainNav'
@@ -59,22 +57,6 @@ const EXPLICIT_NAV_ROUTES: Record<string, { sectionId: string; screenName: strin
   '/trade-journal/behavioral': { sectionId: 'trade-journal', screenName: 'Behavioral' },
   '/trade-journal/review': { sectionId: 'trade-journal', screenName: 'Review' },
   '/settings': { sectionId: 'settings-and-operations', screenName: 'SettingsOverview' },
-}
-
-/**
- * Breadcrumb metadata for detail / secondary screens that aren't top-level nav
- * items (recommendation #5). Gives drill-down pages a labeled "Home › Section ›
- * Record" back path instead of a bare arrow. Keyed by `${sectionId}/${screen}`.
- */
-const SCREEN_BREADCRUMBS: Record<string, { parentHref: string; parentLabel: string; label: string }> = {
-  'portfolio-and-positions/PortfolioDetail': { parentHref: '/portfolios', parentLabel: 'Portfolios', label: 'Portfolio Detail' },
-  'market-data/SourceDetail': { parentHref: '/market-data', parentLabel: 'Market Data', label: 'Source Detail' },
-  'strategy-engine/StrategyDetail': { parentHref: '/strategies', parentLabel: 'Strategies', label: 'Strategy Detail' },
-  'strategy-engine/StrategyComparison': { parentHref: '/strategies', parentLabel: 'Strategies', label: 'Comparison' },
-  'strategy-engine/BacktestResults': { parentHref: '/strategies', parentLabel: 'Strategies', label: 'Backtest Results' },
-  'strategy-engine/WalkForwardResults': { parentHref: '/strategies', parentLabel: 'Strategies', label: 'Walk-Forward Results' },
-  'trade-journal/EntryDetail': { parentHref: '/trade-journal/entries', parentLabel: 'Entries', label: 'Entry Detail' },
-  'trade-journal/Editor': { parentHref: '/trade-journal/entries', parentLabel: 'Entries', label: 'Edit Entry' },
 }
 
 /**
@@ -154,40 +136,6 @@ export default function ShellWrapper({ children }: ShellWrapperProps) {
     }
   }
 
-  // Breadcrumb for detail/secondary screens (rec #5)
-  const breadcrumb = useMemo(() => {
-    const m = window.location.pathname.match(/\/sections\/([^/]+)\/screen-designs\/([^/]+)\/fullscreen/)
-    if (!m) return undefined
-    const meta = SCREEN_BREADCRUMBS[`${m[1]}/${m[2]}`]
-    if (!meta) return undefined
-    return (
-      <ol className="flex items-center gap-1.5 text-xs">
-        <li>
-          <button
-            onClick={() => handleNavigate('/')}
-            className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Home size={13} />
-            <span className="sr-only">Home</span>
-          </button>
-        </li>
-        <ChevronRight size={13} className="text-hint" aria-hidden="true" />
-        <li>
-          <button
-            onClick={() => handleNavigate(meta.parentHref)}
-            className="font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {meta.parentLabel}
-          </button>
-        </li>
-        <ChevronRight size={13} className="text-hint" aria-hidden="true" />
-        <li aria-current="page" className="font-medium text-hint">
-          {meta.label}
-        </li>
-      </ol>
-    )
-  }, [routeMap])
-
   // Wire command palette navigation items to the same routes
   const commandItems: CommandItem[] = useMemo(() => [
     { id: 'nav-dashboard', label: 'Dashboard', category: 'Navigation', icon: LayoutDashboard, action: () => handleNavigate('/') },
@@ -240,7 +188,6 @@ export default function ShellWrapper({ children }: ShellWrapperProps) {
         />
       }
       pageTitle={pageTitle}
-      breadcrumb={breadcrumb}
       onNavigate={handleNavigate}
       onLogout={() => console.log('Logout')}
       onEmergencyClose={(filter) => console.log('Emergency close:', filter)}

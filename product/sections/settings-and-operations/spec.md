@@ -20,7 +20,7 @@ Settings & Operations is the centralized configuration hub for the Trading Squad
 ## User Flows
 - User opens Settings and sees the overview grid with all 10 category cards showing current status summaries
 - User clicks a category card to drill into that category's detail page
-- Each detail page has a breadcrumb (Settings > Category Name) and a "Back to Settings" link
+- Each detail page has a "Back to Settings" link
 - User edits settings inline with form controls (inputs, toggles, sliders, selects, drag-to-reorder)
 - Sensitive fields (API keys, VAPID keys, webhook URLs) show masked values with a reveal toggle and "Rotate Key" action
 - Broker Gateways page shows live connection indicators (green/amber/red), latency, last heartbeat, and a "Test Connection" button per broker
@@ -40,7 +40,7 @@ Settings & Operations is the centralized configuration hub for the Trading Squad
 - Notification subscription matrix: Table with alert types as rows and channels as columns, checkbox cells
 - Colorblind-safe P&L palette: Toggle under Calendar & Display (appearance category, alongside the theme toggle). When enabled it sets `data-palette="cvd"` on the app root, swapping the green/red profit-loss semantic colors for a blue/orange pair that stays distinguishable under red-green color-vision deficiency (deuteranopia/protanopia). Directional up/down icons are always rendered on P&L values regardless of this setting, so meaning never depends on color alone.
 - All forms follow the Obsidian Forge design system — zinc backgrounds, pink-600 accents, DM Sans typography
-- Breadcrumb navigation on detail pages (Home > Settings > [Category])
+- "Back to Settings" link on detail pages (no breadcrumb chrome — the shell renders no breadcrumb)
 
 ## Configuration
 - shell: true

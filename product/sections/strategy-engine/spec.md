@@ -16,14 +16,6 @@ Following specifications must be followed:
 
 Strategy Engine MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Strategies: `Home > Strategies`
-- Strategy Detail: `Home > Strategies > {Strategy Name}`
-- Backtest Results: `Home > Strategies > {Strategy Name} > Backtest #{ID}`
-- Walk-Forward Results: `Home > Strategies > {Strategy Name} > Walk-Forward #{ID}`
-- Compare: `Home > Strategies > Compare`
-
 ### Toast Notifications
 All user-facing notifications use the shell's toast API. Toast variants:
 - Backtest queued: info (blue, 4s)

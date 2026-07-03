@@ -15,8 +15,6 @@ import {
   BookOpen,
   Settings,
   Bell,
-  Home,
-  ChevronRight,
   Calendar,
 } from 'lucide-react'
 
@@ -51,24 +49,24 @@ import alertsData from '@/../product/sections/alerts/data.json'
 import calendarData from '@/../product/sections/trading-calendar/data.json'
 
 // Route metadata
-const routeConfig: Record<string, { title: string; breadcrumb: string[] }> = {
-  '/': { title: 'Dashboard', breadcrumb: ['Dashboard'] },
-  '/alerts': { title: 'Alerts', breadcrumb: ['Alerts'] },
-  '/orders': { title: 'Orders', breadcrumb: ['Trading', 'Orders'] },
-  '/calendar': { title: 'Calendar', breadcrumb: ['Calendar'] },
-  '/portfolios': { title: 'Portfolios', breadcrumb: ['Trading', 'Portfolios'] },
-  '/market-data': { title: 'Market Data', breadcrumb: ['Trading', 'Market Data'] },
-  '/market-data/quality': { title: 'Data Quality', breadcrumb: ['Trading', 'Market Data', 'Data Quality'] },
-  '/market-data/corporate-actions': { title: 'Corporate Actions', breadcrumb: ['Trading', 'Market Data', 'Corporate Actions'] },
-  '/market-analysis': { title: 'Market Analysis', breadcrumb: ['Intelligence', 'Market Analysis'] },
-  '/strategies': { title: 'Strategies', breadcrumb: ['Intelligence', 'Strategies'] },
-  '/strategies/comparison': { title: 'Comparison', breadcrumb: ['Intelligence', 'Strategies', 'Comparison'] },
-  '/trade-journal': { title: 'Trade Journal', breadcrumb: ['Review', 'Trade Journal'] },
-  '/trade-journal/entries': { title: 'Entries', breadcrumb: ['Review', 'Trade Journal', 'Entries'] },
-  '/trade-journal/analytics': { title: 'Analytics', breadcrumb: ['Review', 'Trade Journal', 'Analytics'] },
-  '/trade-journal/behavioral': { title: 'Behavioral', breadcrumb: ['Review', 'Trade Journal', 'Behavioral'] },
-  '/trade-journal/review': { title: 'Weekly Review', breadcrumb: ['Review', 'Trade Journal', 'Weekly Review'] },
-  '/settings': { title: 'Settings', breadcrumb: ['System', 'Settings'] },
+const routeConfig: Record<string, { title: string }> = {
+  '/': { title: 'Dashboard' },
+  '/alerts': { title: 'Alerts' },
+  '/orders': { title: 'Orders' },
+  '/calendar': { title: 'Calendar' },
+  '/portfolios': { title: 'Portfolios' },
+  '/market-data': { title: 'Market Data' },
+  '/market-data/quality': { title: 'Data Quality' },
+  '/market-data/corporate-actions': { title: 'Corporate Actions' },
+  '/market-analysis': { title: 'Market Analysis' },
+  '/strategies': { title: 'Strategies' },
+  '/strategies/comparison': { title: 'Comparison' },
+  '/trade-journal': { title: 'Trade Journal' },
+  '/trade-journal/entries': { title: 'Entries' },
+  '/trade-journal/analytics': { title: 'Analytics' },
+  '/trade-journal/behavioral': { title: 'Behavioral' },
+  '/trade-journal/review': { title: 'Weekly Review' },
+  '/settings': { title: 'Settings' },
 }
 
 function getGroups(currentRoute: string) {
@@ -306,30 +304,6 @@ function MockOrderForm() {
       >
         {isBuy ? 'Place Buy Order' : 'Place Sell Order'}
       </button>
-    </div>
-  )
-}
-
-// Dynamic breadcrumb based on current route
-function RouteBreadcrumb({ route, onNavigate }: { route: string; onNavigate: (href: string) => void }) {
-  const config = routeConfig[route]
-  if (!config) return null
-
-  return (
-    <div className="flex items-center gap-1.5 text-sm">
-      <button onClick={() => onNavigate('/')} className="text-hint hover:text-foreground transition-colors">
-        <Home size={14} />
-      </button>
-      {config.breadcrumb.map((crumb, i) => (
-        <span key={i} className="flex items-center gap-1.5">
-          <ChevronRight size={12} className="text-faint" />
-          {i < config.breadcrumb.length - 1 ? (
-            <span className="text-muted-foreground">{crumb}</span>
-          ) : (
-            <span className="text-hint">{crumb}</span>
-          )}
-        </span>
-      ))}
     </div>
   )
 }
@@ -651,7 +625,6 @@ export default function ShellPreview() {
       commandItems={commandItems}
       orderPanelContent={<MockOrderForm />}
       banners={banners}
-      breadcrumb={<RouteBreadcrumb route={currentRoute} onNavigate={navigate} />}
       pageTitle={config.title}
       toastRef={toastRef}
       onNavigate={navigate}

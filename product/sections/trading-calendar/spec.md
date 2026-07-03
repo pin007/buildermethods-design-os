@@ -20,10 +20,6 @@ Requirements sourced from [trading-calendar.md](../../inputs/architecture/compon
 
 Trading Calendar MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop:
-- Calendar: `Home > Calendar`
-
 ### Toast Notifications
 All user-facing notifications use the shell's toast API. Toast variants:
 - Alert created: success (green, 4s)

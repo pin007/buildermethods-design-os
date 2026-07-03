@@ -16,13 +16,6 @@ Following specifications must be followed:
 
 Market Data MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Overview: `Home > Market Data`
-- Source Detail: `Home > Market Data > {Source Name}`
-- Corporate Actions: `Home > Market Data > Corporate Actions`
-- Data Quality: `Home > Market Data > Data Quality`
-
 ### Order Panel (Slide-Over)
 Not directly used by Market Data. No order entry triggers from this section.
 

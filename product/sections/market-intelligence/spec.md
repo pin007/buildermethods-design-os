@@ -16,21 +16,6 @@ Following specifications must be followed:
 
 Market Intelligence MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Dashboard (default): `Home > Market Analysis`
-- Recommendations tab: `Home > Market Analysis > Recommendations`
-- Sentiment tab: `Home > Market Analysis > Sentiment`
-- Guru Tracker tab: `Home > Market Analysis > Guru Tracker`
-- Research Schedule tab: `Home > Market Analysis > Research Schedule`
-- Recommendation Detail: `Home > Market Analysis > Recommendations > {Instrument}`
-- Guru Tracker — Add Guru: `Home > Market Analysis > Guru Tracker > Add Guru`
-- Guru Tracker — Edit Alert: `Home > Market Analysis > Guru Tracker > {Guru Name} > Edit Alert`
-- Sentiment — Manage Sources: `Home > Market Analysis > Sentiment > Manage Sources`
-- Sentiment — Edit Alert: `Home > Market Analysis > Sentiment > Alerts > {Instrument}`
-- Research Schedule — Create Job: `Home > Market Analysis > Research Schedule > Create Job`
-- Research Schedule — Edit Job: `Home > Market Analysis > Research Schedule > {Job Name} > Edit`
-
 ### Order Panel (Slide-Over)
 Recommendation "Create Order" and guru tracker "Follow Trade" actions open the shell's Order Panel pre-filled with relevant data (instrument, action, target prices). The section MUST NOT render its own panel, backdrop, or slide-in animation — those are provided by the shell's `OrderPanel`.
 

@@ -16,11 +16,6 @@ Following specifications must be followed:
 
 Portfolio & Positions MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Overview: `Home > Portfolios`
-- Portfolio Detail (any tab): `Home > Portfolios > {Portfolio Name}`
-
 ### Order Panel (Slide-Over)
 Positions table "Trade", "Close", and "Add" quick actions trigger the shell's `OrderPanel` with contextual pre-fill (instrument, side, quantity). The section MUST NOT render its own order entry UI — it delegates to the shell's panel via `AppShell.openOrderPanel({ symbol, side, quantity })`.
 

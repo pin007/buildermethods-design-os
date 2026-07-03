@@ -16,15 +16,6 @@ Following specifications must be followed:
 
 Trading Core MUST use all patterns provided by the application shell. No section-level chrome duplication.
 
-### Breadcrumbs
-All screens render breadcrumbs via the shell's `breadcrumb` prop. Breadcrumb paths use Home icon for root, clickable parents, current page in zinc-500 (non-clickable):
-- Dashboard: `Home > Dashboard`
-- Orders — Pending Approval tab: `Home > Orders > Pending Approval`
-- Orders — Open Orders tab: `Home > Orders > Open Orders`
-- Orders — Order History tab: `Home > Orders > Order History`
-- Order Detail: `Home > Orders > {Active Tab} > {Order ID}`
-- Approval Review: `Home > Orders > Pending Approval > Review #{Order ID}`
-
 ### Order Panel (Slide-Over)
 The New Order form renders as **content only** inside the shell's `OrderPanel` component (via `AppShell.orderPanelContent` prop). The section MUST NOT render its own:
 - Panel container, backdrop, or overlay
