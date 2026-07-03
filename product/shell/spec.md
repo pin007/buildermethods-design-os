@@ -47,9 +47,9 @@ All navigation chrome consolidated in the sidebar:
 - **Badge counts:** Pink badges on nav items (e.g., pending approvals on Orders, unread on Market Analysis)
 - **Broker status:** Connection dots (green/amber/red) for IB and Binance in footer
 - **Data freshness:** Market-data feed indicator in the footer (see Data Freshness)
-- **Density toggle:** Comfortable/Compact segmented control in the footer (see Content Density)
 - **Alerts:** Nav item in Overview group with badge count (same style as Orders/Market Analysis badges)
 - **Theme toggle:** Sun/Moon nav item in System group — toggles dark/light mode on click
+- **Density toggle:** Rows nav item in System group directly beneath Theme toggle — toggles Comfortable/Compact on click (see Content Density)
 - **Emergency close:** "Close All Positions" button in sidebar footer, always visible. Opens Level 4 confirmation: modal with position type filter (intraday/swing/all), requires explicit confirmation (e.g., type "CLOSE ALL" to confirm). Red/destructive styling. Shows position count and estimated market impact before confirmation.
 - **User menu:** Avatar with initials, name, email — dropdown opens upward with Profile, Settings, Logout. Dropdown follows menu accessibility: ARIA role="menu", aria-haspopup, aria-expanded, keyboard navigation with Arrow Up/Down, Esc to close, focus management (first item on open, trigger on close)
 
@@ -70,11 +70,10 @@ A persistent, unmistakable indicator of the active trading environment, rendered
 - **Reduced motion:** the Live pulsing dot is suppressed under `prefers-reduced-motion`
 
 ## Content Density
-A per-user Comfortable/Compact density setting for the content region, letting power traders tighten tables and cards for scanning without a rebuild. Rendered as a two-option segmented control in the sidebar footer (Comfortable = `Rows3` icon, Compact = `Rows2` icon), collapsing to a single toggle button on the tablet/collapsed sidebar.
+A per-user Comfortable/Compact density setting for the content region, letting power traders tighten tables and cards for scanning without a rebuild. Rendered as a toggle nav item in the **System** group directly beneath the Light/Dark theme toggle, mirroring that item's behavior: a single row whose label/icon name the mode it will switch to (Comfortable active → "Compact Density" + `Rows2` icon; Compact active → "Comfortable Density" + `Rows3` icon). Collapses to an icon-only row on the tablet/collapsed sidebar.
 - **Mechanism:** sets `data-density="comfortable" | "compact"` on the document root; Compact reduces Tailwind's `--spacing` unit within the content region only (`#main-content`), so padding/gaps/margins shrink while the nav chrome and type scale stay fixed
 - **Default:** `comfortable`
 - **Persistence:** stored in `localStorage` (`density`)
-- **Accessibility:** `role="group"` with `aria-label="Content density"`; each option is a button with `aria-pressed`
 
 ## Data Freshness
 Streaming trading data must communicate how live and how recent it is — traders distrust numbers they cannot date. A reusable freshness indicator (status dot + label, wrapped in `aria-live="polite"`) is used in two places:
@@ -159,11 +158,10 @@ Shell provides a persistent slide-over order entry panel accessible from any pag
 1. Skip to main content link (visually hidden, appears on focus)
 2. Trading mode indicator (Paper/Live pill)
 3. Search trigger (sidebar)
-4. Sidebar navigation items (top to bottom)
-5. Data freshness + density toggle (footer)
-6. Emergency close button
-7. User menu
-8. Main content area (sections manage their own tab order)
+4. Sidebar navigation items, top to bottom (System group includes the Theme and Density toggles)
+5. Emergency close button
+6. User menu
+7. Main content area (sections manage their own tab order)
 
 ## Page Titles
 Document title updates on navigation: "{Page Name} - Trading Squad". Shell provides a callback or context for sections to set the page title.

@@ -376,7 +376,7 @@ export default function AppShell({
           </button>
         </div>
 
-        {/* Navigation — inject theme toggle into System group */}
+        {/* Navigation — inject theme + density toggles into System group */}
         <MainNav
           collapsed={collapsed}
           groups={navigationGroups.map((group) =>
@@ -390,6 +390,12 @@ export default function AppShell({
                       href: '#theme',
                       icon: darkMode ? Sun : Moon,
                       action: () => setDarkMode(!darkMode),
+                    },
+                    {
+                      label: density === 'comfortable' ? 'Compact Density' : 'Comfortable Density',
+                      href: '#density',
+                      icon: density === 'comfortable' ? Rows2 : Rows3,
+                      action: () => setDensity(density === 'comfortable' ? 'compact' : 'comfortable'),
                     },
                   ],
                 }
@@ -421,56 +427,10 @@ export default function AppShell({
             </button>
           </div>
 
-          {/* System status: market-data freshness (rec #2) + density toggle (rec #3) */}
-          {collapsed ? (
-            <div className="flex flex-col items-center gap-2 py-2">
-              <DataFreshness status="live" dotOnly />
-              <button
-                onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}
-                title={`Density: ${density}. Click to toggle.`}
-                aria-label={`Density: ${density}. Click to toggle.`}
-                className="rounded-lg p-2 text-hint transition-colors hover:bg-hover hover:text-muted-foreground"
-              >
-                {density === 'comfortable' ? <Rows3 size={16} /> : <Rows2 size={16} />}
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between gap-2 px-5 py-2">
-              <DataFreshness status="live" label="real-time" />
-              <div
-                role="group"
-                aria-label="Content density"
-                className="flex items-center rounded-lg border border-border bg-card p-0.5"
-              >
-                <button
-                  onClick={() => setDensity('comfortable')}
-                  aria-pressed={density === 'comfortable'}
-                  title="Comfortable density"
-                  className={`flex items-center justify-center rounded-md p-1 transition-colors ${
-                    density === 'comfortable'
-                      ? 'bg-accent text-foreground'
-                      : 'text-hint hover:text-muted-foreground'
-                  }`}
-                >
-                  <Rows3 size={13} />
-                  <span className="sr-only">Comfortable</span>
-                </button>
-                <button
-                  onClick={() => setDensity('compact')}
-                  aria-pressed={density === 'compact'}
-                  title="Compact density"
-                  className={`flex items-center justify-center rounded-md p-1 transition-colors ${
-                    density === 'compact'
-                      ? 'bg-accent text-foreground'
-                      : 'text-hint hover:text-muted-foreground'
-                  }`}
-                >
-                  <Rows2 size={13} />
-                  <span className="sr-only">Compact</span>
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Market-data freshness (rec #2). Density toggle lives in the System nav group. */}
+          <div className={collapsed ? 'flex justify-center py-2' : 'px-5 py-2'}>
+            <DataFreshness status="live" label={collapsed ? undefined : 'real-time'} dotOnly={collapsed} />
+          </div>
 
           {/* Broker status */}
           {brokers.length > 0 && (
