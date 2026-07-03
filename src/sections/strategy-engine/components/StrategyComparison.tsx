@@ -434,10 +434,9 @@ export function StrategyComparison({ comparison, onBack, onViewBacktest }: Strat
   )
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        {/* Section Header */}
-        <div className="mb-6">
+    <div className="space-y-6">
+      {/* Section Header */}
+      <div>
           <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
             Intelligence
           </p>
@@ -463,6 +462,5 @@ export function StrategyComparison({ comparison, onBack, onViewBacktest }: Strat
           <ComparisonTable strategies={ranked} />
         </div>
       </div>
-    </div>
   )
 }

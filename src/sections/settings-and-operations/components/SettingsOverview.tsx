@@ -25,7 +25,7 @@ export function SettingsOverview({
   const totalCategories = categories.length
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 p-6 lg:p-8">
+    <div className="space-y-8">
       {/* Page header */}
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">

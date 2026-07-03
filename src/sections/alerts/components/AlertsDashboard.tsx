@@ -744,10 +744,8 @@ export function AlertsDashboard({
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-
-        {/* Page header */}
+    <div>
+      {/* Page header */}
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-600 mb-1">Overview</p>
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Alerts</h1>
@@ -850,6 +848,5 @@ export function AlertsDashboard({
           )}
         </div>
       </div>
-    </div>
   )
 }
