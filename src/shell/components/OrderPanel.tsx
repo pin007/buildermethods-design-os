@@ -169,7 +169,7 @@ export function OrderPanel({ state, tradingMode = 'paper', onClose, onMinimize, 
             title={tradingMode === 'paper' ? 'Simulated order — no real money' : 'LIVE order — real money'}
             className={`rounded-full px-2 py-0.5 text-xs font-bold uppercase tracking-wider ${
               tradingMode === 'paper'
-                ? 'bg-amber-400/15 text-amber-600 dark:text-amber-400'
+                ? 'bg-blue-400/15 text-blue-600 dark:text-blue-400'
                 : 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
             }`}
           >

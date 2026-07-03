@@ -331,12 +331,12 @@ export default function AppShell({
               collapsed
                 ? `flex items-center justify-center rounded-lg p-2 ${
                     tradingMode === 'paper'
-                      ? 'text-amber-500'
+                      ? 'text-blue-500'
                       : 'text-rose-500'
                   }`
                 : `flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
                     tradingMode === 'paper'
-                      ? 'border-amber-400/40 bg-amber-400/10 text-amber-600 dark:text-amber-400 hover:bg-amber-400/20'
+                      ? 'border-blue-400/40 bg-blue-400/10 text-blue-600 dark:text-blue-400 hover:bg-blue-400/20'
                       : 'border-rose-500/50 bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20'
                   }`
             }

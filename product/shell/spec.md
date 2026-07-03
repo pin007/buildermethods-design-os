@@ -61,11 +61,11 @@ Sidebar is resizable by dragging the right edge. Drag handle highlights pink-600
 
 ## Trading Mode Indicator (Paper / Live)
 A persistent, unmistakable indicator of the active trading environment, rendered as a full-width pill directly beneath the logo. This is a safety-critical affordance — a user must never be unsure whether an order commits real money.
-- **Paper:** amber pill (`amber-400/10` bg, `amber-400/40` border, amber text) with a flask icon and the label "Paper Trading"
+- **Paper:** blue pill (`blue-400/10` bg, `blue-400/40` border, blue text) with a flask icon and the label "Paper Trading"
 - **Live:** rose pill (`rose-500/10` bg, `rose-500/50` border, rose text) with a broadcast icon and a pulsing dot; label "Live Trading"
 - **Default:** `paper` when nothing is persisted — a session never silently starts in Live
 - **Persistence:** stored in `localStorage` (`trading-mode`); survives navigation and reload
-- **Collapsed sidebar (tablet):** shows the mode icon only (amber flask / rose broadcast), tinted to match
+- **Collapsed sidebar (tablet):** shows the mode icon only (blue flask / rose broadcast), tinted to match
 - **Order Panel inheritance:** the Order Panel header shows a matching PAPER/LIVE tag so the mode is visible at the point of order entry
 - **Reduced motion:** the Live pulsing dot is suppressed under `prefers-reduced-motion`
 
