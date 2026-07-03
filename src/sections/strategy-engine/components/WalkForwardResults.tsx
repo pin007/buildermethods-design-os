@@ -121,7 +121,7 @@ function SummarySection({ detail }: { detail: WalkForwardDetail }) {
 
         {/* OOS/IS Ratio Bar */}
         <div className="mt-4">
-          <div className="flex items-center justify-between text-[10px] text-zinc-400 dark:text-zinc-500">
+          <div className="flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
             <span>OOS/IS Sharpe Ratio</span>
             <span className="font-semibold tabular-nums">{formatNumber(ratio)}</span>
           </div>
@@ -137,7 +137,7 @@ function SummarySection({ detail }: { detail: WalkForwardDetail }) {
               style={{ width: `${ratioPercent}%` }}
             />
           </div>
-          <div className="mt-0.5 flex justify-between text-[9px] text-zinc-300 dark:text-zinc-600">
+          <div className="mt-0.5 flex justify-between text-xs text-zinc-300 dark:text-zinc-600">
             <span>0.0</span>
             <span>0.5</span>
             <span>1.0</span>
@@ -193,7 +193,7 @@ function MetricTile({
     <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-center gap-2">
         <Icon className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
-        <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
           {label}
         </p>
       </div>
@@ -207,7 +207,7 @@ function MetricTile({
         {value}
       </p>
       {subtext && (
-        <p className="mt-0.5 text-[10px] text-zinc-400 dark:text-zinc-500">{subtext}</p>
+        <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-500">{subtext}</p>
       )}
     </div>
   )
@@ -243,7 +243,7 @@ function WindowsTable({ windows }: { windows: WalkForwardWindow[] }) {
 
   const SortHeader = ({ col, label, className = '' }: { col: WindowSortKey; label: string; className?: string }) => (
     <th
-      className={`cursor-pointer select-none whitespace-nowrap px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300 ${className}`}
+      className={`cursor-pointer select-none whitespace-nowrap px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300 ${className}`}
       onClick={() => handleSort(col)}
     >
       <span className="inline-flex items-center gap-0.5">
@@ -282,16 +282,16 @@ function WindowsTable({ windows }: { windows: WalkForwardWindow[] }) {
             <tr className="border-b border-zinc-100 dark:border-zinc-800">
               <th className="w-8 px-3 py-2.5" />
               <SortHeader col="windowNumber" label="#" />
-              <th className="whitespace-nowrap px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th className="whitespace-nowrap px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 Training Period
               </th>
-              <th className="whitespace-nowrap px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th className="whitespace-nowrap px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 Validation Period
               </th>
               <SortHeader col="trainSharpe" label="Train Sharpe" className="text-right" />
               <SortHeader col="valSharpe" label="Val Sharpe" className="text-right" />
               <SortHeader col="valReturn" label="Val Return" className="text-right" />
-              <th className="whitespace-nowrap px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th className="whitespace-nowrap px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 Best Params
               </th>
             </tr>
@@ -344,7 +344,7 @@ function WindowsTable({ windows }: { windows: WalkForwardWindow[] }) {
                       {Object.entries(window.bestParams).map(([key, val]) => (
                         <span
                           key={key}
-                          className="inline-flex items-center rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-mono dark:bg-zinc-800"
+                          className="inline-flex items-center rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800"
                         >
                           <span className="text-zinc-400">{key}=</span>
                           <span className="font-medium text-zinc-700 dark:text-zinc-300">{val}</span>
@@ -413,7 +413,7 @@ function ParameterRow({ param, windowCount }: { param: ParameterStabilityData; w
           <span className="text-sm font-mono font-semibold text-zinc-900 dark:text-zinc-50">
             {param.paramName}
           </span>
-          <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${badge.bg} ${badge.text}`}>
+          <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${badge.bg} ${badge.text}`}>
             {badge.label}
           </span>
         </div>
@@ -461,7 +461,7 @@ function ParameterRow({ param, windowCount }: { param: ParameterStabilityData; w
               <div className={`h-2 w-2 rounded-full ${
                 value === param.mostFrequent ? 'bg-pink-500' : 'bg-zinc-300 dark:bg-zinc-600'
               }`} />
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
                 <span className="font-mono font-medium text-zinc-700 dark:text-zinc-300">{value}</span>
                 {' '}({count}x, {pct.toFixed(0)}%)
               </span>
@@ -495,11 +495,11 @@ function SharpeComparisonChart({ windows }: { windows: WalkForwardWindow[] }) {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <div className="h-2.5 w-2.5 rounded-sm bg-zinc-300 dark:bg-zinc-600" />
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400">Train</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">Train</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-2.5 w-2.5 rounded-sm bg-pink-500" />
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400">Validation</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">Validation</span>
             </div>
           </div>
         </div>
@@ -532,7 +532,7 @@ function SharpeComparisonChart({ windows }: { windows: WalkForwardWindow[] }) {
           ))}
         </div>
         {/* Y-axis labels */}
-        <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-400">
+        <div className="mt-2 flex items-center justify-between text-xs text-zinc-400">
           <span>Min: {formatNumber(Math.min(...allSharpes))}</span>
           <span>Avg gap: {formatNumber(
             windows.reduce((sum, w) => sum + (w.trainSharpe - w.valSharpe), 0) / windows.length

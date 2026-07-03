@@ -599,13 +599,13 @@ export function DataQuality({
                             {(['open', 'high', 'low', 'close'] as const).map((field) => (
                               <span
                                 key={field}
-                                className="font-mono text-[11px] text-zinc-400 dark:text-zinc-600"
+                                className="font-mono text-xs text-zinc-400 dark:text-zinc-600"
                               >
                                 <span className="uppercase">{field[0]}:</span>
                                 {alert.dataPoint![field].toFixed(2)}
                               </span>
                             ))}
-                            <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-600">
+                            <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
                               <span className="uppercase">V:</span>
                               {alert.dataPoint!.volume.toLocaleString()}
                             </span>

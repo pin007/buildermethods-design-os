@@ -119,7 +119,7 @@ const SEVERITY_BADGE_LIGHT: Record<AlertSeverity, string> = {
 
 function Badge({ label, className }: { label: string; className: string }) {
   return (
-    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${className}`}>
+    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${className}`}>
       {label}
     </span>
   )
@@ -127,10 +127,10 @@ function Badge({ label, className }: { label: string; className: string }) {
 
 function LabelPill({ label, value, isRegex }: { label: string; value: string; isRegex?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
       <span className="text-zinc-400 dark:text-zinc-500">{label}=</span>
       <span className={isRegex ? 'italic' : ''}>{value}</span>
-      {isRegex && <span className="text-[9px] text-zinc-400 dark:text-zinc-600">~</span>}
+      {isRegex && <span className="text-xs text-zinc-400 dark:text-zinc-600">~</span>}
     </span>
   )
 }
@@ -203,11 +203,11 @@ function AlertCard({ alert, dark, onAcknowledge, onSilence, onView }: AlertCardP
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2 flex-wrap min-w-0">
-            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${severityBadge}`}>
+            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${severityBadge}`}>
               {SEVERITY_ICON[alert.severity]}
               {alert.severity}
             </span>
-            <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${sourceBadge}`}>
+            <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${sourceBadge}`}>
               {alert.source}
             </span>
             <button
@@ -338,7 +338,7 @@ function ActiveAlertsTab({ alerts, recentlyResolved, dark, onAcknowledgeAlert, o
             <div className="flex items-center gap-2">
               <CheckCheck className="w-4 h-4 text-emerald-500" />
               <span>Recently Resolved</span>
-              <span className="px-1.5 py-0.5 rounded-full text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500">
+              <span className="px-1.5 py-0.5 rounded-full text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500">
                 {recentlyResolved.length}
               </span>
             </div>
@@ -354,11 +354,11 @@ function ActiveAlertsTab({ alerts, recentlyResolved, dark, onAcknowledgeAlert, o
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${dark ? SEVERITY_BADGE[alert.severity] : SEVERITY_BADGE_LIGHT[alert.severity]}`}>
+                      <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${dark ? SEVERITY_BADGE[alert.severity] : SEVERITY_BADGE_LIGHT[alert.severity]}`}>
                         {SEVERITY_ICON[alert.severity]}
                         {alert.severity}
                       </span>
-                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${dark ? SOURCE_BADGE[alert.source] : SOURCE_BADGE_LIGHT[alert.source]}`}>
+                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${dark ? SOURCE_BADGE[alert.source] : SOURCE_BADGE_LIGHT[alert.source]}`}>
                         {alert.source}
                       </span>
                       <span className="text-sm text-zinc-600 dark:text-zinc-400">{alert.summary}</span>
@@ -419,7 +419,7 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide font-mono ${
+                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${
                       silence.status === 'active'
                         ? 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-400 bg-emerald-100 text-emerald-700 ring-emerald-200'
                         : 'bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:ring-zinc-700'
@@ -478,11 +478,11 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
 // ---------------------------------------------------------------------------
 
 const RECEIVER_ICON: Record<string, React.ReactNode> = {
-  'email': <span className="text-[10px]">✉</span>,
-  'email+push': <span className="text-[10px]">✉+📱</span>,
-  'slack': <span className="text-[10px]">#</span>,
-  'push': <span className="text-[10px]">📱</span>,
-  'in-app': <span className="text-[10px]">🔔</span>,
+  'email': <span className="text-xs">✉</span>,
+  'email+push': <span className="text-xs">✉+📱</span>,
+  'slack': <span className="text-xs">#</span>,
+  'push': <span className="text-xs">📱</span>,
+  'in-app': <span className="text-xs">🔔</span>,
 }
 
 interface RoutesTabProps {
@@ -526,7 +526,7 @@ function RoutesTab({ routes, onCreateRoute, onToggleRoute, onEditRoute }: Routes
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{route.name}</span>
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
                       {route.receiver}
                     </span>
                   </div>
@@ -618,7 +618,7 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{rule.name}</span>
                     {rule.suppressedCount > 0 && (
-                      <span className="px-1.5 py-0.5 rounded-full text-[11px] font-mono bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
+                      <span className="px-1.5 py-0.5 rounded-full text-xs font-mono bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
                         {rule.suppressedCount} suppressed
                       </span>
                     )}
@@ -628,7 +628,7 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Source fires when</p>
+                      <p className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Source fires when</p>
                       <div className="flex flex-wrap gap-1">
                         {Object.entries(rule.sourceMatch).map(([k, v]) => (
                           <LabelPill key={k} label={k} value={v} />
@@ -636,7 +636,7 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                       </div>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Suppresses when</p>
+                      <p className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Suppresses when</p>
                       <div className="flex flex-wrap gap-1">
                         {Object.entries(rule.targetMatch).map(([k, v]) => (
                           <LabelPill key={k} label={k} value={v} />
@@ -800,7 +800,7 @@ export function AlertsDashboard({
               {tab.icon}
               <span className="hidden sm:inline">{tab.label}</span>
               {tab.count !== undefined && tab.count > 0 && (
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-semibold ${
+                <span className={`px-1.5 py-0.5 rounded-full text-xs font-mono font-semibold ${
                   activeTab === tab.id
                     ? 'bg-pink-500 text-white'
                     : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400'

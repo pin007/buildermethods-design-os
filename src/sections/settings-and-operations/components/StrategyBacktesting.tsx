@@ -285,25 +285,25 @@ export function StrategyBacktesting({
 
         {/* Visual period bar */}
         <div className="mt-2">
-          <div className="mb-1.5 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div className="mb-1.5 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
             <span>Period Distribution</span>
             <span>{totalMonths} months total</span>
           </div>
           <div className="flex h-6 overflow-hidden rounded-lg ring-1 ring-zinc-200 dark:ring-zinc-800">
             <div
-              className="flex items-center justify-center bg-pink-600/20 dark:bg-pink-500/20 text-[10px] font-medium text-pink-600 dark:text-pink-400 transition-all"
+              className="flex items-center justify-center bg-pink-600/20 dark:bg-pink-500/20 text-xs font-medium text-pink-600 dark:text-pink-400 transition-all"
               style={{ width: `${trainingPct}%` }}
             >
               {backtesting.walkForward.trainingMonths}mo train
             </div>
             <div
-              className="flex items-center justify-center bg-emerald-500/20 text-[10px] font-medium text-emerald-500 transition-all"
+              className="flex items-center justify-center bg-emerald-500/20 text-xs font-medium text-emerald-500 transition-all"
               style={{ width: `${validationPct}%` }}
             >
               {backtesting.walkForward.validationMonths}mo val
             </div>
           </div>
-          <div className="mt-1 flex items-center gap-4 text-[10px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-1 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
             <span className="flex items-center gap-1">
               <span className="inline-block h-2 w-2 rounded-sm bg-pink-600/40 dark:bg-pink-500/40" />
               Training ({trainingPct.toFixed(0)}%)

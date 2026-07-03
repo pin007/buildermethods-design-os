@@ -196,7 +196,7 @@ export function PortfolioCurrency({
 
         {/* Visual threshold bar */}
         <div className="mt-2">
-          <div className="mb-1 flex items-center justify-between text-[10px] text-zinc-400 dark:text-zinc-500">
+          <div className="mb-1 flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
             <span>0%</span>
             <span>100%</span>
           </div>
@@ -235,7 +235,7 @@ export function PortfolioCurrency({
               title={`Critical: ${marginAlertThresholds.critical}%`}
             />
           </div>
-          <div className="mt-1 flex items-center gap-4 text-[10px] text-zinc-500 dark:text-zinc-400">
+          <div className="mt-1 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
             <span className="flex items-center gap-1">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-500/50" />
               Safe

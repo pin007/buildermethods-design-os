@@ -50,8 +50,8 @@ function formatCountdown(ms: number): string {
 function SectionHeading({ icon: Icon, label }: { icon: typeof ShieldAlert; label: string }) {
   return (
     <div className="flex items-center gap-2 mb-3">
-      <Icon size={14} className="text-stone-400 dark:text-zinc-500" />
-      <h3 className="text-xs font-bold uppercase tracking-wider text-stone-400 dark:text-zinc-500">
+      <Icon size={14} className="text-zinc-400 dark:text-zinc-500" />
+      <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
         {label}
       </h3>
     </div>
@@ -65,11 +65,11 @@ function DetailRow({ label, value, mono, highlight }: { label: string; value: st
     ? 'text-amber-600 dark:text-amber-400'
     : highlight === 'success'
     ? 'text-emerald-600 dark:text-emerald-400'
-    : 'text-stone-800 dark:text-zinc-200'
+    : 'text-zinc-800 dark:text-zinc-200'
 
   return (
     <div className="flex items-baseline justify-between gap-4 py-1.5">
-      <span className="text-xs text-stone-500 dark:text-zinc-500">{label}</span>
+      <span className="text-xs text-zinc-500 dark:text-zinc-500">{label}</span>
       <span className={`text-sm font-medium ${highlightClass} ${mono ? 'font-mono' : ''}`}>
         {value}
       </span>
@@ -88,14 +88,14 @@ function RiskBar({ percent, label }: { percent: number; label: string }) {
   return (
     <div className="py-1.5">
       <div className="flex items-baseline justify-between gap-4 mb-1">
-        <span className="text-xs text-stone-500 dark:text-zinc-500">{label}</span>
+        <span className="text-xs text-zinc-500 dark:text-zinc-500">{label}</span>
         <span className={`text-xs font-bold font-mono ${
           percent > 25 ? 'text-red-600 dark:text-red-400' : percent > 10 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'
         }`}>
           {percent.toFixed(1)}%
         </span>
       </div>
-      <div className="h-1.5 w-full rounded-full bg-stone-100 dark:bg-zinc-800">
+      <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
         <div
           className={`h-full rounded-full transition-all duration-500 ${barColor}`}
           style={{ width: `${clampedPercent}%` }}
@@ -112,19 +112,19 @@ function PriceRange({ label, low, high, current, currency }: { label: string; lo
   return (
     <div className="py-2">
       <div className="flex items-baseline justify-between gap-4 mb-1.5">
-        <span className="text-xs text-stone-500 dark:text-zinc-500">{label}</span>
+        <span className="text-xs text-zinc-500 dark:text-zinc-500">{label}</span>
       </div>
-      <div className="relative h-1.5 w-full rounded-full bg-stone-100 dark:bg-zinc-800">
+      <div className="relative h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
         <div
           className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full border-2 border-white dark:border-zinc-900 bg-pink-500 shadow-sm"
           style={{ left: `${Math.min(100, Math.max(0, position))}%`, transform: 'translate(-50%, -50%)' }}
         />
       </div>
       <div className="flex justify-between mt-1">
-        <span className="text-xs font-mono text-stone-400 dark:text-zinc-600">
+        <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">
           {formatCurrency(low, currency)}
         </span>
-        <span className="text-xs font-mono text-stone-400 dark:text-zinc-600">
+        <span className="text-xs font-mono text-zinc-400 dark:text-zinc-600">
           {formatCurrency(high, currency)}
         </span>
       </div>
@@ -190,19 +190,19 @@ export function ApprovalCard({
     <div className="flex items-start justify-center px-4 py-8">
       <div className="w-full max-w-[800px]">
         {/* Card */}
-        <div className="rounded-2xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
+        <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
 
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-stone-100 dark:border-zinc-800 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 px-6 py-4">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-950/30">
                 <ShieldAlert size={18} className="text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-stone-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                   Order Approval Required
                 </h2>
-                <p className="text-xs text-stone-400 dark:text-zinc-500">
+                <p className="text-xs text-zinc-400 dark:text-zinc-500">
                   {order.id} &middot; {order.brokerShortName}
                 </p>
               </div>
@@ -215,7 +215,7 @@ export function ApprovalCard({
                     ? 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400'
                     : isUrgent
                     ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400'
-                    : 'bg-stone-100 text-stone-600 dark:bg-zinc-800 dark:text-zinc-400'
+                    : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
                 }`}>
                   <Clock size={13} />
                   {isExpired ? 'Expired' : formatCountdown(countdown)}
@@ -223,7 +223,7 @@ export function ApprovalCard({
               )}
               <button
                 onClick={() => onClose?.()}
-                className="rounded-md p-1.5 text-stone-400 hover:bg-stone-100 dark:text-zinc-500 dark:hover:bg-zinc-800 transition-colors"
+                className="rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800 transition-colors"
               >
                 <X size={16} />
               </button>
@@ -237,12 +237,12 @@ export function ApprovalCard({
               {/* Order Details */}
               <div>
                 <SectionHeading icon={Target} label="Order Details" />
-                <div className="rounded-xl border border-stone-100 dark:border-zinc-800 p-4">
+                <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
                   {/* Instrument */}
-                  <div className="flex items-center gap-3 mb-3 pb-3 border-b border-stone-100 dark:border-zinc-800/50">
+                  <div className="flex items-center gap-3 mb-3 pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-semibold text-stone-900 dark:text-zinc-100">
+                        <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                           {order.symbol}
                         </span>
                         <span className={`rounded px-1.5 py-0.5 text-xs font-bold tracking-wider ${
@@ -253,7 +253,7 @@ export function ApprovalCard({
                           {order.side}
                         </span>
                       </div>
-                      <p className="text-xs text-stone-500 dark:text-zinc-500">{order.instrumentName}</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">{order.instrumentName}</p>
                     </div>
                   </div>
 
@@ -269,7 +269,7 @@ export function ApprovalCard({
                     <DetailRow label="Stop Price" value={formatCurrency(order.stopPrice, currency)} mono />
                   )}
                   <DetailRow label="Time in Force" value={order.timeInForce} />
-                  <div className="mt-2 pt-2 border-t border-stone-100 dark:border-zinc-800/50">
+                  <div className="mt-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/50">
                     <DetailRow label="Estimated Total" value={formatCurrency(estimatedTotal, currency)} mono />
                   </div>
                 </div>
@@ -279,10 +279,10 @@ export function ApprovalCard({
               {riskAnalysis && (
                 <div>
                   <SectionHeading icon={ShieldAlert} label="Risk Analysis" />
-                  <div className="rounded-xl border border-stone-100 dark:border-zinc-800 p-4">
+                  <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
                     {/* Risk level badge */}
-                    <div className="flex items-center justify-between mb-3 pb-3 border-b border-stone-100 dark:border-zinc-800/50">
-                      <span className="text-xs text-stone-500 dark:text-zinc-500">Risk Level</span>
+                    <div className="flex items-center justify-between mb-3 pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
+                      <span className="text-xs text-zinc-500 dark:text-zinc-500">Risk Level</span>
                       <span className={`rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${
                         riskAnalysis.riskLevel === 'high'
                           ? 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400'
@@ -329,11 +329,11 @@ export function ApprovalCard({
               {/* Market Context */}
               <div>
                 <SectionHeading icon={BarChart3} label="Market Context" />
-                <div className="rounded-xl border border-stone-100 dark:border-zinc-800 p-4">
+                <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
                   {/* Current price */}
-                  <div className="flex items-baseline justify-between mb-3 pb-3 border-b border-stone-100 dark:border-zinc-800/50">
+                  <div className="flex items-baseline justify-between mb-3 pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
                     <div>
-                      <p className="font-mono text-xl font-semibold text-stone-900 dark:text-zinc-100">
+                      <p className="font-mono text-xl font-semibold text-zinc-900 dark:text-zinc-100">
                         {formatCurrency(instrument.currentPrice, currency)}
                       </p>
                     </div>
@@ -375,11 +375,11 @@ export function ApprovalCard({
               {recommendation && (
                 <div>
                   <SectionHeading icon={Brain} label="AI Recommendation" />
-                  <div className="rounded-xl border border-stone-100 dark:border-zinc-800 p-4">
+                  <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
                     {/* Confidence + Strategy */}
-                    <div className="flex items-center justify-between mb-3 pb-3 border-b border-stone-100 dark:border-zinc-800/50">
+                    <div className="flex items-center justify-between mb-3 pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
                       <div>
-                        <p className="text-xs font-semibold text-stone-700 dark:text-zinc-300">
+                        <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                           {recommendation.strategyName}
                         </p>
                       </div>
@@ -392,7 +392,7 @@ export function ApprovalCard({
                               fill="none"
                               stroke="currentColor"
                               strokeWidth="3"
-                              className="text-stone-100 dark:text-zinc-800"
+                              className="text-zinc-100 dark:text-zinc-800"
                             />
                             <circle
                               cx="18" cy="18" r="15"
@@ -410,7 +410,7 @@ export function ApprovalCard({
                               }
                             />
                           </svg>
-                          <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-stone-700 dark:text-zinc-300">
+                          <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-zinc-700 dark:text-zinc-300">
                             {Math.round(recommendation.confidence * 100)}
                           </span>
                         </div>
@@ -418,7 +418,7 @@ export function ApprovalCard({
                     </div>
 
                     {/* Reasoning */}
-                    <p className="text-xs leading-relaxed text-stone-600 dark:text-zinc-400 mb-3">
+                    <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400 mb-3">
                       {recommendation.reasoning.length > 200
                         ? recommendation.reasoning.slice(0, 200) + '...'
                         : recommendation.reasoning}
@@ -426,9 +426,9 @@ export function ApprovalCard({
 
                     {/* Target prices */}
                     <div className="grid grid-cols-3 gap-2">
-                      <div className="rounded-lg bg-stone-50 dark:bg-zinc-800/50 px-3 py-2 text-center">
-                        <p className="text-xs font-bold uppercase tracking-wider text-stone-400 dark:text-zinc-600">Entry</p>
-                        <p className="mt-0.5 font-mono text-xs font-semibold text-stone-700 dark:text-zinc-300">
+                      <div className="rounded-lg bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-center">
+                        <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">Entry</p>
+                        <p className="mt-0.5 font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                           {formatCurrency(recommendation.targetPrices.entry, currency)}
                         </p>
                       </div>
@@ -453,8 +453,8 @@ export function ApprovalCard({
               {!recommendation && (
                 <div>
                   <SectionHeading icon={Activity} label="Origin" />
-                  <div className="rounded-xl border border-stone-100 dark:border-zinc-800 p-4">
-                    <p className="text-xs text-stone-500 dark:text-zinc-500">
+                  <div className="rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500">
                       Manual order — no AI recommendation attached.
                     </p>
                   </div>
@@ -466,7 +466,7 @@ export function ApprovalCard({
             <div>
               <button
                 onClick={() => setRejectReasonOpen(!rejectReasonOpen)}
-                className="flex items-center gap-1.5 text-xs font-medium text-stone-500 dark:text-zinc-500 hover:text-stone-700 dark:hover:text-zinc-300 transition-colors"
+                className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
               >
                 {rejectReasonOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 Add rejection reason (optional)
@@ -477,7 +477,7 @@ export function ApprovalCard({
                   onChange={(e) => setRejectReason(e.target.value)}
                   placeholder="Explain why this order should be rejected..."
                   rows={3}
-                  className="mt-2 w-full rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm text-stone-700 dark:text-zinc-300 placeholder:text-stone-400 dark:placeholder:text-zinc-600 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] resize-none"
+                  className="mt-2 w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] resize-none"
                 />
               )}
             </div>

@@ -117,25 +117,25 @@ function RankingSummary({
 
             <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
               <div>
-                <p className="text-[10px] text-zinc-400">Sharpe</p>
+                <p className="text-xs text-zinc-400">Sharpe</p>
                 <p className={`text-sm font-bold tabular-nums ${colorConfig.text}`}>
                   {formatNumber(strategy.sharpeRatio)}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] text-zinc-400">CAGR</p>
+                <p className="text-xs text-zinc-400">CAGR</p>
                 <p className="text-sm font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
                   {formatPercent(strategy.cagr)}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] text-zinc-400">Max DD</p>
+                <p className="text-xs text-zinc-400">Max DD</p>
                 <p className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
                   {formatPercent(strategy.maxDrawdown)}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] text-zinc-400">Profit Factor</p>
+                <p className="text-xs text-zinc-400">Profit Factor</p>
                 <p className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
                   {formatNumber(strategy.profitFactor)}
                 </p>
@@ -143,7 +143,7 @@ function RankingSummary({
             </div>
 
             {/* Hover indicator */}
-            <span className="mt-2 block text-[10px] text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="mt-2 block text-xs text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
               View backtest details &rarr;
             </span>
           </button>
@@ -195,7 +195,7 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-zinc-100 dark:border-zinc-800">
-              <th className="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 Metric
               </th>
               {ranked.map((s, idx) => {
@@ -204,7 +204,7 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
                   <th key={s.backtestId} className="px-4 py-2.5">
                     <div className="flex items-center gap-1.5">
                       <div className={`h-2 w-2 rounded-full ${color.bg}`} />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                         {s.strategyName}
                       </span>
                     </div>
@@ -332,7 +332,7 @@ function EquityCurvesChart({
         </h3>
         <button
           onClick={() => setShowSpy(!showSpy)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-2.5 py-1 text-[10px] font-medium text-zinc-500 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
         >
           {showSpy ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
           SPY Benchmark
@@ -364,9 +364,9 @@ function EquityCurvesChart({
         <div className="relative h-56 w-full overflow-hidden rounded-lg border border-zinc-100 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
           {/* Y-axis */}
           <div className="absolute left-0 top-0 flex h-full w-10 flex-col justify-between py-2 text-right">
-            <span className="pr-1.5 text-[9px] tabular-nums text-zinc-400">{maxVal.toFixed(0)}</span>
-            <span className="pr-1.5 text-[9px] tabular-nums text-zinc-400">{((maxVal + minVal) / 2).toFixed(0)}</span>
-            <span className="pr-1.5 text-[9px] tabular-nums text-zinc-400">{minVal.toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{maxVal.toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{((maxVal + minVal) / 2).toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{minVal.toFixed(0)}</span>
           </div>
 
           {/* Grid */}
@@ -413,7 +413,7 @@ function EquityCurvesChart({
         </div>
 
         {/* X-axis */}
-        <div className="mt-1 flex justify-between pl-10 text-[9px] text-zinc-400">
+        <div className="mt-1 flex justify-between pl-10 text-xs text-zinc-400">
           <span>{curves[0]?.date}</span>
           <span>{curves[Math.floor(curves.length / 2)]?.date}</span>
           <span>{curves[curves.length - 1]?.date}</span>

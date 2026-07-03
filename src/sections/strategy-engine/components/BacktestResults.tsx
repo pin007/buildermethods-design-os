@@ -362,9 +362,9 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
       >
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 flex h-full w-14 flex-col justify-between py-2 text-right">
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">{formatCurrency(maxVal)}</span>
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">{formatCurrency((maxVal + minVal) / 2)}</span>
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">{formatCurrency(minVal)}</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency(maxVal)}</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency((maxVal + minVal) / 2)}</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency(minVal)}</span>
         </div>
 
         {/* Grid lines */}
@@ -434,7 +434,7 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
       </div>
 
       {/* X-axis */}
-      <div className="mt-1 flex justify-between pl-14 text-[10px] text-zinc-400">
+      <div className="mt-1 flex justify-between pl-14 text-xs text-zinc-400">
         <span>{equityCurve[0]?.date.slice(0, 7)}</span>
         <span>{equityCurve[Math.floor(equityCurve.length / 2)]?.date.slice(0, 7)}</span>
         <span>{equityCurve[equityCurve.length - 1]?.date.slice(0, 7)}</span>
@@ -479,9 +479,9 @@ function DrawdownChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) {
 
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 flex h-full w-14 flex-col justify-between py-1 text-right">
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">0%</span>
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">{formatPercent(minDD / 2)}</span>
-          <span className="pr-2 text-[10px] tabular-nums text-zinc-400">{formatPercent(minDD)}</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">0%</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatPercent(minDD / 2)}</span>
+          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatPercent(minDD)}</span>
         </div>
 
         <svg
@@ -504,7 +504,7 @@ function DrawdownChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) {
           />
         </svg>
       </div>
-      <div className="mt-1 flex justify-between pl-14 text-[10px] text-zinc-400">
+      <div className="mt-1 flex justify-between pl-14 text-xs text-zinc-400">
         <span>{equityCurve[0]?.date.slice(0, 7)}</span>
         <span>{equityCurve[Math.floor(equityCurve.length / 2)]?.date.slice(0, 7)}</span>
         <span>{equityCurve[equityCurve.length - 1]?.date.slice(0, 7)}</span>
@@ -547,15 +547,15 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
       <table className="w-full border-collapse text-center">
         <thead>
           <tr>
-            <th className="px-2 py-1.5 text-left text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+            <th className="px-2 py-1.5 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400">
               Year
             </th>
             {MONTH_LABELS.map((m) => (
-              <th key={m} className="px-1 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th key={m} className="px-1 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 {m}
               </th>
             ))}
-            <th className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+            <th className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
               Total
             </th>
           </tr>
@@ -573,7 +573,7 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
                   return (
                     <td key={month} className="px-0.5 py-0.5">
                       <div
-                        className={`rounded px-1 py-1 text-[10px] font-medium tabular-nums ${getColor(val)}`}
+                        className={`rounded px-1 py-1 text-xs font-medium tabular-nums ${getColor(val)}`}
                         title={val !== undefined ? `${MONTH_LABELS[month - 1]} ${year}: ${formatPercent(val)}` : undefined}
                       >
                         {val !== undefined ? formatPercent(val, 1) : ''}
@@ -582,7 +582,7 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
                   )
                 })}
                 <td className="px-2 py-0.5">
-                  <div className={`rounded px-1 py-1 text-[10px] font-bold tabular-nums ${getColor(yearTotal)}`}>
+                  <div className={`rounded px-1 py-1 text-xs font-bold tabular-nums ${getColor(yearTotal)}`}>
                     {formatPercent(yearTotal, 1)}
                   </div>
                 </td>
@@ -636,12 +636,12 @@ function TradeDistribution({ trades }: { trades: BacktestTrade[] }) {
           </div>
         ))}
       </div>
-      <div className="mt-1 flex justify-between text-[10px] text-zinc-400">
+      <div className="mt-1 flex justify-between text-xs text-zinc-400">
         <span>{formatPercent(buckets[0]?.from ?? 0)}</span>
         <span>0%</span>
         <span>{formatPercent(buckets[buckets.length - 1]?.to ?? 0)}</span>
       </div>
-      <p className="mt-1 text-center text-[10px] text-zinc-400">Trade Return Distribution</p>
+      <p className="mt-1 text-center text-xs text-zinc-400">Trade Return Distribution</p>
     </div>
   )
 }
@@ -705,11 +705,11 @@ function BenchmarkComparisonTable({ comparisons }: { comparisons: BenchmarkCompa
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-zinc-100 dark:border-zinc-800">
-              <th className="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                 Metric
               </th>
               {comparisons.map((c) => (
-                <th key={c.benchmark} className="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                <th key={c.benchmark} className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                   vs {c.benchmark}
                 </th>
               ))}
@@ -798,7 +798,7 @@ function AdditionalMetrics({ metrics }: { metrics: BacktestDetailMetrics }) {
       <div className="grid grid-cols-2 gap-px bg-zinc-100 sm:grid-cols-3 lg:grid-cols-4 dark:bg-zinc-800">
         {items.map((item) => (
           <div key={item.label} className="bg-white px-4 py-2.5 dark:bg-zinc-900">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
               {item.label}
             </p>
             <p className="mt-0.5 text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
@@ -850,7 +850,7 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
 
   const SortHeader = ({ col, label, className = '' }: { col: keyof BacktestTrade; label: string; className?: string }) => (
     <th
-      className={`cursor-pointer select-none px-3 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300 ${className}`}
+      className={`cursor-pointer select-none px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300 ${className}`}
       onClick={() => handleSort(col)}
     >
       <span className="inline-flex items-center gap-0.5">
@@ -940,7 +940,7 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                     </td>
                     <td className="px-3 py-2">
                       <span
-                        className={`inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold ${
+                        className={`inline-flex rounded px-1.5 py-0.5 text-xs font-semibold ${
                           trade.direction === 'LONG'
                             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
                             : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
@@ -982,7 +982,7 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                       <td colSpan={12} className="px-6 py-3">
                         <div className="flex gap-6">
                           <div>
-                            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                               Entry Indicators
                             </p>
                             <div className="grid grid-cols-2 gap-x-6 gap-y-1">
@@ -998,7 +998,7 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                           </div>
                           <div className="w-px bg-zinc-200 dark:bg-zinc-700" />
                           <div>
-                            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
                               Exit Indicators
                             </p>
                             <div className="grid grid-cols-2 gap-x-6 gap-y-1">

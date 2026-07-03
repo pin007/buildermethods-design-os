@@ -178,13 +178,13 @@ export function StrategyList({
       <div className="space-y-6">
         {sectionHeader}
         <div className="flex flex-col items-center justify-center py-24 px-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-stone-100 dark:bg-zinc-800 mb-5">
-            <FlaskConical size={28} strokeWidth={1.5} className="text-stone-400 dark:text-zinc-500" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800 mb-5">
+            <FlaskConical size={28} strokeWidth={1.5} className="text-zinc-400 dark:text-zinc-500" />
           </div>
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-zinc-100 mb-2">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
             No strategies configured yet
           </h2>
-          <p className="text-sm text-stone-500 dark:text-zinc-400 text-center max-w-sm mb-6">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 text-center max-w-sm mb-6">
             Create your first strategy to start backtesting. Choose from trend following, mean reversion, or composite patterns.
           </p>
           <button
@@ -211,19 +211,19 @@ export function StrategyList({
           <Search
             size={15}
             strokeWidth={1.5}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-zinc-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500"
           />
           <input
             type="text"
             placeholder="Search strategies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pl-9 pr-3 text-sm text-stone-900 dark:text-zinc-100 placeholder:text-stone-400 dark:placeholder:text-zinc-500 focus-visible:border-pink-600 focus-visible:ring-pink-600/20 focus-visible:ring-[3px] outline-none transition-all"
+            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-2 pl-9 pr-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:border-pink-600 focus-visible:ring-pink-600/20 focus-visible:ring-[3px] outline-none transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-stone-400 hover:text-stone-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
             >
               <X size={14} />
             </button>
@@ -235,7 +235,7 @@ export function StrategyList({
           {/* Compare button */}
           {compareMode ? (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-stone-500 dark:text-zinc-400">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
                 {selectedForCompare.size} of 2-4 selected
               </span>
               <button
@@ -248,7 +248,7 @@ export function StrategyList({
               </button>
               <button
                 onClick={() => { setCompareMode(false); setSelectedForCompare(new Set()) }}
-                className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-stone-500 dark:text-zinc-400 hover:bg-stone-100 dark:hover:bg-zinc-800 transition-colors"
+                className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
                 Cancel
               </button>
@@ -256,7 +256,7 @@ export function StrategyList({
           ) : (
             <button
               onClick={() => setCompareMode(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-stone-600 dark:text-zinc-400 hover:bg-stone-50 dark:hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
             >
               <GitCompare size={13} strokeWidth={1.5} />
               <span className="hidden sm:inline">Compare</span>
@@ -269,13 +269,13 @@ export function StrategyList({
             className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
               hasActiveFilters
                 ? 'border-pink-200 dark:border-pink-900/50 bg-pink-50 dark:bg-pink-950/30 text-pink-700 dark:text-pink-300'
-                : 'border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-stone-600 dark:text-zinc-400 hover:bg-stone-50 dark:hover:bg-zinc-800'
+                : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
             }`}
           >
             <SlidersHorizontal size={13} strokeWidth={1.5} />
             <span className="hidden sm:inline">Filter</span>
             {hasActiveFilters && (
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-[10px] font-bold text-white">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-xs font-bold text-white">
                 {(typeFilter !== 'ALL' ? 1 : 0) + (activeFilter !== 'all' ? 1 : 0) + (instrumentFilter ? 1 : 0)}
               </span>
             )}
@@ -285,7 +285,7 @@ export function StrategyList({
           <div className="relative">
             <button
               onClick={() => setShowSort(!showSort)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-stone-600 dark:text-zinc-400 hover:bg-stone-50 dark:hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
             >
               <ArrowUpDown size={13} strokeWidth={1.5} />
               <span className="hidden sm:inline">Sort</span>
@@ -293,7 +293,7 @@ export function StrategyList({
             {showSort && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setShowSort(false)} />
-                <div className="absolute right-0 top-full mt-1 z-20 w-44 rounded-xl border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-lg dark:shadow-zinc-950/50 py-1">
+                <div className="absolute right-0 top-full mt-1 z-20 w-44 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-lg dark:shadow-zinc-950/50 py-1">
                   {sortOptions.map((opt) => (
                     <button
                       key={opt.key}
@@ -309,12 +309,12 @@ export function StrategyList({
                       className={`flex w-full items-center justify-between px-3 py-2 text-xs transition-colors ${
                         sortKey === opt.key
                           ? 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/20'
-                          : 'text-stone-600 dark:text-zinc-400 hover:bg-stone-50 dark:hover:bg-zinc-800'
+                          : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
                       }`}
                     >
                       {opt.label}
                       {sortKey === opt.key && (
-                        <span className="text-[10px] text-stone-400 dark:text-zinc-500">
+                        <span className="text-xs text-zinc-400 dark:text-zinc-500">
                           {sortAscending ? 'ASC' : 'DESC'}
                         </span>
                       )}
@@ -338,10 +338,10 @@ export function StrategyList({
 
       {/* Filter bar */}
       {showFilters && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 dark:border-zinc-800 bg-stone-50 dark:bg-zinc-900/50 p-3">
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-3">
           {/* Type filters */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-stone-400 dark:text-zinc-500 mr-1">Type:</span>
+            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500 mr-1">Type:</span>
             {typeFilters.map((tf) => {
               const Icon = tf.icon
               return (
@@ -351,7 +351,7 @@ export function StrategyList({
                   className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-colors ${
                     typeFilter === tf.key
                       ? 'bg-pink-600 text-white'
-                      : 'bg-white dark:bg-zinc-800 text-stone-600 dark:text-zinc-400 hover:bg-stone-100 dark:hover:bg-zinc-700'
+                      : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700'
                   }`}
                 >
                   <Icon size={11} strokeWidth={2} />
@@ -362,11 +362,11 @@ export function StrategyList({
           </div>
 
           {/* Divider */}
-          <div className="h-5 w-px bg-stone-200 dark:bg-zinc-700 hidden sm:block" />
+          <div className="h-5 w-px bg-zinc-200 dark:bg-zinc-700 hidden sm:block" />
 
           {/* Active filters */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-stone-400 dark:text-zinc-500 mr-1">Status:</span>
+            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500 mr-1">Status:</span>
             {(['all', 'active', 'inactive'] as FilterActive[]).map((f) => (
               <button
                 key={f}
@@ -374,7 +374,7 @@ export function StrategyList({
                 className={`rounded-lg px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
                   activeFilter === f
                     ? 'bg-pink-600 text-white'
-                    : 'bg-white dark:bg-zinc-800 text-stone-600 dark:text-zinc-400 hover:bg-stone-100 dark:hover:bg-zinc-700'
+                    : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700'
                 }`}
               >
                 {f}
@@ -383,15 +383,15 @@ export function StrategyList({
           </div>
 
           {/* Divider */}
-          <div className="h-5 w-px bg-stone-200 dark:bg-zinc-700 hidden sm:block" />
+          <div className="h-5 w-px bg-zinc-200 dark:bg-zinc-700 hidden sm:block" />
 
           {/* Instrument filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-stone-400 dark:text-zinc-500 mr-1">Instrument:</span>
+            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500 mr-1">Instrument:</span>
             <select
               value={instrumentFilter ?? ''}
               onChange={(e) => setInstrumentFilter(e.target.value || null)}
-              className="rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-2 py-1 text-xs text-stone-600 dark:text-zinc-400 outline-none focus-visible:border-pink-600 focus-visible:ring-pink-600/20 focus-visible:ring-[3px]"
+              className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-2 py-1 text-xs text-zinc-600 dark:text-zinc-400 outline-none focus-visible:border-pink-600 focus-visible:ring-pink-600/20 focus-visible:ring-[3px]"
             >
               <option value="">All</option>
               {allInstruments.map((inst) => (
@@ -408,7 +408,7 @@ export function StrategyList({
                 setActiveFilter('all')
                 setInstrumentFilter(null)
               }}
-              className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-stone-400 dark:text-zinc-500 hover:text-stone-600 dark:hover:text-zinc-300 transition-colors"
+              className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
             >
               <X size={12} />
               Clear all
@@ -419,7 +419,7 @@ export function StrategyList({
 
       {/* Results count */}
       <div className="flex items-center justify-between">
-        <p className="text-xs text-stone-400 dark:text-zinc-500">
+        <p className="text-xs text-zinc-400 dark:text-zinc-500">
           {filteredStrategies.length} of {strategies.length} strategies
           {searchQuery && <span> matching "{searchQuery}"</span>}
         </p>
@@ -437,7 +437,7 @@ export function StrategyList({
                   className={`absolute -left-1 -top-1 z-10 flex h-6 w-6 items-center justify-center rounded-lg border-2 transition-all ${
                     selectedForCompare.has(strategy.id)
                       ? 'border-pink-600 bg-pink-600 text-white'
-                      : 'border-stone-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 hover:border-pink-400'
+                      : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 hover:border-pink-400'
                   }`}
                 >
                   {selectedForCompare.has(strategy.id) && <Check size={12} strokeWidth={3} />}
@@ -454,8 +454,8 @@ export function StrategyList({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-16">
-          <Search size={24} strokeWidth={1.5} className="text-stone-300 dark:text-zinc-600 mb-3" />
-          <p className="text-sm text-stone-500 dark:text-zinc-400 mb-1">No strategies match your filters</p>
+          <Search size={24} strokeWidth={1.5} className="text-zinc-300 dark:text-zinc-600 mb-3" />
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">No strategies match your filters</p>
           <button
             onClick={() => {
               setSearchQuery('')

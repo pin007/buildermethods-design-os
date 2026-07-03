@@ -272,7 +272,7 @@ function StatCard({
       <span className="text-2xl font-mono font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
         {value}
       </span>
-      {sub && <span className="text-[11px] text-zinc-400 dark:text-zinc-500">{sub}</span>}
+      {sub && <span className="text-xs text-zinc-400 dark:text-zinc-500">{sub}</span>}
     </div>
   )
 }
@@ -309,7 +309,7 @@ function TypeChip({
       {cfg.label}
       <span
         className={cn(
-          'ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium',
+          'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
           active ? 'bg-white/60 dark:bg-black/20' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
         )}
       >
@@ -368,7 +368,7 @@ function MiniCalendar({
       {/* Day labels */}
       <div className="grid grid-cols-7 px-1 pt-2 pb-1">
         {WEEKDAY_SHORT.map((l, i) => (
-          <div key={i} className="text-center text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase">
+          <div key={i} className="text-center text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase">
             {l}
           </div>
         ))}
@@ -397,7 +397,7 @@ function MiniCalendar({
             >
               <span
                 className={cn(
-                  'w-5 h-5 flex items-center justify-center text-[11px] font-medium rounded-full leading-none',
+                  'w-5 h-5 flex items-center justify-center text-xs font-medium rounded-full leading-none',
                   isToday
                     ? 'bg-pink-600 text-white font-bold'
                     : isSelected
@@ -429,7 +429,7 @@ function MiniCalendar({
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="text-[11px] text-zinc-400 dark:text-zinc-500 w-24 flex-shrink-0 pt-0.5">{label}</span>
+      <span className="text-xs text-zinc-400 dark:text-zinc-500 w-24 flex-shrink-0 pt-0.5">{label}</span>
       <span className="text-xs text-zinc-700 dark:text-zinc-300 flex-1">{value}</span>
     </div>
   )
@@ -448,7 +448,7 @@ function MetricBox({
 }) {
   return (
     <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5">
-      <div className="text-[10px] text-zinc-400 mb-1">{label}</div>
+      <div className="text-xs text-zinc-400 mb-1">{label}</div>
       <div
         className={cn(
           'font-mono text-sm font-semibold',
@@ -457,7 +457,7 @@ function MetricBox({
       >
         {value}
       </div>
-      {sub && <div className="text-[10px] text-zinc-400 mt-0.5">{sub}</div>}
+      {sub && <div className="text-xs text-zinc-400 mt-0.5">{sub}</div>}
     </div>
   )
 }
@@ -467,13 +467,13 @@ function EarningsDetail({ event, d }: { event: CalendarEvent; d: EarningsDetails
     <div className="space-y-3">
       <div className="flex flex-wrap gap-1.5">
         {event.inPortfolio && (
-          <span className="px-2 py-0.5 text-[10px] font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full border border-emerald-200 dark:border-emerald-800">
+          <span className="px-2 py-0.5 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full border border-emerald-200 dark:border-emerald-800">
             In Portfolio
           </span>
         )}
         <span
           className={cn(
-            'px-2 py-0.5 text-[10px] font-medium rounded-full border flex items-center gap-1',
+            'px-2 py-0.5 text-xs font-medium rounded-full border flex items-center gap-1',
             d.confirmed
               ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
               : 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800',
@@ -519,7 +519,7 @@ function EconomicDetail({ event, d }: { event: CalendarEvent; d: EconomicDetails
       <div className="flex flex-wrap gap-1.5">
         <span
           className={cn(
-            'px-2 py-0.5 text-[10px] font-medium rounded-full border',
+            'px-2 py-0.5 text-xs font-medium rounded-full border',
             event.impact === 'high'
               ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800'
               : event.impact === 'medium'
@@ -551,7 +551,7 @@ function EconomicDetail({ event, d }: { event: CalendarEvent; d: EconomicDetails
         </div>
       )}
       {d.description && (
-        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">{d.description}</p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{d.description}</p>
       )}
     </div>
   )
@@ -603,7 +603,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
       <DetailRow label="Third Friday" value={d.isThirdFriday ? 'Yes' : 'No'} />
       {d.affectedPositions.length > 0 && (
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
             Affected Positions
           </div>
           <div className="space-y-1.5">
@@ -614,7 +614,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
               >
                 <div>
                   <div className="text-xs font-mono font-medium text-zinc-900 dark:text-zinc-100">{pos.option}</div>
-                  <div className="text-[10px] text-zinc-400 mt-0.5">Qty: {pos.quantity}</div>
+                  <div className="text-xs text-zinc-400 mt-0.5">Qty: {pos.quantity}</div>
                 </div>
                 <div className="text-right flex items-center gap-2">
                   <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
@@ -622,7 +622,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
                   </span>
                   <span
                     className={cn(
-                      'text-[10px] font-medium px-1.5 py-0.5 rounded-full',
+                      'text-xs font-medium px-1.5 py-0.5 rounded-full',
                       pos.itm
                         ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
                         : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400',
@@ -637,7 +637,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
         </div>
       )}
       {d.affectedPositions.length === 0 && (
-        <p className="text-[11px] text-zinc-400 dark:text-zinc-500">No affected positions in portfolio</p>
+        <p className="text-xs text-zinc-400 dark:text-zinc-500">No affected positions in portfolio</p>
       )}
     </div>
   )
@@ -649,7 +649,7 @@ function IpoDetail({ d }: { d: IpoDetails }) {
       <div className="flex flex-wrap gap-1.5">
         <span
           className={cn(
-            'px-2 py-0.5 text-[10px] font-medium rounded-full border',
+            'px-2 py-0.5 text-xs font-medium rounded-full border',
             d.status === 'upcoming'
               ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800'
               : d.status === 'pricing'
@@ -688,7 +688,7 @@ function IpoDetail({ d }: { d: IpoDetails }) {
               {d.leadUnderwriters.map(u => (
                 <span
                   key={u}
-                  className="px-1.5 py-0.5 text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded border border-zinc-200 dark:border-zinc-700"
+                  className="px-1.5 py-0.5 text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded border border-zinc-200 dark:border-zinc-700"
                 >
                   {u}
                 </span>
@@ -770,13 +770,13 @@ function AgendaEventCard({
               {event.title}
             </span>
             {isDismissed && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-full border border-zinc-200 dark:border-zinc-700 flex-shrink-0">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-full border border-zinc-200 dark:border-zinc-700 flex-shrink-0">
                 <EyeOff className="w-2 h-2" />
                 Dismissed
               </span>
             )}
             {!isDismissed && event.inPortfolio && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full border border-emerald-200/60 dark:border-emerald-800/60 flex-shrink-0">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full border border-emerald-200/60 dark:border-emerald-800/60 flex-shrink-0">
                 <Briefcase className="w-2 h-2" />
                 Portfolio
               </span>
@@ -789,16 +789,16 @@ function AgendaEventCard({
                   e.stopPropagation()
                   onViewInstrument?.(event.instrument!)
                 }}
-                className="text-[11px] font-mono font-semibold text-pink-600 dark:text-pink-400 hover:underline"
+                className="text-xs font-mono font-semibold text-pink-600 dark:text-pink-400 hover:underline"
               >
                 {event.instrument}
               </button>
             )}
             {timing && (
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">{timing}</span>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500">{timing}</span>
             )}
             {event.impact === 'high' && (
-              <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-red-600 dark:text-red-400">
+              <span className="inline-flex items-center gap-0.5 text-xs font-medium text-red-600 dark:text-red-400">
                 <AlertTriangle className="w-2.5 h-2.5" />
                 High Impact
               </span>
@@ -1023,7 +1023,7 @@ export function CalendarDashboard({
           Portfolio Only
           <span
             className={cn(
-              'ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium',
+              'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
               portfolioOnly
                 ? 'bg-white/60 dark:bg-black/20'
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
@@ -1046,7 +1046,7 @@ export function CalendarDashboard({
           Dismissed
           <span
             className={cn(
-              'ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium',
+              'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
               showDismissed
                 ? 'bg-white/60 dark:bg-black/20'
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
@@ -1094,7 +1094,7 @@ export function CalendarDashboard({
                 {/* Month separator */}
                 <div className="flex items-center gap-3 mb-5">
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
                     {group.monthLabel}
                   </span>
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
@@ -1138,14 +1138,14 @@ export function CalendarDashboard({
                           {hasPortfolio && (
                             <button
                               onClick={onViewPortfolio}
-                              className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+                              className="text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
                             >
                               <Briefcase className="w-2.5 h-2.5" />
                               Portfolio
                             </button>
                           )}
                           <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
-                          <span className="text-[11px] text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+                          <span className="text-xs text-zinc-400 dark:text-zinc-500 flex-shrink-0">
                             {day.events.length} event{day.events.length !== 1 ? 's' : ''}
                           </span>
                         </div>
@@ -1198,7 +1198,7 @@ export function CalendarDashboard({
 
             {/* Event type legend */}
             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3">
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2.5">
+              <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2.5">
                 Event Types
               </div>
               <div className="space-y-1.5">
@@ -1210,7 +1210,7 @@ export function CalendarDashboard({
                       <div className={cn('w-1.5 h-1.5 rounded-full flex-shrink-0', cfg.dot)} />
                       <Icon className={cn('w-3 h-3', cfg.color)} />
                       <span className="text-xs text-zinc-600 dark:text-zinc-400 flex-1">{cfg.label}</span>
-                      <span className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">{count}</span>
+                      <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">{count}</span>
                     </div>
                   )
                 })}

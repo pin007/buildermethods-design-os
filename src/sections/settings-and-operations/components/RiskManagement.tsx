@@ -90,7 +90,7 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
             className="h-1.5 w-full appearance-none rounded-full bg-zinc-200 dark:bg-zinc-800 accent-pink-600"
           />
           {/* Min / Max labels */}
-          <div className="mt-0.5 flex justify-between text-[10px] text-zinc-400 dark:text-zinc-500">
+          <div className="mt-0.5 flex justify-between text-xs text-zinc-400 dark:text-zinc-500">
             <span>{formatValue(setting.min, setting.unit)}{formatUnit(setting.unit)}</span>
             <span>{formatValue(setting.max, setting.unit)}{formatUnit(setting.unit)}</span>
           </div>
@@ -125,7 +125,7 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
 
       {/* Modified indicator */}
       {isModified && (
-        <p className="mt-2 text-[11px] text-pink-600 dark:text-pink-400">
+        <p className="mt-2 text-xs text-pink-600 dark:text-pink-400">
           Changed from default ({formatValue(setting.defaultValue, setting.unit)}{formatUnit(setting.unit)})
         </p>
       )}

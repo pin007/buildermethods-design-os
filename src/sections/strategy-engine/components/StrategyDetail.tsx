@@ -251,7 +251,7 @@ export function StrategyDetail({
               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600
               ${strategy.active
                 ? 'bg-pink-600 dark:bg-pink-500'
-                : 'bg-stone-200 dark:bg-zinc-700'
+                : 'bg-zinc-200 dark:bg-zinc-700'
               }
             `}
             role="switch"
@@ -286,7 +286,7 @@ export function StrategyDetail({
               <Icon size={15} strokeWidth={1.5} />
               {tab.label}
               {count !== undefined && (
-                <span className={`ml-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold tabular-nums ${
+                <span className={`ml-0.5 rounded-full px-1.5 py-0.5 text-xs font-bold tabular-nums ${
                   isActive
                     ? 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300'
                     : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400'
@@ -407,7 +407,7 @@ function ConfigurationTab({
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold uppercase ${
+                      <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold uppercase ${
                         exit.enabled
                           ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
                           : 'bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500'
@@ -427,7 +427,7 @@ function ConfigurationTab({
                         <div key={param.name} className="flex items-center justify-between py-2">
                           <div>
                             <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">{param.name}</p>
-                            <p className="text-[11px] text-zinc-400 dark:text-zinc-500">{param.description}</p>
+                            <p className="text-xs text-zinc-400 dark:text-zinc-500">{param.description}</p>
                           </div>
                           <span className="font-mono text-xs font-semibold text-zinc-800 dark:text-zinc-200 tabular-nums">
                             {param.value}
@@ -562,7 +562,7 @@ function ConfigurationTab({
                     }`}>
                       <ExitIcon size={14} className="text-zinc-500 dark:text-zinc-400" />
                       <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                        <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                           #{idx + 1}
                         </p>
                         <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
@@ -705,7 +705,7 @@ function BacktestHistoryTab({
                             {sc.label}
                           </span>
                           {bt.status === 'running' && bt.progress !== undefined && (
-                            <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 tabular-nums">
+                            <span className="text-xs font-mono text-blue-600 dark:text-blue-400 tabular-nums">
                               {bt.progress}%
                             </span>
                           )}
@@ -720,7 +720,7 @@ function BacktestHistoryTab({
                           </div>
                         )}
                         {bt.status === 'failed' && bt.errorMessage && (
-                          <p className="mt-1 text-[10px] text-red-500 dark:text-red-400 max-w-[200px] truncate" title={bt.errorMessage}>
+                          <p className="mt-1 text-xs text-red-500 dark:text-red-400 max-w-[200px] truncate" title={bt.errorMessage}>
                             {bt.errorMessage}
                           </p>
                         )}
@@ -834,7 +834,7 @@ function WalkForwardTab({
                         <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${oc.bg} ${oc.text}`}>
                           {wfo.overfittingRisk}
                         </span>
-                        <span className="ml-1.5 text-[10px] font-mono text-zinc-400 dark:text-zinc-500 tabular-nums">
+                        <span className="ml-1.5 text-xs font-mono text-zinc-400 dark:text-zinc-500 tabular-nums">
                           ({wfo.overfittingRatio.toFixed(2)})
                         </span>
                       </td>
