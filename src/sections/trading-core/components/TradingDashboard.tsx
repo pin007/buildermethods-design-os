@@ -14,6 +14,7 @@ import {
   ListOrdered,
 } from 'lucide-react'
 import type { TradingCoreDashboardProps, RecentActivity } from '@/../product/sections/trading-core/types'
+import { DataFreshness } from '@/lib/ui/DataFreshness'
 
 // ---------------------------------------------------------------------------
 // Formatting helpers
@@ -166,6 +167,8 @@ export function TradingDashboard({
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
             Dashboard
           </h1>
+          {/* Surface-level data freshness (rec #2) */}
+          <DataFreshness status="live" label="real-time" className="mt-2" />
         </div>
 
         <button

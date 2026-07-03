@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
-import { Menu, X, Sun, Moon, Search, ShieldAlert } from 'lucide-react'
+import { Menu, X, Sun, Moon, Search, ShieldAlert, FlaskConical, Radio, Rows2, Rows3 } from 'lucide-react'
 import { MainNav, type NavGroup } from './MainNav'
+import { DataFreshness } from '@/lib/ui/DataFreshness'
 import { UserMenu } from './UserMenu'
 import { CommandPalette, type CommandItem } from './CommandPalette'
 import { OrderPanel, type OrderPanelState } from './OrderPanel'
@@ -23,6 +24,8 @@ interface AppShellProps {
   banners?: Banner[]
   breadcrumb?: React.ReactNode
   pageTitle?: string
+  /** Trading environment — drives the persistent Paper/Live safety indicator. */
+  tradingMode?: 'paper' | 'live'
   onNavigate?: (href: string) => void
   onLogout?: () => void
   onEmergencyClose?: (filter: 'all' | 'intraday' | 'swing') => void
@@ -112,6 +115,7 @@ export default function AppShell({
   banners = [],
   breadcrumb,
   pageTitle,
+  tradingMode: tradingModeProp = 'paper',
   onNavigate,
   onLogout,
   onEmergencyClose,
@@ -135,6 +139,18 @@ export default function AppShell({
   const [sidebarHovered, setSidebarHovered] = useState(false)
   const [emergencyCloseOpen, setEmergencyCloseOpen] = useState(false)
   const [toasts, setToasts] = useState<Toast[]>([])
+  // Paper vs Live trading mode (recommendation #1) — persisted; defaults to the
+  // safer 'paper' when nothing is stored so a session never silently starts live.
+  const [tradingMode, setTradingMode] = useState<'paper' | 'live'>(() => {
+    const stored = localStorage.getItem('trading-mode')
+    return stored === 'live' || stored === 'paper' ? stored : tradingModeProp
+  })
+  // Comfortable vs Compact density (recommendation #3) — persisted; applied to
+  // the content region via the `data-density` root attribute.
+  const [density, setDensity] = useState<'comfortable' | 'compact'>(() => {
+    const stored = localStorage.getItem('density')
+    return stored === 'compact' ? 'compact' : 'comfortable'
+  })
   const isDragging = useRef(false)
   const dragStartX = useRef(0)
   const dragStartWidth = useRef(SIDEBAR_DEFAULT)
@@ -166,6 +182,17 @@ export default function AppShell({
     document.documentElement.classList.toggle('dark', darkMode)
     localStorage.setItem('theme', darkMode ? 'dark' : 'light')
   }, [darkMode])
+
+  // Persist trading mode
+  useEffect(() => {
+    localStorage.setItem('trading-mode', tradingMode)
+  }, [tradingMode])
+
+  // Apply + persist content density via the root `data-density` attribute
+  useEffect(() => {
+    document.documentElement.dataset.density = density
+    localStorage.setItem('density', density)
+  }, [density])
 
   // Update document title on pageTitle change
   useEffect(() => {
@@ -289,6 +316,43 @@ export default function AppShell({
       >
         <SidebarLogo collapsed={collapsed} darkMode={darkMode} />
 
+        {/* Paper vs Live trading mode — persistent safety indicator (rec #1).
+            Must be unmistakable: a user should never wonder if this is real money. */}
+        <div className={collapsed ? 'flex justify-center pb-4' : 'px-3 pb-4'}>
+          <button
+            onClick={() => setTradingMode(tradingMode === 'paper' ? 'live' : 'paper')}
+            aria-label={`Trading mode: ${tradingMode === 'paper' ? 'Paper' : 'Live'}. Click to switch.`}
+            title={
+              tradingMode === 'paper'
+                ? 'Paper trading (simulated). Click to switch to Live.'
+                : 'LIVE trading (real money). Click to switch to Paper.'
+            }
+            className={
+              collapsed
+                ? `flex items-center justify-center rounded-lg p-2 ${
+                    tradingMode === 'paper'
+                      ? 'text-amber-500'
+                      : 'text-rose-500'
+                  }`
+                : `flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
+                    tradingMode === 'paper'
+                      ? 'border-amber-400/40 bg-amber-400/10 text-amber-600 dark:text-amber-400 hover:bg-amber-400/20'
+                      : 'border-rose-500/50 bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20'
+                  }`
+            }
+          >
+            {tradingMode === 'paper' ? (
+              <FlaskConical size={collapsed ? 16 : 13} />
+            ) : (
+              <span className="relative flex h-2.5 w-2.5 items-center justify-center">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-500 opacity-75 motion-reduce:hidden" />
+                <Radio size={collapsed ? 16 : 13} className="relative" />
+              </span>
+            )}
+            {!collapsed && <span>{tradingMode === 'paper' ? 'Paper Trading' : 'Live Trading'}</span>}
+          </button>
+        </div>
+
         {/* Search trigger */}
         <div className={collapsed ? 'flex justify-center pb-4' : 'px-3 pb-4'}>
           <button
@@ -356,6 +420,57 @@ export default function AppShell({
               {!collapsed && <span>Close All Positions</span>}
             </button>
           </div>
+
+          {/* System status: market-data freshness (rec #2) + density toggle (rec #3) */}
+          {collapsed ? (
+            <div className="flex flex-col items-center gap-2 py-2">
+              <DataFreshness status="live" dotOnly />
+              <button
+                onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}
+                title={`Density: ${density}. Click to toggle.`}
+                aria-label={`Density: ${density}. Click to toggle.`}
+                className="rounded-lg p-2 text-hint transition-colors hover:bg-hover hover:text-muted-foreground"
+              >
+                {density === 'comfortable' ? <Rows3 size={16} /> : <Rows2 size={16} />}
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-2 px-5 py-2">
+              <DataFreshness status="live" label="real-time" />
+              <div
+                role="group"
+                aria-label="Content density"
+                className="flex items-center rounded-lg border border-border bg-card p-0.5"
+              >
+                <button
+                  onClick={() => setDensity('comfortable')}
+                  aria-pressed={density === 'comfortable'}
+                  title="Comfortable density"
+                  className={`flex items-center justify-center rounded-md p-1 transition-colors ${
+                    density === 'comfortable'
+                      ? 'bg-accent text-foreground'
+                      : 'text-hint hover:text-muted-foreground'
+                  }`}
+                >
+                  <Rows3 size={13} />
+                  <span className="sr-only">Comfortable</span>
+                </button>
+                <button
+                  onClick={() => setDensity('compact')}
+                  aria-pressed={density === 'compact'}
+                  title="Compact density"
+                  className={`flex items-center justify-center rounded-md p-1 transition-colors ${
+                    density === 'compact'
+                      ? 'bg-accent text-foreground'
+                      : 'text-hint hover:text-muted-foreground'
+                  }`}
+                >
+                  <Rows2 size={13} />
+                  <span className="sr-only">Compact</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Broker status */}
           {brokers.length > 0 && (
@@ -463,6 +578,7 @@ export default function AppShell({
       {/* Order panel slide-over */}
       <OrderPanel
         state={orderPanelState}
+        tradingMode={tradingMode}
         onClose={closeOrderPanel}
         onMinimize={minimizeOrderPanel}
         onRestore={restoreOrderPanel}

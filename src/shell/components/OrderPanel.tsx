@@ -5,13 +5,15 @@ export type OrderPanelState = 'closed' | 'open' | 'minimized'
 
 export interface OrderPanelProps {
   state: OrderPanelState
+  /** Trading environment — mirrors the shell's Paper/Live safety indicator. */
+  tradingMode?: 'paper' | 'live'
   onClose: () => void
   onMinimize: () => void
   onRestore: () => void
   children?: React.ReactNode
 }
 
-export function OrderPanel({ state, onClose, onMinimize, onRestore, children }: OrderPanelProps) {
+export function OrderPanel({ state, tradingMode = 'paper', onClose, onMinimize, onRestore, children }: OrderPanelProps) {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -139,21 +141,40 @@ export function OrderPanel({ state, onClose, onMinimize, onRestore, children }: 
         onClick={attemptClose}
       />
 
-      {/* Panel */}
+      {/* Panel — full-height right slide-over on desktop, native bottom sheet on
+          mobile (rec #8): anchored to the bottom, rounded top, slides up, with a
+          grab handle and the primary action reachable in the thumb zone. */}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label="Order entry panel"
-        className="fixed inset-y-0 right-0 z-[60] flex w-full flex-col border-l
-          border-border bg-background shadow-2xl
-          animate-in slide-in-from-right duration-300 ease-out
-          sm:w-[480px]"
+        className="fixed z-[60] flex flex-col bg-background shadow-2xl
+          inset-x-0 bottom-0 max-h-[92dvh] rounded-t-2xl border-t border-border
+          animate-in fade-in slide-in-from-bottom duration-300 ease-out
+          sm:inset-y-0 sm:right-0 sm:left-auto sm:max-h-none sm:w-[480px]
+          sm:rounded-none sm:border-l sm:border-t-0
+          sm:slide-in-from-right sm:[--tw-enter-translate-y:0]"
       >
+        {/* Mobile grab handle */}
+        <div className="flex justify-center pt-2 sm:hidden">
+          <span className="h-1 w-9 rounded-full bg-border" />
+        </div>
+
         {/* Header */}
         <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
           <ShoppingCart size={16} className="text-primary dark:text-pink-400" />
           <h2 className="flex-1 text-sm font-semibold text-foreground">New Order</h2>
+          <span
+            title={tradingMode === 'paper' ? 'Simulated order — no real money' : 'LIVE order — real money'}
+            className={`rounded-full px-2 py-0.5 text-xs font-bold uppercase tracking-wider ${
+              tradingMode === 'paper'
+                ? 'bg-amber-400/15 text-amber-600 dark:text-amber-400'
+                : 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
+            }`}
+          >
+            {tradingMode}
+          </span>
           <button
             onClick={onMinimize}
             aria-label="Minimize order panel"
