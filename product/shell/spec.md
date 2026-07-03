@@ -108,6 +108,7 @@ Sidebar contains all chrome. Content area is a scrollable region with 24px paddi
 - Nav icons: lucide-react, 18px size, zinc-500 default / pink-400 active
 - Nav item spacing: py-1.5 for tighter density. All interactive elements meet 44px minimum touch target on mobile (min-h-[44px] lg:min-h-0)
 - Sidebar background: zinc-950 (matches --bg-primary), no right border (visually disconnected)
+- Sidebar scroll: the nav uses a slim brand-magenta scrollbar (`.scrollbar-slim`) — thin, track-less thumb tinted with the primary accent at ~45% that brightens to full primary on hover (WebKit + Firefox)
 - Header background: zinc-950 (same as content — seamless)
 - Group labels: uppercase, zinc-500, 11px, letter-spacing wide, clickable chevron for collapsible groups
 - Logo: "The Formation" icon from brand manual — 4 progressive bars with brand-defined colors (#2A2A2E, #3A3A3F, #6B6B70, gradient #ec4899→#db2777→#be185d). Per brand manual: minimum icon size 24px, use icon-only below 140px width.

@@ -130,7 +130,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
   }
 
   return (
-    <nav aria-label="Main navigation" className="flex-1 overflow-y-auto px-3 pb-3">
+    <nav aria-label="Main navigation" className="scrollbar-slim flex-1 overflow-y-auto px-3 pb-3">
       {groups.map((group) => {
         const isGroupCollapsed = collapsedGroups.has(group.label)
 
