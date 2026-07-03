@@ -125,6 +125,29 @@
 }
 
 /* =========================================================
+   Content density — Comfortable (default) vs Compact.
+   Toggled via data-density on the app root and persisted, so
+   power traders can tighten tables/cards for scanning. Compact
+   affects the *content region only* — navigation chrome and the
+   type scale are unchanged. In the Tailwind v4 build this is
+   implemented by reducing the base --spacing unit within
+   #main-content (~17% tighter); the equivalent scaled spacing
+   tokens are shown here for reference.
+   ========================================================= */
+[data-density="compact"] {
+  --spacing-1:  0.208rem;
+  --spacing-2:  0.417rem;
+  --spacing-3:  0.625rem;
+  --spacing-4:  0.833rem;
+  --spacing-5:  1.042rem;
+  --spacing-6:  1.25rem;
+  --spacing-8:  1.667rem;
+  --spacing-10: 2.083rem;
+  --spacing-12: 2.5rem;
+  --spacing-16: 3.333rem;
+}
+
+/* =========================================================
    Tabular numerals — apply to any element rendering aligned
    or live-updating numbers (order tables, prices, quantities,
    percentages, P&L). Keeps digit width constant so values do
@@ -134,6 +157,33 @@
 .font-tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
+}
+
+/* =========================================================
+   Skeleton loader — shape-matched placeholder for async data.
+   Prefer over a spinner so layout stays stable while streaming
+   data resolves. Shimmer sweep; static tint under reduced motion.
+   ========================================================= */
+.skeleton {
+  background-color: var(--bg-tertiary);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklch, var(--text-primary) 8%, transparent),
+    transparent
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-md);
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; background-image: none; }
 }
 
 /* Flash animations for real-time price updates — CVD-aware via

@@ -41,10 +41,13 @@ Following specifications must be followed:
 ## Sidebar
 All navigation chrome consolidated in the sidebar:
 - **Logo:** The Formation icon + "Trading Squad" wordmark at top
+- **Trading mode indicator:** Persistent Paper/Live pill directly beneath the logo (see Trading Mode Indicator)
 - **Search trigger:** Click or Cmd+K opens command palette
 - **Navigation:** Grouped nav items with collapsible groups (Trading, Intelligence, Review, System). Items with sub-pages (Market Data, Strategies, Trade Journal) show their children inline beneath the parent item.
 - **Badge counts:** Pink badges on nav items (e.g., pending approvals on Orders, unread on Market Analysis)
 - **Broker status:** Connection dots (green/amber/red) for IB and Binance in footer
+- **Data freshness:** Market-data feed indicator in the footer (see Data Freshness)
+- **Density toggle:** Comfortable/Compact segmented control in the footer (see Content Density)
 - **Alerts:** Nav item in Overview group with badge count (same style as Orders/Market Analysis badges)
 - **Theme toggle:** Sun/Moon nav item in System group — toggles dark/light mode on click
 - **Emergency close:** "Close All Positions" button in sidebar footer, always visible. Opens Level 4 confirmation: modal with position type filter (intraday/swing/all), requires explicit confirmation (e.g., type "CLOSE ALL" to confirm). Red/destructive styling. Shows position count and estimated market impact before confirmation.
@@ -55,6 +58,30 @@ Sidebar is resizable by dragging the right edge. Drag handle highlights pink-600
 - **Default width:** 280px
 - **Minimum width:** 220px
 - **Maximum width:** 400px
+
+## Trading Mode Indicator (Paper / Live)
+A persistent, unmistakable indicator of the active trading environment, rendered as a full-width pill directly beneath the logo. This is a safety-critical affordance — a user must never be unsure whether an order commits real money.
+- **Paper:** amber pill (`amber-400/10` bg, `amber-400/40` border, amber text) with a flask icon and the label "Paper Trading"
+- **Live:** rose pill (`rose-500/10` bg, `rose-500/50` border, rose text) with a broadcast icon and a pulsing dot; label "Live Trading"
+- **Default:** `paper` when nothing is persisted — a session never silently starts in Live
+- **Persistence:** stored in `localStorage` (`trading-mode`); survives navigation and reload
+- **Collapsed sidebar (tablet):** shows the mode icon only (amber flask / rose broadcast), tinted to match
+- **Order Panel inheritance:** the Order Panel header shows a matching PAPER/LIVE tag so the mode is visible at the point of order entry
+- **Reduced motion:** the Live pulsing dot is suppressed under `prefers-reduced-motion`
+
+## Content Density
+A per-user Comfortable/Compact density setting for the content region, letting power traders tighten tables and cards for scanning without a rebuild. Rendered as a two-option segmented control in the sidebar footer (Comfortable = `Rows3` icon, Compact = `Rows2` icon), collapsing to a single toggle button on the tablet/collapsed sidebar.
+- **Mechanism:** sets `data-density="comfortable" | "compact"` on the document root; Compact reduces Tailwind's `--spacing` unit within the content region only (`#main-content`), so padding/gaps/margins shrink while the nav chrome and type scale stay fixed
+- **Default:** `comfortable`
+- **Persistence:** stored in `localStorage` (`density`)
+- **Accessibility:** `role="group"` with `aria-label="Content density"`; each option is a button with `aria-pressed`
+
+## Data Freshness
+Streaming trading data must communicate how live and how recent it is — traders distrust numbers they cannot date. A reusable freshness indicator (status dot + label, wrapped in `aria-live="polite"`) is used in two places:
+- **Global:** market-data feed status in the sidebar footer (e.g., "Live · real-time"); collapses to a dot-only indicator on the tablet sidebar
+- **Per-surface:** placed on prominent live surfaces (e.g., beneath the Dashboard title) so each data region carries its own recency
+- **States:** `live` (green pulsing dot), `delayed` (amber), `stale` (amber, dimmed), `disconnected` (red)
+- **Relative time:** when given a timestamp, renders an auto-ticking "updated Ns ago"; the pulse is suppressed under `prefers-reduced-motion`
 
 ## Command Palette (Cmd+K)
 Global search overlay triggered by Cmd+K / Ctrl+K, or by clicking the search bar in the sidebar.
@@ -116,24 +143,27 @@ Shell renders persistent banners at the top of the content area (above page cont
 
 Shell provides a persistent slide-over order entry panel accessible from any page:
 - **Trigger:** Contextual "Create Order" buttons (charts, positions, market analysis), Cmd+N keyboard shortcut (Phase 2), command palette "New Order" action, or navigation to /orders/create route
-- **Width:** 480px, right-aligned, full viewport height
+- **Width / placement:** Desktop (≥640px) — 480px right-aligned slide-over, full viewport height. Mobile (<640px) — a native bottom sheet: full-width, anchored to the bottom, rounded top with a grab handle, `max-h-[92dvh]`, so the primary action stays reachable in the thumb zone
+- **Mode tag:** Header shows a PAPER/LIVE tag inherited from the Trading Mode Indicator
 - **Backdrop:** Subtle dim overlay on main content when panel is open
 - **Persistence:** Panel stays open across page navigation. User can minimize panel to collapse it to a 64px tab on the right edge (shows "Order" label + minimize/restore toggle). Minimized state preserves form data.
 - **Layout:** Main order form area with sidebar containing Order Summary (real-time calculations), Risk Indicator (portfolio impact %), and Available Balance
 - **Order types:** Tab-based interface for Market, Limit, Stop, and Advanced orders. Tab selection dynamically shows/hides relevant form fields
 - **Pre-fill:** When triggered from context (chart symbol, AI recommendation, position row), relevant fields auto-populate. When triggered via Cmd+N or command palette, symbol field is blank and focused
 - **Close:** X button (clears form data), Esc key, or click backdrop. Closing prompts confirmation if form has unsaved changes
-- **Animation:** Slide in from right (300ms ease-out), backdrop fade in (150ms). Minimize/restore uses 200ms width transition
+- **Animation:** Desktop — slide in from right (300ms ease-out); mobile — slide up from bottom. Backdrop fade in (150ms). Minimize/restore uses 200ms width transition
 - **Accessibility:** ARIA role="dialog", aria-modal="true", aria-label="Order entry panel", focus trap when open, focus returns to trigger element on close, keyboard navigation within form fields and tabs
 - **Route behavior:** Navigating to /orders/create opens the panel on the Orders page with no pre-fill
 
 ## Tab Order
 1. Skip to main content link (visually hidden, appears on focus)
-2. Search trigger (sidebar)
-3. Sidebar navigation items (top to bottom)
-4. Emergency close button
-5. User menu
-6. Main content area (sections manage their own tab order)
+2. Trading mode indicator (Paper/Live pill)
+3. Search trigger (sidebar)
+4. Sidebar navigation items (top to bottom)
+5. Data freshness + density toggle (footer)
+6. Emergency close button
+7. User menu
+8. Main content area (sections manage their own tab order)
 
 ## Page Titles
 Document title updates on navigation: "{Page Name} - Trading Squad". Shell provides a callback or context for sections to set the page title.
