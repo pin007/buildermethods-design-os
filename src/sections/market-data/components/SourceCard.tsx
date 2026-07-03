@@ -159,7 +159,7 @@ export function SourceCard({ source, onClick }: SourceCardProps) {
           </div>
 
           {/* Hover arrow */}
-          <div className="opacity-0 transition-all -translate-x-1 group-hover:translate-x-0 group-hover:opacity-100">
+          <div className="opacity-40 transition-all -translate-x-1 group-hover:translate-x-0 group-hover:opacity-100">
             <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
           </div>
         </div>

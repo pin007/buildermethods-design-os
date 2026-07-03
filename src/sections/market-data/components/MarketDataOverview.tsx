@@ -353,7 +353,7 @@ export function MarketDataOverview({
             </p>
 
             {/* Hover arrow */}
-            <div className="absolute right-0 top-1/2 -translate-x-1 -translate-y-1/2 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
+            <div className="absolute right-0 top-1/2 -translate-x-1 -translate-y-1/2 opacity-40 transition-all group-hover:translate-x-0 group-hover:opacity-100">
               <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
             </div>
           </div>

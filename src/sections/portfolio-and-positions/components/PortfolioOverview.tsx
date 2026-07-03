@@ -409,7 +409,7 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
                       </span>
                       <ChevronRight
                         size={14}
-                        className="text-zinc-300 dark:text-zinc-700 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1"
+                        className="text-zinc-400 dark:text-zinc-600 opacity-50 transition-all group-hover:opacity-100 group-hover:translate-x-0.5"
                       />
                     </div>
                   </td>
