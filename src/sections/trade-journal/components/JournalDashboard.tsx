@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useChartColors } from '@/lib/chart-theme'
 import {
   BookOpen,
   TrendingUp,
@@ -84,6 +85,7 @@ function Sparkline({
   height?: number
   color?: 'pink' | 'emerald' | 'zinc'
 }) {
+  const chart = useChartColors()
   if (data.length < 2) return null
 
   const scores = data.map((d) => d.score)
@@ -99,9 +101,9 @@ function Sparkline({
   })
 
   const colorMap = {
-    pink: { stroke: '#db2777', fill: '#db2777' },
-    emerald: { stroke: '#10b981', fill: '#10b981' },
-    zinc: { stroke: '#71717a', fill: '#71717a' },
+    pink: { stroke: chart.primary, fill: chart.primary },
+    emerald: { stroke: chart.positive, fill: chart.positive },
+    zinc: { stroke: chart.axis, fill: chart.axis },
   }
 
   const c = colorMap[color]
@@ -669,6 +671,7 @@ export function JournalDashboard({
 // =============================================================================
 
 function ProcessScoreChart({ data }: { data: Array<{ date: string; score: number }> }) {
+  const chart = useChartColors()
   if (data.length < 2) return null
 
   const width = 600
@@ -704,8 +707,8 @@ function ProcessScoreChart({ data }: { data: Array<{ date: string; score: number
     <svg viewBox={`0 0 ${width} ${height + 20}`} className="w-full" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="process-area-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#db2777" stopOpacity={0.12} />
-          <stop offset="100%" stopColor="#db2777" stopOpacity={0} />
+          <stop offset="0%" stopColor={chart.primary} stopOpacity={0.12} />
+          <stop offset="100%" stopColor={chart.primary} stopOpacity={0} />
         </linearGradient>
       </defs>
 
@@ -745,7 +748,7 @@ function ProcessScoreChart({ data }: { data: Array<{ date: string; score: number
       <path
         d={linePath}
         fill="none"
-        stroke="#db2777"
+        stroke={chart.primary}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -756,14 +759,14 @@ function ProcessScoreChart({ data }: { data: Array<{ date: string; score: number
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
         r={6}
-        fill="#db2777"
+        fill={chart.primary}
         fillOpacity={0.15}
       />
       <circle
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
         r={3}
-        fill="#db2777"
+        fill={chart.primary}
       />
 
       {/* Date labels */}

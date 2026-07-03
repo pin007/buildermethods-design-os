@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useChartColors } from '@/lib/chart-theme'
 import {
   AlertTriangle,
   Flame,
@@ -582,14 +583,15 @@ function HabitScoreRow({
   icon: React.ElementType
   data: HabitScoreEntry
 }) {
+  const chart = useChartColors()
   const colors = getScoreColor(data.score)
 
-  // Map score color to sparkline hex
+  // Map score threshold to sparkline color (palette-aware, CVD-safe)
   const sparkHex =
-    data.score >= 81 ? '#34d399'
-    : data.score >= 61 ? '#10b981'
-    : data.score >= 41 ? '#fbbf24'
-    : '#f87171'
+    data.score >= 81 ? chart.positive
+    : data.score >= 61 ? chart.positive
+    : data.score >= 41 ? chart.warning
+    : chart.negative
 
   return (
     <div className="flex items-center gap-4 px-6 py-4">

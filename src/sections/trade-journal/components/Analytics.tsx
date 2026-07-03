@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useChartColors, type ChartColors } from '@/lib/chart-theme'
 import {
   TrendingUp,
   TrendingDown,
@@ -80,15 +81,33 @@ const TAB_META: Record<TabKey, { label: string; icon: React.ElementType }> = {
   attribution: { label: 'Attribution', icon: Layers },
 }
 
-const DIMENSION_META: Record<string, { label: string; icon: React.ElementType; color: string; hex: string }> = {
-  discipline: { label: 'Discipline', icon: ShieldCheck, color: 'text-pink-500 dark:text-pink-400', hex: '#db2777' },
-  emotionalManagement: { label: 'Emotional', icon: Brain, color: 'text-violet-500 dark:text-violet-400', hex: '#8b5cf6' },
-  riskManagement: { label: 'Risk Mgmt', icon: Gauge, color: 'text-amber-500 dark:text-amber-400', hex: '#f59e0b' },
-  entryQuality: { label: 'Entry Quality', icon: Crosshair, color: 'text-emerald-500 dark:text-emerald-400', hex: '#10b981' },
-  exitQuality: { label: 'Exit Quality', icon: LogOut, color: 'text-sky-500 dark:text-sky-400', hex: '#0ea5e9' },
+const DIMENSION_META: Record<string, { label: string; icon: React.ElementType; color: string }> = {
+  discipline: { label: 'Discipline', icon: ShieldCheck, color: 'text-pink-500 dark:text-pink-400' },
+  emotionalManagement: { label: 'Emotional', icon: Brain, color: 'text-violet-500 dark:text-violet-400' },
+  riskManagement: { label: 'Risk Mgmt', icon: Gauge, color: 'text-amber-500 dark:text-amber-400' },
+  entryQuality: { label: 'Entry Quality', icon: Crosshair, color: 'text-emerald-500 dark:text-emerald-400' },
+  exitQuality: { label: 'Exit Quality', icon: LogOut, color: 'text-sky-500 dark:text-sky-400' },
 }
 
 const DIMENSION_KEYS = Object.keys(DIMENSION_META) as Array<keyof typeof DIMENSION_META>
+
+/** Categorical chart color for each process dimension (palette-aware, CVD-safe). */
+function dimensionHex(key: string, chart: ChartColors): string {
+  switch (key) {
+    case 'discipline':
+      return chart.primary
+    case 'emotionalManagement':
+      return chart.series[5]
+    case 'riskManagement':
+      return chart.warning
+    case 'entryQuality':
+      return chart.positive
+    case 'exitQuality':
+      return chart.info
+    default:
+      return chart.primary
+  }
+}
 
 const SESSION_LABELS: Record<string, string> = {
   market_open: 'Market Open (9–11)',
@@ -335,6 +354,7 @@ function PerformanceTab({ metrics }: { metrics: PerformanceMetrics }) {
 // =============================================================================
 
 function ProcessScoresTab({ analytics }: { analytics: ProcessScoreAnalytics }) {
+  const chart = useChartColors()
   return (
     <div className="space-y-6">
       {/* Overall score + Dimension breakdown */}
@@ -390,7 +410,7 @@ function ProcessScoresTab({ analytics }: { analytics: ProcessScoreAnalytics }) {
                           className="h-1.5 rounded-full transition-all duration-700"
                           style={{
                             width: `${pct}%`,
-                            backgroundColor: dim.hex,
+                            backgroundColor: dimensionHex(key, chart),
                           }}
                         />
                       </div>
@@ -589,6 +609,7 @@ function ChartCard({
 // =============================================================================
 
 function WinRateTrendChart({ data }: { data: PerformanceMetrics['winRateTrend'] }) {
+  const chart = useChartColors()
   if (data.length < 2) return <EmptyChart />
 
   const W = 500
@@ -618,8 +639,8 @@ function WinRateTrendChart({ data }: { data: PerformanceMetrics['winRateTrend'] 
     <svg viewBox={`0 0 ${W} ${H + 24}`} className="w-full" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="wr-area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#db2777" stopOpacity={0.12} />
-          <stop offset="100%" stopColor="#db2777" stopOpacity={0} />
+          <stop offset="0%" stopColor={chart.primary} stopOpacity={0.12} />
+          <stop offset="100%" stopColor={chart.primary} stopOpacity={0} />
         </linearGradient>
       </defs>
 
@@ -663,11 +684,11 @@ function WinRateTrendChart({ data }: { data: PerformanceMetrics['winRateTrend'] 
 
       {/* Area + Line */}
       <path d={areaPath} fill="url(#wr-area)" />
-      <path d={linePath} fill="none" stroke="#db2777" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={linePath} fill="none" stroke={chart.primary} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
 
       {/* Data points */}
       {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={3.5} fill="white" stroke="#db2777" strokeWidth={2} className="dark:fill-zinc-900" />
+        <circle key={i} cx={p.x} cy={p.y} r={3.5} fill="white" stroke={chart.primary} strokeWidth={2} className="dark:fill-zinc-900" />
       ))}
 
       {/* X-axis labels */}
@@ -693,6 +714,7 @@ function WinRateTrendChart({ data }: { data: PerformanceMetrics['winRateTrend'] 
 // =============================================================================
 
 function PnlDistributionChart({ data }: { data: PerformanceMetrics['pnlDistribution'] }) {
+  const chart = useChartColors()
   if (data.length === 0) return <EmptyChart />
 
   const W = 500
@@ -714,7 +736,7 @@ function PnlDistributionChart({ data }: { data: PerformanceMetrics['pnlDistribut
         const x = padX + (i / data.length) * chartW + gap / 2
         const y = padY + chartH - barH
         const isNeg = d.bucket.startsWith('-')
-        const fillClass = isNeg ? '#ef4444' : '#10b981'
+        const fillClass = isNeg ? chart.negative : chart.positive
 
         return (
           <g key={i}>
@@ -762,6 +784,7 @@ function PnlDistributionChart({ data }: { data: PerformanceMetrics['pnlDistribut
 // =============================================================================
 
 function CumulativePnlChart({ data }: { data: PerformanceMetrics['cumulativePnl'] }) {
+  const chart = useChartColors()
   if (data.length < 2) return <EmptyChart />
 
   const W = 700
@@ -796,8 +819,8 @@ function CumulativePnlChart({ data }: { data: PerformanceMetrics['cumulativePnl'
     <svg viewBox={`0 0 ${W} ${H + 24}`} className="w-full" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="cpnl-area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#10b981" stopOpacity={0.15} />
-          <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+          <stop offset="0%" stopColor={chart.positive} stopOpacity={0.15} />
+          <stop offset="100%" stopColor={chart.positive} stopOpacity={0} />
         </linearGradient>
       </defs>
 
@@ -816,21 +839,21 @@ function CumulativePnlChart({ data }: { data: PerformanceMetrics['cumulativePnl'
 
       {/* Area + Line */}
       <path d={areaPath} fill="url(#cpnl-area)" />
-      <path d={linePath} fill="none" stroke="#10b981" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={linePath} fill="none" stroke={chart.positive} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
 
       {/* End dot */}
       <circle
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
         r={7}
-        fill="#10b981"
+        fill={chart.positive}
         fillOpacity={0.15}
       />
       <circle
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
         r={3.5}
-        fill="#10b981"
+        fill={chart.positive}
       />
 
       {/* Date labels */}
@@ -860,6 +883,7 @@ function CumulativePnlChart({ data }: { data: PerformanceMetrics['cumulativePnl'
 // =============================================================================
 
 function RadarChart({ byDimension }: { byDimension: ProcessScoreAnalytics['byDimension'] }) {
+  const chart = useChartColors()
   const cx = 200
   const cy = 160
   const R = 120
@@ -888,8 +912,8 @@ function RadarChart({ byDimension }: { byDimension: ProcessScoreAnalytics['byDim
       <svg viewBox="0 0 400 320" className="w-full max-w-md" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="radar-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#db2777" stopOpacity={0.2} />
-            <stop offset="100%" stopColor="#db2777" stopOpacity={0.05} />
+            <stop offset="0%" stopColor={chart.primary} stopOpacity={0.2} />
+            <stop offset="100%" stopColor={chart.primary} stopOpacity={0.05} />
           </linearGradient>
         </defs>
 
@@ -929,14 +953,14 @@ function RadarChart({ byDimension }: { byDimension: ProcessScoreAnalytics['byDim
         <polygon
           points={dims.map((d) => `${d.sx},${d.sy}`).join(' ')}
           fill="url(#radar-fill)"
-          stroke="#db2777"
+          stroke={chart.primary}
           strokeWidth={2}
           strokeLinejoin="round"
         />
 
         {/* Data points */}
         {dims.map((d) => (
-          <circle key={d.key} cx={d.sx} cy={d.sy} r={4} fill="white" stroke={d.meta.hex} strokeWidth={2} className="dark:fill-zinc-900" />
+          <circle key={d.key} cx={d.sx} cy={d.sy} r={4} fill="white" stroke={dimensionHex(d.key, chart)} strokeWidth={2} className="dark:fill-zinc-900" />
         ))}
 
         {/* Labels */}
@@ -980,6 +1004,7 @@ function RadarChart({ byDimension }: { byDimension: ProcessScoreAnalytics['byDim
 // =============================================================================
 
 function MonthlyTrendChart({ data }: { data: ProcessScoreAnalytics['monthlyTrend'] }) {
+  const chart = useChartColors()
   if (data.length < 2) return <EmptyChart />
 
   const W = 700
@@ -1015,7 +1040,7 @@ function MonthlyTrendChart({ data }: { data: ProcessScoreAnalytics['monthlyTrend
 
       {/* Dimension lines */}
       {DIMENSION_KEYS.map((key) => {
-        const dim = DIMENSION_META[key]
+        const dimColor = dimensionHex(key, chart)
         const points = data.map((m, i) => ({
           x: xScale(i),
           y: yScale(m[key as keyof typeof m] as number),
@@ -1024,13 +1049,13 @@ function MonthlyTrendChart({ data }: { data: ProcessScoreAnalytics['monthlyTrend
 
         return (
           <g key={key}>
-            <path d={path} fill="none" stroke={dim.hex} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" opacity={0.85} />
+            <path d={path} fill="none" stroke={dimColor} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" opacity={0.85} />
             {/* End dot */}
             <circle
               cx={points[points.length - 1].x}
               cy={points[points.length - 1].y}
               r={3}
-              fill={dim.hex}
+              fill={dimColor}
             />
           </g>
         )
@@ -1057,7 +1082,7 @@ function MonthlyTrendChart({ data }: { data: ProcessScoreAnalytics['monthlyTrend
         const legendX = padX + i * 120
         return (
           <g key={`leg-${key}`}>
-            <line x1={legendX} y1={H + 24} x2={legendX + 14} y2={H + 24} stroke={dim.hex} strokeWidth={2} strokeLinecap="round" />
+            <line x1={legendX} y1={H + 24} x2={legendX + 14} y2={H + 24} stroke={dimensionHex(key, chart)} strokeWidth={2} strokeLinecap="round" />
             <text x={legendX + 18} y={H + 27} className="fill-zinc-500 dark:fill-zinc-500" fontSize={9}>
               {dim.label}
             </text>
@@ -1163,6 +1188,7 @@ function ProcessOutcomeQuadrant({ data }: { data: ProcessScoreAnalytics['process
 // =============================================================================
 
 function DayOfWeekChart({ data }: { data: AttributionData['byDayOfWeek'] }) {
+  const chart = useChartColors()
   if (data.length === 0) return <EmptyChart />
 
   const W = 500
@@ -1202,7 +1228,7 @@ function DayOfWeekChart({ data }: { data: AttributionData['byDayOfWeek'] }) {
         return (
           <g key={d.day}>
             {/* Win rate bar */}
-            <rect x={wrX} y={wrY} width={barW} height={wrBarH} rx={2} fill="#db2777" opacity={0.8} />
+            <rect x={wrX} y={wrY} width={barW} height={wrBarH} rx={2} fill={chart.primary} opacity={0.8} />
             <text
               x={wrX + barW / 2}
               y={wrY - 5}
@@ -1221,7 +1247,7 @@ function DayOfWeekChart({ data }: { data: AttributionData['byDayOfWeek'] }) {
               width={barW}
               height={pnlBarH}
               rx={2}
-              fill={pnlPositive ? '#10b981' : '#ef4444'}
+              fill={pnlPositive ? chart.positive : chart.negative}
               opacity={0.8}
             />
             <text
@@ -1262,11 +1288,11 @@ function DayOfWeekChart({ data }: { data: AttributionData['byDayOfWeek'] }) {
       })}
 
       {/* Legend */}
-      <circle cx={padX} cy={H + 28} r={3} fill="#db2777" />
+      <circle cx={padX} cy={H + 28} r={3} fill={chart.primary} />
       <text x={padX + 8} y={H + 31} className="fill-zinc-500 dark:fill-zinc-500" fontSize={9}>
         Win Rate
       </text>
-      <circle cx={padX + 72} cy={H + 28} r={3} fill="#10b981" />
+      <circle cx={padX + 72} cy={H + 28} r={3} fill={chart.positive} />
       <text x={padX + 80} y={H + 31} className="fill-zinc-500 dark:fill-zinc-500" fontSize={9}>
         Avg P&L
       </text>
@@ -1279,6 +1305,7 @@ function DayOfWeekChart({ data }: { data: AttributionData['byDayOfWeek'] }) {
 // =============================================================================
 
 function TimeOfDayChart({ data }: { data: AttributionData['byTimeOfDay'] }) {
+  const chart = useChartColors()
   if (data.length === 0) return <EmptyChart />
 
   const W = 500
@@ -1313,12 +1340,12 @@ function TimeOfDayChart({ data }: { data: AttributionData['byTimeOfDay'] }) {
 
         return (
           <g key={d.session}>
-            <rect x={wrX} y={wrY} width={barW} height={wrBarH} rx={2} fill="#db2777" opacity={0.8} />
+            <rect x={wrX} y={wrY} width={barW} height={wrBarH} rx={2} fill={chart.primary} opacity={0.8} />
             <text x={wrX + barW / 2} y={wrY - 5} textAnchor="middle" className="fill-zinc-500 dark:fill-zinc-400" fontSize={9} fontFamily="JetBrains Mono, monospace">
               {d.winRate.toFixed(0)}%
             </text>
 
-            <rect x={pnlX} y={pnlY} width={barW} height={pnlBarH} rx={2} fill={pnlPositive ? '#10b981' : '#ef4444'} opacity={0.8} />
+            <rect x={pnlX} y={pnlY} width={barW} height={pnlBarH} rx={2} fill={pnlPositive ? chart.positive : chart.negative} opacity={0.8} />
             <text
               x={pnlX + barW / 2}
               y={pnlPositive ? pnlY - 5 : pnlY + pnlBarH + 12}
@@ -1356,9 +1383,9 @@ function TimeOfDayChart({ data }: { data: AttributionData['byTimeOfDay'] }) {
       })}
 
       {/* Legend */}
-      <circle cx={padX} cy={H + 28} r={3} fill="#db2777" />
+      <circle cx={padX} cy={H + 28} r={3} fill={chart.primary} />
       <text x={padX + 8} y={H + 31} className="fill-zinc-500 dark:fill-zinc-500" fontSize={9}>Win Rate</text>
-      <circle cx={padX + 72} cy={H + 28} r={3} fill="#10b981" />
+      <circle cx={padX + 72} cy={H + 28} r={3} fill={chart.positive} />
       <text x={padX + 80} y={H + 31} className="fill-zinc-500 dark:fill-zinc-500" fontSize={9}>Avg P&L</text>
     </svg>
   )

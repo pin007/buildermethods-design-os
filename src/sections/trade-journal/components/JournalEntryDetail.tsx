@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useChartColors } from '@/lib/chart-theme'
 import {
   ArrowLeft,
   Pencil,
@@ -805,6 +806,7 @@ function ScoreBar({
 // =============================================================================
 
 function RadarChart({ scores }: { scores: ProcessScores }) {
+  const chart = useChartColors()
   const size = 180
   const center = size / 2
   const radius = 70
@@ -876,20 +878,20 @@ function RadarChart({ scores }: { scores: ProcessScores }) {
       })}
 
       {/* Data fill */}
-      <path d={dataPath} fill="#db2777" fillOpacity={0.1} />
+      <path d={dataPath} fill={chart.primary} fillOpacity={0.1} />
 
       {/* Data stroke */}
       <path
         d={dataPath}
         fill="none"
-        stroke="#db2777"
+        stroke={chart.primary}
         strokeWidth={2}
         strokeLinejoin="round"
       />
 
       {/* Data points */}
       {dataPoints.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={3} fill="#db2777" />
+        <circle key={i} cx={p.x} cy={p.y} r={3} fill={chart.primary} />
       ))}
 
       {/* Labels */}

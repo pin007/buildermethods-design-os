@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useChartColors } from '@/lib/chart-theme'
 import {
   Activity,
   Settings2,
@@ -145,6 +146,7 @@ function newsSentimentBadge(sentiment: NewsSentiment): { label: string; classes:
 // =============================================================================
 
 function Sparkline({ data, positive }: { data: number[]; positive: boolean }) {
+  const chart = useChartColors()
   if (data.length < 2) return null
   const w = 80
   const h = 24
@@ -165,7 +167,7 @@ function Sparkline({ data, positive }: { data: number[]; positive: boolean }) {
       <polyline
         points={points}
         fill="none"
-        stroke={positive ? '#10b981' : '#ef4444'}
+        stroke={positive ? chart.positive : chart.negative}
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -193,6 +195,7 @@ function SentimentGauge({
   previousScore: number
   size?: number
 }) {
+  const chart = useChartColors()
   const cx = size / 2
   const cy = size / 2 + 10
   const r = size / 2 - 16
@@ -232,7 +235,7 @@ function SentimentGauge({
       <path
         d={arcPath(startAngle, zone34, r)}
         fill="none"
-        stroke="#ef4444"
+        stroke={chart.negative}
         strokeWidth={strokeW}
         strokeLinecap="round"
         opacity={0.25}
@@ -241,7 +244,7 @@ function SentimentGauge({
       <path
         d={arcPath(zone34, zone65, r)}
         fill="none"
-        stroke="#eab308"
+        stroke={chart.warning}
         strokeWidth={strokeW}
         strokeLinecap="round"
         opacity={0.25}
@@ -250,7 +253,7 @@ function SentimentGauge({
       <path
         d={arcPath(zone65, endAngle, r)}
         fill="none"
-        stroke="#10b981"
+        stroke={chart.positive}
         strokeWidth={strokeW}
         strokeLinecap="round"
         opacity={0.25}
@@ -259,7 +262,7 @@ function SentimentGauge({
       <path
         d={arcPath(startAngle, scoreAngle, r)}
         fill="none"
-        stroke={score >= 65 ? '#10b981' : score >= 35 ? '#eab308' : '#ef4444'}
+        stroke={score >= 65 ? chart.positive : score >= 35 ? chart.warning : chart.negative}
         strokeWidth={strokeW}
         strokeLinecap="round"
         opacity={0.8}
