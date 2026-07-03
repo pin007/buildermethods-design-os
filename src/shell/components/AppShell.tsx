@@ -6,7 +6,7 @@ import { UserMenu } from './UserMenu'
 import { CommandPalette, type CommandItem } from './CommandPalette'
 import { OrderPanel, type OrderPanelState } from './OrderPanel'
 import { ToastContainer, type Toast } from './ToastContainer'
-import { SystemBanner, type Banner } from './SystemBanner'
+import { type Banner } from './SystemBanner'
 import { EmergencyCloseModal } from './EmergencyCloseModal'
 
 export interface BrokerStatus {
@@ -171,6 +171,39 @@ export default function AppShell({
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id))
   }, [])
+
+  // Unified notifications: render standing-condition banners as persistent
+  // (sticky) toasts in the same top-right stack as transient toasts.
+  const bannerToasts: Toast[] = useMemo(
+    () =>
+      banners.map((banner) => ({
+        id: `banner-${banner.id}`,
+        variant: banner.variant === 'disconnect' ? 'error' : 'warning',
+        message: banner.message,
+        persistent: true,
+        countdown: banner.countdown,
+        action: banner.actionLabel
+          ? {
+              label: banner.actionLabel,
+              onClick: () => {
+                if (banner.variant === 'session') onSessionExtend?.()
+                else if (banner.actionHref) onNavigate?.(banner.actionHref)
+              },
+            }
+          : undefined,
+      })),
+    [banners, onSessionExtend, onNavigate]
+  )
+
+  const allToasts = useMemo(() => [...bannerToasts, ...toasts], [bannerToasts, toasts])
+
+  const dismissToast = useCallback(
+    (id: string) => {
+      if (id.startsWith('banner-')) onDismissBanner?.(id.slice('banner-'.length))
+      else removeToast(id)
+    },
+    [onDismissBanner, removeToast]
+  )
 
   // Expose addToast via ref
   useEffect(() => {
@@ -496,25 +529,6 @@ export default function AppShell({
           </button>
         </div>
 
-        {/* System banners */}
-        {banners.length > 0 && (
-          <div className="shrink-0">
-            {banners.map((banner) => (
-              <SystemBanner
-                key={banner.id}
-                banner={banner}
-                onDismiss={onDismissBanner}
-                onAction={
-                  banner.variant === 'session'
-                    ? onSessionExtend
-                    : banner.actionHref
-                      ? () => onNavigate?.(banner.actionHref!)
-                      : undefined
-                }
-              />
-            ))}
-          </div>
-        )}
 
         {/* Scrollable content area — 24px padding */}
         <main id="main-content" className="flex-1 overflow-y-auto bg-background p-6">
@@ -560,7 +574,7 @@ export default function AppShell({
       />
 
       {/* Toast notifications */}
-      <ToastContainer toasts={toasts} onDismiss={removeToast} />
+      <ToastContainer toasts={allToasts} onDismiss={dismissToast} />
     </div>
   )
 }

@@ -122,22 +122,21 @@ Sidebar contains all chrome. Content area is a scrollable region with 24px paddi
 - All animations disabled when prefers-reduced-motion is set
 - Keyboard shortcuts planned for Phase 2 (Cmd+1 through Cmd+7)
 
-## Toast Notifications
-Shell provides a global toast notification container:
-- Desktop: bottom-right, stacked
-- Mobile: top-center, full-width
-- Variants: success (green, 4s), error (red, 6s), warning (yellow, 5s), info (blue, 4s)
-- Auto-dismiss with manual close button
-- ARIA role="status" (success/info) or role="alert" (error/warning)
-- Sections call shell's toast API to display notifications
+## Notifications
+A single, unified notification system rendered as **bubbles in a top-right stack** (desktop) / top full-width (mobile). Both ephemeral confirmations and standing conditions share one visual language and location; the only difference is dismissal behavior.
 
-## System Banners
-Shell renders persistent banners at the top of the content area (above page content, below mobile header):
-- Pending approvals: yellow banner with "You have N orders pending approval" + "Review" link
-- Broker disconnected: red banner with "Broker connection lost. Attempting to reconnect..." + "Reconnect" button
-- Session expiring: yellow banner with countdown timer + "Extend Session" button
-- Dismissible (X button), reappears on next relevant event
-- ARIA role="alert" for critical banners, role="status" for informational
+**Transient (auto-dismiss).** Fire-and-forget confirmations sections raise via the shell's toast API.
+- Variants: success (green, 4s), error (red, 6s), warning (amber, 5s), info (blue, 4s)
+- Auto-dismiss with a manual close button
+- Examples: "Portfolio sync complete", "Order placed", "Session extended", "All positions closed"
+
+**Persistent / sticky (stay until resolved).** Standing conditions that need attention. Rendered as sticky bubbles pinned **above** transient ones in the same stack; they do not auto-dismiss and carry an inline action button.
+- Pending approvals: amber bubble "You have N orders pending approval" + "Review" action
+- Broker disconnected: red bubble "Broker connection lost…" + "Reconnect" action
+- Session expiring: amber bubble with a monospace countdown + "Extend" action
+- Dismissible (X); reappears on the next relevant event
+
+**Common:** slide in from the right; ARIA `role="status"` (success/info) or `role="alert"` (error/warning); the action button performs its handler and dismisses the bubble. Ordering is stable within each group, persistent-first.
 
 ## Order Panel
 
