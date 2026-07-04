@@ -60,6 +60,7 @@ All numeric table columns (quantity, prices, market value, P&L, weight, dividend
 - Combined equity curve (ECharts line chart, responsive) showing total portfolio value over time with period selector (1M, 3M, 6M, YTD, 1Y, ALL)
 - Combined allocation donut chart showing allocation by asset, by broker, or by portfolio (toggle between views)
 - Portfolios list table below charts: name, total value, day P&L, day P&L %, positions count, cash balance — click row to navigate to portfolio detail
+- Each portfolio name carries an **environment badge** — a rose "Live" or blue "Paper" tag (matching the shell's trading-scope colours) — so the account's environment is unmistakable. Environment is a portfolio attribute (see data-shape); it drives the Paper/Live scope that gates order entry (see shell spec § Trading Mode Indicator & Scope).
 - Real-time value changes flash green (increase) or red (decrease) for 300ms, then fade back
 - Loading states use skeleton screens (not spinners) for all data-dependent components
 - Empty state (no portfolios): icon, "Welcome to Trading Squad! Connect your broker to get started.", "Connect Broker" CTA

@@ -62,6 +62,13 @@ export interface Portfolio {
   name: string
   currency: string
   brokerId: string
+  /**
+   * Trading environment this portfolio belongs to. Paper portfolios are
+   * simulated (no real money); live portfolios execute real orders. Drives the
+   * shell's Paper/Live scope filter so a live order can never be placed while
+   * the app is scoped to Paper.
+   */
+  environment: 'paper' | 'live'
   dashboardStats: DashboardStats
 }
 

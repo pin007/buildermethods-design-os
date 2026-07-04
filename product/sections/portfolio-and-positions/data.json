@@ -25,14 +25,16 @@
       "Equity curve and allocation data are computed per Portfolio and aggregated across all Portfolios for the overview"
     ]
   },
-
   "brokers": [
     {
       "id": "broker-ib",
       "name": "Interactive Brokers",
       "shortName": "IB",
       "status": "connected",
-      "assetTypes": ["stock", "option"],
+      "assetTypes": [
+        "stock",
+        "option"
+      ],
       "baseCurrency": "USD",
       "connectedAt": "2025-11-15T08:00:00Z"
     },
@@ -41,12 +43,13 @@
       "name": "Binance",
       "shortName": "Binance",
       "status": "connected",
-      "assetTypes": ["crypto"],
+      "assetTypes": [
+        "crypto"
+      ],
       "baseCurrency": "EUR",
       "connectedAt": "2025-12-02T10:30:00Z"
     }
   ],
-
   "instruments": [
     {
       "id": "inst-aapl",
@@ -66,7 +69,7 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 131.80,
+      "currentPrice": 131.8,
       "dayChange": 3.45,
       "dayChangePercent": 2.69
     },
@@ -77,8 +80,8 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 248.50,
-      "dayChange": -4.20,
+      "currentPrice": 248.5,
+      "dayChange": -4.2,
       "dayChangePercent": -1.66
     },
     {
@@ -88,8 +91,8 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 415.60,
-      "dayChange": 2.10,
+      "currentPrice": 415.6,
+      "dayChange": 2.1,
       "dayChangePercent": 0.51
     },
     {
@@ -110,8 +113,8 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 89234.50,
-      "dayChange": -1245.30,
+      "currentPrice": 89234.5,
+      "dayChange": -1245.3,
       "dayChangePercent": -1.38
     },
     {
@@ -121,8 +124,8 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 2876.40,
-      "dayChange": 45.80,
+      "currentPrice": 2876.4,
+      "dayChange": 45.8,
       "dayChangePercent": 1.62
     },
     {
@@ -132,8 +135,8 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 142.30,
-      "dayChange": 8.50,
+      "currentPrice": 142.3,
+      "dayChange": 8.5,
       "dayChangePercent": 6.35
     },
     {
@@ -143,7 +146,7 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 175.30,
+      "currentPrice": 175.3,
       "dayChange": 0.95,
       "dayChangePercent": 0.54
     },
@@ -154,7 +157,7 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 612.40,
+      "currentPrice": 612.4,
       "dayChange": 8.75,
       "dayChangePercent": 1.45
     },
@@ -165,9 +168,9 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 118.90,
-      "dayChange": -2.30,
-      "dayChangePercent": -1.90
+      "currentPrice": 118.9,
+      "dayChange": -2.3,
+      "dayChangePercent": -1.9
     },
     {
       "id": "inst-nflx",
@@ -176,8 +179,8 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 925.60,
-      "dayChange": 12.40,
+      "currentPrice": 925.6,
+      "dayChange": 12.4,
       "dayChangePercent": 1.36
     },
     {
@@ -187,9 +190,9 @@
       "assetType": "stock",
       "exchange": "NYSE",
       "currency": "USD",
-      "currentPrice": 112.80,
+      "currentPrice": 112.8,
       "dayChange": -0.45,
-      "dayChangePercent": -0.40
+      "dayChangePercent": -0.4
     },
     {
       "id": "inst-coin",
@@ -198,50 +201,112 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 265.70,
-      "dayChange": 15.30,
+      "currentPrice": 265.7,
+      "dayChange": 15.3,
       "dayChangePercent": 6.11
     }
   ],
-
   "aggregatedOverview": {
-    "totalNetWorthUsd": 23301.00,
-    "totalDayPnLUsd": 133.20,
+    "totalNetWorthUsd": 23301.0,
+    "totalDayPnLUsd": 133.2,
     "totalDayPnLPercent": 0.57,
-    "totalCashUsd": 3014.20,
+    "totalCashUsd": 3014.2,
     "totalUnrealizedPnLUsd": 4236.78,
     "totalUnrealizedPnLPercent": 28.61,
     "portfolioCount": 2,
     "positionCount": 8,
     "combinedEquityCurve": [
-      { "date": "2025-03-01", "valueUsd": 13057 },
-      { "date": "2025-04-01", "valueUsd": 13958 },
-      { "date": "2025-05-01", "valueUsd": 15068 },
-      { "date": "2025-06-01", "valueUsd": 14434 },
-      { "date": "2025-07-01", "valueUsd": 15693 },
-      { "date": "2025-08-01", "valueUsd": 16144 },
-      { "date": "2025-09-01", "valueUsd": 16419 },
-      { "date": "2025-10-01", "valueUsd": 17912 },
-      { "date": "2025-11-01", "valueUsd": 18913 },
-      { "date": "2025-12-01", "valueUsd": 19689 },
-      { "date": "2026-01-01", "valueUsd": 21457 },
-      { "date": "2026-02-20", "valueUsd": 23301 }
+      {
+        "date": "2025-03-01",
+        "valueUsd": 13057
+      },
+      {
+        "date": "2025-04-01",
+        "valueUsd": 13958
+      },
+      {
+        "date": "2025-05-01",
+        "valueUsd": 15068
+      },
+      {
+        "date": "2025-06-01",
+        "valueUsd": 14434
+      },
+      {
+        "date": "2025-07-01",
+        "valueUsd": 15693
+      },
+      {
+        "date": "2025-08-01",
+        "valueUsd": 16144
+      },
+      {
+        "date": "2025-09-01",
+        "valueUsd": 16419
+      },
+      {
+        "date": "2025-10-01",
+        "valueUsd": 17912
+      },
+      {
+        "date": "2025-11-01",
+        "valueUsd": 18913
+      },
+      {
+        "date": "2025-12-01",
+        "valueUsd": 19689
+      },
+      {
+        "date": "2026-01-01",
+        "valueUsd": 21457
+      },
+      {
+        "date": "2026-02-20",
+        "valueUsd": 23301
+      }
     ],
     "allocationByPortfolio": [
-      { "name": "US Equities", "valueUsd": 12915.05, "percent": 55.4 },
-      { "name": "Crypto Trading", "valueUsd": 10385.95, "percent": 44.6 }
+      {
+        "name": "US Equities",
+        "valueUsd": 12915.05,
+        "percent": 55.4
+      },
+      {
+        "name": "Crypto Trading",
+        "valueUsd": 10385.95,
+        "percent": 44.6
+      }
     ],
     "allocationByBroker": [
-      { "name": "Interactive Brokers", "valueUsd": 12915.05, "percent": 55.4 },
-      { "name": "Binance", "valueUsd": 10385.95, "percent": 44.6 }
+      {
+        "name": "Interactive Brokers",
+        "valueUsd": 12915.05,
+        "percent": 55.4
+      },
+      {
+        "name": "Binance",
+        "valueUsd": 10385.95,
+        "percent": 44.6
+      }
     ],
     "allocationByAssetType": [
-      { "name": "Stocks", "valueUsd": 10465.05, "percent": 44.9 },
-      { "name": "Crypto", "valueUsd": 9821.75, "percent": 42.1 },
-      { "name": "Cash", "valueUsd": 3014.20, "percent": 12.9 }
+      {
+        "name": "Stocks",
+        "valueUsd": 10465.05,
+        "percent": 44.9
+      },
+      {
+        "name": "Crypto",
+        "valueUsd": 9821.75,
+        "percent": 42.1
+      },
+      {
+        "name": "Cash",
+        "valueUsd": 3014.2,
+        "percent": 12.9
+      }
     ]
   },
-
   "portfolios": [
     {
       "id": "port-us-equities",
@@ -250,7 +315,7 @@
       "brokerId": "broker-ib",
       "totalValue": 12915.05,
       "totalPositionsValue": 10465.05,
-      "cashBalance": 2450.00,
+      "cashBalance": 2450.0,
       "dayPnL": 67.35,
       "dayPnLPercent": 0.52,
       "unrealizedPnL": 1599.85,
@@ -258,27 +323,88 @@
       "positionCount": 5,
       "hasMargin": true,
       "equityCurve": [
-        { "date": "2025-03-01", "value": 8500 },
-        { "date": "2025-04-01", "value": 8750 },
-        { "date": "2025-05-01", "value": 9100 },
-        { "date": "2025-06-01", "value": 8900 },
-        { "date": "2025-07-01", "value": 9400 },
-        { "date": "2025-08-01", "value": 9200 },
-        { "date": "2025-09-01", "value": 9800 },
-        { "date": "2025-10-01", "value": 10100 },
-        { "date": "2025-11-01", "value": 10450 },
-        { "date": "2025-12-01", "value": 10900 },
-        { "date": "2026-01-01", "value": 11800 },
-        { "date": "2026-02-20", "value": 12915 }
+        {
+          "date": "2025-03-01",
+          "value": 8500
+        },
+        {
+          "date": "2025-04-01",
+          "value": 8750
+        },
+        {
+          "date": "2025-05-01",
+          "value": 9100
+        },
+        {
+          "date": "2025-06-01",
+          "value": 8900
+        },
+        {
+          "date": "2025-07-01",
+          "value": 9400
+        },
+        {
+          "date": "2025-08-01",
+          "value": 9200
+        },
+        {
+          "date": "2025-09-01",
+          "value": 9800
+        },
+        {
+          "date": "2025-10-01",
+          "value": 10100
+        },
+        {
+          "date": "2025-11-01",
+          "value": 10450
+        },
+        {
+          "date": "2025-12-01",
+          "value": 10900
+        },
+        {
+          "date": "2026-01-01",
+          "value": 11800
+        },
+        {
+          "date": "2026-02-20",
+          "value": 12915
+        }
       ],
       "allocation": [
-        { "name": "MSFT", "value": 3324.80, "percent": 25.7 },
-        { "name": "AAPL", "value": 2691.75, "percent": 20.8 },
-        { "name": "AMZN", "value": 2385.00, "percent": 18.5 },
-        { "name": "Cash", "value": 2450.00, "percent": 19.0 },
-        { "name": "NVDA", "value": 1318.00, "percent": 10.2 },
-        { "name": "TSLA", "value": 745.50, "percent": 5.8 }
-      ]
+        {
+          "name": "MSFT",
+          "value": 3324.8,
+          "percent": 25.7
+        },
+        {
+          "name": "AAPL",
+          "value": 2691.75,
+          "percent": 20.8
+        },
+        {
+          "name": "AMZN",
+          "value": 2385.0,
+          "percent": 18.5
+        },
+        {
+          "name": "Cash",
+          "value": 2450.0,
+          "percent": 19.0
+        },
+        {
+          "name": "NVDA",
+          "value": 1318.0,
+          "percent": 10.2
+        },
+        {
+          "name": "TSLA",
+          "value": 745.5,
+          "percent": 5.8
+        }
+      ],
+      "environment": "live"
     },
     {
       "id": "port-crypto",
@@ -287,7 +413,7 @@
       "brokerId": "broker-binance",
       "totalValue": 9571.81,
       "totalPositionsValue": 9051.81,
-      "cashBalance": 520.00,
+      "cashBalance": 520.0,
       "dayPnL": 60.69,
       "dayPnLPercent": 0.64,
       "unrealizedPnL": 2685.81,
@@ -295,28 +421,80 @@
       "positionCount": 3,
       "hasMargin": false,
       "equityCurve": [
-        { "date": "2025-03-01", "value": 4200 },
-        { "date": "2025-04-01", "value": 4800 },
-        { "date": "2025-05-01", "value": 5500 },
-        { "date": "2025-06-01", "value": 5100 },
-        { "date": "2025-07-01", "value": 5800 },
-        { "date": "2025-08-01", "value": 6400 },
-        { "date": "2025-09-01", "value": 6100 },
-        { "date": "2025-10-01", "value": 7200 },
-        { "date": "2025-11-01", "value": 7800 },
-        { "date": "2025-12-01", "value": 8100 },
-        { "date": "2026-01-01", "value": 8900 },
-        { "date": "2026-02-20", "value": 9572 }
+        {
+          "date": "2025-03-01",
+          "value": 4200
+        },
+        {
+          "date": "2025-04-01",
+          "value": 4800
+        },
+        {
+          "date": "2025-05-01",
+          "value": 5500
+        },
+        {
+          "date": "2025-06-01",
+          "value": 5100
+        },
+        {
+          "date": "2025-07-01",
+          "value": 5800
+        },
+        {
+          "date": "2025-08-01",
+          "value": 6400
+        },
+        {
+          "date": "2025-09-01",
+          "value": 6100
+        },
+        {
+          "date": "2025-10-01",
+          "value": 7200
+        },
+        {
+          "date": "2025-11-01",
+          "value": 7800
+        },
+        {
+          "date": "2025-12-01",
+          "value": 8100
+        },
+        {
+          "date": "2026-01-01",
+          "value": 8900
+        },
+        {
+          "date": "2026-02-20",
+          "value": 9572
+        }
       ],
       "allocation": [
-        { "name": "BTC/EUR", "value": 4461.73, "percent": 46.6 },
-        { "name": "ETH/EUR", "value": 3451.68, "percent": 36.1 },
-        { "name": "SOL/EUR", "value": 1138.40, "percent": 11.9 },
-        { "name": "Cash", "value": 520.00, "percent": 5.4 }
-      ]
+        {
+          "name": "BTC/EUR",
+          "value": 4461.73,
+          "percent": 46.6
+        },
+        {
+          "name": "ETH/EUR",
+          "value": 3451.68,
+          "percent": 36.1
+        },
+        {
+          "name": "SOL/EUR",
+          "value": 1138.4,
+          "percent": 11.9
+        },
+        {
+          "name": "Cash",
+          "value": 520.0,
+          "percent": 5.4
+        }
+      ],
+      "environment": "live"
     }
   ],
-
   "positions": [
     {
       "id": "pos-aapl",
@@ -327,7 +505,7 @@
       "brokerId": "broker-ib",
       "brokerShortName": "IB",
       "quantity": 15,
-      "avgCostBasis": 152.60,
+      "avgCostBasis": 152.6,
       "currentPrice": 179.45,
       "marketValue": 2691.75,
       "unrealizedPnL": 402.75,
@@ -347,10 +525,10 @@
           "acquiredAt": "2024-03-15",
           "originalQuantity": 12,
           "remainingQuantity": 10,
-          "costPerUnit": 142.50,
-          "totalCost": 1425.00,
-          "currentValue": 1794.50,
-          "unrealizedPnL": 369.50,
+          "costPerUnit": 142.5,
+          "totalCost": 1425.0,
+          "currentValue": 1794.5,
+          "unrealizedPnL": 369.5,
           "daysHeld": 707,
           "taxExemptionDate": "2027-03-15"
         },
@@ -359,8 +537,8 @@
           "acquiredAt": "2025-09-22",
           "originalQuantity": 5,
           "remainingQuantity": 5,
-          "costPerUnit": 172.80,
-          "totalCost": 864.00,
+          "costPerUnit": 172.8,
+          "totalCost": 864.0,
           "currentValue": 897.25,
           "unrealizedPnL": 33.25,
           "daysHeld": 151,
@@ -377,12 +555,12 @@
       "brokerId": "broker-ib",
       "brokerShortName": "IB",
       "quantity": 8,
-      "avgCostBasis": 412.30,
-      "currentPrice": 415.60,
-      "marketValue": 3324.80,
-      "unrealizedPnL": 26.40,
-      "unrealizedPnLPercent": 0.80,
-      "dayChange": 16.80,
+      "avgCostBasis": 412.3,
+      "currentPrice": 415.6,
+      "marketValue": 3324.8,
+      "unrealizedPnL": 26.4,
+      "unrealizedPnLPercent": 0.8,
+      "dayChange": 16.8,
       "dayChangePercent": 0.51,
       "weightPercent": 25.7,
       "currency": "USD",
@@ -397,10 +575,10 @@
           "acquiredAt": "2026-02-09",
           "originalQuantity": 8,
           "remainingQuantity": 8,
-          "costPerUnit": 412.30,
-          "totalCost": 3298.40,
-          "currentValue": 3324.80,
-          "unrealizedPnL": 26.40,
+          "costPerUnit": 412.3,
+          "totalCost": 3298.4,
+          "currentValue": 3324.8,
+          "unrealizedPnL": 26.4,
           "daysHeld": 11,
           "taxExemptionDate": "2029-02-09"
         }
@@ -416,11 +594,11 @@
       "brokerShortName": "IB",
       "quantity": 10,
       "avgCostBasis": 130.05,
-      "currentPrice": 131.80,
-      "marketValue": 1318.00,
-      "unrealizedPnL": 17.50,
+      "currentPrice": 131.8,
+      "marketValue": 1318.0,
+      "unrealizedPnL": 17.5,
       "unrealizedPnLPercent": 1.35,
-      "dayChange": 34.50,
+      "dayChange": 34.5,
       "dayChangePercent": 2.69,
       "weightPercent": 10.2,
       "currency": "USD",
@@ -436,9 +614,9 @@
           "originalQuantity": 10,
           "remainingQuantity": 10,
           "costPerUnit": 130.05,
-          "totalCost": 1300.50,
-          "currentValue": 1318.00,
-          "unrealizedPnL": 17.50,
+          "totalCost": 1300.5,
+          "currentValue": 1318.0,
+          "unrealizedPnL": 17.5,
           "daysHeld": 17,
           "taxExemptionDate": "2029-02-03"
         }
@@ -455,10 +633,10 @@
       "quantity": 12,
       "avgCostBasis": 98.45,
       "currentPrice": 198.75,
-      "marketValue": 2385.00,
-      "unrealizedPnL": 1203.60,
+      "marketValue": 2385.0,
+      "unrealizedPnL": 1203.6,
       "unrealizedPnLPercent": 101.89,
-      "dayChange": 10.20,
+      "dayChange": 10.2,
       "dayChangePercent": 0.43,
       "weightPercent": 18.5,
       "currency": "USD",
@@ -474,9 +652,9 @@
           "originalQuantity": 12,
           "remainingQuantity": 12,
           "costPerUnit": 98.45,
-          "totalCost": 1181.40,
-          "currentValue": 2385.00,
-          "unrealizedPnL": 1203.60,
+          "totalCost": 1181.4,
+          "currentValue": 2385.0,
+          "unrealizedPnL": 1203.6,
           "daysHeld": 1188,
           "taxExemptionDate": "2025-11-20"
         }
@@ -491,12 +669,12 @@
       "brokerId": "broker-ib",
       "brokerShortName": "IB",
       "quantity": 3,
-      "avgCostBasis": 265.30,
-      "currentPrice": 248.50,
-      "marketValue": 745.50,
-      "unrealizedPnL": -50.40,
+      "avgCostBasis": 265.3,
+      "currentPrice": 248.5,
+      "marketValue": 745.5,
+      "unrealizedPnL": -50.4,
       "unrealizedPnLPercent": -6.33,
-      "dayChange": -12.60,
+      "dayChange": -12.6,
       "dayChangePercent": -1.66,
       "weightPercent": 5.8,
       "currency": "USD",
@@ -511,10 +689,10 @@
           "acquiredAt": "2025-12-05",
           "originalQuantity": 3,
           "remainingQuantity": 3,
-          "costPerUnit": 265.30,
-          "totalCost": 795.90,
-          "currentValue": 745.50,
-          "unrealizedPnL": -50.40,
+          "costPerUnit": 265.3,
+          "totalCost": 795.9,
+          "currentValue": 745.5,
+          "unrealizedPnL": -50.4,
           "daysHeld": 77,
           "taxExemptionDate": "2028-12-05"
         }
@@ -529,8 +707,8 @@
       "brokerId": "broker-binance",
       "brokerShortName": "Binance",
       "quantity": 0.05,
-      "avgCostBasis": 75400.00,
-      "currentPrice": 89234.50,
+      "avgCostBasis": 75400.0,
+      "currentPrice": 89234.5,
       "marketValue": 4461.73,
       "unrealizedPnL": 691.73,
       "unrealizedPnLPercent": 18.35,
@@ -549,8 +727,8 @@
           "acquiredAt": "2025-06-10",
           "originalQuantity": 0.03,
           "remainingQuantity": 0.03,
-          "costPerUnit": 68200.00,
-          "totalCost": 2046.00,
+          "costPerUnit": 68200.0,
+          "totalCost": 2046.0,
           "currentValue": 2677.04,
           "unrealizedPnL": 631.04,
           "daysHeld": 255,
@@ -561,8 +739,8 @@
           "acquiredAt": "2026-02-10",
           "originalQuantity": 0.01,
           "remainingQuantity": 0.01,
-          "costPerUnit": 88500.00,
-          "totalCost": 885.00,
+          "costPerUnit": 88500.0,
+          "totalCost": 885.0,
           "currentValue": 892.35,
           "unrealizedPnL": 7.35,
           "daysHeld": 10,
@@ -573,8 +751,8 @@
           "acquiredAt": "2026-02-10",
           "originalQuantity": 0.01,
           "remainingQuantity": 0.01,
-          "costPerUnit": 88490.00,
-          "totalCost": 884.90,
+          "costPerUnit": 88490.0,
+          "totalCost": 884.9,
           "currentValue": 892.35,
           "unrealizedPnL": 7.45,
           "daysHeld": 10,
@@ -591,8 +769,8 @@
       "brokerId": "broker-binance",
       "brokerShortName": "Binance",
       "quantity": 1.2,
-      "avgCostBasis": 2340.00,
-      "currentPrice": 2876.40,
+      "avgCostBasis": 2340.0,
+      "currentPrice": 2876.4,
       "marketValue": 3451.68,
       "unrealizedPnL": 643.68,
       "unrealizedPnLPercent": 22.92,
@@ -611,8 +789,8 @@
           "acquiredAt": "2025-04-22",
           "originalQuantity": 1.2,
           "remainingQuantity": 1.2,
-          "costPerUnit": 2340.00,
-          "totalCost": 2808.00,
+          "costPerUnit": 2340.0,
+          "totalCost": 2808.0,
           "currentValue": 3451.68,
           "unrealizedPnL": 643.68,
           "daysHeld": 304,
@@ -629,12 +807,12 @@
       "brokerId": "broker-binance",
       "brokerShortName": "Binance",
       "quantity": 8,
-      "avgCostBasis": 98.50,
-      "currentPrice": 142.30,
-      "marketValue": 1138.40,
-      "unrealizedPnL": 350.40,
+      "avgCostBasis": 98.5,
+      "currentPrice": 142.3,
+      "marketValue": 1138.4,
+      "unrealizedPnL": 350.4,
       "unrealizedPnLPercent": 44.47,
-      "dayChange": 68.00,
+      "dayChange": 68.0,
       "dayChangePercent": 6.35,
       "weightPercent": 11.9,
       "currency": "EUR",
@@ -649,17 +827,16 @@
           "acquiredAt": "2025-09-03",
           "originalQuantity": 8,
           "remainingQuantity": 8,
-          "costPerUnit": 98.50,
-          "totalCost": 788.00,
-          "currentValue": 1138.40,
-          "unrealizedPnL": 350.40,
+          "costPerUnit": 98.5,
+          "totalCost": 788.0,
+          "currentValue": 1138.4,
+          "unrealizedPnL": 350.4,
           "daysHeld": 170,
           "taxExemptionDate": "2028-09-03"
         }
       ]
     }
   ],
-
   "watchlists": [
     {
       "id": "wl-tech-earnings",
@@ -672,12 +849,12 @@
           "instrumentId": "inst-googl",
           "symbol": "GOOGL",
           "instrumentName": "Alphabet Inc",
-          "currentPrice": 175.30,
+          "currentPrice": 175.3,
           "dayChange": 0.95,
           "dayChangePercent": 0.54,
-          "notes": "Q4 earnings Feb 4 — strong cloud growth expected. Wait for post-earnings pullback.",
-          "alertPriceAbove": 180.00,
-          "alertPriceBelow": 165.00,
+          "notes": "Q4 earnings Feb 4 \u2014 strong cloud growth expected. Wait for post-earnings pullback.",
+          "alertPriceAbove": 180.0,
+          "alertPriceBelow": 165.0,
           "alertTriggered": false,
           "addedAt": "2025-12-10T09:05:00Z"
         },
@@ -686,12 +863,12 @@
           "instrumentId": "inst-meta",
           "symbol": "META",
           "instrumentName": "Meta Platforms Inc",
-          "currentPrice": 612.40,
+          "currentPrice": 612.4,
           "dayChange": 8.75,
           "dayChangePercent": 1.45,
           "notes": "Reels monetization improving. Entry target $580.",
           "alertPriceAbove": null,
-          "alertPriceBelow": 580.00,
+          "alertPriceBelow": 580.0,
           "alertTriggered": false,
           "addedAt": "2025-12-15T14:20:00Z"
         },
@@ -700,12 +877,12 @@
           "instrumentId": "inst-amd",
           "symbol": "AMD",
           "instrumentName": "Advanced Micro Devices",
-          "currentPrice": 118.90,
-          "dayChange": -2.30,
-          "dayChangePercent": -1.90,
+          "currentPrice": 118.9,
+          "dayChange": -2.3,
+          "dayChangePercent": -1.9,
           "notes": "MI300X AI chip ramp. Competitor to NVDA at lower valuation.",
           "alertPriceAbove": null,
-          "alertPriceBelow": 110.00,
+          "alertPriceBelow": 110.0,
           "alertTriggered": false,
           "addedAt": "2026-01-08T11:30:00Z"
         },
@@ -714,12 +891,12 @@
           "instrumentId": "inst-nvda",
           "symbol": "NVDA",
           "instrumentName": "NVIDIA Corporation",
-          "currentPrice": 131.80,
+          "currentPrice": 131.8,
           "dayChange": 3.45,
           "dayChangePercent": 2.69,
           "notes": "Already holding 10 shares. Watch for add opportunity on dip below $125.",
           "alertPriceAbove": null,
-          "alertPriceBelow": 125.00,
+          "alertPriceBelow": 125.0,
           "alertTriggered": false,
           "addedAt": "2026-02-05T10:00:00Z"
         }
@@ -736,12 +913,12 @@
           "instrumentId": "inst-nflx",
           "symbol": "NFLX",
           "instrumentName": "Netflix Inc",
-          "currentPrice": 925.60,
-          "dayChange": 12.40,
+          "currentPrice": 925.6,
+          "dayChange": 12.4,
           "dayChangePercent": 1.36,
           "notes": "Overextended at $925. Wait for mean reversion to $850 range.",
           "alertPriceAbove": null,
-          "alertPriceBelow": 850.00,
+          "alertPriceBelow": 850.0,
           "alertTriggered": false,
           "addedAt": "2026-01-15T08:10:00Z"
         },
@@ -750,11 +927,11 @@
           "instrumentId": "inst-dis",
           "symbol": "DIS",
           "instrumentName": "Walt Disney Co",
-          "currentPrice": 112.80,
+          "currentPrice": 112.8,
           "dayChange": -0.45,
-          "dayChangePercent": -0.40,
+          "dayChangePercent": -0.4,
           "notes": "Streaming profitability turning corner. Parks revenue strong.",
-          "alertPriceAbove": 120.00,
+          "alertPriceAbove": 120.0,
           "alertPriceBelow": null,
           "alertTriggered": false,
           "addedAt": "2026-01-20T16:00:00Z"
@@ -764,12 +941,12 @@
           "instrumentId": "inst-coin",
           "symbol": "COIN",
           "instrumentName": "Coinbase Global Inc",
-          "currentPrice": 265.70,
-          "dayChange": 15.30,
+          "currentPrice": 265.7,
+          "dayChange": 15.3,
           "dayChangePercent": 6.11,
           "notes": "",
-          "alertPriceAbove": 280.00,
-          "alertPriceBelow": 220.00,
+          "alertPriceAbove": 280.0,
+          "alertPriceBelow": 220.0,
           "alertTriggered": false,
           "addedAt": "2026-02-01T09:30:00Z"
         }
@@ -783,7 +960,6 @@
       "items": []
     }
   ],
-
   "dividends": [
     {
       "id": "div-001",
@@ -795,7 +971,7 @@
       "payDate": "2025-02-13",
       "amountPerShare": 0.24,
       "quantity": 10,
-      "totalUsd": 2.40,
+      "totalUsd": 2.4,
       "totalCzk": 56.28,
       "withholdingTaxUsd": 0.36,
       "exchangeRateCzkUsd": 23.45,
@@ -811,10 +987,10 @@
       "payDate": "2025-05-15",
       "amountPerShare": 0.24,
       "quantity": 10,
-      "totalUsd": 2.40,
+      "totalUsd": 2.4,
       "totalCzk": 55.92,
       "withholdingTaxUsd": 0.36,
-      "exchangeRateCzkUsd": 23.30,
+      "exchangeRateCzkUsd": 23.3,
       "isDrip": false
     },
     {
@@ -827,7 +1003,7 @@
       "payDate": "2025-08-14",
       "amountPerShare": 0.25,
       "quantity": 10,
-      "totalUsd": 2.50,
+      "totalUsd": 2.5,
       "totalCzk": 58.63,
       "withholdingTaxUsd": 0.38,
       "exchangeRateCzkUsd": 23.45,
@@ -846,7 +1022,7 @@
       "totalUsd": 3.75,
       "totalCzk": 86.63,
       "withholdingTaxUsd": 0.56,
-      "exchangeRateCzkUsd": 23.10,
+      "exchangeRateCzkUsd": 23.1,
       "isDrip": true
     },
     {
@@ -866,21 +1042,44 @@
       "isDrip": false
     }
   ],
-
   "dividendSummaries": [
     {
       "portfolioId": "port-us-equities",
       "period": "quarterly",
       "summaries": [
-        { "periodStart": "2025-01-01", "periodEnd": "2025-03-31", "totalUsd": 2.40, "totalCzk": 56.28 },
-        { "periodStart": "2025-04-01", "periodEnd": "2025-06-30", "totalUsd": 2.40, "totalCzk": 55.92 },
-        { "periodStart": "2025-07-01", "periodEnd": "2025-09-30", "totalUsd": 2.50, "totalCzk": 58.63 },
-        { "periodStart": "2025-10-01", "periodEnd": "2025-12-31", "totalUsd": 3.75, "totalCzk": 86.63 },
-        { "periodStart": "2026-01-01", "periodEnd": "2026-03-31", "totalUsd": 3.75, "totalCzk": 87.94 }
+        {
+          "periodStart": "2025-01-01",
+          "periodEnd": "2025-03-31",
+          "totalUsd": 2.4,
+          "totalCzk": 56.28
+        },
+        {
+          "periodStart": "2025-04-01",
+          "periodEnd": "2025-06-30",
+          "totalUsd": 2.4,
+          "totalCzk": 55.92
+        },
+        {
+          "periodStart": "2025-07-01",
+          "periodEnd": "2025-09-30",
+          "totalUsd": 2.5,
+          "totalCzk": 58.63
+        },
+        {
+          "periodStart": "2025-10-01",
+          "periodEnd": "2025-12-31",
+          "totalUsd": 3.75,
+          "totalCzk": 86.63
+        },
+        {
+          "periodStart": "2026-01-01",
+          "periodEnd": "2026-03-31",
+          "totalUsd": 3.75,
+          "totalCzk": 87.94
+        }
       ]
     }
   ],
-
   "upcomingDividends": [
     {
       "instrumentId": "inst-msft",
@@ -889,7 +1088,7 @@
       "exDate": "2026-03-19",
       "estimatedAmountPerShare": 0.75,
       "quantityHeld": 8,
-      "estimatedTotal": 6.00
+      "estimatedTotal": 6.0
     },
     {
       "instrumentId": "inst-aapl",
@@ -898,10 +1097,9 @@
       "exDate": "2026-05-09",
       "estimatedAmountPerShare": 0.26,
       "quantityHeld": 15,
-      "estimatedTotal": 3.90
+      "estimatedTotal": 3.9
     }
   ],
-
   "yieldMetrics": [
     {
       "positionId": "pos-aapl",
@@ -909,7 +1107,7 @@
       "instrumentName": "Apple Inc",
       "yieldOnCostPercent": 0.66,
       "currentYieldPercent": 0.56,
-      "annualIncomeUsd": 15.00,
+      "annualIncomeUsd": 15.0,
       "annualIncomeCzk": 351.75
     },
     {
@@ -918,8 +1116,8 @@
       "instrumentName": "Microsoft Corporation",
       "yieldOnCostPercent": 0.73,
       "currentYieldPercent": 0.72,
-      "annualIncomeUsd": 24.00,
-      "annualIncomeCzk": 562.80
+      "annualIncomeUsd": 24.0,
+      "annualIncomeCzk": 562.8
     },
     {
       "positionId": "pos-nvda",
@@ -927,7 +1125,7 @@
       "instrumentName": "NVIDIA Corporation",
       "yieldOnCostPercent": 0.03,
       "currentYieldPercent": 0.03,
-      "annualIncomeUsd": 0.40,
+      "annualIncomeUsd": 0.4,
       "annualIncomeCzk": 9.38
     },
     {
@@ -949,7 +1147,6 @@
       "annualIncomeCzk": 0
     }
   ],
-
   "benchmarkComparison": {
     "portfolioId": "port-us-equities",
     "benchmark": "SPY",
@@ -959,38 +1156,102 @@
     "benchmarkReturnPercent": 5.21,
     "alphaPercent": 3.38,
     "series": [
-      { "date": "2026-01-01", "portfolioReturn": 0, "benchmarkReturn": 0 },
-      { "date": "2026-01-08", "portfolioReturn": 1.2, "benchmarkReturn": 0.8 },
-      { "date": "2026-01-15", "portfolioReturn": 2.1, "benchmarkReturn": 1.4 },
-      { "date": "2026-01-22", "portfolioReturn": 3.5, "benchmarkReturn": 2.0 },
-      { "date": "2026-01-29", "portfolioReturn": 4.8, "benchmarkReturn": 2.9 },
-      { "date": "2026-02-05", "portfolioReturn": 5.3, "benchmarkReturn": 3.2 },
-      { "date": "2026-02-12", "portfolioReturn": 7.1, "benchmarkReturn": 4.5 },
-      { "date": "2026-02-20", "portfolioReturn": 8.59, "benchmarkReturn": 5.21 }
+      {
+        "date": "2026-01-01",
+        "portfolioReturn": 0,
+        "benchmarkReturn": 0
+      },
+      {
+        "date": "2026-01-08",
+        "portfolioReturn": 1.2,
+        "benchmarkReturn": 0.8
+      },
+      {
+        "date": "2026-01-15",
+        "portfolioReturn": 2.1,
+        "benchmarkReturn": 1.4
+      },
+      {
+        "date": "2026-01-22",
+        "portfolioReturn": 3.5,
+        "benchmarkReturn": 2.0
+      },
+      {
+        "date": "2026-01-29",
+        "portfolioReturn": 4.8,
+        "benchmarkReturn": 2.9
+      },
+      {
+        "date": "2026-02-05",
+        "portfolioReturn": 5.3,
+        "benchmarkReturn": 3.2
+      },
+      {
+        "date": "2026-02-12",
+        "portfolioReturn": 7.1,
+        "benchmarkReturn": 4.5
+      },
+      {
+        "date": "2026-02-20",
+        "portfolioReturn": 8.59,
+        "benchmarkReturn": 5.21
+      }
     ],
     "attribution": [
-      { "symbol": "AMZN", "instrumentName": "Amazon.com Inc", "contributionPercent": 1.85 },
-      { "symbol": "NVDA", "instrumentName": "NVIDIA Corporation", "contributionPercent": 0.62 },
-      { "symbol": "AAPL", "instrumentName": "Apple Inc", "contributionPercent": 0.41 },
-      { "symbol": "MSFT", "instrumentName": "Microsoft Corporation", "contributionPercent": 0.12 },
-      { "symbol": "Cash", "instrumentName": "Cash (opportunity cost)", "contributionPercent": -0.07 },
-      { "symbol": "TSLA", "instrumentName": "Tesla Inc", "contributionPercent": -0.18 }
+      {
+        "symbol": "AMZN",
+        "instrumentName": "Amazon.com Inc",
+        "contributionPercent": 1.85
+      },
+      {
+        "symbol": "NVDA",
+        "instrumentName": "NVIDIA Corporation",
+        "contributionPercent": 0.62
+      },
+      {
+        "symbol": "AAPL",
+        "instrumentName": "Apple Inc",
+        "contributionPercent": 0.41
+      },
+      {
+        "symbol": "MSFT",
+        "instrumentName": "Microsoft Corporation",
+        "contributionPercent": 0.12
+      },
+      {
+        "symbol": "Cash",
+        "instrumentName": "Cash (opportunity cost)",
+        "contributionPercent": -0.07
+      },
+      {
+        "symbol": "TSLA",
+        "instrumentName": "Tesla Inc",
+        "contributionPercent": -0.18
+      }
     ]
   },
-
   "marginInfo": {
     "portfolioId": "port-us-equities",
-    "marginUsed": 3200.00,
-    "marginAvailable": 9700.00,
+    "marginUsed": 3200.0,
+    "marginAvailable": 9700.0,
     "marginUsagePercent": 24.8,
-    "buyingPower": 16100.00,
+    "buyingPower": 16100.0,
     "marginCallDistancePercent": 58.2,
     "alertThresholdPercent": 50.0,
     "alertTriggered": false,
     "marginCallRisk": [
-      { "symbol": "MSFT", "priceDropPercentToCall": -42.5 },
-      { "symbol": "AAPL", "priceDropPercentToCall": -55.8 },
-      { "symbol": "NVDA", "priceDropPercentToCall": -61.3 }
+      {
+        "symbol": "MSFT",
+        "priceDropPercentToCall": -42.5
+      },
+      {
+        "symbol": "AAPL",
+        "priceDropPercentToCall": -55.8
+      },
+      {
+        "symbol": "NVDA",
+        "priceDropPercentToCall": -61.3
+      }
     ]
   }
 }

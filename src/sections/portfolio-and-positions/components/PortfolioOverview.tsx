@@ -51,6 +51,25 @@ function formatCompactCurrency(value: number): string {
   return `$${value.toFixed(0)}`
 }
 
+/**
+ * Live/Paper tag mirroring the shell's trading-scope colours (rose = live,
+ * blue = paper) so a portfolio's environment is unmistakable at a glance.
+ */
+function EnvBadge({ environment }: { environment: Portfolio['environment'] }) {
+  const live = environment === 'live'
+  return (
+    <span
+      className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+        live
+          ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+          : 'bg-blue-400/10 text-blue-600 dark:text-blue-400'
+      }`}
+    >
+      {live ? 'Live' : 'Paper'}
+    </span>
+  )
+}
+
 // ---------------------------------------------------------------------------
 // Allocation color palette — distinctive per-slice
 // ---------------------------------------------------------------------------
@@ -377,8 +396,9 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
                         <Briefcase size={14} className="text-pink-600 dark:text-pink-400" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                        <p className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                           {portfolio.name}
+                          <EnvBadge environment={portfolio.environment} />
                         </p>
                         <p className="text-xs text-zinc-400 dark:text-zinc-600">
                           {portfolio.currency} · {portfolio.positionCount} positions
@@ -436,8 +456,9 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
                     <Briefcase size={14} className="text-pink-600 dark:text-pink-400" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 truncate">
-                      {portfolio.name}
+                    <p className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                      <span className="truncate">{portfolio.name}</span>
+                      <EnvBadge environment={portfolio.environment} />
                     </p>
                     <p className="text-xs text-zinc-400 dark:text-zinc-600">
                       {portfolio.currency} · {portfolio.positionCount} positions

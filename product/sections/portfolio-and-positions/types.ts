@@ -92,6 +92,11 @@ export interface Portfolio {
   name: string
   currency: string
   brokerId: string
+  /**
+   * Trading environment: `paper` (simulated) or `live` (real money). Surfaced
+   * as a badge on every portfolio and tied to the shell's Paper/Live scope.
+   */
+  environment: 'paper' | 'live'
   totalValue: number
   totalPositionsValue: number
   cashBalance: number

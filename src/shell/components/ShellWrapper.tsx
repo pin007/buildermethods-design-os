@@ -17,6 +17,7 @@ import type { BrokerStatus } from './AppShell'
 import type { CommandItem } from './CommandPalette'
 import { getAllSectionIds, getSectionScreenDesigns } from '@/lib/section-loader'
 import { NewOrderForm } from '@/sections/trading-core/components/NewOrderForm'
+import { useTradingScope } from '@/lib/trading-scope'
 import tradingCoreData from '@/../product/sections/trading-core/data.json'
 
 interface ShellWrapperProps {
@@ -104,6 +105,17 @@ function buildRouteMap(): Record<string, string> {
 export default function ShellWrapper({ children }: ShellWrapperProps) {
   const routeMap = useMemo(() => buildRouteMap(), [])
 
+  // Only portfolios matching the active scope are selectable in the order flow,
+  // so a live order can never be placed while the shell shows Paper (and vice
+  // versa). The badge in the order panel therefore always tells the truth.
+  const scope = useTradingScope()
+  const orderPortfolios = useMemo(
+    () => (tradingCoreData.portfolios as { environment: 'paper' | 'live' }[]).filter(
+      (p) => p.environment === scope
+    ),
+    [scope]
+  )
+
   // Determine which nav item is active based on current URL
   const activeHref = useMemo(() => {
     const path = window.location.pathname
@@ -174,18 +186,34 @@ export default function ShellWrapper({ children }: ShellWrapperProps) {
       brokers={brokers}
       commandItems={commandItems}
       orderPanelContent={
-        <NewOrderForm
-          instruments={tradingCoreData.instruments as any}
-          portfolios={tradingCoreData.portfolios as any}
-          brokers={tradingCoreData.brokers as any}
-          onSubmit={(order) => console.log('Submit order:', order)}
-          onClose={() => {
-            document.dispatchEvent(
-              new KeyboardEvent('keydown', { key: 'n', ctrlKey: true, bubbles: true })
-            )
-          }}
-          onDirtyChange={(dirty) => console.log('Dirty state:', dirty)}
-        />
+        orderPortfolios.length > 0 ? (
+          <NewOrderForm
+            // Remount on scope change so the selected portfolio resets to a
+            // valid one for the new environment.
+            key={scope}
+            instruments={tradingCoreData.instruments as any}
+            portfolios={orderPortfolios as any}
+            brokers={tradingCoreData.brokers as any}
+            onSubmit={(order) => console.log('Submit order:', order)}
+            onClose={() => {
+              document.dispatchEvent(
+                new KeyboardEvent('keydown', { key: 'n', ctrlKey: true, bubbles: true })
+              )
+            }}
+            onDirtyChange={(dirty) => console.log('Dirty state:', dirty)}
+          />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+            <p className="text-sm font-medium text-foreground">
+              No {scope === 'live' ? 'live' : 'paper'} portfolios
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              There are no {scope === 'live' ? 'live' : 'paper'} portfolios connected, so no orders
+              can be placed in this scope. Switch scope or connect a{' '}
+              {scope === 'live' ? 'live' : 'paper'} account.
+            </p>
+          </div>
+        )
       }
       pageTitle={pageTitle}
       onNavigate={handleNavigate}

@@ -25,6 +25,8 @@ The New Order form renders as **content only** inside the shell's `OrderPanel` c
 
 All of the above are provided by the shell's `OrderPanel` (see shell spec § Order Panel). The section renders only: BUY/SELL toggle, instrument search, order type tabs, form fields, validation, order summary, and submit button.
 
+**Paper/Live scope:** the `portfolios` passed to the New Order form are pre-filtered to the active trading scope (see shell spec § Trading Mode Indicator & Scope), so only portfolios whose `environment` matches the current Paper/Live scope are selectable. The portfolio selector labels each option with its environment (`… · Paper` / `… · LIVE`), and the form remounts on scope change so the selected portfolio always belongs to the active environment. The trading dashboard's portfolio switcher is scoped the same way. When the active scope has no matching portfolio, the panel shows a "No {scope} portfolios" empty state instead of a submittable form.
+
 ### Toast Notifications
 All user-facing notifications use the shell's toast API (`toastRef.current()`). No inline notification rendering within section components. Toast variants:
 - Order submitted: success (green, 4s)

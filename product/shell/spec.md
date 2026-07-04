@@ -59,14 +59,19 @@ Sidebar is resizable by dragging the right edge. Drag handle highlights pink-600
 - **Minimum width:** 220px
 - **Maximum width:** 400px
 
-## Trading Mode Indicator (Paper / Live)
-A persistent, unmistakable indicator of the active trading environment, rendered as a full-width pill directly beneath the logo. This is a safety-critical affordance — a user must never be unsure whether an order commits real money.
+## Trading Mode Indicator & Scope (Paper / Live)
+A persistent, unmistakable indicator of the active trading environment, rendered as a full-width pill directly beneath the logo. This is a safety-critical affordance — a user must never be unsure whether an order commits real money, and must never be able to place a live order while "Paper" is shown.
+
+The pill is not merely a label: it is the **trading scope selector**, and it is interconnected with portfolios. Every portfolio carries an `environment` (`paper` | `live`); the active scope is the single source of truth (shared store, `lib/trading-scope`) that governs which portfolios are selectable.
 - **Paper:** blue pill (`blue-400/10` bg, `blue-400/40` border, blue text) with a flask icon and the label "Paper Trading"
 - **Live:** rose pill (`rose-500/10` bg, `rose-500/50` border, rose text) with a broadcast icon and a pulsing dot; label "Live Trading"
+- **Scope filtering:** the order panel and the trading dashboard list **only** portfolios whose `environment` matches the active scope. A live order therefore cannot be placed while scoped to Paper, and vice versa.
+- **Switching into Live:** clicking the pill while in Paper opens an explicit confirmation modal (`LiveModeConfirmModal`) before Live is activated. Switching **back** to Paper is immediate and needs no confirmation (going safer is never gated).
 - **Default:** `paper` when nothing is persisted — a session never silently starts in Live
 - **Persistence:** stored in `localStorage` (`trading-mode`); survives navigation and reload
 - **Collapsed sidebar (tablet):** shows the mode icon only (blue flask / rose broadcast), tinted to match
-- **Order Panel inheritance:** the Order Panel header shows a matching PAPER/LIVE tag so the mode is visible at the point of order entry
+- **Order Panel truthfulness:** the Order Panel header shows a PAPER/LIVE tag, and the portfolio selector labels each option with its environment. Because the list is scope-filtered, the tag always agrees with the portfolio actually being traded.
+- **Empty scope:** if no portfolio matches the active scope, the order panel shows an empty state ("No {scope} portfolios") instead of a submittable form.
 - **Reduced motion:** the Live pulsing dot is suppressed under `prefers-reduced-motion`
 
 ## Content Density

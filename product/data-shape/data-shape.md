@@ -6,7 +6,7 @@
 An authenticated person who interacts with the platform. Has a role (Trader, Assistant, Viewer) that determines access level. Trader has full access, Assistant can read and perform emergency closures, Viewer is read-only.
 
 ### Portfolio
-A named collection of positions and cash balances owned by a user. A user may have multiple portfolios (e.g., "Long-Term Holdings", "Active Trading", "Crypto"). Each portfolio aggregates assets across multiple brokers.
+A named collection of positions and cash balances owned by a user. A user may have multiple portfolios (e.g., "Long-Term Holdings", "Active Trading", "Crypto"). Each portfolio aggregates assets across multiple brokers. Every portfolio has an **environment** — `paper` (simulated, no real money) or `live` (real broker account) — which is the source of truth for the app's Paper/Live trading scope: a portfolio's environment, not a free-floating UI toggle, determines whether an order commits real money. The active scope filters which portfolios can be selected for orders, so a live order can never be placed while the app indicates Paper.
 
 ### Broker
 A connected trading platform such as Interactive Brokers or Binance. Stores encrypted API credentials and connection status. Brokers are the source of truth for live positions and cash.

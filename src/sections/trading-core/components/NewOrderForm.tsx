@@ -605,7 +605,9 @@ export function NewOrderForm({
                 className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-900/60 py-2.5 px-3 text-sm text-foreground transition-all focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px]"
               >
                 {portfolios.map((p) => (
-                  <option key={p.id} value={p.id}>{p.name} ({p.currency})</option>
+                  <option key={p.id} value={p.id}>
+                    {p.name} ({p.currency}) · {p.environment === 'live' ? 'LIVE' : 'Paper'}
+                  </option>
                 ))}
               </select>
             </div>

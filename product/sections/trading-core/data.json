@@ -19,14 +19,16 @@
       "A Recommendation may become an Order when approved (linked by recommendationId on the Order)"
     ]
   },
-
   "brokers": [
     {
       "id": "broker-ib",
       "name": "Interactive Brokers",
       "shortName": "IB",
       "status": "connected",
-      "assetTypes": ["stock", "option"],
+      "assetTypes": [
+        "stock",
+        "option"
+      ],
       "baseCurrency": "USD",
       "connectedAt": "2025-11-15T08:00:00Z"
     },
@@ -35,12 +37,13 @@
       "name": "Binance",
       "shortName": "Binance",
       "status": "connected",
-      "assetTypes": ["crypto"],
+      "assetTypes": [
+        "crypto"
+      ],
       "baseCurrency": "EUR",
       "connectedAt": "2025-12-02T10:30:00Z"
     }
   ],
-
   "portfolios": [
     {
       "id": "port-us-equities",
@@ -51,10 +54,11 @@
         "portfolioValue": 5847.15,
         "dayPnL": 87.32,
         "dayPnLPercent": 1.52,
-        "cashAvailable": 823.50,
+        "cashAvailable": 823.5,
         "pendingApprovals": 1,
         "openOrders": 3
-      }
+      },
+      "environment": "live"
     },
     {
       "id": "port-crypto",
@@ -65,13 +69,43 @@
         "portfolioValue": 2097.49,
         "dayPnL": -24.91,
         "dayPnLPercent": -1.17,
-        "cashAvailable": 312.80,
+        "cashAvailable": 312.8,
         "pendingApprovals": 0,
         "openOrders": 2
-      }
+      },
+      "environment": "live"
+    },
+    {
+      "id": "port-us-equities-paper",
+      "name": "US Equities (Paper)",
+      "currency": "USD",
+      "brokerId": "broker-ib",
+      "dashboardStats": {
+        "portfolioValue": 5847.15,
+        "dayPnL": 87.32,
+        "dayPnLPercent": 1.52,
+        "cashAvailable": 823.5,
+        "pendingApprovals": 0,
+        "openOrders": 0
+      },
+      "environment": "paper"
+    },
+    {
+      "id": "port-crypto-paper",
+      "name": "Crypto Sandbox (Paper)",
+      "currency": "EUR",
+      "brokerId": "broker-binance",
+      "dashboardStats": {
+        "portfolioValue": 2097.49,
+        "dayPnL": -24.91,
+        "dayPnLPercent": -1.17,
+        "cashAvailable": 312.8,
+        "pendingApprovals": 0,
+        "openOrders": 0
+      },
+      "environment": "paper"
     }
   ],
-
   "instruments": [
     {
       "id": "inst-aapl",
@@ -84,7 +118,7 @@
       "dayChange": 1.23,
       "dayChangePercent": 0.69,
       "week52High": 198.23,
-      "week52Low": 142.00,
+      "week52Low": 142.0,
       "recentVolatility": 0.22
     },
     {
@@ -94,7 +128,7 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 131.80,
+      "currentPrice": 131.8,
       "dayChange": 3.45,
       "dayChangePercent": 2.69,
       "week52High": 153.13,
@@ -108,11 +142,11 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 248.50,
-      "dayChange": -4.20,
+      "currentPrice": 248.5,
+      "dayChange": -4.2,
       "dayChangePercent": -1.66,
       "week52High": 302.45,
-      "week52Low": 155.00,
+      "week52Low": 155.0,
       "recentVolatility": 0.52
     },
     {
@@ -122,11 +156,11 @@
       "assetType": "stock",
       "exchange": "NASDAQ",
       "currency": "USD",
-      "currentPrice": 415.60,
-      "dayChange": 2.10,
+      "currentPrice": 415.6,
+      "dayChange": 2.1,
       "dayChangePercent": 0.51,
       "week52High": 432.89,
-      "week52Low": 362.90,
+      "week52Low": 362.9,
       "recentVolatility": 0.18
     },
     {
@@ -139,7 +173,7 @@
       "currentPrice": 198.75,
       "dayChange": 0.85,
       "dayChangePercent": 0.43,
-      "week52High": 215.90,
+      "week52High": 215.9,
       "week52Low": 166.21,
       "recentVolatility": 0.24
     },
@@ -150,11 +184,11 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 89234.50,
-      "dayChange": -1245.30,
+      "currentPrice": 89234.5,
+      "dayChange": -1245.3,
       "dayChangePercent": -1.38,
-      "week52High": 98450.00,
-      "week52Low": 52100.00,
+      "week52High": 98450.0,
+      "week52Low": 52100.0,
       "recentVolatility": 0.45
     },
     {
@@ -164,11 +198,11 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 2876.40,
-      "dayChange": 45.80,
+      "currentPrice": 2876.4,
+      "dayChange": 45.8,
       "dayChangePercent": 1.62,
-      "week52High": 3890.00,
-      "week52Low": 1620.00,
+      "week52High": 3890.0,
+      "week52Low": 1620.0,
       "recentVolatility": 0.42
     },
     {
@@ -178,15 +212,14 @@
       "assetType": "crypto",
       "exchange": "Binance",
       "currency": "EUR",
-      "currentPrice": 142.30,
-      "dayChange": 8.50,
+      "currentPrice": 142.3,
+      "dayChange": 8.5,
       "dayChangePercent": 6.35,
-      "week52High": 178.50,
-      "week52Low": 42.80,
+      "week52High": 178.5,
+      "week52Low": 42.8,
       "recentVolatility": 0.61
     }
   ],
-
   "orders": [
     {
       "id": "ord-001",
@@ -197,7 +230,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 5,
-      "limitPrice": 132.50,
+      "limitPrice": 132.5,
       "stopPrice": null,
       "status": "draft",
       "brokerId": "broker-ib",
@@ -240,10 +273,10 @@
         "riskAnalysis": {
           "portfolioImpactPercent": 42.5,
           "positionSizePercent": 29.8,
-          "cashBalanceAfter": -1661.50,
+          "cashBalanceAfter": -1661.5,
           "riskLevel": "high",
           "warnings": [
-            "Order exceeds available cash by $1,661.50 — margin required",
+            "Order exceeds available cash by $1,661.50 \u2014 margin required",
             "Position concentration will exceed 25% of portfolio"
           ]
         }
@@ -258,7 +291,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 0.5,
-      "limitPrice": 2850.00,
+      "limitPrice": 2850.0,
       "stopPrice": null,
       "status": "approved",
       "brokerId": "broker-binance",
@@ -330,7 +363,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 0.03,
-      "limitPrice": 88500.00,
+      "limitPrice": 88500.0,
       "stopPrice": null,
       "status": "partially_filled",
       "brokerId": "broker-binance",
@@ -339,7 +372,7 @@
       "bracketGroupId": null,
       "bracketRole": null,
       "recommendationId": null,
-      "fillPrice": 88495.00,
+      "fillPrice": 88495.0,
       "filledQuantity": 0.02,
       "commission": 1.77,
       "createdAt": "2026-02-10T10:15:00Z",
@@ -363,9 +396,9 @@
       "bracketGroupId": null,
       "bracketRole": null,
       "recommendationId": null,
-      "fillPrice": 412.30,
+      "fillPrice": 412.3,
       "filledQuantity": 8,
-      "commission": 1.60,
+      "commission": 1.6,
       "createdAt": "2026-02-09T09:30:00Z",
       "updatedAt": "2026-02-09T09:32:18Z"
     },
@@ -378,7 +411,7 @@
       "side": "SELL",
       "orderType": "limit",
       "quantity": 5,
-      "limitPrice": 265.00,
+      "limitPrice": 265.0,
       "stopPrice": null,
       "status": "cancelled",
       "brokerId": "broker-ib",
@@ -427,7 +460,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 1,
-      "limitPrice": 2600.00,
+      "limitPrice": 2600.0,
       "stopPrice": null,
       "status": "expired",
       "brokerId": "broker-binance",
@@ -451,7 +484,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 5,
-      "limitPrice": 178.50,
+      "limitPrice": 178.5,
       "stopPrice": null,
       "status": "amended",
       "brokerId": "broker-ib",
@@ -464,7 +497,10 @@
       "filledQuantity": 0,
       "commission": null,
       "amendedFields": {
-        "limitPrice": { "from": 175.00, "to": 178.50 }
+        "limitPrice": {
+          "from": 175.0,
+          "to": 178.5
+        }
       },
       "createdAt": "2026-02-05T09:00:00Z",
       "updatedAt": "2026-02-06T10:30:00Z"
@@ -503,7 +539,7 @@
       "side": "BUY",
       "orderType": "limit",
       "quantity": 10,
-      "limitPrice": 130.00,
+      "limitPrice": 130.0,
       "stopPrice": null,
       "status": "filled",
       "brokerId": "broker-ib",
@@ -514,7 +550,7 @@
       "recommendationId": "rec-002",
       "fillPrice": 130.05,
       "filledQuantity": 10,
-      "commission": 2.00,
+      "commission": 2.0,
       "createdAt": "2026-02-03T10:00:00Z",
       "updatedAt": "2026-02-03T10:02:15Z"
     },
@@ -528,7 +564,7 @@
       "orderType": "stop_loss",
       "quantity": 10,
       "limitPrice": null,
-      "stopPrice": 120.00,
+      "stopPrice": 120.0,
       "status": "acknowledged",
       "brokerId": "broker-ib",
       "brokerShortName": "IB",
@@ -552,7 +588,7 @@
       "side": "SELL",
       "orderType": "limit",
       "quantity": 10,
-      "limitPrice": 145.00,
+      "limitPrice": 145.0,
       "stopPrice": null,
       "status": "acknowledged",
       "brokerId": "broker-ib",
@@ -569,7 +605,6 @@
       "updatedAt": "2026-02-03T10:02:18Z"
     }
   ],
-
   "orderEvents": [
     {
       "id": "evt-001",
@@ -601,7 +636,9 @@
       "status": "submitted",
       "timestamp": "2026-02-09T09:32:16Z",
       "message": "Submitted to Interactive Brokers",
-      "data": { "brokerOrderId": "IB-20260209-0042" }
+      "data": {
+        "brokerOrderId": "IB-20260209-0042"
+      }
     },
     {
       "id": "evt-005",
@@ -609,7 +646,9 @@
       "status": "acknowledged",
       "timestamp": "2026-02-09T09:32:17Z",
       "message": "Acknowledged by broker",
-      "data": { "brokerOrderId": "IB-20260209-0042" }
+      "data": {
+        "brokerOrderId": "IB-20260209-0042"
+      }
     },
     {
       "id": "evt-006",
@@ -617,7 +656,11 @@
       "status": "filled",
       "timestamp": "2026-02-09T09:32:18Z",
       "message": "Filled 8 shares @ $412.30",
-      "data": { "fillPrice": 412.30, "filledQuantity": 8, "commission": 1.60 }
+      "data": {
+        "fillPrice": 412.3,
+        "filledQuantity": 8,
+        "commission": 1.6
+      }
     },
     {
       "id": "evt-010",
@@ -625,15 +668,19 @@
       "status": "draft",
       "timestamp": "2026-02-11T14:22:00Z",
       "message": "Order created from AI recommendation (Momentum Alpha strategy)",
-      "data": { "recommendationId": "rec-001" }
+      "data": {
+        "recommendationId": "rec-001"
+      }
     },
     {
       "id": "evt-011",
       "orderId": "ord-002",
       "status": "pending_approval",
       "timestamp": "2026-02-11T14:22:01Z",
-      "message": "Awaiting approval — expires in 15 minutes",
-      "data": { "expiresAt": "2026-02-11T14:37:00Z" }
+      "message": "Awaiting approval \u2014 expires in 15 minutes",
+      "data": {
+        "expiresAt": "2026-02-11T14:37:00Z"
+      }
     },
     {
       "id": "evt-020",
@@ -649,7 +696,9 @@
       "status": "submitted",
       "timestamp": "2026-02-10T10:15:01Z",
       "message": "Submitted to Binance",
-      "data": { "brokerOrderId": "BIN-6a3f8c2d" }
+      "data": {
+        "brokerOrderId": "BIN-6a3f8c2d"
+      }
     },
     {
       "id": "evt-022",
@@ -657,7 +706,9 @@
       "status": "acknowledged",
       "timestamp": "2026-02-10T10:15:02Z",
       "message": "Acknowledged by broker",
-      "data": { "brokerOrderId": "BIN-6a3f8c2d" }
+      "data": {
+        "brokerOrderId": "BIN-6a3f8c2d"
+      }
     },
     {
       "id": "evt-023",
@@ -665,7 +716,11 @@
       "status": "partially_filled",
       "timestamp": "2026-02-10T10:15:45Z",
       "message": "Partial fill: 0.01 BTC @ \u20ac88,500.00",
-      "data": { "fillPrice": 88500.00, "filledQuantity": 0.01, "totalFilled": 0.01 }
+      "data": {
+        "fillPrice": 88500.0,
+        "filledQuantity": 0.01,
+        "totalFilled": 0.01
+      }
     },
     {
       "id": "evt-024",
@@ -673,7 +728,11 @@
       "status": "partially_filled",
       "timestamp": "2026-02-10T11:22:30Z",
       "message": "Partial fill: 0.01 BTC @ \u20ac88,490.00",
-      "data": { "fillPrice": 88490.00, "filledQuantity": 0.01, "totalFilled": 0.02 }
+      "data": {
+        "fillPrice": 88490.0,
+        "filledQuantity": 0.01,
+        "totalFilled": 0.02
+      }
     },
     {
       "id": "evt-030",
@@ -697,7 +756,9 @@
       "status": "rejected",
       "timestamp": "2026-02-07T11:05:30Z",
       "message": "Rejected: Position would exceed 50% portfolio concentration. Reduce quantity to 15 shares or less.",
-      "data": { "reason": "Position would exceed 50% portfolio concentration. Reduce quantity to 15 shares or less." }
+      "data": {
+        "reason": "Position would exceed 50% portfolio concentration. Reduce quantity to 15 shares or less."
+      }
     },
     {
       "id": "evt-040",
@@ -705,7 +766,10 @@
       "status": "draft",
       "timestamp": "2026-02-03T10:00:00Z",
       "message": "Bracket order created from AI recommendation (Trend Following strategy)",
-      "data": { "recommendationId": "rec-002", "bracketGroupId": "bracket-001" }
+      "data": {
+        "recommendationId": "rec-002",
+        "bracketGroupId": "bracket-001"
+      }
     },
     {
       "id": "evt-041",
@@ -721,15 +785,25 @@
       "status": "submitted",
       "timestamp": "2026-02-03T10:01:46Z",
       "message": "Bracket group submitted to Interactive Brokers",
-      "data": { "brokerOrderId": "IB-20260203-0018", "childOrders": ["ord-013-sl", "ord-013-tp"] }
+      "data": {
+        "brokerOrderId": "IB-20260203-0018",
+        "childOrders": [
+          "ord-013-sl",
+          "ord-013-tp"
+        ]
+      }
     },
     {
       "id": "evt-043",
       "orderId": "ord-013",
       "status": "filled",
       "timestamp": "2026-02-03T10:02:15Z",
-      "message": "Filled 10 shares @ $130.05 — bracket legs now active",
-      "data": { "fillPrice": 130.05, "filledQuantity": 10, "commission": 2.00 }
+      "message": "Filled 10 shares @ $130.05 \u2014 bracket legs now active",
+      "data": {
+        "fillPrice": 130.05,
+        "filledQuantity": 10,
+        "commission": 2.0
+      }
     },
     {
       "id": "evt-050",
@@ -745,7 +819,9 @@
       "status": "submitted",
       "timestamp": "2026-02-05T09:01:00Z",
       "message": "Submitted to Interactive Brokers",
-      "data": { "brokerOrderId": "IB-20260205-0007" }
+      "data": {
+        "brokerOrderId": "IB-20260205-0007"
+      }
     },
     {
       "id": "evt-052",
@@ -753,10 +829,13 @@
       "status": "amended",
       "timestamp": "2026-02-06T10:30:00Z",
       "message": "Limit price amended from $175.00 to $178.50",
-      "data": { "field": "limitPrice", "from": 175.00, "to": 178.50 }
+      "data": {
+        "field": "limitPrice",
+        "from": 175.0,
+        "to": 178.5
+      }
     }
   ],
-
   "trades": [
     {
       "id": "trd-001",
@@ -765,9 +844,9 @@
       "symbol": "MSFT",
       "side": "BUY",
       "quantity": 8,
-      "price": 412.30,
-      "total": 3298.40,
-      "commission": 1.60,
+      "price": 412.3,
+      "total": 3298.4,
+      "commission": 1.6,
       "currency": "USD",
       "brokerId": "broker-ib",
       "executedAt": "2026-02-09T09:32:18Z"
@@ -779,8 +858,8 @@
       "symbol": "BTC/EUR",
       "side": "BUY",
       "quantity": 0.01,
-      "price": 88500.00,
-      "total": 885.00,
+      "price": 88500.0,
+      "total": 885.0,
       "commission": 0.89,
       "currency": "EUR",
       "brokerId": "broker-binance",
@@ -793,8 +872,8 @@
       "symbol": "BTC/EUR",
       "side": "BUY",
       "quantity": 0.01,
-      "price": 88490.00,
-      "total": 884.90,
+      "price": 88490.0,
+      "total": 884.9,
       "commission": 0.88,
       "currency": "EUR",
       "brokerId": "broker-binance",
@@ -808,8 +887,8 @@
       "side": "BUY",
       "quantity": 10,
       "price": 130.05,
-      "total": 1300.50,
-      "commission": 2.00,
+      "total": 1300.5,
+      "commission": 2.0,
       "currency": "USD",
       "brokerId": "broker-ib",
       "executedAt": "2026-02-03T10:02:15Z"
@@ -821,15 +900,14 @@
       "symbol": "AAPL",
       "side": "SELL",
       "quantity": 2,
-      "price": 179.80,
-      "total": 359.60,
-      "commission": 0.80,
+      "price": 179.8,
+      "total": 359.6,
+      "commission": 0.8,
       "currency": "USD",
       "brokerId": "broker-ib",
       "executedAt": "2026-02-01T14:45:00Z"
     }
   ],
-
   "recommendations": [
     {
       "id": "rec-001",
@@ -846,9 +924,9 @@
       "strategyName": "Momentum Alpha",
       "reasoning": "Tesla shows strong momentum following Q4 2025 delivery numbers exceeding analyst estimates by 12%. EV market sentiment is improving with the Model 2 production ramp confirmed for Q2 2026. Technical indicators support entry: RSI at 58 (neutral, room to run), MACD bullish crossover on the daily chart, and price reclaimed the 50-day moving average. Price target $280 based on consensus 2026 EPS estimates of $4.20 at a 66x forward P/E.",
       "targetPrices": {
-        "entry": 248.50,
-        "target": 280.00,
-        "stopLoss": 225.00
+        "entry": 248.5,
+        "target": 280.0,
+        "stopLoss": 225.0
       },
       "orderId": "ord-002",
       "createdAt": "2026-02-11T14:20:00Z"
@@ -868,15 +946,14 @@
       "strategyName": "Trend Following",
       "reasoning": "NVIDIA pulled back to key support at $130 after the data center revenue beat in January earnings. AI infrastructure spending continues to accelerate with hyperscaler CapEx guidance raised across the board. Entry at support with a defined risk/reward via bracket order (stop $120, target $145) gives a 1:1.5 R/R ratio.",
       "targetPrices": {
-        "entry": 130.00,
-        "target": 145.00,
-        "stopLoss": 120.00
+        "entry": 130.0,
+        "target": 145.0,
+        "stopLoss": 120.0
       },
       "orderId": "ord-013",
       "createdAt": "2026-02-03T09:55:00Z"
     }
   ],
-
   "recentActivity": [
     {
       "id": "act-001",

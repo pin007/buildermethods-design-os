@@ -8,6 +8,8 @@ import { OrderPanel, type OrderPanelState } from './OrderPanel'
 import { ToastContainer, type Toast } from './ToastContainer'
 import { type Banner } from './SystemBanner'
 import { EmergencyCloseModal } from './EmergencyCloseModal'
+import { LiveModeConfirmModal } from './LiveModeConfirmModal'
+import { useTradingScope, setTradingScope } from '@/lib/trading-scope'
 
 export interface BrokerStatus {
   name: string
@@ -23,8 +25,6 @@ interface AppShellProps {
   orderPanelContent?: React.ReactNode
   banners?: Banner[]
   pageTitle?: string
-  /** Trading environment — drives the persistent Paper/Live safety indicator. */
-  tradingMode?: 'paper' | 'live'
   onNavigate?: (href: string) => void
   onLogout?: () => void
   onEmergencyClose?: (filter: 'all' | 'intraday' | 'swing') => void
@@ -113,7 +113,6 @@ export default function AppShell({
   orderPanelContent,
   banners = [],
   pageTitle,
-  tradingMode: tradingModeProp = 'paper',
   onNavigate,
   onLogout,
   onEmergencyClose,
@@ -137,12 +136,12 @@ export default function AppShell({
   const [sidebarHovered, setSidebarHovered] = useState(false)
   const [emergencyCloseOpen, setEmergencyCloseOpen] = useState(false)
   const [toasts, setToasts] = useState<Toast[]>([])
-  // Paper vs Live trading mode (recommendation #1) — persisted; defaults to the
-  // safer 'paper' when nothing is stored so a session never silently starts live.
-  const [tradingMode, setTradingMode] = useState<'paper' | 'live'>(() => {
-    const stored = localStorage.getItem('trading-mode')
-    return stored === 'live' || stored === 'paper' ? stored : tradingModeProp
-  })
+  // Paper vs Live trading scope (recommendation #1) — the shared source of
+  // truth (see lib/trading-scope). It filters which portfolios are selectable
+  // in the order flow, so the indicator can never disagree with what's traded.
+  const tradingMode = useTradingScope()
+  // Switching *into* Live is gated behind an explicit confirmation.
+  const [liveConfirmOpen, setLiveConfirmOpen] = useState(false)
   // Comfortable vs Compact density (recommendation #3) — persisted; applied to
   // the content region via the `data-density` root attribute.
   const [density, setDensity] = useState<'comfortable' | 'compact'>(() => {
@@ -213,11 +212,6 @@ export default function AppShell({
     document.documentElement.classList.toggle('dark', darkMode)
     localStorage.setItem('theme', darkMode ? 'dark' : 'light')
   }, [darkMode])
-
-  // Persist trading mode
-  useEffect(() => {
-    localStorage.setItem('trading-mode', tradingMode)
-  }, [tradingMode])
 
   // Apply + persist content density via the root `data-density` attribute
   useEffect(() => {
@@ -351,12 +345,16 @@ export default function AppShell({
             Must be unmistakable: a user should never wonder if this is real money. */}
         <div className={collapsed ? 'flex justify-center pb-4' : 'px-3 pb-4'}>
           <button
-            onClick={() => setTradingMode(tradingMode === 'paper' ? 'live' : 'paper')}
-            aria-label={`Trading mode: ${tradingMode === 'paper' ? 'Paper' : 'Live'}. Click to switch.`}
+            onClick={() =>
+              tradingMode === 'paper'
+                ? setLiveConfirmOpen(true)
+                : setTradingScope('paper')
+            }
+            aria-label={`Trading scope: ${tradingMode === 'paper' ? 'Paper' : 'Live'}. Click to switch.`}
             title={
               tradingMode === 'paper'
-                ? 'Paper trading (simulated). Click to switch to Live.'
-                : 'LIVE trading (real money). Click to switch to Paper.'
+                ? 'Paper trading (simulated). Click to switch to Live — requires confirmation.'
+                : 'LIVE trading (real money). Click to switch back to Paper.'
             }
             className={
               collapsed
@@ -563,6 +561,16 @@ export default function AppShell({
         positionCount={12}
         intradayCount={5}
         swingCount={7}
+      />
+
+      {/* Switch-to-Live confirmation — the only path from Paper into Live */}
+      <LiveModeConfirmModal
+        open={liveConfirmOpen}
+        onClose={() => setLiveConfirmOpen(false)}
+        onConfirm={() => {
+          setTradingScope('live')
+          setLiveConfirmOpen(false)
+        }}
       />
 
       {/* Toast notifications */}
