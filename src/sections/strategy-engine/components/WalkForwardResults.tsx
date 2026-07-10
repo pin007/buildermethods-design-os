@@ -507,7 +507,7 @@ function SharpeComparisonChart({ windows }: { windows: WalkForwardWindow[] }) {
       <div className="p-4">
         <div className="flex items-end gap-1" style={{ height: '140px' }}>
           {windows.map((window) => (
-            <div key={window.windowNumber} className="flex flex-1 items-end gap-px">
+            <div key={window.windowNumber} className="flex h-full flex-1 items-end gap-px">
               {/* Train bar */}
               <div
                 className="flex-1 rounded-t bg-zinc-200 transition-colors dark:bg-zinc-700"
