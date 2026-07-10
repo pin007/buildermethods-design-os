@@ -27,14 +27,18 @@ node .ds-sync/package-validate.mjs ./ds-bundle
 - `[TOKENS_MISSING]` 12 vars: `--radix-*` (Radix runtime), `--sidebar-width`/`--header-height` (layout vars set at runtime by AppShell), `--color-danger`/`--color-success`/`--bg-primary`/`--bg-secondary` (not used in src — spurious compiled refs). Verified non-issues via render.
 - `[FONT_REMOTE]` DM Sans / JetBrains Mono — served via the Google Fonts `@import` (intentional, see build.sh step 4).
 
+## build.sh ordering (important)
+- `vite build` MUST run BEFORE the `tsc` .d.ts emit. Vite's `emptyOutDir` wipes `dist/`, so tsc-first means vite deletes the freshly emitted `dist/types` (build.sh then reports "0 d.ts"). Order: gen-entry → vite build + CSS → tsc + tsc-alias → dist/types/package.json.
+
 ## Re-sync risks
 - `dist/ds-styles.css` content depends on the vite/Tailwind build scanning source for used classes — if a component uses a class no other file uses, rebuild before trusting the CSS.
 - The Google Fonts `@import` is a runtime network dependency; fonts fall back to system if offline.
 - Emitted `.d.ts` are best-effort (app has type errors); a new type error could weaken a prop body — spot-check new/changed components' `.d.ts` after re-emit.
 
-## Product source bugs surfaced during preview authoring (NOT sync issues — flagged to user)
-- `src/sections/trade-journal/components/JournalEntryEditor.tsx` L331-332 (& L724): literal `→` / `·` sit in JSX **text nodes** (not escape sequences there) → React renders the literal characters instead of `→` / `·`. Cosmetic. Fix: use the real `→`/`·` chars or `{'→'}`.
-- `src/sections/strategy-engine/components/WalkForwardResults.tsx` ~L508-524: SharpeComparison bar chart renders empty — bars use `style height:'X%'` but their parent group `<div className="flex flex-1 items-end gap-px">` has no definite height (outer row is `items-end`, so the group isn't stretched to the 140px container). Fix: add `h-full`/`self-stretch` to the group div. These previews ship faithful to the current (buggy) components; a re-sync reflects the fix.
+## Product source bugs surfaced during preview authoring — NOW FIXED
+- `JournalEntryEditor.tsx`: literal `→`/`·` in JSX text — FIXED in commit 1ce12c3 (real chars). Verified rendering.
+- `WalkForwardResults.tsx`: Sharpe bar chart collapsed (missing height) — FIXED in commit a206def (`h-full` on the group div). Verified rendering (all 13 windows show Train/Validation bars).
+- Both fixes are in the compiled bundle; the uploaded bundle already matches (bundleSha `f09c68ea7a74`).
 
 ## Preview authoring patterns (all 62 authored — for re-sync / re-authoring)
 - Standard pattern: `import { X } from 'trading-squad-ds'` + `import data from '../../product/sections/<section>/data.json'`; compose with real objects matched by id, `as any` casts, all required props, callbacks `() => {}`, no provider.
