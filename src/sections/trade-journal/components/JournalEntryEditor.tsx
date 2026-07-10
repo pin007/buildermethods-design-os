@@ -328,8 +328,8 @@ export function JournalEntryEditor({
             </span>
           </div>
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-400 dark:text-zinc-600">
-            <span>{formatDate(tradeSummary.entryDate)} \u2192 {formatDate(tradeSummary.exitDate)}</span>
-            <span>{formatPrice(tradeSummary.entryPrice)} \u2192 {formatPrice(tradeSummary.exitPrice)}</span>
+            <span>{formatDate(tradeSummary.entryDate)} → {formatDate(tradeSummary.exitDate)}</span>
+            <span>{formatPrice(tradeSummary.entryPrice)} → {formatPrice(tradeSummary.exitPrice)}</span>
             <span>Qty: {tradeSummary.quantity}</span>
             <span>{tradeSummary.broker}</span>
           </div>
@@ -721,7 +721,7 @@ export function JournalEntryEditor({
               Drag & drop charts or screenshots
             </p>
             <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
-              or click to browse \u00b7 Images only, max 10MB
+              or click to browse · Images only, max 10MB
             </p>
           </div>
         </div>
