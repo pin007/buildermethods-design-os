@@ -9,7 +9,7 @@ Settings & Operations is the centralized configuration hub for the Trading Squad
 2. **Broker Gateways** — Connection config for IB and Binance with live status dashboard (latency, heartbeat, circuit breaker state), test connection button, masked API keys
 3. **Market Data Pipeline** — Data source list with enable/disable toggles, priority drag-to-reorder, fetch schedules, quality thresholds, retention tier config, tracked instruments editor
 4. **Portfolio & Currency** — Base currency selector, supported currencies, benchmark config, margin alert thresholds, reconciliation settings
-5. **Risk Management** — Slider/input controls for position size limit, concentration limit, daily loss limit, max drawdown, correlation threshold, circuit breaker config, monitoring interval
+5. **Risk Management** — Slider/input controls for position size limit, concentration limit, daily loss limit, max drawdown, correlation threshold, circuit breaker config, monitoring interval; plus a live Trading Halt & Kill Switch panel (per-portfolio breaker state + global manual kill switch). The risk-limit controls are the single authoritative store (DB-backed, audited)
 6. **Tax Configuration** — Tax method, rate, exemption period, CNB sync settings, currency list, report format toggles, retention period
 7. **Strategy & Backtesting** — Evaluation interval, default risk/position params, backtesting defaults (capital, commission, slippage, execution model), walk-forward config, report format
 8. **Intelligence Sources** — Sub-sections for Guru Tracker (SEC, dark pool, analyst, whale, options flow toggles and intervals), Market Analyst (schedule, thresholds, scoring weights)
@@ -35,7 +35,8 @@ Settings & Operations is the centralized configuration hub for the Trading Squad
 - Detail pages: Form sections with clear group headings, consistent label/input alignment
 - Masked secret fields: Input shows dots with eye icon toggle to reveal, "Rotate" button to generate new
 - Broker status dashboard: Connection dot (green/amber/red), latency value, last heartbeat timestamp, "Test Connection" button with loading state
-- Risk management: Sliders with numeric input alongside for precision, visual indicator showing current vs. default
+- Risk management: Sliders with numeric input alongside for precision, visual indicator showing current vs. default. An authoritative-store note states the limits are the single source of truth (DB-backed, audited; env/YAML never consulted)
+- Trading Halt & Kill Switch panel: a prominent global manual kill switch (engage/clear, Trader-only, audited; rose styling, shows engaged-by when active) that halts all trading at once, plus a per-portfolio breaker list — each row shows the portfolio name, a rose "Live" / blue "Paper" environment badge, an Active/Halted state pill, the halt reason when tripped, and a Trader-only Reset action on halted portfolios. Halts are per-portfolio (one portfolio's breach never halts the whole book)
 - Data source priority: Drag-to-reorder list with grip handles
 - Notification subscription matrix: Table with alert types as rows and channels as columns, checkbox cells
 - Colorblind-safe P&L palette: Toggle under Calendar & Display (appearance category, alongside the theme toggle). When enabled it sets `data-palette="cvd"` on the app root, swapping the green/red profit-loss semantic colors for a blue/orange pair that stays distinguishable under red-green color-vision deficiency (deuteranopia/protanopia). Directional up/down icons are always rendered on P&L values regardless of this setting, so meaning never depends on color alone.

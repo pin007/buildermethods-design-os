@@ -34,7 +34,7 @@ const tabs: { id: TabId; label: string; icon: typeof Clock }[] = [
 ]
 
 const pendingStatuses: OrderStatus[] = ['pending_approval']
-const openStatuses: OrderStatus[] = ['draft', 'approved', 'submitted', 'acknowledged', 'partially_filled', 'amended']
+const openStatuses: OrderStatus[] = ['draft', 'approved', 'submitted', 'acknowledged', 'partially_filled', 'amended', 'pending_reconciliation']
 const historyStatuses: OrderStatus[] = ['filled', 'cancelled', 'rejected', 'expired', 'failed']
 
 const ROWS_PER_PAGE = 50
@@ -347,7 +347,7 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
               Review
             </button>
           )}
-          {isOpen && order.status !== 'pending_approval' && onAmend && (
+          {isOpen && order.status !== 'pending_approval' && order.status !== 'pending_reconciliation' && onAmend && (
             <button
               onClick={(e) => { e.stopPropagation(); onAmend() }}
               title="Amend"
@@ -356,7 +356,7 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
               <Pencil size={13} />
             </button>
           )}
-          {isOpen && onCancel && (
+          {isOpen && order.status !== 'pending_reconciliation' && onCancel && (
             <button
               onClick={(e) => { e.stopPropagation(); onCancel() }}
               title="Cancel"
@@ -479,7 +479,7 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
               Review Approval
             </button>
           )}
-          {isOpen && order.status !== 'pending_approval' && onAmend && (
+          {isOpen && order.status !== 'pending_approval' && order.status !== 'pending_reconciliation' && onAmend && (
             <button
               onClick={onAmend}
               className="flex items-center gap-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-700"
@@ -488,7 +488,7 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
               Amend
             </button>
           )}
-          {isOpen && onCancel && (
+          {isOpen && order.status !== 'pending_reconciliation' && onCancel && (
             <button
               onClick={onCancel}
               className="flex items-center gap-1.5 rounded-lg border border-red-200 dark:border-red-900/40 px-4 py-2 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"

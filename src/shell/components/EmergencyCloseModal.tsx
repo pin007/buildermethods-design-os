@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { ShieldAlert, AlertTriangle } from 'lucide-react'
+import { useTradingScope } from '@/lib/trading-scope'
 
 interface EmergencyCloseModalProps {
   open: boolean
@@ -21,6 +22,8 @@ export function EmergencyCloseModal({
   const [filter, setFilter] = useState<'all' | 'intraday' | 'swing'>('all')
   const [confirmText, setConfirmText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const scope = useTradingScope()
+  const isLive = scope === 'live'
 
   const affectedCount = filter === 'all' ? positionCount : filter === 'intraday' ? intradayCount : swingCount
 
@@ -62,8 +65,19 @@ export function EmergencyCloseModal({
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/50">
             <ShieldAlert size={20} className="text-destructive" />
           </div>
-          <div>
-            <h2 className="text-base font-semibold text-foreground">Close All Positions</h2>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-semibold text-foreground">Close All Positions</h2>
+              <span
+                className={`inline-flex items-center rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
+                  isLive
+                    ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                    : 'bg-blue-400/10 text-blue-600 dark:text-blue-400'
+                }`}
+              >
+                {isLive ? 'Live' : 'Paper'}
+              </span>
+            </div>
             <p className="text-xs text-destructive">This action cannot be undone</p>
           </div>
         </div>
@@ -74,8 +88,9 @@ export function EmergencyCloseModal({
           <div className="flex items-start gap-2 rounded-lg bg-red-50 dark:bg-red-950/20 p-3">
             <AlertTriangle size={14} className="mt-0.5 shrink-0 text-destructive" />
             <p className="text-xs text-destructive">
-              This will send market close orders for all selected positions immediately.
-              Estimated market impact depends on current liquidity.
+              This closes only positions in the active <span className="font-semibold uppercase">{scope}</span> scope
+              {isLive ? ' — real-money positions' : ' — simulated positions only'}. Market close orders are sent for
+              all selected positions immediately; estimated market impact depends on current liquidity.
             </p>
           </div>
 

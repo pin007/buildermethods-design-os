@@ -50,7 +50,7 @@ All navigation chrome consolidated in the sidebar:
 - **Alerts:** Nav item in Overview group with badge count (same style as Orders/Market Analysis badges)
 - **Theme toggle:** Sun/Moon nav item in System group — toggles dark/light mode on click
 - **Density toggle:** Rows nav item in System group directly beneath Theme toggle — toggles Comfortable/Compact on click (see Content Density)
-- **Emergency close:** "Close All Positions" button in sidebar footer, always visible. Opens Level 4 confirmation: modal with position type filter (intraday/swing/all), requires explicit confirmation (e.g., type "CLOSE ALL" to confirm). Red/destructive styling. Shows position count and estimated market impact before confirmation.
+- **Emergency close:** "Close All Positions" button in sidebar footer, always visible. Opens Level 4 confirmation: modal with position type filter (intraday/swing/all), requires explicit confirmation (e.g., type "CLOSE ALL" to confirm). Red/destructive styling. Shows position count and estimated market impact before confirmation. The modal is **scoped to the active Paper/Live trading scope** — it carries a rose "Live" / blue "Paper" badge derived from the scope and states that it closes only positions in that scope (real-money vs. simulated), so a Paper-scoped user can never liquidate live positions and vice versa.
 - **User menu:** Avatar with initials, name, email — dropdown opens upward with Profile, Settings, Logout. Dropdown follows menu accessibility: ARIA role="menu", aria-haspopup, aria-expanded, keyboard navigation with Arrow Up/Down, Esc to close, focus management (first item on open, trigger on close)
 
 ## Sidebar Resizing

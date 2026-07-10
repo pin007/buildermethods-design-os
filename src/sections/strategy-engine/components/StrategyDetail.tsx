@@ -232,6 +232,20 @@ export function StrategyDetail({
                 <TypeIcon size={12} strokeWidth={2} />
                 {typeConfig.label}
               </span>
+              <span
+                className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold uppercase tracking-wider shrink-0 ${
+                  strategy.promotedToLive
+                    ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                    : 'bg-blue-400/10 text-blue-600 dark:text-blue-400'
+                }`}
+                title={
+                  strategy.promotedToLive
+                    ? 'Promoted to live — low-risk signals may auto-execute against live portfolios'
+                    : 'Paper only — live signals still require manual approval'
+                }
+              >
+                {strategy.promotedToLive ? 'Live' : 'Paper'}
+              </span>
             </div>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl">
               {strategy.description}

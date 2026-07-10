@@ -49,6 +49,10 @@ const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
     label: 'Failed',
     color: 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400',
   },
+  pending_reconciliation: {
+    label: 'Reconciling',
+    color: 'bg-orange-50 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400',
+  },
 }
 
 export function OrderStatusBadge({ status }: { status: OrderStatus }) {

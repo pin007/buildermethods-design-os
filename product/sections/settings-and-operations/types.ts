@@ -169,6 +169,36 @@ export interface RiskCircuitBreaker {
   monitoringIntervalSeconds: number
 }
 
+/**
+ * Live halt state of a single portfolio's circuit breaker. Halts are
+ * per-portfolio: a breach in one portfolio halts only that portfolio, never the
+ * whole book. State is PostgreSQL-authoritative and fails safe (unknown =
+ * halted). Resetting is Trader-only and audited.
+ */
+export interface PortfolioBreakerStatus {
+  portfolioId: string
+  portfolioName: string
+  environment: 'paper' | 'live'
+  halted: boolean
+  /** Why the breaker tripped (present when halted). */
+  haltReason?: string
+  /** When it tripped, ISO 8601 (present when halted). */
+  haltedAt?: string
+}
+
+/**
+ * The global manual kill switch — a single, deliberate control that halts ALL
+ * trading across every portfolio at once, independent of the per-portfolio
+ * automatic breakers. Engaging or clearing it is Trader-only and audited.
+ */
+export interface GlobalKillSwitch {
+  engaged: boolean
+  /** When engaged, ISO 8601. */
+  engagedAt?: string
+  /** Who engaged it. */
+  engagedBy?: string
+}
+
 // =============================================================================
 // Data Types — Tax Configuration
 // =============================================================================
@@ -523,12 +553,20 @@ export interface RiskManagementProps {
   riskSettings: RiskSetting[]
   /** Circuit breaker configuration */
   circuitBreaker: RiskCircuitBreaker
+  /** Live per-portfolio breaker halt state */
+  portfolioBreakers: PortfolioBreakerStatus[]
+  /** Global manual kill switch state */
+  killSwitch: GlobalKillSwitch
   /** Called when user adjusts a risk limit value */
   onUpdateRiskSetting?: (settingId: string, value: number) => void
   /** Called when user resets a risk setting to its default */
   onResetToDefault?: (settingId: string) => void
   /** Called when user updates circuit breaker config */
   onUpdateCircuitBreaker?: (config: Partial<RiskCircuitBreaker>) => void
+  /** Called when user resets a tripped per-portfolio breaker (Trader-only, audited) */
+  onResetPortfolioBreaker?: (portfolioId: string) => void
+  /** Called when user engages/clears the global kill switch (Trader-only, audited) */
+  onToggleKillSwitch?: (engaged: boolean) => void
   /** Called when user saves all changes */
   onSave?: () => void
   /** Called when user navigates back */

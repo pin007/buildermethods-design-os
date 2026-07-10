@@ -90,7 +90,7 @@ This chip MUST be used consistently across recommendation lists, the approval ca
 - Order table columns: order ID, instrument, side (BUY/SELL color-coded), type, quantity, price, status badge, broker (IB/Binance badge), time-in-force, created timestamp
 - Pending Approval tab adds two extra columns: Risk % (color-coded: green < 1%, yellow 1–5%, red > 5%) and Time Remaining (countdown from expiresAt, red + pulse when < 5 min)
 - All table columns are sortable (click header to toggle asc/desc) with sort indicator arrows. Default sort: Created descending
-- Order status states (12 states with color-coded badges):
+- Order status states (13 states with color-coded badges):
   - DRAFT (gray) — order created but not yet submitted
   - PENDING_APPROVAL (yellow) — awaiting human approval
   - APPROVED (blue) — approved, ready for submission
@@ -103,6 +103,7 @@ This chip MUST be used consistently across recommendation lists, the approval ca
   - EXPIRED (gray) — time-in-force expired or approval timed out
   - AMENDED (blue) — order modified (quantity, price, or TIF)
   - FAILED (red) — broker execution error
+  - PENDING_RECONCILIATION (orange) — broker connectivity was lost mid-submission or a submit timed out; the order's true state at the broker is unknown and it is held here (never silently marked FAILED) until reconciliation resolves it. Terminal transitions out of this state come from reconciliation, not user action
 - Bracket orders display as a collapsible group row: parent order on top, child legs (stop-loss, take-profit) indented below with a visual connector line. Group status derived from parent status
 - Order detail: summary view (status, fill price, quantity, commission, broker) with collapsible event sourcing timeline showing all state transitions with timestamps
 - Amend order: clicking "Amend" on an open order opens the shell's Order Panel pre-filled with current order values (instrument, side, type, quantity, price, TIF). User modifies fields and submits as an amendment. For bracket orders, individual legs can be amended separately
@@ -133,6 +134,8 @@ This chip MUST be used consistently across recommendation lists, the approval ca
 
 ### Approval Card
 - Centered approval card layout, max-width 800px — all context visible on one screen (no scrolling on desktop)
+- **Environment badge** in the header (rose "Live" / blue "Paper", matching the shell's trading-scope colours), derived from the order's `environment` — the approver can always see at a glance whether real money is at stake before approving
+- **Re-confirmation at execution:** when the price has moved beyond the configured tolerance since the order was created (backend `RECONFIRM_REQUIRED`), the approve action becomes a two-step confirm. The button reads "Review & Approve"; the first click reveals an amber banner showing the original vs. current price and the percentage drift, and the button changes to "Confirm at New Price" — the trader must acknowledge the new price before the order submits. Orders without price drift approve in one click ("Approve & Submit")
 - Structured into 4 sections:
   1. **Order Details:** instrument (symbol + company name), action (BUY/SELL badge), quantity, limit price (if applicable), estimated total
   2. **Risk Analysis:** portfolio impact % (highlighted red if >5%), position size % (concentration risk), cash balance impact, position limits

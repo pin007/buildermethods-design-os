@@ -69,6 +69,13 @@ export interface Strategy {
   type: StrategyType
   description: string
   active: boolean
+  /**
+   * Whether the Trader has explicitly promoted this strategy to live trading.
+   * A strategy runs in paper by default; only after promotion may its low-risk
+   * recommendations auto-execute against a live portfolio. Not promoted =
+   * paper-only (live recommendations still require manual approval).
+   */
+  promotedToLive: boolean
   createdAt: string
   updatedAt: string
   instruments: string[]

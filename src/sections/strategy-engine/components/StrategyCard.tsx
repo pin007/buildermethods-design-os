@@ -105,6 +105,20 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
               <TypeIcon size={12} strokeWidth={2} />
               {typeConfig.label}
             </span>
+            <span
+              className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold uppercase tracking-wider ${
+                strategy.promotedToLive
+                  ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                  : 'bg-blue-400/10 text-blue-600 dark:text-blue-400'
+              }`}
+              title={
+                strategy.promotedToLive
+                  ? 'Promoted to live — low-risk signals may auto-execute against live portfolios'
+                  : 'Paper only — live signals still require manual approval'
+              }
+            >
+              {strategy.promotedToLive ? 'Live' : 'Paper'}
+            </span>
           </div>
           <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 truncate pr-8">
             {strategy.name}

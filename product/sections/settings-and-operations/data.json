@@ -4,13 +4,13 @@
       "settingsCategories": "The 10 settings category cards shown on the overview page. Each card has an icon, name, status summary, and optional warning badge.",
       "brokerGateways": "Connection configurations for trading platforms (Interactive Brokers and Binance). Includes encrypted credentials, connection parameters, and live status information like latency and heartbeat.",
       "dataSources": "Market data providers that feed price and volume data into the platform. Each source can be enabled/disabled and has a priority order for fallback.",
-      "retentionTiers": "Data storage tiers that control how long market data is kept at different granularities — hot (recent, fast access), warm (older, compressed), and cold (archive).",
+      "retentionTiers": "Data storage tiers that control how long market data is kept at different granularities \u2014 hot (recent, fast access), warm (older, compressed), and cold (archive).",
       "trackedInstruments": "Instruments actively being tracked for market data collection. The pipeline fetches data for these symbols from enabled data sources.",
       "portfolioSettings": "Global portfolio configuration including base currency, supported currencies for multi-currency portfolios, benchmark comparison, and margin alert thresholds.",
       "riskSettings": "Risk management limits that control maximum exposure. Each setting has a current value, default value, min/max bounds, and a unit (percent or ratio).",
       "taxSettings": "Czech tax reporting configuration including FIFO method, tax rates, the 3-year exemption rule, CNB exchange rate sync, and report generation settings.",
       "strategySettings": "Default parameters for the strategy engine and backtesting framework, including evaluation frequency, risk-per-trade defaults, and simulation settings.",
-      "intelligenceSettings": "Configuration for AI-powered market intelligence — guru/whale tracking providers, market analyst research schedules, confidence thresholds, and scoring weights.",
+      "intelligenceSettings": "Configuration for AI-powered market intelligence \u2014 guru/whale tracking providers, market analyst research schedules, confidence thresholds, and scoring weights.",
       "journalSettings": "Trade journal configuration controlling whether pre/post trade notes are required, scoring dimensions for trade evaluation, behavioral pattern detection, and review schedules.",
       "notificationChannels": "Delivery channels for alerts and notifications. Each channel has its own configuration (credentials, endpoints) and can be individually enabled or disabled.",
       "notificationPreferences": "Global notification preferences including quiet hours, severity thresholds, rate limits, and a per-alert-type subscription matrix mapping alert types to channels.",
@@ -26,7 +26,6 @@
       "Tax Settings control how CostLots, LotMatches, and Dividends are calculated for CZK reporting"
     ]
   },
-
   "settingsCategories": [
     {
       "id": "broker-gateways",
@@ -96,7 +95,7 @@
       "id": "notifications-alerts",
       "label": "Notifications & Alerts",
       "icon": "Bell",
-      "summary": "3 channels active, quiet hours 22:00–08:00",
+      "summary": "3 channels active, quiet hours 22:00\u201308:00",
       "badge": 2,
       "badgeVariant": "info"
     },
@@ -109,7 +108,6 @@
       "badgeVariant": null
     }
   ],
-
   "brokerGateways": [
     {
       "id": "broker-ib",
@@ -160,9 +158,9 @@
       },
       "credentials": {
         "hasApiKey": true,
-        "maskedApiKey": "aBc1••••••••••••dEf9",
+        "maskedApiKey": "aBc1\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022dEf9",
         "hasSecret": true,
-        "maskedSecret": "xYz7••••••••••••mNo3"
+        "maskedSecret": "xYz7\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022mNo3"
       },
       "status": {
         "connection": "degraded",
@@ -182,7 +180,6 @@
       }
     }
   ],
-
   "dataSources": [
     {
       "id": "ds-yahoo",
@@ -237,7 +234,6 @@
       "qualityScore": 94.2
     }
   ],
-
   "retentionTiers": [
     {
       "id": "tier-hot",
@@ -264,35 +260,113 @@
       "storage": "Object storage"
     }
   ],
-
   "qualityThresholds": {
     "completeness": 95.0,
     "timeliness": 98.0,
     "accuracy": 99.0
   },
-
   "trackedInstruments": [
-    { "symbol": "AAPL", "name": "Apple Inc.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "MSFT", "name": "Microsoft Corp.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "NVDA", "name": "NVIDIA Corp.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "GOOGL", "name": "Alphabet Inc.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "AMZN", "name": "Amazon.com Inc.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "META", "name": "Meta Platforms Inc.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "TSLA", "name": "Tesla Inc.", "exchange": "NASDAQ", "type": "stock" },
-    { "symbol": "JPM", "name": "JPMorgan Chase & Co.", "exchange": "NYSE", "type": "stock" },
-    { "symbol": "BTC-USD", "name": "Bitcoin", "exchange": "Crypto", "type": "crypto" },
-    { "symbol": "ETH-USD", "name": "Ethereum", "exchange": "Crypto", "type": "crypto" },
-    { "symbol": "SOL-USD", "name": "Solana", "exchange": "Crypto", "type": "crypto" },
-    { "symbol": "EUR/USD", "name": "Euro / US Dollar", "exchange": "Forex", "type": "forex" }
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc.",
+      "exchange": "NASDAQ",
+      "type": "stock"
+    },
+    {
+      "symbol": "JPM",
+      "name": "JPMorgan Chase & Co.",
+      "exchange": "NYSE",
+      "type": "stock"
+    },
+    {
+      "symbol": "BTC-USD",
+      "name": "Bitcoin",
+      "exchange": "Crypto",
+      "type": "crypto"
+    },
+    {
+      "symbol": "ETH-USD",
+      "name": "Ethereum",
+      "exchange": "Crypto",
+      "type": "crypto"
+    },
+    {
+      "symbol": "SOL-USD",
+      "name": "Solana",
+      "exchange": "Crypto",
+      "type": "crypto"
+    },
+    {
+      "symbol": "EUR/USD",
+      "name": "Euro / US Dollar",
+      "exchange": "Forex",
+      "type": "forex"
+    }
   ],
-
   "portfolioSettings": {
     "baseCurrency": "CZK",
-    "supportedCurrencies": ["CZK", "USD", "EUR", "GBP", "CHF"],
+    "supportedCurrencies": [
+      "CZK",
+      "USD",
+      "EUR",
+      "GBP",
+      "CHF"
+    ],
     "benchmarks": [
-      { "id": "bench-sp500", "label": "S&P 500", "symbol": "^GSPC", "enabled": true },
-      { "id": "bench-nasdaq", "label": "NASDAQ Composite", "symbol": "^IXIC", "enabled": false },
-      { "id": "bench-btc", "label": "Bitcoin", "symbol": "BTC-USD", "enabled": true }
+      {
+        "id": "bench-sp500",
+        "label": "S&P 500",
+        "symbol": "^GSPC",
+        "enabled": true
+      },
+      {
+        "id": "bench-nasdaq",
+        "label": "NASDAQ Composite",
+        "symbol": "^IXIC",
+        "enabled": false
+      },
+      {
+        "id": "bench-btc",
+        "label": "Bitcoin",
+        "symbol": "BTC-USD",
+        "enabled": true
+      }
     ],
     "marginAlertThresholds": {
       "warning": 70,
@@ -308,7 +382,6 @@
     },
     "cacheTtlSeconds": 300
   },
-
   "riskSettings": [
     {
       "id": "risk-position-size",
@@ -366,14 +439,12 @@
       "unit": "ratio"
     }
   ],
-
   "riskCircuitBreaker": {
     "enabled": true,
     "cooldownMinutes": 30,
     "autoResume": false,
     "monitoringIntervalSeconds": 60
   },
-
   "taxSettings": {
     "method": "FIFO",
     "taxRate": 15,
@@ -387,15 +458,32 @@
       "lastSync": "2026-02-21T16:00:00Z",
       "lastSyncStatus": "success"
     },
-    "supportedCurrencies": ["USD", "EUR", "GBP", "CHF", "JPY"],
+    "supportedCurrencies": [
+      "USD",
+      "EUR",
+      "GBP",
+      "CHF",
+      "JPY"
+    ],
     "reportFormats": [
-      { "id": "fmt-pdf", "label": "PDF", "enabled": true },
-      { "id": "fmt-csv", "label": "CSV", "enabled": true },
-      { "id": "fmt-json", "label": "JSON", "enabled": false }
+      {
+        "id": "fmt-pdf",
+        "label": "PDF",
+        "enabled": true
+      },
+      {
+        "id": "fmt-csv",
+        "label": "CSV",
+        "enabled": true
+      },
+      {
+        "id": "fmt-json",
+        "label": "JSON",
+        "enabled": false
+      }
     ],
     "retentionYears": 10
   },
-
   "strategySettings": {
     "evaluationIntervalSeconds": 60,
     "evaluationScheduleLabel": "Every 60 seconds",
@@ -407,18 +495,24 @@
       "commissionPercent": 0.1,
       "slippagePercent": 0.05,
       "executionModel": "VOLUME_BASED",
-      "executionModels": ["SIMPLE", "VOLUME_BASED", "SPREAD_BASED"],
+      "executionModels": [
+        "SIMPLE",
+        "VOLUME_BASED",
+        "SPREAD_BASED"
+      ],
       "maxWorkers": 8,
       "walkForward": {
         "trainingMonths": 12,
         "validationMonths": 3
       },
       "reportFormat": "HTML",
-      "reportFormats": ["PDF", "HTML"],
+      "reportFormats": [
+        "PDF",
+        "HTML"
+      ],
       "resultsRetentionDays": 365
     }
   },
-
   "intelligenceSettings": {
     "guruTracker": {
       "sec": {
@@ -436,7 +530,10 @@
       },
       "analystRatings": {
         "enabled": true,
-        "providers": ["finnhub", "fmp"],
+        "providers": [
+          "finnhub",
+          "fmp"
+        ],
         "checkIntervalHours": 12,
         "minAccuracyPercent": 60
       },
@@ -448,15 +545,30 @@
       },
       "whaleTracking": {
         "enabled": true,
-        "providers": ["whale_alert", "etherscan"],
+        "providers": [
+          "whale_alert",
+          "etherscan"
+        ],
         "minTransactionUsd": 1000000,
         "checkIntervalMinutes": 15
       }
     },
     "marketAnalyst": {
       "schedules": [
-        { "id": "sched-stocks", "label": "Daily Stock Research", "cron": "0 6 * * 1-5", "cronLabel": "Weekdays at 06:00 ET", "enabled": true },
-        { "id": "sched-crypto", "label": "Crypto Research", "cron": "0 */12 * * *", "cronLabel": "Every 12 hours", "enabled": true }
+        {
+          "id": "sched-stocks",
+          "label": "Daily Stock Research",
+          "cron": "0 6 * * 1-5",
+          "cronLabel": "Weekdays at 06:00 ET",
+          "enabled": true
+        },
+        {
+          "id": "sched-crypto",
+          "label": "Crypto Research",
+          "cron": "0 */12 * * *",
+          "cronLabel": "Every 12 hours",
+          "enabled": true
+        }
       ],
       "confidenceThresholds": {
         "stocks": 7.0,
@@ -479,17 +591,41 @@
       "expiryDays": 30
     }
   },
-
   "journalSettings": {
     "requirePreTradeNotes": true,
     "requirePostTradeNotes": true,
     "reviewPromptDelayHours": 24,
     "scoringDimensions": [
-      { "id": "dim-discipline", "label": "Discipline", "weight": 25, "enabled": true },
-      { "id": "dim-emotional", "label": "Emotional Management", "weight": 25, "enabled": true },
-      { "id": "dim-risk", "label": "Risk Management", "weight": 20, "enabled": true },
-      { "id": "dim-entry", "label": "Entry Quality", "weight": 15, "enabled": true },
-      { "id": "dim-exit", "label": "Exit Quality", "weight": 15, "enabled": true }
+      {
+        "id": "dim-discipline",
+        "label": "Discipline",
+        "weight": 25,
+        "enabled": true
+      },
+      {
+        "id": "dim-emotional",
+        "label": "Emotional Management",
+        "weight": 25,
+        "enabled": true
+      },
+      {
+        "id": "dim-risk",
+        "label": "Risk Management",
+        "weight": 20,
+        "enabled": true
+      },
+      {
+        "id": "dim-entry",
+        "label": "Entry Quality",
+        "weight": 15,
+        "enabled": true
+      },
+      {
+        "id": "dim-exit",
+        "label": "Exit Quality",
+        "weight": 15,
+        "enabled": true
+      }
     ],
     "behavioralDetection": {
       "revengeTradingWindowMinutes": 30,
@@ -497,15 +633,20 @@
       "positionSizeDriftPercent": 50
     },
     "reviewSchedule": {
-      "weekly": { "enabled": true, "dayOfWeek": "Sunday" },
-      "monthly": { "enabled": true, "dayOfMonth": 1 }
+      "weekly": {
+        "enabled": true,
+        "dayOfWeek": "Sunday"
+      },
+      "monthly": {
+        "enabled": true,
+        "dayOfMonth": 1
+      }
     },
     "habitScoring": {
       "enabled": true,
       "lookbackTrades": 50
     }
   },
-
   "notificationChannels": [
     {
       "id": "ch-email",
@@ -516,7 +657,7 @@
       "config": {
         "provider": "sendgrid",
         "fromAddress": "alerts@tradingsquad.io",
-        "maskedApiKey": "SG.••••••••••••••••dK4Q"
+        "maskedApiKey": "SG.\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022dK4Q"
       }
     },
     {
@@ -526,7 +667,7 @@
       "icon": "MessageSquare",
       "enabled": true,
       "config": {
-        "maskedWebhookUrl": "https://hooks.slack.com/services/T••••/B••••/••••••••",
+        "maskedWebhookUrl": "https://hooks.slack.com/services/T\u2022\u2022\u2022\u2022/B\u2022\u2022\u2022\u2022/\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
         "channel": "#trading-alerts",
         "timeoutSeconds": 10
       }
@@ -538,7 +679,7 @@
       "icon": "Gamepad2",
       "enabled": true,
       "config": {
-        "maskedWebhookUrl": "https://discord.com/api/webhooks/••••••••/••••••••••••",
+        "maskedWebhookUrl": "https://discord.com/api/webhooks/\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022/\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
         "timeoutSeconds": 10
       }
     },
@@ -550,9 +691,9 @@
       "enabled": false,
       "config": {
         "provider": "twilio",
-        "fromNumber": "+1••••••7890",
-        "maskedAccountSid": "AC••••••••••••••••3f8a",
-        "maskedAuthToken": "••••••••••••••••"
+        "fromNumber": "+1\u2022\u2022\u2022\u2022\u2022\u20227890",
+        "maskedAccountSid": "AC\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u20223f8a",
+        "maskedAuthToken": "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
       }
     },
     {
@@ -563,18 +704,22 @@
       "enabled": false,
       "config": {
         "hasVapidPublicKey": true,
-        "maskedVapidPublicKey": "BNb4••••••••••••••••kQ==",
+        "maskedVapidPublicKey": "BNb4\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022kQ==",
         "hasVapidPrivateKey": true,
-        "maskedVapidPrivateKey": "••••••••••••••••",
+        "maskedVapidPrivateKey": "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
         "ttlSeconds": 86400,
         "urgency": "normal"
       }
     }
   ],
-
   "notificationPreferences": {
     "defaultSeverityThreshold": "medium",
-    "severityLevels": ["low", "medium", "high", "critical"],
+    "severityLevels": [
+      "low",
+      "medium",
+      "high",
+      "critical"
+    ],
     "quietHours": {
       "enabled": true,
       "start": "22:00",
@@ -592,44 +737,234 @@
       "batchSize": 10
     },
     "subscriptionMatrix": [
-      { "alertType": "Price Alert", "email": true, "slack": true, "discord": false, "sms": false, "push": false },
-      { "alertType": "Order Filled", "email": true, "slack": true, "discord": true, "sms": false, "push": false },
-      { "alertType": "Order Rejected", "email": true, "slack": true, "discord": true, "sms": false, "push": false },
-      { "alertType": "Risk Breach", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
-      { "alertType": "Margin Warning", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
-      { "alertType": "Broker Disconnected", "email": true, "slack": true, "discord": true, "sms": true, "push": true },
-      { "alertType": "AI Recommendation", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
-      { "alertType": "Guru/Whale Activity", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
-      { "alertType": "Earnings Alert", "email": true, "slack": false, "discord": false, "sms": false, "push": false },
-      { "alertType": "Dividend Alert", "email": true, "slack": false, "discord": false, "sms": false, "push": false },
-      { "alertType": "Data Quality Issue", "email": false, "slack": true, "discord": false, "sms": false, "push": false },
-      { "alertType": "Reconciliation Failure", "email": true, "slack": true, "discord": false, "sms": false, "push": false }
+      {
+        "alertType": "Price Alert",
+        "email": true,
+        "slack": true,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Order Filled",
+        "email": true,
+        "slack": true,
+        "discord": true,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Order Rejected",
+        "email": true,
+        "slack": true,
+        "discord": true,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Risk Breach",
+        "email": true,
+        "slack": true,
+        "discord": true,
+        "sms": true,
+        "push": true
+      },
+      {
+        "alertType": "Margin Warning",
+        "email": true,
+        "slack": true,
+        "discord": true,
+        "sms": true,
+        "push": true
+      },
+      {
+        "alertType": "Broker Disconnected",
+        "email": true,
+        "slack": true,
+        "discord": true,
+        "sms": true,
+        "push": true
+      },
+      {
+        "alertType": "AI Recommendation",
+        "email": false,
+        "slack": true,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Guru/Whale Activity",
+        "email": false,
+        "slack": true,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Earnings Alert",
+        "email": true,
+        "slack": false,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Dividend Alert",
+        "email": true,
+        "slack": false,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Data Quality Issue",
+        "email": false,
+        "slack": true,
+        "discord": false,
+        "sms": false,
+        "push": false
+      },
+      {
+        "alertType": "Reconciliation Failure",
+        "email": true,
+        "slack": true,
+        "discord": false,
+        "sms": false,
+        "push": false
+      }
     ]
   },
-
   "calendarDisplaySettings": {
     "calendarProviders": [
-      { "id": "cal-earnings", "eventType": "Earnings", "provider": "alpha_vantage", "providers": ["alpha_vantage", "finnhub"], "refreshCron": "0 6 * * *", "refreshLabel": "Daily at 06:00", "enabled": true },
-      { "id": "cal-economic", "eventType": "Economic Events", "provider": "finnhub", "providers": ["finnhub"], "refreshCron": "0 5 * * *", "refreshLabel": "Daily at 05:00", "enabled": true },
-      { "id": "cal-dividends", "eventType": "Dividends", "provider": "yahoo_finance", "providers": ["yahoo_finance"], "refreshCron": "0 6 * * 1", "refreshLabel": "Weekly (Monday)", "enabled": true },
-      { "id": "cal-ipos", "eventType": "IPOs", "provider": "nasdaq", "providers": ["nasdaq"], "refreshCron": "0 6 * * 1", "refreshLabel": "Weekly (Monday)", "enabled": true }
+      {
+        "id": "cal-earnings",
+        "eventType": "Earnings",
+        "provider": "alpha_vantage",
+        "providers": [
+          "alpha_vantage",
+          "finnhub"
+        ],
+        "refreshCron": "0 6 * * *",
+        "refreshLabel": "Daily at 06:00",
+        "enabled": true
+      },
+      {
+        "id": "cal-economic",
+        "eventType": "Economic Events",
+        "provider": "finnhub",
+        "providers": [
+          "finnhub"
+        ],
+        "refreshCron": "0 5 * * *",
+        "refreshLabel": "Daily at 05:00",
+        "enabled": true
+      },
+      {
+        "id": "cal-dividends",
+        "eventType": "Dividends",
+        "provider": "yahoo_finance",
+        "providers": [
+          "yahoo_finance"
+        ],
+        "refreshCron": "0 6 * * 1",
+        "refreshLabel": "Weekly (Monday)",
+        "enabled": true
+      },
+      {
+        "id": "cal-ipos",
+        "eventType": "IPOs",
+        "provider": "nasdaq",
+        "providers": [
+          "nasdaq"
+        ],
+        "refreshCron": "0 6 * * 1",
+        "refreshLabel": "Weekly (Monday)",
+        "enabled": true
+      }
     ],
     "alertTiming": [
-      { "eventType": "Earnings", "daysBefore": 3 },
-      { "eventType": "Dividends", "daysBefore": 3 },
-      { "eventType": "Option Expirations", "daysBefore": 7 },
-      { "eventType": "High-Impact Economic", "hoursBefore": 24 }
+      {
+        "eventType": "Earnings",
+        "daysBefore": 3
+      },
+      {
+        "eventType": "Dividends",
+        "daysBefore": 3
+      },
+      {
+        "eventType": "Option Expirations",
+        "daysBefore": 7
+      },
+      {
+        "eventType": "High-Impact Economic",
+        "hoursBefore": 24
+      }
     ],
-    "economicCalendarCountries": ["US", "EU", "UK", "JP", "CN"],
-    "availableCountries": ["US", "EU", "UK", "JP", "CN", "AU", "CA", "CH", "KR", "IN"],
+    "economicCalendarCountries": [
+      "US",
+      "EU",
+      "UK",
+      "JP",
+      "CN"
+    ],
+    "availableCountries": [
+      "US",
+      "EU",
+      "UK",
+      "JP",
+      "CN",
+      "AU",
+      "CA",
+      "CH",
+      "KR",
+      "IN"
+    ],
     "display": {
       "timezone": "America/New_York",
-      "availableTimezones": ["America/New_York", "Europe/Prague", "Europe/London", "Asia/Tokyo", "UTC"],
+      "availableTimezones": [
+        "America/New_York",
+        "Europe/Prague",
+        "Europe/London",
+        "Asia/Tokyo",
+        "UTC"
+      ],
       "weekStart": "Monday",
       "theme": "dark",
       "dashboardRefreshSeconds": 5,
       "priceStalenessSeconds": 60,
       "orderStalenessSeconds": 30
     }
+  },
+  "portfolioBreakers": [
+    {
+      "portfolioId": "port-us-equities",
+      "portfolioName": "US Equities",
+      "environment": "live",
+      "halted": false
+    },
+    {
+      "portfolioId": "port-crypto",
+      "portfolioName": "Crypto Trading",
+      "environment": "live",
+      "halted": true,
+      "haltReason": "Daily loss limit breached (\u22125.2%)",
+      "haltedAt": "2026-02-11T14:48:00Z"
+    },
+    {
+      "portfolioId": "port-us-equities-paper",
+      "portfolioName": "US Equities (Paper)",
+      "environment": "paper",
+      "halted": false
+    },
+    {
+      "portfolioId": "port-crypto-paper",
+      "portfolioName": "Crypto Sandbox (Paper)",
+      "environment": "paper",
+      "halted": false
+    }
+  ],
+  "globalKillSwitch": {
+    "engaged": false
   }
 }

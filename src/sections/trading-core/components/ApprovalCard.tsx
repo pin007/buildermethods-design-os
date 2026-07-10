@@ -14,8 +14,9 @@ import {
   AlertTriangle,
   Target,
   Activity,
+  RefreshCw,
 } from 'lucide-react'
-import type { ApprovalCardProps } from '@/../product/sections/trading-core/types'
+import type { ApprovalCardProps, TradingEnvironment } from '@/../product/sections/trading-core/types'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -46,6 +47,21 @@ function formatCountdown(ms: number): string {
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
+
+function EnvBadge({ environment }: { environment: TradingEnvironment }) {
+  const live = environment === 'live'
+  return (
+    <span
+      className={`inline-flex items-center rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
+        live
+          ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+          : 'bg-blue-400/10 text-blue-600 dark:text-blue-400'
+      }`}
+    >
+      {live ? 'Live' : 'Paper'}
+    </span>
+  )
+}
 
 function SectionHeading({ icon: Icon, label }: { icon: typeof ShieldAlert; label: string }) {
   return (
@@ -148,9 +164,11 @@ export function ApprovalCard({
   const [rejectReason, setRejectReason] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [countdown, setCountdown] = useState<number>(0)
+  const [reconfirmVisible, setReconfirmVisible] = useState(false)
 
   const riskAnalysis = order.approvalContext?.riskAnalysis
   const expiresAt = order.approvalContext?.expiresAt
+  const reconfirm = order.approvalContext?.reconfirm
 
   // Countdown timer
   useEffect(() => {
@@ -177,6 +195,13 @@ export function ApprovalCard({
   const currency = instrument.currency
 
   function handleApprove() {
+    // If the price moved beyond tolerance since the order was created, the
+    // first Approve click surfaces the re-confirmation step instead of
+    // submitting — the trader must acknowledge the new price.
+    if (reconfirm && !reconfirmVisible) {
+      setReconfirmVisible(true)
+      return
+    }
     setIsSubmitting(true)
     onApprove?.(order.id)
   }
@@ -199,9 +224,12 @@ export function ApprovalCard({
                 <ShieldAlert size={18} className="text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                  Order Approval Required
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                    Order Approval Required
+                  </h2>
+                  <EnvBadge environment={order.environment} />
+                </div>
                 <p className="text-xs text-zinc-400 dark:text-zinc-500">
                   {order.id} &middot; {order.brokerShortName}
                 </p>
@@ -482,19 +510,49 @@ export function ApprovalCard({
               )}
             </div>
 
+            {/* Re-confirmation banner — price moved beyond tolerance since creation */}
+            {reconfirm && reconfirmVisible && !isExpired && (
+              <div className="rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/20 px-5 py-4">
+                <div className="flex items-start gap-2.5">
+                  <RefreshCw size={15} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-amber-800 dark:text-amber-300">
+                      Price moved {formatPercent(reconfirm.driftPercent)} since this order was created
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-amber-700 dark:text-amber-400">
+                      Risk was assessed at {formatCurrency(reconfirm.originalPrice, currency)}; the current
+                      price is{' '}
+                      <span className="font-mono font-semibold">{formatCurrency(reconfirm.currentPrice, currency)}</span>.
+                      Confirm you still want to submit at the new price.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Action buttons */}
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-3">
               <button
                 onClick={handleApprove}
                 disabled={isSubmitting || isExpired}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                  reconfirm && reconfirmVisible
+                    ? 'bg-amber-600 hover:bg-amber-500 active:bg-amber-700'
+                    : 'bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700'
+                }`}
               >
                 {isSubmitting ? (
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                ) : reconfirm && reconfirmVisible ? (
+                  <RefreshCw size={16} />
                 ) : (
                   <CheckCircle2 size={16} />
                 )}
-                Approve &amp; Submit
+                {reconfirm && reconfirmVisible
+                  ? 'Confirm at New Price'
+                  : reconfirm
+                  ? 'Review & Approve'
+                  : 'Approve & Submit'}
               </button>
               <button
                 onClick={handleReject}

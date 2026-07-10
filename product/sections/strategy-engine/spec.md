@@ -58,7 +58,8 @@ All numeric table columns and live metric values (Sharpe, CAGR, max drawdown, pr
 
 ### Strategy List (Main View)
 - Card grid layout (2 columns desktop, 1 column mobile)
-- Each card shows: strategy name, type badge (color-coded: Trend Following = blue, Mean Reversion = amber, Composite = purple), active/inactive toggle, instrument chips, last backtest date, key metrics (Sharpe ratio, CAGR, max drawdown in monospace), schedule summary (e.g., "Daily at 09:35 ET")
+- Each card shows: strategy name, type badge (color-coded: Trend Following = blue, Mean Reversion = amber, Composite = purple), a **paper/live promotion badge**, active/inactive toggle, instrument chips, last backtest date, key metrics (Sharpe ratio, CAGR, max drawdown in monospace), schedule summary (e.g., "Daily at 09:35 ET")
+- **Promotion badge** (rose "Live" / blue "Paper", matching the shell's trading-scope colours): reflects `promotedToLive`. A strategy runs in paper by default; only after the Trader explicitly promotes it to live may its low-risk recommendations auto-execute against a live portfolio. Un-promoted strategies are "Paper" — their live-targeted signals still require manual approval. The same badge appears in the strategy detail header
 - Active strategies have a subtle left-border accent (pink-600), inactive strategies are dimmed
 - Sort options: Name, Last Backtest, Sharpe Ratio, CAGR
 - Filter by: type, active/inactive, instrument

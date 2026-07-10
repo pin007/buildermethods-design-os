@@ -15,6 +15,15 @@ export type OrderStatus =
   | 'expired'
   | 'amended'
   | 'failed'
+  /**
+   * Broker connectivity was lost mid-submission (or a submit timed out), so the
+   * order's true state at the broker is unknown. It is held here — never marked
+   * failed — until reconciliation against the broker resolves it. Terminal
+   * transitions out of this state are driven by reconciliation, not the UI.
+   */
+  | 'pending_reconciliation'
+
+export type TradingEnvironment = 'paper' | 'live'
 
 export type OrderSide = 'BUY' | 'SELL'
 
@@ -68,7 +77,7 @@ export interface Portfolio {
    * shell's Paper/Live scope filter so a live order can never be placed while
    * the app is scoped to Paper.
    */
-  environment: 'paper' | 'live'
+  environment: TradingEnvironment
   dashboardStats: DashboardStats
 }
 
@@ -95,9 +104,24 @@ export interface RiskAnalysis {
   warnings: string[]
 }
 
+export interface ReconfirmContext {
+  /** Price the risk analysis and order were originally computed against. */
+  originalPrice: number
+  /** Latest price re-fetched at approval time. */
+  currentPrice: number
+  /** Signed drift of currentPrice vs originalPrice, in percent. */
+  driftPercent: number
+}
+
 export interface ApprovalContext {
   expiresAt: string
   riskAnalysis: RiskAnalysis
+  /**
+   * Present when the price moved beyond the configured tolerance since the
+   * order was created. Approval must re-confirm at the new price before the
+   * order is submitted (mirrors the backend's RECONFIRM_REQUIRED response).
+   */
+  reconfirm?: ReconfirmContext
 }
 
 export interface AmendedField {
@@ -108,6 +132,14 @@ export interface AmendedField {
 export interface Order {
   id: string
   portfolioId: string
+  /**
+   * Trading environment, denormalized from the order's portfolio. It must match
+   * the portfolio's and the broker connection's environment; the gateway
+   * refuses any mismatch. Drives the Paper/Live badge shown wherever the order
+   * appears (approval card, order tables) so a live order is never mistaken for
+   * paper.
+   */
+  environment: TradingEnvironment
   instrumentId: string
   symbol: string
   instrumentName: string
