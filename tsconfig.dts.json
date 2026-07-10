@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "noEmitOnError": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "erasableSyntaxOnly": false,
+    "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": false,
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] },
+    "outDir": "./dist/types",
+    "rootDir": "."
+  },
+  "include": ["src/ds-entry.ts", "src", "product/sections"]
+}

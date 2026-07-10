@@ -1,0 +1,126 @@
+{
+  "projectId": "5587f1e6-ed7e-4911-8ba8-df9d28f19df9",
+  "shape": "package",
+  "pkg": "trading-squad-ds",
+  "globalName": "TradingSquadDS",
+  "entry": "./src/ds-entry.ts",
+  "buildCmd": "sh .design-sync/build.sh",
+  "srcDir": "src",
+  "tsconfig": "tsconfig.app.json",
+  "cssEntry": "dist/ds-styles.css",
+  "componentSrcMap": {
+    "AlertsDashboard": "src/sections/alerts/components/AlertsDashboard.tsx",
+    "MarketDataOverview": "src/sections/market-data/components/MarketDataOverview.tsx",
+    "SourceCard": "src/sections/market-data/components/SourceCard.tsx",
+    "SourceDetail": "src/sections/market-data/components/SourceDetail.tsx",
+    "CorporateActions": "src/sections/market-data/components/CorporateActions.tsx",
+    "DataQuality": "src/sections/market-data/components/DataQuality.tsx",
+    "MarketIntelligence": "src/sections/market-intelligence/components/MarketIntelligence.tsx",
+    "RecommendationsTab": "src/sections/market-intelligence/components/RecommendationsTab.tsx",
+    "SentimentTab": "src/sections/market-intelligence/components/SentimentTab.tsx",
+    "GuruTrackerTab": "src/sections/market-intelligence/components/GuruTrackerTab.tsx",
+    "ResearchScheduleTab": "src/sections/market-intelligence/components/ResearchScheduleTab.tsx",
+    "PortfolioOverview": "src/sections/portfolio-and-positions/components/PortfolioOverview.tsx",
+    "PortfolioDetail": "src/sections/portfolio-and-positions/components/PortfolioDetail.tsx",
+    "PositionsTab": "src/sections/portfolio-and-positions/components/PositionsTab.tsx",
+    "WatchlistsTab": "src/sections/portfolio-and-positions/components/WatchlistsTab.tsx",
+    "DividendsTab": "src/sections/portfolio-and-positions/components/DividendsTab.tsx",
+    "PerformanceTab": "src/sections/portfolio-and-positions/components/PerformanceTab.tsx",
+    "SettingsOverview": "src/sections/settings-and-operations/components/SettingsOverview.tsx",
+    "SettingsCategoryCard": "src/sections/settings-and-operations/components/SettingsCategoryCard.tsx",
+    "SettingsDetailLayout": "src/sections/settings-and-operations/components/SettingsDetailLayout.tsx",
+    "FormSection": "src/sections/settings-and-operations/components/SettingsDetailLayout.tsx",
+    "FormRow": "src/sections/settings-and-operations/components/SettingsDetailLayout.tsx",
+    "ToggleSwitch": "src/sections/settings-and-operations/components/SettingsDetailLayout.tsx",
+    "MaskedField": "src/sections/settings-and-operations/components/SettingsDetailLayout.tsx",
+    "BrokerGateways": "src/sections/settings-and-operations/components/BrokerGateways.tsx",
+    "MarketDataPipeline": "src/sections/settings-and-operations/components/MarketDataPipeline.tsx",
+    "PortfolioCurrency": "src/sections/settings-and-operations/components/PortfolioCurrency.tsx",
+    "RiskManagement": "src/sections/settings-and-operations/components/RiskManagement.tsx",
+    "TaxConfiguration": "src/sections/settings-and-operations/components/TaxConfiguration.tsx",
+    "StrategyBacktesting": "src/sections/settings-and-operations/components/StrategyBacktesting.tsx",
+    "IntelligenceSources": "src/sections/settings-and-operations/components/IntelligenceSources.tsx",
+    "TradeJournalSettings": "src/sections/settings-and-operations/components/TradeJournalSettings.tsx",
+    "NotificationsAlerts": "src/sections/settings-and-operations/components/NotificationsAlerts.tsx",
+    "CalendarDisplay": "src/sections/settings-and-operations/components/CalendarDisplay.tsx",
+    "StrategyList": "src/sections/strategy-engine/components/StrategyList.tsx",
+    "StrategyCard": "src/sections/strategy-engine/components/StrategyCard.tsx",
+    "StrategyDetail": "src/sections/strategy-engine/components/StrategyDetail.tsx",
+    "BacktestResults": "src/sections/strategy-engine/components/BacktestResults.tsx",
+    "WalkForwardResults": "src/sections/strategy-engine/components/WalkForwardResults.tsx",
+    "StrategyComparison": "src/sections/strategy-engine/components/StrategyComparison.tsx",
+    "JournalDashboard": "src/sections/trade-journal/components/JournalDashboard.tsx",
+    "JournalEntries": "src/sections/trade-journal/components/JournalEntries.tsx",
+    "JournalEntryDetail": "src/sections/trade-journal/components/JournalEntryDetail.tsx",
+    "JournalEntryEditor": "src/sections/trade-journal/components/JournalEntryEditor.tsx",
+    "Analytics": "src/sections/trade-journal/components/Analytics.tsx",
+    "BehavioralPatterns": "src/sections/trade-journal/components/BehavioralPatterns.tsx",
+    "WeeklyReview": "src/sections/trade-journal/components/WeeklyReview.tsx",
+    "CalendarDashboard": "src/sections/trading-calendar/components/CalendarDashboard.tsx",
+    "TradingDashboard": "src/sections/trading-core/components/TradingDashboard.tsx",
+    "StatCard": "src/sections/trading-core/components/StatCard.tsx",
+    "OrderStatusBadge": "src/sections/trading-core/components/OrderStatusBadge.tsx",
+    "OrdersScreen": "src/sections/trading-core/components/OrdersScreen.tsx",
+    "ApprovalCard": "src/sections/trading-core/components/ApprovalCard.tsx",
+    "NewOrderForm": "src/sections/trading-core/components/NewOrderForm.tsx",
+    "AppShell": "src/shell/components/AppShell.tsx",
+    "MainNav": "src/shell/components/MainNav.tsx",
+    "UserMenu": "src/shell/components/UserMenu.tsx",
+    "CommandPalette": "src/shell/components/CommandPalette.tsx",
+    "OrderPanel": "src/shell/components/OrderPanel.tsx",
+    "ToastContainer": "src/shell/components/ToastContainer.tsx",
+    "SystemBanner": "src/shell/components/SystemBanner.tsx",
+    "EmergencyCloseModal": "src/shell/components/EmergencyCloseModal.tsx"
+  },
+  "guidelinesGlob": [],
+  "overrides": {
+    "GuruTrackerTab": {
+      "cardMode": "column"
+    },
+    "RecommendationsTab": {
+      "cardMode": "column"
+    },
+    "FormRow": {
+      "cardMode": "column"
+    },
+    "MaskedField": {
+      "cardMode": "column"
+    },
+    "RiskManagement": {
+      "cardMode": "column"
+    },
+    "SettingsDetailLayout": {
+      "cardMode": "column"
+    },
+    "CalendarDashboard": {
+      "cardMode": "column"
+    },
+    "StatCard": {
+      "cardMode": "column"
+    },
+    "TradingDashboard": {
+      "cardMode": "column"
+    },
+    "AppShell": {
+      "cardMode": "single",
+      "primaryStory": "Dashboard"
+    },
+    "CommandPalette": {
+      "cardMode": "single",
+      "primaryStory": "Open"
+    },
+    "EmergencyCloseModal": {
+      "cardMode": "single",
+      "primaryStory": "Open"
+    },
+    "OrderPanel": {
+      "cardMode": "single",
+      "primaryStory": "Open"
+    },
+    "ToastContainer": {
+      "cardMode": "single",
+      "primaryStory": "Stack"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
