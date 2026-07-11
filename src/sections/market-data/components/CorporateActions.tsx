@@ -66,7 +66,7 @@ const adjustmentBadge: Record<AdjustmentStatus, { bg: string; text: string; labe
   adjusted: { bg: 'bg-emerald-50 dark:bg-emerald-950/30', text: 'text-emerald-600 dark:text-emerald-400', label: 'Adjusted' },
   pending: { bg: 'bg-amber-50 dark:bg-amber-950/30', text: 'text-amber-600 dark:text-amber-400', label: 'Pending' },
   failed: { bg: 'bg-red-50 dark:bg-red-950/30', text: 'text-red-600 dark:text-red-400', label: 'Failed' },
-  not_required: { bg: 'bg-zinc-100 dark:bg-zinc-800/60', text: 'text-zinc-500 dark:text-zinc-400', label: 'Not Required' },
+  not_required: { bg: 'bg-muted', text: 'text-muted-foreground', label: 'Not Required' },
 }
 
 // ---------------------------------------------------------------------------
@@ -172,11 +172,11 @@ export function CorporateActions({
   // --- Sort indicator ---
   function SortIcon({ sortKey }: { sortKey: SortKey }) {
     if (sort.key !== sortKey)
-      return <ArrowUpDown size={12} className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
+      return <ArrowUpDown size={12} aria-hidden="true" className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
     return sort.dir === 'asc' ? (
-      <ChevronUp size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronUp size={12} aria-hidden="true" className="text-primary" />
     ) : (
-      <ChevronDown size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronDown size={12} aria-hidden="true" className="text-primary" />
     )
   }
 
@@ -241,16 +241,16 @@ export function CorporateActions({
 
         {/* Affected Positions */}
         {ca.affectedPositions.length > 0 && (
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 px-4 py-3 dark:border-zinc-800/60 dark:bg-zinc-800/30">
+          <div className="rounded-xl border border-border bg-zinc-50/50 px-4 py-3 dark:bg-zinc-800/30">
             <div className="flex items-center gap-2">
-              <Link2 size={12} className="text-zinc-400 dark:text-zinc-600" />
-              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Affected Positions</p>
+              <Link2 size={12} className="text-faint" />
+              <p className="text-xs font-medium text-muted-foreground">Affected Positions</p>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {ca.affectedPositions.map((pos) => (
                 <span
                   key={pos}
-                  className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                  className="rounded-lg bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
                 >
                   {pos}
                 </span>
@@ -264,9 +264,9 @@ export function CorporateActions({
           <div className="flex justify-end">
             <button
               onClick={() => onReadjust?.(ca.id)}
-              className="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
             >
-              <RotateCcw size={14} />
+              <RotateCcw size={14} aria-hidden="true" />
               Re-adjust Records
             </button>
           </div>
@@ -286,13 +286,13 @@ export function CorporateActions({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Market Data
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Corporate Actions
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Audit log of splits, dividends, and ticker changes across all data sources
           </p>
         </div>
@@ -305,10 +305,10 @@ export function CorporateActions({
             return (
               <div
                 key={type}
-                className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-800/80 dark:bg-zinc-900/80"
+                className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2"
               >
                 <badge.icon size={13} className={badge.text} />
-                <span className="font-mono text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                <span className="font-mono text-sm font-semibold text-foreground">
                   {count}
                 </span>
                 <span className="hidden text-xs text-zinc-400 sm:inline dark:text-zinc-600">
@@ -329,7 +329,7 @@ export function CorporateActions({
           <div className="relative flex-1 sm:max-w-xs">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-faint"
             />
             <input
               type="text"
@@ -339,7 +339,8 @@ export function CorporateActions({
                 setPage(0)
               }}
               placeholder="Search symbol or name..."
-              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
+              aria-label="Search corporate actions by symbol or name"
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
             />
           </div>
 
@@ -350,7 +351,8 @@ export function CorporateActions({
               setActionTypeFilter(e.target.value)
               setPage(0)
             }}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            aria-label="Filter by action type"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             <option value="all">All Types</option>
             <option value="split">Split</option>
@@ -365,7 +367,8 @@ export function CorporateActions({
               setStatusFilter(e.target.value)
               setPage(0)
             }}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            aria-label="Filter by adjustment status"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             <option value="all">All Statuses</option>
             <option value="adjusted">Adjusted</option>
@@ -378,9 +381,9 @@ export function CorporateActions({
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              <X size={12} />
+              <X size={12} aria-hidden="true" />
               Clear
             </button>
           )}
@@ -393,15 +396,15 @@ export function CorporateActions({
       {corporateActions.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center px-4">
           <div className="relative w-full max-w-md">
-            <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-            <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-white px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-900/80">
+            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+            <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-card px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800/80 dark:ring-zinc-700/50">
-                <FileText size={24} className="text-zinc-400 dark:text-zinc-500" />
+                <FileText size={24} className="text-hint" />
               </div>
-              <h2 className="mt-5 text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+              <h2 className="mt-5 text-lg font-semibold text-foreground">
                 No corporate actions detected
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Actions like stock splits and dividends will appear here automatically.
               </p>
             </div>
@@ -409,22 +412,22 @@ export function CorporateActions({
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-14 text-center">
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">
+          <p className="text-sm text-hint">
             No corporate actions match your filters.
           </p>
           <button
             onClick={clearFilters}
-            className="mt-2 text-sm font-medium text-pink-600 hover:text-pink-500 dark:text-pink-400"
+            className="mt-2 text-sm font-medium text-primary hover:text-primary"
           >
             Clear filters
           </button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[960px]">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+                <tr className="border-b border-border">
                   {/* Expand toggle column */}
                   <th className="w-10 px-3 py-3" />
                   {(
@@ -446,10 +449,10 @@ export function CorporateActions({
                       </div>
                     </th>
                   ))}
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                     Details
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                     Source
                   </th>
                   {(
@@ -469,12 +472,12 @@ export function CorporateActions({
                       </div>
                     </th>
                   ))}
-                  <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-faint">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <tbody className="divide-y divide-border">
                 {paged.map((ca) => {
                   const typeBdg = actionTypeBadge[ca.actionType]
                   const adjBdg = adjustmentBadge[ca.adjustmentStatus]
@@ -487,10 +490,13 @@ export function CorporateActions({
                       <td className="px-3 py-3">
                         <button
                           onClick={() => toggleExpanded(ca.id)}
-                          className="flex h-6 w-6 items-center justify-center rounded-md text-zinc-400 transition-all hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                          aria-expanded={isExpanded}
+                          aria-label={`${isExpanded ? 'Collapse' : 'Expand'} details for ${ca.symbol}`}
+                          className="flex h-6 w-6 items-center justify-center rounded-md text-zinc-400 transition-all hover:bg-accent hover:text-zinc-600 dark:text-zinc-600 dark:hover:text-zinc-300"
                         >
                           <ChevronRight
                             size={14}
+                            aria-hidden="true"
                             className={`transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
                           />
                         </button>
@@ -498,7 +504,7 @@ export function CorporateActions({
                       {/* Detected */}
                       <td className="px-4 py-3">
                         <span
-                          className="font-mono text-xs text-zinc-600 dark:text-zinc-400"
+                          className="font-mono text-xs text-muted-foreground"
                           title={formatTimestamp(ca.detectedAt)}
                         >
                           {relativeTime(ca.detectedAt)}
@@ -506,10 +512,10 @@ export function CorporateActions({
                       </td>
                       {/* Instrument */}
                       <td className="px-4 py-3">
-                        <p className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                        <p className="font-mono text-sm font-semibold text-foreground">
                           {ca.symbol}
                         </p>
-                        <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                        <p className="text-xs text-faint">
                           {ca.instrumentName}
                         </p>
                       </td>
@@ -524,19 +530,19 @@ export function CorporateActions({
                       </td>
                       {/* Action Date */}
                       <td className="px-4 py-3">
-                        <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                        <span className="font-mono text-xs text-muted-foreground">
                           {formatDate(ca.actionDate)}
                         </span>
                       </td>
                       {/* Details Summary */}
                       <td className="max-w-[200px] px-4 py-3">
-                        <span className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                        <span className="truncate text-xs text-muted-foreground">
                           {renderDetailsSummary(ca)}
                         </span>
                       </td>
                       {/* Source */}
                       <td className="px-4 py-3">
-                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-muted-foreground dark:bg-zinc-800/60">
                           {ca.dataSourceName}
                         </span>
                       </td>
@@ -553,8 +559,8 @@ export function CorporateActions({
                         <span
                           className={`font-mono text-xs font-medium ${
                             ca.recordsAffected > 0
-                              ? 'text-zinc-700 dark:text-zinc-300'
-                              : 'text-zinc-400 dark:text-zinc-600'
+                              ? 'text-foreground'
+                              : 'text-faint'
                           }`}
                         >
                           {ca.recordsAffected > 0 ? ca.recordsAffected.toLocaleString() : '—'}
@@ -565,9 +571,9 @@ export function CorporateActions({
                         {ca.adjustmentStatus === 'failed' && (
                           <button
                             onClick={() => onReadjust?.(ca.id)}
-                            className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-pink-300 hover:text-pink-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-pink-800 dark:hover:text-pink-400"
+                            className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-pink-300 hover:text-primary dark:border-zinc-700 dark:hover:border-pink-800 dark:hover:text-pink-400"
                           >
-                            <RotateCcw size={11} />
+                            <RotateCcw size={11} aria-hidden="true" />
                             Re-adjust
                           </button>
                         )}
@@ -595,7 +601,7 @@ export function CorporateActions({
           {/* Pagination */}
           {filtered.length > PAGE_SIZE && (
             <div className="flex items-center justify-between border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 Showing {page * PAGE_SIZE + 1}–
                 {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of {filtered.length} actions
               </span>
@@ -603,14 +609,14 @@ export function CorporateActions({
                 <button
                   disabled={page === 0}
                   onClick={() => setPage((p) => p - 1)}
-                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                 >
                   Previous
                 </button>
                 <button
                   disabled={(page + 1) * PAGE_SIZE >= filtered.length}
                   onClick={() => setPage((p) => p + 1)}
-                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                 >
                   Next
                 </button>
@@ -621,7 +627,7 @@ export function CorporateActions({
           {/* Row count for small datasets */}
           {filtered.length <= PAGE_SIZE && filtered.length > 0 && (
             <div className="border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 Showing {filtered.length} of {corporateActions.length} corporate actions
               </span>
             </div>
@@ -666,15 +672,15 @@ function DetailCell({
   badge?: { bg: string; text: string }
 }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800/80 dark:bg-zinc-900/80">
-      <p className="text-xs text-zinc-400 dark:text-zinc-600">{label}</p>
+    <div className="rounded-xl border border-border bg-card p-3">
+      <p className="text-xs text-faint">{label}</p>
       {badge ? (
         <span className={`mt-1 inline-block rounded px-1.5 py-0.5 text-xs font-medium ${badge.bg} ${badge.text}`}>
           {value}
         </span>
       ) : (
         <p
-          className={`mt-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 ${
+          className={`mt-1 text-xs font-medium text-foreground ${
             mono ? 'font-mono' : ''
           }`}
         >

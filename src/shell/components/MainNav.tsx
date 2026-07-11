@@ -150,6 +150,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                 {group.collapsible && (
                   <ChevronDown
                     size={12}
+                    aria-hidden="true"
                     className={`transition-transform duration-200 ${isGroupCollapsed ? '-rotate-90' : ''}`}
                   />
                 )}
@@ -169,6 +170,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                       <button
                         onClick={() => item.action ? item.action() : onNavigate?.(item.href)}
                         title={collapsed ? item.label : undefined}
+                        aria-label={collapsed ? item.label : undefined}
                         aria-current={isActive ? 'page' : undefined}
                         className={`
                           group flex w-full items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium
@@ -186,6 +188,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                       >
                         <Icon
                           size={18}
+                          aria-hidden="true"
                           className={isParentHighlighted ? 'text-primary dark:text-pink-400' : 'text-hint group-hover:text-muted-foreground'}
                         />
                         {!collapsed && (
@@ -236,6 +239,7 @@ export function MainNav({ groups, collapsed = false, onNavigate }: MainNavProps)
                                 >
                                   <ChildIcon
                                     size={15}
+                                    aria-hidden="true"
                                     className={isChildActive ? 'text-primary dark:text-pink-400' : 'text-hint group-hover:text-muted-foreground'}
                                   />
                                   <span className="flex-1 text-left">{child.label}</span>

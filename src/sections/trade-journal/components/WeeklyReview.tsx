@@ -100,11 +100,11 @@ function GoalProgressRow({ goal }: { goal: GoalProgress }) {
         : 'bg-red-500 dark:bg-red-400'
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+    <div className="rounded-xl border border-border bg-card p-4 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+            <span className="text-sm font-medium text-foreground">
               {goal.goalName}
             </span>
             <span
@@ -116,7 +116,7 @@ function GoalProgressRow({ goal }: { goal: GoalProgress }) {
           </div>
 
           {/* Progress bar */}
-          <div className="mt-3 h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+          <div className="mt-3 h-1.5 w-full rounded-full bg-muted">
             <div
               className={`h-1.5 rounded-full transition-all duration-700 ease-out ${barColor}`}
               style={{ width: `${Math.min(barWidth, 100)}%` }}
@@ -128,7 +128,7 @@ function GoalProgressRow({ goal }: { goal: GoalProgress }) {
       {/* Values */}
       <div className="mt-3 flex items-baseline gap-4">
         <div className="flex items-baseline gap-1.5">
-          <span className="text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="text-xs text-hint">
             Actual
           </span>
           <span
@@ -144,10 +144,10 @@ function GoalProgressRow({ goal }: { goal: GoalProgress }) {
           </span>
         </div>
         <div className="flex items-baseline gap-1.5">
-          <span className="text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="text-xs text-hint">
             Target
           </span>
-          <span className="font-mono text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <span className="font-mono text-sm font-medium text-muted-foreground">
             {goal.target % 1 !== 0 ? goal.target.toFixed(1) : goal.target}
           </span>
         </div>
@@ -184,7 +184,7 @@ function TradeHighlightCard({
   return (
     <button
       onClick={onClick}
-      className={`group relative w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 text-left transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm`}
+      className={`group relative w-full overflow-hidden rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm`}
     >
       {/* Top accent bar */}
       <div
@@ -199,25 +199,25 @@ function TradeHighlightCard({
             >
               <Icon size={14} />
             </div>
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
               {label}
             </span>
           </div>
 
-          <p className="mt-3 font-mono text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+          <p className="mt-3 font-mono text-lg font-semibold text-foreground">
             {instrument}
           </p>
 
           {processScore !== null && (
             <div className="mt-1.5 flex items-center gap-1.5">
               <ProcessDots score={processScore} />
-              <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-mono text-xs text-muted-foreground">
                 {processScore.toFixed(1)}
               </span>
             </div>
           )}
           {processScore === null && (
-            <p className="mt-1.5 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1.5 text-xs text-faint">
               Not yet journaled
             </p>
           )}
@@ -237,11 +237,12 @@ function TradeHighlightCard({
       </div>
 
       {/* Hover hint */}
-      <div className="mt-3 flex items-center gap-1 text-xs text-zinc-400 transition-colors group-hover:text-pink-500 dark:text-zinc-600 dark:group-hover:text-pink-400">
-        <Eye size={12} />
+      <div className="mt-3 flex items-center gap-1 text-xs text-zinc-400 transition-colors group-hover:text-primary dark:text-zinc-600 dark:group-hover:text-pink-400">
+        <Eye size={12} aria-hidden="true" />
         <span>View entry</span>
         <ChevronRight
           size={12}
+          aria-hidden="true"
           className="transition-transform group-hover:translate-x-0.5"
         />
       </div>
@@ -264,9 +265,9 @@ function ProcessDots({ score }: { score: number }) {
             key={dot}
             className={`h-1.5 w-1.5 rounded-full ${
               filled
-                ? 'bg-pink-600 dark:bg-pink-400'
+                ? 'bg-primary dark:bg-pink-400'
                 : partial
-                  ? 'bg-pink-600/40 dark:bg-pink-400/40'
+                  ? 'bg-primary/40 dark:bg-pink-400/40'
                   : 'bg-zinc-200 dark:bg-zinc-700'
             }`}
           />
@@ -327,21 +328,23 @@ function FocusAreas({
       <div className="space-y-3">
         {editItems.map((item, index) => (
           <div key={index} className="flex items-start gap-2">
-            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-50 dark:bg-pink-950/30 text-xs font-bold text-pink-600 dark:text-pink-400 mt-2">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-50 dark:bg-pink-950/30 text-xs font-bold text-primary mt-2">
               {index + 1}
             </div>
             <textarea
               value={item}
               onChange={(e) => handleItemChange(index, e.target.value)}
               rows={2}
-              className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-600 focus-visible:border-pink-500 focus-visible:ring-pink-500/50 focus-visible:ring-[3px] focus-visible:outline-none transition-all resize-none"
+              aria-label={`Focus area ${index + 1}`}
+              className="flex-1 rounded-lg border border-border/80 bg-card px-3 py-2 text-sm text-foreground placeholder-zinc-400 dark:placeholder-zinc-600 focus-visible:border-primary focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none transition-all resize-none"
               placeholder="Focus area..."
             />
             <button
               onClick={() => handleRemoveItem(index)}
-              className="mt-2 shrink-0 rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 dark:hover:text-red-400"
+              aria-label={`Remove focus area ${index + 1}`}
+              className="mt-2 shrink-0 rounded-lg p-1.5 text-hint transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 dark:hover:text-red-400"
             >
-              <X size={14} />
+              <X size={14} aria-hidden="true" />
             </button>
           </div>
         ))}
@@ -351,7 +354,7 @@ function FocusAreas({
             onClick={handleAddItem}
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
           >
-            <Plus size={12} />
+            <Plus size={12} aria-hidden="true" />
             Add focus area
           </button>
         )}
@@ -359,9 +362,9 @@ function FocusAreas({
         <div className="flex items-center gap-2 pt-1">
           <button
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98]"
           >
-            <Save size={13} />
+            <Save size={13} aria-hidden="true" />
             Save
           </button>
           <button
@@ -378,14 +381,14 @@ function FocusAreas({
   if (items.length === 0) {
     return (
       <div className="py-6 text-center">
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           No focus areas set for next week.
         </p>
         <button
           onClick={handleStartEdit}
-          className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+          className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98]"
         >
-          <Plus size={13} />
+          <Plus size={13} aria-hidden="true" />
           Add Focus Areas
         </button>
       </div>
@@ -399,10 +402,10 @@ function FocusAreas({
           key={index}
           className="flex items-start gap-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 px-4 py-3"
         >
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-50 dark:bg-pink-950/30 text-xs font-bold text-pink-600 dark:text-pink-400">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-50 dark:bg-pink-950/30 text-xs font-bold text-primary">
             {index + 1}
           </div>
-          <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <p className="text-sm leading-relaxed text-foreground">
             {item}
           </p>
         </div>
@@ -412,7 +415,7 @@ function FocusAreas({
         onClick={handleStartEdit}
         className="mt-1 flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
       >
-        <Pencil size={12} />
+        <Pencil size={12} aria-hidden="true" />
         Edit focus areas
       </button>
     </div>
@@ -436,16 +439,16 @@ function SummaryStat({
 }) {
   return (
     <div className="text-center">
-      <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+      <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
         {label}
       </p>
       <p
-        className={`mt-1 font-mono text-xl font-bold sm:text-2xl ${valueColor ?? 'text-zinc-900 dark:text-zinc-100'}`}
+        className={`mt-1 font-mono text-xl font-bold sm:text-2xl ${valueColor ?? 'text-foreground'}`}
       >
         {value}
       </p>
       {subtext && (
-        <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+        <p className="mt-0.5 text-xs text-faint">
           {subtext}
         </p>
       )}
@@ -538,18 +541,18 @@ export function WeeklyReview({
 
         <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
           <div className="relative w-full max-w-md">
-            <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-            <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
+            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+            <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
                 <Calendar
                   size={28}
-                  className="text-zinc-400 dark:text-zinc-500"
+                  className="text-hint"
                 />
               </div>
-              <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+              <h2 className="mt-6 text-xl font-semibold text-foreground">
                 No Trades This Week
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Review will populate as you trade.
               </p>
             </div>
@@ -575,7 +578,7 @@ export function WeeklyReview({
       {/* Portfolio Selector                                                 */}
       {/* ================================================================= */}
       {portfolios.length > 1 && (
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           <button
             onClick={() => {
               setSelectedPortfolio(null)
@@ -586,8 +589,8 @@ export function WeeklyReview({
               sm:flex-none
               ${
                 selectedPortfolio === null
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
               }
             `}
           >
@@ -607,8 +610,8 @@ export function WeeklyReview({
                   sm:flex-none
                   ${
                     isActive
-                      ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                      : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                      ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                      : 'text-hint hover:text-foreground'
                   }
                 `}
               >
@@ -622,11 +625,11 @@ export function WeeklyReview({
       {/* ================================================================= */}
       {/* Week Summary Card                                                  */}
       {/* ================================================================= */}
-      <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
         {/* Subtle gradient accent */}
         <div className="absolute inset-0 bg-gradient-to-br from-pink-500/[0.02] via-transparent to-emerald-500/[0.02] dark:from-pink-500/[0.04] dark:to-emerald-500/[0.04]" />
 
-        <div className="relative grid grid-cols-2 divide-x divide-zinc-100 dark:divide-zinc-800/60 sm:grid-cols-4">
+        <div className="relative grid grid-cols-2 divide-x divide-border sm:grid-cols-4">
           <div className="px-5 py-6">
             <SummaryStat
               label="Trades"
@@ -642,14 +645,14 @@ export function WeeklyReview({
               subtext="total"
             />
           </div>
-          <div className="border-t border-zinc-100 dark:border-zinc-800/60 px-5 py-6 sm:border-t-0">
+          <div className="border-t border-border px-5 py-6 sm:border-t-0">
             <SummaryStat
               label="Win Rate"
               value={`${review.summary.winRate.toFixed(1)}%`}
               valueColor={winRateColor}
             />
           </div>
-          <div className="border-t border-zinc-100 dark:border-zinc-800/60 px-5 py-6 sm:border-t-0">
+          <div className="border-t border-border px-5 py-6 sm:border-t-0">
             <SummaryStat
               label="Avg Process"
               value={review.summary.avgProcessScore.toFixed(2)}
@@ -693,16 +696,16 @@ export function WeeklyReview({
           </div>
 
           {/* Goals Progress */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
                   <Target
                     size={13}
-                    className="text-pink-600 dark:text-pink-400"
+                    className="text-primary"
                   />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Goals Progress
                 </h2>
               </div>
@@ -727,16 +730,16 @@ export function WeeklyReview({
           </div>
 
           {/* Focus for Next Week */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
                   <Crosshair
                     size={13}
-                    className="text-zinc-500 dark:text-zinc-400"
+                    className="text-muted-foreground"
                   />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Focus for Next Week
                 </h2>
               </div>
@@ -756,8 +759,8 @@ export function WeeklyReview({
         {/* -------------------------------------------------------------- */}
         <div className="space-y-4 lg:col-span-5">
           {/* Patterns This Week */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/30">
                   <AlertTriangle
@@ -765,7 +768,7 @@ export function WeeklyReview({
                     className="text-amber-600 dark:text-amber-400"
                   />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Patterns This Week
                 </h2>
                 {review.patternsThisWeek.length > 0 && (
@@ -777,11 +780,12 @@ export function WeeklyReview({
               {review.patternsThisWeek.length > 0 && (
                 <button
                   onClick={() => onViewBehavioralPatterns?.()}
-                  className="group flex items-center gap-1 text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+                  className="group flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
                 >
                   View All
                   <ChevronRight
                     size={12}
+                    aria-hidden="true"
                     className="transition-transform group-hover:translate-x-0.5"
                   />
                 </button>
@@ -796,10 +800,10 @@ export function WeeklyReview({
                     className="text-emerald-500 dark:text-emerald-400"
                   />
                 </div>
-                <p className="mt-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                <p className="mt-3 text-sm font-medium text-muted-foreground">
                   No patterns detected
                 </p>
-                <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+                <p className="mt-1 text-xs text-faint">
                   Great discipline this week!
                 </p>
               </div>
@@ -818,7 +822,7 @@ export function WeeklyReview({
                         size={14}
                         className="mt-0.5 shrink-0 text-amber-500 dark:text-amber-400"
                       />
-                      <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                      <p className="text-sm leading-relaxed text-foreground">
                         {pattern}
                       </p>
                     </div>
@@ -836,8 +840,8 @@ export function WeeklyReview({
           </div>
 
           {/* Week Score Summary Card */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30">
                   <BarChart3
@@ -845,7 +849,7 @@ export function WeeklyReview({
                     className="text-emerald-600 dark:text-emerald-400"
                   />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Week Assessment
                 </h2>
               </div>
@@ -879,10 +883,10 @@ function WeekHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
           Weekly Review
         </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
           {dateRange}
         </h1>
       </div>
@@ -890,26 +894,28 @@ function WeekHeader({
       <div className="flex items-center gap-2">
         <button
           onClick={onPrev}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-500 transition-all hover:bg-zinc-50 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 active:scale-[0.96]"
+          aria-label="Previous week"
+          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-card text-hint transition-all hover:bg-zinc-50 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 active:scale-[0.96]"
         >
-          <ChevronLeft size={16} />
+          <ChevronLeft size={16} aria-hidden="true" />
         </button>
 
-        <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 px-3.5 py-2">
+        <div className="flex items-center gap-2 rounded-lg border border-border/80 bg-card px-3.5 py-2">
           <Calendar
             size={14}
-            className="text-zinc-400 dark:text-zinc-500"
+            className="text-hint"
           />
-          <span className="font-mono text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-sm font-medium text-foreground">
             {weekLabel}
           </span>
         </div>
 
         <button
           onClick={onNext}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-500 transition-all hover:bg-zinc-50 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 active:scale-[0.96]"
+          aria-label="Next week"
+          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/80 bg-card text-hint transition-all hover:bg-zinc-50 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 active:scale-[0.96]"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -981,10 +987,10 @@ function WeekAssessment({
           </span>
         </div>
         <div>
-          <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <p className="text-sm font-semibold text-foreground">
             Week Grade
           </p>
-          <p className="text-xs text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs text-hint">
             Based on win rate, process quality, and goals met
           </p>
         </div>
@@ -1000,7 +1006,7 @@ function WeekAssessment({
           return (
             <div key={metric.label}>
               <div className="flex items-baseline justify-between mb-1.5">
-                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                <span className="text-xs font-medium text-muted-foreground">
                   {metric.label}
                 </span>
                 <span
@@ -1013,7 +1019,7 @@ function WeekAssessment({
                   {metric.format(metric.value)}
                 </span>
               </div>
-              <div className="relative h-2 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <div className="relative h-2 w-full rounded-full bg-muted">
                 <div
                   className={`h-2 rounded-full transition-all duration-700 ease-out ${
                     aboveTarget
@@ -1028,7 +1034,7 @@ function WeekAssessment({
                   style={{ left: `${targetPercent}%` }}
                 />
               </div>
-              <p className="mt-0.5 text-right text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-0.5 text-right text-xs text-faint">
                 target: {metric.format(metric.target)}
               </p>
             </div>
@@ -1038,7 +1044,7 @@ function WeekAssessment({
         {/* Goals Met */}
         <div>
           <div className="flex items-baseline justify-between mb-1.5">
-            <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            <span className="text-xs font-medium text-muted-foreground">
               Goals Met
             </span>
             <span
@@ -1053,7 +1059,7 @@ function WeekAssessment({
               {goalsMet}/{totalGoals}
             </span>
           </div>
-          <div className="h-2 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+          <div className="h-2 w-full rounded-full bg-muted">
             <div
               className={`h-2 rounded-full transition-all duration-700 ease-out ${
                 goalsMet === totalGoals

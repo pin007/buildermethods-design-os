@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef, useId, isValidElement, cloneElement } from 'react'
 import {
   ArrowLeft,
   ChevronDown,
@@ -285,16 +285,16 @@ export function JournalEntryEditor({
       <div className="flex items-center gap-4">
         <button
           onClick={() => onCancel?.()}
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 active:scale-95"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-foreground active:scale-95"
           aria-label="Back to journal"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16} aria-hidden="true" />
         </button>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Trade Journal
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             {isEditing ? 'Edit Journal Entry' : 'New Journal Entry'}
           </h1>
         </div>
@@ -304,12 +304,12 @@ export function JournalEntryEditor({
       {/* Trade Summary (read-only)                                         */}
       {/* ================================================================= */}
       {tradeSummary && (
-        <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/40 p-5">
+        <div className="rounded-2xl border border-border bg-background/40 p-5">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-mono text-lg font-bold text-zinc-900 dark:text-zinc-100">
+            <span className="font-mono text-lg font-bold text-foreground">
               {tradeSummary.instrument}
             </span>
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            <span className="text-sm text-muted-foreground">
               {tradeSummary.instrumentName}
             </span>
             <span className={`rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
@@ -327,7 +327,7 @@ export function JournalEntryEditor({
               {formatSignedCurrency(tradeSummary.pnl)}
             </span>
           </div>
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-400 dark:text-zinc-600">
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-faint">
             <span>{formatDate(tradeSummary.entryDate)} → {formatDate(tradeSummary.exitDate)}</span>
             <span>{formatPrice(tradeSummary.entryPrice)} → {formatPrice(tradeSummary.exitPrice)}</span>
             <span>Qty: {tradeSummary.quantity}</span>
@@ -398,11 +398,12 @@ export function JournalEntryEditor({
                   value={riskRewardManual || (computedRR?.toFixed(2) ?? '')}
                   onChange={(e) => setRiskRewardManual(e.target.value)}
                   placeholder="Auto"
+                  aria-label="Risk/Reward Ratio"
                   step="0.01"
                   className="form-input"
                 />
                 {computedRR && !riskRewardManual && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 dark:text-zinc-600">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-faint">
                     auto
                   </span>
                 )}
@@ -527,7 +528,7 @@ export function JournalEntryEditor({
                   className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${
                     wouldTakeAgain === true
                       ? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400'
-                      : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600'
+                      : 'border-zinc-200 bg-white text-zinc-600 hover:border-border dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600'
                   }`}
                 >
                   Yes
@@ -537,7 +538,7 @@ export function JournalEntryEditor({
                   className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${
                     wouldTakeAgain === false
                       ? 'border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400'
-                      : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600'
+                      : 'border-zinc-200 bg-white text-zinc-600 hover:border-border dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600'
                   }`}
                 >
                   No
@@ -551,13 +552,13 @@ export function JournalEntryEditor({
       {/* ================================================================= */}
       {/* Process Scores (always visible)                                   */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
-              <Gauge size={13} className="text-pink-600 dark:text-pink-400" />
+              <Gauge size={13} className="text-primary" />
             </div>
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="text-sm font-semibold text-foreground">
               Process Scores
             </h2>
             <span className="text-xs text-red-500 dark:text-red-400">*required</span>
@@ -566,7 +567,7 @@ export function JournalEntryEditor({
           {/* Overall score */}
           {overallScore > 0 && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">Overall</span>
+              <span className="text-xs text-hint">Overall</span>
               <span className={`font-mono text-xl font-bold ${
                 overallScore >= 4
                   ? 'text-emerald-600 dark:text-emerald-400'
@@ -636,10 +637,10 @@ export function JournalEntryEditor({
       {/* ================================================================= */}
       {/* Tags                                                              */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-          <Tag size={13} className="text-zinc-400 dark:text-zinc-500" />
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Tags</h2>
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
+          <Tag size={13} className="text-hint" />
+          <h2 className="text-sm font-semibold text-foreground">Tags</h2>
         </div>
 
         <div className="p-6">
@@ -654,9 +655,10 @@ export function JournalEntryEditor({
                   {tag}
                   <button
                     onClick={() => removeTag(tag)}
+                    aria-label={`Remove tag ${tag}`}
                     className="rounded-full p-0.5 transition-colors hover:bg-pink-200 dark:hover:bg-pink-900/40"
                   >
-                    <X size={10} />
+                    <X size={10} aria-hidden="true" />
                   </button>
                 </span>
               ))}
@@ -681,6 +683,7 @@ export function JournalEntryEditor({
                 }
               }}
               placeholder="Type to add a tag..."
+              aria-label="Add a tag"
               className="form-input"
             />
 
@@ -708,19 +711,19 @@ export function JournalEntryEditor({
       {/* ================================================================= */}
       {/* Attachments                                                       */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-          <Image size={13} className="text-zinc-400 dark:text-zinc-500" />
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Attachments</h2>
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
+          <Image size={13} className="text-hint" />
+          <h2 className="text-sm font-semibold text-foreground">Attachments</h2>
         </div>
 
         <div className="p-6">
           <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-200 bg-zinc-50 py-8 transition-colors hover:border-pink-300 hover:bg-pink-50/30 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-pink-900/40 dark:hover:bg-pink-950/10">
-            <Upload size={24} className="text-zinc-300 dark:text-zinc-600" />
-            <p className="mt-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            <Upload size={24} className="text-faint" />
+            <p className="mt-3 text-sm font-medium text-muted-foreground">
               Drag & drop charts or screenshots
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               or click to browse · Images only, max 10MB
             </p>
           </div>
@@ -750,7 +753,7 @@ export function JournalEntryEditor({
       {/* ================================================================= */}
       {/* Action buttons                                                    */}
       {/* ================================================================= */}
-      <div className="flex flex-col-reverse gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800 sm:flex-row sm:justify-end">
+      <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
         <button
           onClick={handleCancel}
           className="rounded-xl border border-zinc-200 bg-white px-6 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
@@ -759,7 +762,7 @@ export function JournalEntryEditor({
         </button>
         <button
           onClick={handleSave}
-          className="rounded-xl bg-pink-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+          className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98]"
         >
           {isEditing ? 'Update Entry' : 'Save Entry'}
         </button>
@@ -775,10 +778,10 @@ export function JournalEntryEditor({
             onClick={() => setCancelModalOpen(false)}
           />
           <div className="relative w-full max-w-sm rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-700 dark:bg-zinc-900">
-            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            <h3 className="text-base font-semibold text-foreground">
               Discard changes?
             </h3>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               You have unsaved changes. Are you sure you want to leave?
             </p>
             <div className="mt-5 flex justify-end gap-2">
@@ -878,25 +881,27 @@ function CollapsibleSection({
   children: React.ReactNode
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <button
         onClick={onToggle}
-        className="flex w-full items-center gap-2.5 px-6 py-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
+        aria-expanded={isOpen}
+        className="flex w-full items-center gap-2.5 px-6 py-4 text-left transition-colors hover:bg-accent/30"
       >
         <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${iconBg}`}>
-          <Icon size={13} className={iconColor} />
+          <Icon size={13} className={iconColor} aria-hidden="true" />
         </div>
-        <h2 className="flex-1 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+        <h2 className="flex-1 text-sm font-semibold text-foreground">
           {title}
         </h2>
         <ChevronDown
           size={14}
+          aria-hidden="true"
           className={`text-zinc-400 transition-transform dark:text-zinc-500 ${isOpen ? 'rotate-0' : '-rotate-90'}`}
         />
       </button>
 
       {isOpen && (
-        <div className="border-t border-zinc-100 dark:border-zinc-800/60">
+        <div className="border-t border-border">
           {children}
         </div>
       )}
@@ -917,13 +922,24 @@ function FormField({
   required?: boolean
   children: React.ReactNode
 }) {
+  const id = useId()
+  // Associate the label with its control when the child is a bare form element
+  const isFormControl =
+    isValidElement(children) &&
+    (children.type === 'input' || children.type === 'textarea' || children.type === 'select')
+  const control = isFormControl
+    ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+    : children
   return (
     <div>
-      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-zinc-500 dark:text-zinc-400">
+      <label
+        htmlFor={isFormControl ? id : undefined}
+        className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground"
+      >
         {label}
         {required && <span className="ml-0.5 text-red-500">*</span>}
       </label>
-      {children}
+      {control}
     </div>
   )
 }
@@ -949,14 +965,16 @@ function DotSelector({
           onClick={() => onChange(dot === value ? 0 : dot)}
           className={`h-5 w-5 rounded-full border-2 transition-all ${
             dot <= value
-              ? 'border-pink-600 bg-pink-600 dark:border-pink-400 dark:bg-pink-400'
-              : 'border-zinc-300 bg-white hover:border-pink-300 dark:border-zinc-600 dark:bg-zinc-800 dark:hover:border-pink-600'
+              ? 'border-primary bg-primary dark:border-pink-400 dark:bg-pink-400'
+              : 'border-zinc-300 bg-white hover:border-pink-300 dark:border-zinc-600 dark:bg-zinc-800 dark:hover:border-primary'
           }`}
           title={`${dot} of ${max}`}
+          aria-label={`Set confidence level to ${dot} of ${max}`}
+          aria-pressed={dot <= value}
         />
       ))}
       {value > 0 && (
-        <span className="ml-1 font-mono text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+        <span className="ml-1 font-mono text-sm font-semibold text-muted-foreground">
           {value}/{max}
         </span>
       )}
@@ -990,17 +1008,20 @@ function ScoreSelector({
       error ? 'bg-red-50/50 ring-1 ring-red-200 dark:bg-red-950/10 dark:ring-red-900/40' : ''
     }`}>
       <div className="flex w-40 items-center gap-2 shrink-0 sm:w-48">
-        <Icon size={14} className="shrink-0 text-zinc-400 dark:text-zinc-500" />
-        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate">
+        <Icon size={14} className="shrink-0 text-hint" />
+        <span className="text-sm font-medium text-foreground truncate">
           {label}
         </span>
         <div className="relative">
           <button
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
+            onFocus={() => setShowTooltip(true)}
+            onBlur={() => setShowTooltip(false)}
+            aria-label={`About the ${label} score`}
             className="rounded p-0.5 text-zinc-300 transition-colors hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-400"
           >
-            <Info size={12} />
+            <Info size={12} aria-hidden="true" />
           </button>
           {showTooltip && (
             <div className="absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-zinc-900 px-3 py-2 text-xs text-white shadow-lg dark:bg-zinc-700">
@@ -1016,10 +1037,12 @@ function ScoreSelector({
           <button
             key={dot}
             onClick={() => onChange(dot === value ? 0 : dot)}
+            aria-label={`Rate ${label} ${dot} of 5`}
+            aria-pressed={dot <= value}
             className={`h-7 w-7 rounded-full border-2 text-xs font-bold transition-all ${
               dot <= value
-                ? 'border-pink-600 bg-pink-600 text-white dark:border-pink-400 dark:bg-pink-400 dark:text-zinc-900'
-                : 'border-zinc-200 bg-white text-zinc-400 hover:border-pink-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-600 dark:hover:border-pink-600'
+                ? 'border-primary bg-primary text-white dark:border-pink-400 dark:bg-pink-400 dark:text-zinc-900'
+                : 'border-zinc-200 bg-white text-zinc-400 hover:border-pink-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-600 dark:hover:border-primary'
             }`}
           >
             {dot}

@@ -51,10 +51,10 @@ function PortfolioBreakerRow({
   onReset?: (portfolioId: string) => void
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3">
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
+          <span className="truncate text-sm font-medium text-foreground">
             {breaker.portfolioName}
           </span>
           <EnvBadge environment={breaker.environment} />
@@ -77,9 +77,9 @@ function PortfolioBreakerRow({
         {breaker.halted && (
           <button
             onClick={() => onReset?.(breaker.portfolioId)}
-            className="flex items-center gap-1 rounded-md border border-zinc-200 dark:border-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-300 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent"
           >
-            <RotateCcw size={12} />
+            <RotateCcw size={12} aria-hidden="true" />
             Reset
           </button>
         )}
@@ -104,12 +104,12 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
   const defaultPct = pctPosition(setting.defaultValue, setting.min, setting.max)
 
   return (
-    <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 p-4 transition-colors">
+    <div className="rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 p-4 transition-colors">
       {/* Header row */}
       <div className="mb-1 flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{setting.label}</span>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">{setting.description}</p>
+          <span className="text-sm font-medium text-foreground">{setting.label}</span>
+          <p className="mt-0.5 text-xs text-muted-foreground">{setting.description}</p>
         </div>
 
         {isModified && (
@@ -119,12 +119,12 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
               onDirty()
             }}
             className="
-              flex shrink-0 items-center gap-1 rounded-md border border-zinc-200 dark:border-zinc-800
-              px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400
-              transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50
+              flex shrink-0 items-center gap-1 rounded-md border border-border
+              px-2 py-1 text-xs font-medium text-muted-foreground
+              transition-colors hover:bg-accent hover:text-foreground
             "
           >
-            <RotateCcw size={12} />
+            <RotateCcw size={12} aria-hidden="true" />
             Reset
           </button>
         )}
@@ -142,6 +142,7 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
           />
           <input
             type="range"
+            aria-label={setting.label}
             min={setting.min}
             max={setting.max}
             step={setting.step}
@@ -154,7 +155,7 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
             className="h-1.5 w-full appearance-none rounded-full bg-zinc-200 dark:bg-zinc-800 accent-pink-600"
           />
           {/* Min / Max labels */}
-          <div className="mt-0.5 flex justify-between text-xs text-zinc-400 dark:text-zinc-500">
+          <div className="mt-0.5 flex justify-between text-xs text-hint">
             <span>{formatValue(setting.min, setting.unit)}{formatUnit(setting.unit)}</span>
             <span>{formatValue(setting.max, setting.unit)}{formatUnit(setting.unit)}</span>
           </div>
@@ -164,6 +165,7 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
         <div className="flex items-center gap-1">
           <input
             type="number"
+            aria-label={`${setting.label} value`}
             min={setting.min}
             max={setting.max}
             step={setting.step}
@@ -176,20 +178,20 @@ function RiskSliderCard({ setting, onUpdate, onResetToDefault, onDirty }: RiskSl
               onDirty()
             }}
             className="
-              w-20 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2
-              font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors
-              focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30
+              w-20 rounded-lg border border-border bg-card px-3 py-2
+              font-mono text-sm text-foreground outline-none transition-colors
+              focus:border-primary focus:ring-1 focus:ring-ring/30
               [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none
               [&::-webkit-outer-spin-button]:appearance-none
             "
           />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">{formatUnit(setting.unit)}</span>
+          <span className="text-xs text-muted-foreground">{formatUnit(setting.unit)}</span>
         </div>
       </div>
 
       {/* Modified indicator */}
       {isModified && (
-        <p className="mt-2 text-xs text-pink-600 dark:text-pink-400">
+        <p className="mt-2 text-xs text-primary">
           Changed from default ({formatValue(setting.defaultValue, setting.unit)}{formatUnit(setting.unit)})
         </p>
       )}
@@ -219,7 +221,7 @@ export function RiskManagement({
   const markDirty = () => setHasChanges(true)
 
   const inputClasses =
-    'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+    'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
   return (
     <SettingsDetailLayout
@@ -237,10 +239,10 @@ export function RiskManagement({
         title="Risk Limits"
         description="Define maximum exposure thresholds for position sizing, concentration, and drawdown."
       >
-        <div className="mb-4 flex items-start gap-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/40 px-4 py-3">
-          <Lock size={14} className="mt-0.5 shrink-0 text-zinc-400 dark:text-zinc-500" />
-          <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-            These limits are the <span className="font-semibold text-zinc-700 dark:text-zinc-300">single source of truth</span> for
+        <div className="mb-4 flex items-start gap-2.5 rounded-lg border border-border bg-background/40 px-4 py-3">
+          <Lock size={14} className="mt-0.5 shrink-0 text-hint" />
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            These limits are the <span className="font-semibold text-foreground">single source of truth</span> for
             risk enforcement — stored in the database and audited on every change. The risk engine reads them from here;
             environment variables and YAML config are never consulted for these values.
           </p>
@@ -267,6 +269,7 @@ export function RiskManagement({
       >
         <FormRow label="Enabled" hint="Halt all trading when daily loss or drawdown limits are hit" horizontal>
           <ToggleSwitch
+            label="Enable circuit breaker"
             enabled={circuitBreaker.enabled}
             onChange={(enabled) => {
               onUpdateCircuitBreaker?.({ enabled })
@@ -279,6 +282,7 @@ export function RiskManagement({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Cooldown Period"
               min={1}
               max={1440}
               step={1}
@@ -291,12 +295,13 @@ export function RiskManagement({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">minutes</span>
+            <span className="text-xs text-muted-foreground">minutes</span>
           </div>
         </FormRow>
 
         <FormRow label="Auto-Resume" hint="Automatically resume trading after cooldown period expires" horizontal>
           <ToggleSwitch
+            label="Auto-resume trading after cooldown"
             enabled={circuitBreaker.autoResume}
             onChange={(autoResume) => {
               onUpdateCircuitBreaker?.({ autoResume })
@@ -309,6 +314,7 @@ export function RiskManagement({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Monitoring Interval"
               min={1}
               max={3600}
               step={1}
@@ -321,7 +327,7 @@ export function RiskManagement({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
       </FormSection>
@@ -338,7 +344,7 @@ export function RiskManagement({
           className={`rounded-lg border px-4 py-4 ${
             killSwitch.engaged
               ? 'border-rose-300 dark:border-rose-900/50 bg-rose-50 dark:bg-rose-950/20'
-              : 'border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40'
+              : 'border-border bg-white/50 dark:bg-zinc-900/40'
           }`}
         >
           <div className="flex items-center justify-between gap-3">
@@ -347,14 +353,14 @@ export function RiskManagement({
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
                   killSwitch.engaged
                     ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
-                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
+                    : 'bg-muted text-muted-foreground'
                 }`}
               >
                 <Power size={18} />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Global Kill Switch</p>
-                <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-sm font-semibold text-foreground">Global Kill Switch</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   {killSwitch.engaged
                     ? `Engaged${killSwitch.engagedBy ? ` by ${killSwitch.engagedBy}` : ''} — all trading halted across every portfolio.`
                     : 'Halts all trading across every portfolio immediately, independent of the automatic breakers.'}
@@ -372,7 +378,7 @@ export function RiskManagement({
                   : 'bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700'
               }`}
             >
-              <Power size={15} />
+              <Power size={15} aria-hidden="true" />
               {killSwitch.engaged ? 'Clear Kill Switch' : 'Engage Kill Switch'}
             </button>
           </div>
@@ -381,8 +387,8 @@ export function RiskManagement({
         {/* Per-portfolio breaker status */}
         <div className="mt-2">
           <div className="mb-2 flex items-center gap-2">
-            <AlertOctagon size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <AlertOctagon size={13} className="text-hint" />
+            <h4 className="text-xs font-bold uppercase tracking-wider text-hint">
               Per-Portfolio Breakers
             </h4>
           </div>
@@ -400,7 +406,7 @@ export function RiskManagement({
               ))}
             </div>
           ) : (
-            <p className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3 text-xs text-zinc-400 dark:text-zinc-500 italic">
+            <p className="rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3 text-xs text-hint italic">
               No portfolios configured.
             </p>
           )}

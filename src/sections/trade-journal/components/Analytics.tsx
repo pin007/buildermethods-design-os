@@ -63,7 +63,7 @@ function fmtNum(value: number, decimals = 2): string {
 function TrendArrow({ direction, size = 14 }: { direction: TrendDirection; size?: number }) {
   if (direction === 'up') return <ArrowUpRight size={size} className="text-emerald-500 dark:text-emerald-400" />
   if (direction === 'down') return <ArrowDownRight size={size} className="text-red-500 dark:text-red-400" />
-  return <Minus size={size} className="text-zinc-400 dark:text-zinc-500" />
+  return <Minus size={size} className="text-hint" />
 }
 
 // =============================================================================
@@ -82,7 +82,7 @@ const TAB_META: Record<TabKey, { label: string; icon: React.ElementType }> = {
 }
 
 const DIMENSION_META: Record<string, { label: string; icon: React.ElementType; color: string }> = {
-  discipline: { label: 'Discipline', icon: ShieldCheck, color: 'text-pink-500 dark:text-pink-400' },
+  discipline: { label: 'Discipline', icon: ShieldCheck, color: 'text-primary' },
   emotionalManagement: { label: 'Emotional', icon: Brain, color: 'text-violet-500 dark:text-violet-400' },
   riskManagement: { label: 'Risk Mgmt', icon: Gauge, color: 'text-amber-500 dark:text-amber-400' },
   entryQuality: { label: 'Entry Quality', icon: Crosshair, color: 'text-emerald-500 dark:text-emerald-400' },
@@ -146,16 +146,16 @@ export function Analytics({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Insights
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Analytics
           </h1>
         </div>
 
         {/* Period selector */}
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -166,8 +166,8 @@ export function Analytics({
               className={`
                 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200
                 ${selectedPeriod === p
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
                 }
               `}
             >
@@ -181,14 +181,14 @@ export function Analytics({
       {/* Portfolio filter                                                   */}
       {/* ================================================================= */}
       {portfolios.length > 1 && (
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           <button
             onClick={() => { setSelectedPortfolio(null); onPortfolioFilter?.(null) }}
             className={`
               flex flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 sm:flex-none
               ${selectedPortfolio === null
-                ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                : 'text-hint hover:text-foreground'
               }
             `}
           >
@@ -201,8 +201,8 @@ export function Analytics({
               className={`
                 flex flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 sm:flex-none
                 ${selectedPortfolio === pf.id
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
                 }
               `}
             >
@@ -215,7 +215,7 @@ export function Analytics({
       {/* ================================================================= */}
       {/* Tab bar                                                           */}
       {/* ================================================================= */}
-      <div className="flex gap-1 border-b border-zinc-200 dark:border-zinc-800/80">
+      <div className="flex gap-1 border-b border-border">
         {TAB_KEYS.map((key) => {
           const meta = TAB_META[key]
           const active = activeTab === key
@@ -227,16 +227,16 @@ export function Analytics({
               className={`
                 group relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors
                 ${active
-                  ? 'text-pink-600 dark:text-pink-400'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'text-primary'
+                  : 'text-hint hover:text-foreground'
                 }
               `}
             >
-              <Icon size={14} className={active ? 'text-pink-500 dark:text-pink-400' : 'text-zinc-400 dark:text-zinc-600'} />
+              <Icon size={14} aria-hidden="true" className={active ? 'text-primary' : 'text-faint'} />
               {meta.label}
               {/* Active underline */}
               {active && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-t-full bg-pink-600 dark:bg-pink-400" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-t-full bg-primary dark:bg-pink-400" />
               )}
             </button>
           )
@@ -361,17 +361,17 @@ function ProcessScoresTab({ analytics }: { analytics: ProcessScoreAnalytics }) {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Overall average card */}
         <div className="lg:col-span-4">
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-6">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6">
             <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full blur-3xl bg-pink-500/[0.05] dark:bg-pink-500/[0.08]" />
             <div className="relative">
-              <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Overall Average
               </p>
               <div className="mt-4 flex items-end gap-3">
-                <span className="font-mono text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                <span className="font-mono text-5xl font-bold tracking-tight text-foreground">
                   {analytics.overallAverage.toFixed(2)}
                 </span>
-                <span className="mb-1.5 text-lg text-zinc-300 dark:text-zinc-700">/ 5</span>
+                <span className="mb-1.5 text-lg text-faint">/ 5</span>
               </div>
               <div className="mt-3 flex items-center gap-2">
                 <TrendArrow direction={analytics.trend} size={16} />
@@ -380,7 +380,7 @@ function ProcessScoresTab({ analytics }: { analytics: ProcessScoreAnalytics }) {
                     ? 'text-emerald-600 dark:text-emerald-400'
                     : analytics.trend === 'down'
                     ? 'text-red-600 dark:text-red-400'
-                    : 'text-zinc-500 dark:text-zinc-400'
+                    : 'text-muted-foreground'
                 }`}>
                   {analytics.trend === 'up' ? 'Improving' : analytics.trend === 'down' ? 'Declining' : 'Stable'}
                 </span>
@@ -397,15 +397,15 @@ function ProcessScoresTab({ analytics }: { analytics: ProcessScoreAnalytics }) {
                       <div className="mb-1 flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           <dim.icon size={12} className={dim.color} />
-                          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          <span className="text-xs font-medium text-muted-foreground">
                             {dim.label}
                           </span>
                         </div>
-                        <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                        <span className="font-mono text-xs font-semibold text-foreground">
                           {score.toFixed(2)}
                         </span>
                       </div>
-                      <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+                      <div className="h-1.5 w-full rounded-full bg-muted">
                         <div
                           className="h-1.5 rounded-full transition-all duration-700"
                           style={{
@@ -451,12 +451,12 @@ function AttributionTab({ data }: { data: AttributionData }) {
   return (
     <div className="space-y-6">
       {/* Strategy table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
-            <Layers size={13} className="text-pink-600 dark:text-pink-400" />
+            <Layers size={13} className="text-primary" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             By Strategy
           </h2>
         </div>
@@ -464,42 +464,42 @@ function AttributionTab({ data }: { data: AttributionData }) {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
-                <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+              <tr className="border-b border-border">
+                <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   Strategy
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   Trades
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   Win Rate
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+                <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   Profit Factor
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+                <th className="px-6 py-3 text-right text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   P&L
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <tbody className="divide-y divide-border">
               {data.byStrategy.map((row) => {
                 const positive = row.pnl >= 0
                 return (
                   <tr
                     key={row.strategy}
-                    className={`transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
+                    className={`transition-colors hover:bg-accent/40 ${
                       positive
                         ? 'bg-emerald-50/30 dark:bg-emerald-950/[0.06]'
                         : 'bg-red-50/30 dark:bg-red-950/[0.06]'
                     }`}
                   >
                     <td className="px-6 py-3.5">
-                      <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                      <span className="text-sm font-medium text-foreground">
                         {STRATEGY_LABELS[row.strategy] ?? row.strategy}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-sm text-zinc-600 dark:text-zinc-400">
+                    <td className="px-4 py-3.5 text-right font-mono text-sm text-muted-foreground">
                       {row.trades}
                     </td>
                     <td className="px-4 py-3.5 text-right">
@@ -511,7 +511,7 @@ function AttributionTab({ data }: { data: AttributionData }) {
                         {fmtPct(row.winRate)}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-sm text-zinc-600 dark:text-zinc-400">
+                    <td className="px-4 py-3.5 text-right font-mono text-sm text-muted-foreground">
                       {row.profitFactor !== null ? fmtNum(row.profitFactor as number) : '\u2014'}
                     </td>
                     <td className="px-6 py-3.5 text-right">
@@ -563,19 +563,19 @@ function MetricCard({
   valueColor?: string
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
       <div className="text-pink-500/40 dark:text-pink-400/30">
         <Icon size={16} strokeWidth={1.5} />
       </div>
-      <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+      <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
         {label}
       </p>
       <p className={`mt-1 font-mono text-2xl font-semibold tracking-tight sm:text-3xl ${
-        valueColor ?? 'text-zinc-900 dark:text-zinc-100'
+        valueColor ?? 'text-foreground'
       }`}>
         {value}
       </p>
-      <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">{sub}</p>
+      <p className="mt-1 text-xs text-faint">{sub}</p>
     </div>
   )
 }
@@ -594,10 +594,10 @@ function ChartCard({
   children: React.ReactNode
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-        <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{title}</h2>
-        <span className="text-xs text-zinc-400 dark:text-zinc-600">{subtitle}</span>
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+        <span className="text-xs text-faint">{subtitle}</span>
       </div>
       <div className="px-6 py-5">{children}</div>
     </div>
@@ -1146,9 +1146,9 @@ function ProcessOutcomeQuadrant({ data }: { data: ProcessScoreAnalytics['process
     <div className="relative">
       {/* Axis labels */}
       <div className="mb-3 flex items-center justify-between px-1">
-        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">Low Outcome</span>
-        <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">Outcome &rarr;</span>
-        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">High Outcome</span>
+        <span className="text-xs font-medium text-hint">Low Outcome</span>
+        <span className="text-xs font-bold uppercase tracking-[0.15em] text-hint">Outcome &rarr;</span>
+        <span className="text-xs font-medium text-hint">High Outcome</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
@@ -1166,7 +1166,7 @@ function ProcessOutcomeQuadrant({ data }: { data: ProcessScoreAnalytics['process
             <p className={`mt-0.5 text-xs ${q.sub}`}>
               {q.sublabel}
             </p>
-            <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-2 text-xs text-faint">
               {total > 0 ? fmtPct((q.count / total) * 100) : '0%'} of trades
             </p>
           </div>
@@ -1175,9 +1175,9 @@ function ProcessOutcomeQuadrant({ data }: { data: ProcessScoreAnalytics['process
 
       {/* Process axis label */}
       <div className="mt-3 flex items-center justify-between px-1">
-        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">Low Process</span>
-        <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">&uarr; Process</span>
-        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">High Process</span>
+        <span className="text-xs font-medium text-hint">Low Process</span>
+        <span className="text-xs font-bold uppercase tracking-[0.15em] text-hint">&uarr; Process</span>
+        <span className="text-xs font-medium text-hint">High Process</span>
       </div>
     </div>
   )
@@ -1398,7 +1398,7 @@ function TimeOfDayChart({ data }: { data: AttributionData['byTimeOfDay'] }) {
 function EmptyChart() {
   return (
     <div className="flex h-40 items-center justify-center">
-      <p className="text-sm text-zinc-400 dark:text-zinc-600">Not enough data to display chart</p>
+      <p className="text-sm text-faint">Not enough data to display chart</p>
     </div>
   )
 }

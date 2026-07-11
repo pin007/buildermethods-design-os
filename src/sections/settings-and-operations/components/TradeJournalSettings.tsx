@@ -11,18 +11,18 @@ const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 
 /** Distinct color shades for the scoring dimension bar segments. */
 const DIMENSION_COLORS = [
-  'bg-pink-500',
+  'bg-primary',
   'bg-pink-400',
-  'bg-pink-600',
+  'bg-primary',
   'bg-emerald-500',
   'bg-emerald-400',
 ]
 
 const inputClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 const selectClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 // ---------------------------------------------------------------------------
 // Main component
@@ -64,6 +64,7 @@ export function TradeJournalSettings({
       >
         <FormRow label="Require pre-trade notes" hint="Traders must document thesis before entry" horizontal>
           <ToggleSwitch
+            label="Require pre-trade notes"
             enabled={settings.requirePreTradeNotes}
             onChange={(enabled) => {
               onToggleNoteRequirement?.('requirePreTradeNotes', enabled)
@@ -74,6 +75,7 @@ export function TradeJournalSettings({
 
         <FormRow label="Require post-trade notes" hint="Traders must document outcome after exit" horizontal>
           <ToggleSwitch
+            label="Require post-trade notes"
             enabled={settings.requirePostTradeNotes}
             onChange={(enabled) => {
               onToggleNoteRequirement?.('requirePostTradeNotes', enabled)
@@ -86,6 +88,7 @@ export function TradeJournalSettings({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Review prompt delay"
               min={1}
               max={168}
               step={1}
@@ -97,7 +100,7 @@ export function TradeJournalSettings({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">hours</span>
+            <span className="text-xs text-muted-foreground">hours</span>
           </div>
         </FormRow>
       </FormSection>
@@ -113,12 +116,12 @@ export function TradeJournalSettings({
           {settings.scoringDimensions.map((dim, idx) => (
             <div
               key={dim.id}
-              className="flex items-center justify-between gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3"
+              className="flex items-center justify-between gap-4 rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3"
             >
               {/* Dimension label + color indicator */}
               <div className="flex items-center gap-3 min-w-0">
                 <div className={`h-3 w-3 shrink-0 rounded-full ${dim.enabled ? DIMENSION_COLORS[idx % DIMENSION_COLORS.length] : 'bg-zinc-600'}`} />
-                <span className={`text-sm font-medium ${dim.enabled ? 'text-zinc-900 dark:text-zinc-50' : 'text-zinc-500 dark:text-zinc-400 line-through'}`}>
+                <span className={`text-sm font-medium ${dim.enabled ? 'text-foreground' : 'text-muted-foreground line-through'}`}>
                   {dim.label}
                 </span>
               </div>
@@ -128,6 +131,7 @@ export function TradeJournalSettings({
                 <div className="flex items-center gap-1">
                   <input
                     type="number"
+                    aria-label={`${dim.label} weight`}
                     min={0}
                     max={100}
                     step={5}
@@ -141,9 +145,10 @@ export function TradeJournalSettings({
                     }}
                     className={`${inputClasses} w-20 text-right disabled:opacity-40 disabled:cursor-not-allowed`}
                   />
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+                  <span className="text-xs text-muted-foreground">%</span>
                 </div>
                 <ToggleSwitch
+                  label={`Enable ${dim.label} scoring dimension`}
                   enabled={dim.enabled}
                   onChange={(enabled) => {
                     onToggleScoringDimension?.(dim.id, enabled)
@@ -209,6 +214,7 @@ export function TradeJournalSettings({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Revenge trading window"
               min={5}
               max={240}
               step={5}
@@ -221,7 +227,7 @@ export function TradeJournalSettings({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">minutes</span>
+            <span className="text-xs text-muted-foreground">minutes</span>
           </div>
         </FormRow>
 
@@ -232,6 +238,7 @@ export function TradeJournalSettings({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Overtrading threshold"
               min={1}
               max={100}
               step={1}
@@ -244,7 +251,7 @@ export function TradeJournalSettings({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">trades / day</span>
+            <span className="text-xs text-muted-foreground">trades / day</span>
           </div>
         </FormRow>
 
@@ -255,6 +262,7 @@ export function TradeJournalSettings({
           <div className="flex items-center gap-2">
             <input
               type="number"
+              aria-label="Position size drift"
               min={5}
               max={200}
               step={5}
@@ -267,7 +275,7 @@ export function TradeJournalSettings({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+            <span className="text-xs text-muted-foreground">%</span>
           </div>
         </FormRow>
       </FormSection>
@@ -280,9 +288,10 @@ export function TradeJournalSettings({
         description="Recurring review reminders to reflect on trading performance."
       >
         {/* Weekly review */}
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3 space-y-3">
+        <div className="rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3 space-y-3">
           <FormRow label="Weekly review" horizontal>
             <ToggleSwitch
+              label="Enable weekly review"
               enabled={settings.reviewSchedule.weekly.enabled}
               onChange={(enabled) => {
                 onUpdateReviewSchedule?.({ weekly: { ...settings.reviewSchedule.weekly, enabled } })
@@ -311,9 +320,10 @@ export function TradeJournalSettings({
         </div>
 
         {/* Monthly review */}
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3 space-y-3">
+        <div className="rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3 space-y-3">
           <FormRow label="Monthly review" horizontal>
             <ToggleSwitch
+              label="Enable monthly review"
               enabled={settings.reviewSchedule.monthly.enabled}
               onChange={(enabled) => {
                 onUpdateReviewSchedule?.({ monthly: { ...settings.reviewSchedule.monthly, enabled } })
@@ -326,6 +336,7 @@ export function TradeJournalSettings({
               <div className="flex items-center gap-2">
                 <input
                   type="number"
+                  aria-label="Day of month"
                   min={1}
                   max={28}
                   step={1}
@@ -338,7 +349,7 @@ export function TradeJournalSettings({
                   }}
                   className={`${inputClasses} w-28`}
                 />
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">of each month</span>
+                <span className="text-xs text-muted-foreground">of each month</span>
               </div>
             </FormRow>
           )}
@@ -354,6 +365,7 @@ export function TradeJournalSettings({
       >
         <FormRow label="Enabled" hint="Calculate a habit consistency score based on recent trades" horizontal>
           <ToggleSwitch
+            label="Enable habit scoring"
             enabled={settings.habitScoring.enabled}
             onChange={() => {
               markDirty()
@@ -366,6 +378,7 @@ export function TradeJournalSettings({
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                aria-label="Lookback trades"
                 min={10}
                 max={500}
                 step={10}
@@ -377,7 +390,7 @@ export function TradeJournalSettings({
                 }}
                 className={`${inputClasses} w-28`}
               />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">trades</span>
+              <span className="text-xs text-muted-foreground">trades</span>
             </div>
           </FormRow>
         )}

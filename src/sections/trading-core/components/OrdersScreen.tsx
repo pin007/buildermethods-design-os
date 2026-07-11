@@ -140,7 +140,7 @@ function SideBadge({ side }: { side: 'BUY' | 'SELL' }) {
 
 function BrokerBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center rounded bg-zinc-100 dark:bg-zinc-800/60 px-1.5 py-0.5 font-mono text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+    <span className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs font-semibold text-muted-foreground">
       {name}
     </span>
   )
@@ -183,8 +183,8 @@ function SortableHeader({
       className={`group inline-flex items-center gap-1 ${align === 'right' ? 'flex-row-reverse' : ''}`}
     >
       <span>{label}</span>
-      <span className={`inline-flex ${isActive ? 'text-pink-500 dark:text-pink-400' : 'text-zinc-300 dark:text-zinc-700 opacity-0 group-hover:opacity-100'} transition-opacity`}>
-        {isActive && currentDirection === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+      <span className={`inline-flex ${isActive ? 'text-primary' : 'text-faint opacity-0 group-hover:opacity-100'} transition-opacity`}>
+        {isActive && currentDirection === 'asc' ? <ArrowUp size={12} aria-hidden="true" /> : <ArrowDown size={12} aria-hidden="true" />}
       </span>
     </button>
   )
@@ -195,7 +195,7 @@ function SortableHeader({
 // ---------------------------------------------------------------------------
 
 function RiskPercentCell({ percent }: { percent: number | null }) {
-  if (percent === null) return <span className="text-zinc-300 dark:text-zinc-700">&mdash;</span>
+  if (percent === null) return <span className="text-faint">&mdash;</span>
   const color = percent > 5
     ? 'text-red-600 dark:text-red-400'
     : percent > 1
@@ -205,14 +205,14 @@ function RiskPercentCell({ percent }: { percent: number | null }) {
 }
 
 function TimeRemainingCell({ ms }: { ms: number | null }) {
-  if (ms === null) return <span className="text-zinc-300 dark:text-zinc-700">&mdash;</span>
+  if (ms === null) return <span className="text-faint">&mdash;</span>
   const isExpired = ms <= 0
   const isUrgent = ms > 0 && ms < 5 * 60 * 1000
   const color = isExpired
     ? 'text-red-600 dark:text-red-400'
     : isUrgent
     ? 'text-red-600 dark:text-red-400 animate-pulse'
-    : 'text-zinc-600 dark:text-zinc-400'
+    : 'text-muted-foreground'
   return (
     <span className={`font-mono text-xs font-semibold tabular-nums ${color}`}>
       {isExpired ? 'Expired' : formatCountdown(ms)}
@@ -245,20 +245,20 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
       className={`group cursor-pointer transition-colors ${
         isSelected
           ? 'bg-pink-50/60 dark:bg-pink-950/10'
-          : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/40'
+          : 'hover:bg-accent/40'
       } ${isChild ? 'bg-zinc-50/40 dark:bg-zinc-900/40' : ''}`}
     >
       {/* ID + bracket indicator */}
       <td className="whitespace-nowrap py-3 pl-5 pr-2">
         <div className="flex items-center gap-2">
           {isChild && (
-            <span className="flex h-4 w-4 items-center justify-center text-zinc-300 dark:text-zinc-600">
+            <span className="flex h-4 w-4 items-center justify-center text-faint">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M2 0v8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
           )}
-          <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="font-mono text-xs text-hint">
             {order.id}
           </span>
         </div>
@@ -267,14 +267,14 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
       {/* Instrument */}
       <td className="whitespace-nowrap py-3 px-2">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <span className="text-sm font-semibold text-foreground">
             {order.symbol}
           </span>
           {order.bracketRole && order.bracketRole !== 'parent' && (
             <BracketRoleBadge role={order.bracketRole} />
           )}
           {order.bracketRole === 'parent' && (
-            <span className="inline-flex items-center gap-1 rounded bg-zinc-100 dark:bg-zinc-800/60 px-1.5 py-0.5 text-xs font-semibold text-zinc-400 dark:text-zinc-500">
+            <span className="inline-flex items-center gap-1 rounded bg-muted px-1.5 py-0.5 text-xs font-semibold text-hint">
               <Link2 size={10} />
               Bracket
             </span>
@@ -288,19 +288,19 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
       </td>
 
       {/* Type */}
-      <td className="whitespace-nowrap py-3 px-2 text-xs text-zinc-600 dark:text-zinc-400">
+      <td className="whitespace-nowrap py-3 px-2 text-xs text-muted-foreground">
         {orderTypeLabel(order.orderType)}
       </td>
 
       {/* Qty */}
-      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-zinc-700 dark:text-zinc-300 text-right tabular-nums">
+      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-foreground text-right tabular-nums">
         {order.filledQuantity > 0 && order.filledQuantity < order.quantity
           ? `${order.filledQuantity}/${order.quantity}`
           : order.quantity}
       </td>
 
       {/* Price */}
-      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-zinc-700 dark:text-zinc-300 text-right tabular-nums">
+      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-foreground text-right tabular-nums">
         {priceDisplay(order)}
       </td>
 
@@ -315,12 +315,12 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
       </td>
 
       {/* TIF */}
-      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-zinc-400 dark:text-zinc-500">
+      <td className="whitespace-nowrap py-3 px-2 font-mono text-xs text-hint">
         {order.timeInForce}
       </td>
 
       {/* Timestamp */}
-      <td className="whitespace-nowrap py-3 px-2 text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
+      <td className="whitespace-nowrap py-3 px-2 text-xs tabular-nums text-faint">
         {formatTimestamp(order.createdAt)}
       </td>
 
@@ -351,18 +351,20 @@ function OrderRow({ order, isChild, isSelected, showPendingColumns, now, onSelec
             <button
               onClick={(e) => { e.stopPropagation(); onAmend() }}
               title="Amend"
-              className="rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 transition-colors"
+              aria-label={`Amend order ${order.id}`}
+              className="rounded-md p-1.5 text-hint hover:bg-accent hover:text-muted-foreground transition-colors"
             >
-              <Pencil size={13} />
+              <Pencil size={13} aria-hidden="true" />
             </button>
           )}
           {isOpen && order.status !== 'pending_reconciliation' && onCancel && (
             <button
               onClick={(e) => { e.stopPropagation(); onCancel() }}
               title="Cancel"
-              className="rounded-md p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:text-zinc-500 dark:hover:bg-red-950/20 dark:hover:text-red-400 transition-colors"
+              aria-label={`Cancel order ${order.id}`}
+              className="rounded-md p-1.5 text-hint hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/20 dark:hover:text-red-400 transition-colors"
             >
-              <Ban size={13} />
+              <Ban size={13} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -390,7 +392,7 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
   const isOpen = openStatuses.includes(order.status) || pendingStatuses.includes(order.status)
 
   return (
-    <div className="relative border-t border-zinc-200 dark:border-zinc-800/60 bg-zinc-50/50 dark:bg-zinc-900/50">
+    <div className="relative border-t border-border/60 bg-zinc-50/50 dark:bg-zinc-900/50">
       {/* Pink gradient accent at the top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-pink-600/40 via-pink-500/15 to-transparent" />
 
@@ -399,21 +401,22 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
         <div className="flex items-start justify-between mb-5">
           <div>
             <div className="flex items-center gap-3">
-              <h3 className="text-base font-semibold text-zinc-800 dark:text-zinc-100">
+              <h3 className="text-base font-semibold text-foreground">
                 {order.symbol}
               </h3>
               <SideBadge side={order.side} />
               <OrderStatusBadge status={order.status} />
             </div>
-            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-xs text-muted-foreground">
               {order.instrumentName} &middot; <span className="font-mono">{order.id}</span>
             </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-200 dark:text-zinc-500 dark:hover:bg-zinc-800 transition-colors"
+            aria-label="Close order details"
+            className="rounded-lg p-1.5 text-hint hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
           >
-            <X size={16} />
+            <X size={16} aria-hidden="true" />
           </button>
         </div>
 
@@ -475,16 +478,16 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
               onClick={onReview}
               className="flex items-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-amber-600/20 transition-all hover:bg-amber-500 hover:shadow-amber-500/30 active:scale-[0.98]"
             >
-              <CheckCircle2 size={13} />
+              <CheckCircle2 size={13} aria-hidden="true" />
               Review Approval
             </button>
           )}
           {isOpen && order.status !== 'pending_approval' && order.status !== 'pending_reconciliation' && onAmend && (
             <button
               onClick={onAmend}
-              className="flex items-center gap-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-700"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-white dark:bg-zinc-800 px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-700"
             >
-              <Pencil size={13} />
+              <Pencil size={13} aria-hidden="true" />
               Amend
             </button>
           )}
@@ -493,7 +496,7 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
               onClick={onCancel}
               className="flex items-center gap-1.5 rounded-lg border border-red-200 dark:border-red-900/40 px-4 py-2 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
             >
-              <Ban size={13} />
+              <Ban size={13} aria-hidden="true" />
               Cancel
             </button>
           )}
@@ -502,7 +505,7 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
               onClick={onCancelBracket}
               className="flex items-center gap-1.5 rounded-lg border border-red-200 dark:border-red-900/40 px-4 py-2 text-xs font-semibold text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
             >
-              <Ban size={13} />
+              <Ban size={13} aria-hidden="true" />
               Cancel Bracket
             </button>
           )}
@@ -513,31 +516,32 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
           <div className="mt-6">
             <button
               onClick={() => setTimelineOpen(!timelineOpen)}
-              className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+              aria-expanded={timelineOpen}
+              className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground transition-colors"
             >
-              {timelineOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+              {timelineOpen ? <ChevronDown size={14} aria-hidden="true" /> : <ChevronRight size={14} aria-hidden="true" />}
               Event Timeline ({events.length})
             </button>
             {timelineOpen && (
-              <div className="mt-3 ml-1 border-l-2 border-zinc-200 dark:border-zinc-700/60 pl-4 space-y-3">
+              <div className="mt-3 ml-1 border-l-2 border-border pl-4 space-y-3">
                 {events.map((event, idx) => (
                   <div key={event.id} className="relative">
                     {/* Timeline dot */}
                     <div
                       className={`absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-zinc-900 ${
-                        idx === 0 ? 'bg-pink-500' : 'bg-zinc-300 dark:bg-zinc-600'
+                        idx === 0 ? 'bg-primary' : 'bg-zinc-300 dark:bg-zinc-600'
                       }`}
                     />
                     <div className="flex items-baseline justify-between gap-4">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <OrderStatusBadge status={event.status} />
-                          <span className="text-xs text-zinc-600 dark:text-zinc-400 truncate">
+                          <span className="text-xs text-muted-foreground truncate">
                             {event.message}
                           </span>
                         </div>
                       </div>
-                      <span className="shrink-0 font-mono text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
+                      <span className="shrink-0 font-mono text-xs tabular-nums text-faint">
                         {formatFullTimestamp(event.timestamp)}
                       </span>
                     </div>
@@ -555,10 +559,10 @@ function OrderDetailPanel({ order, events, onClose, onAmend, onCancel, onCancelB
 function DetailField({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">
         {label}
       </p>
-      <p className={`mt-0.5 text-sm text-zinc-800 dark:text-zinc-200 ${mono ? 'font-mono tabular-nums' : ''}`}>
+      <p className={`mt-0.5 text-sm text-foreground ${mono ? 'font-mono tabular-nums' : ''}`}>
         {value}
       </p>
     </div>
@@ -574,16 +578,16 @@ function EmptyPending({ onViewOrders }: { onViewOrders?: () => void }) {
     <div className="flex flex-col items-center justify-center py-16">
       <div className="relative">
         <div className="absolute -inset-3 rounded-2xl bg-emerald-500/5 blur-xl dark:bg-emerald-500/10" />
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
           <CheckCircle2 size={24} className="text-emerald-500" />
         </div>
       </div>
-      <p className="mt-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">No pending approvals</p>
-      <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">All clear!</p>
+      <p className="mt-5 text-sm font-medium text-foreground">No pending approvals</p>
+      <p className="mt-1 text-xs text-hint">All clear!</p>
       {onViewOrders && (
         <button
           onClick={onViewOrders}
-          className="mt-4 text-xs font-semibold text-pink-600 hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300 transition-colors"
+          className="mt-4 text-xs font-semibold text-primary hover:text-primary dark:hover:text-pink-300 transition-colors"
         >
           View All Orders
         </button>
@@ -596,19 +600,19 @@ function EmptyOrders({ onCreate }: { onCreate?: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-16">
       <div className="relative">
-        <div className="absolute -inset-3 rounded-2xl bg-pink-500/5 blur-xl dark:bg-pink-500/10" />
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-          <FileText size={24} className="text-zinc-300 dark:text-zinc-600" />
+        <div className="absolute -inset-3 rounded-2xl bg-primary/5 blur-xl dark:bg-primary/10" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+          <FileText size={24} className="text-faint" />
         </div>
       </div>
-      <p className="mt-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">No orders found</p>
-      <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">Your order history will appear here.</p>
+      <p className="mt-5 text-sm font-medium text-foreground">No orders found</p>
+      <p className="mt-1 text-xs text-hint">Your order history will appear here.</p>
       {onCreate && (
         <button
           onClick={onCreate}
-          className="mt-5 flex items-center gap-1.5 rounded-xl bg-pink-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+          className="mt-5 flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
         >
-          <Plus size={14} />
+          <Plus size={14} aria-hidden="true" />
           Create Order
         </button>
       )}
@@ -650,11 +654,12 @@ function FilterBar({
   return (
     <div className="flex flex-wrap items-center gap-2 px-5 pb-3">
       <div className="relative">
-        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-hint" />
         <select
           value={instrumentFilter}
           onChange={(e) => onInstrumentChange(e.target.value)}
-          className="h-8 appearance-none rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 pl-8 pr-8 text-xs text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+          aria-label="Filter by instrument"
+          className="h-8 appearance-none rounded-lg border border-border bg-card pl-8 pr-8 text-xs text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
         >
           <option value="">All Instruments</option>
           {instruments.map((sym) => (
@@ -665,7 +670,8 @@ function FilterBar({
       <select
         value={statusFilter}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="h-8 appearance-none rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 px-3 pr-8 text-xs text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+        aria-label="Filter by status"
+        className="h-8 appearance-none rounded-lg border border-border bg-card px-3 pr-8 text-xs text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
       >
         <option value="">All Statuses</option>
         {statuses.map((s) => (
@@ -676,23 +682,23 @@ function FilterBar({
         type="date"
         value={dateFrom}
         onChange={(e) => onDateFromChange(e.target.value)}
-        className="h-8 rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 px-2 text-xs text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+        className="h-8 rounded-lg border border-border bg-card px-2 text-xs text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
         aria-label="Date from"
       />
-      <span className="text-xs text-zinc-400 dark:text-zinc-600">to</span>
+      <span className="text-xs text-faint">to</span>
       <input
         type="date"
         value={dateTo}
         onChange={(e) => onDateToChange(e.target.value)}
-        className="h-8 rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 px-2 text-xs text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+        className="h-8 rounded-lg border border-border bg-card px-2 text-xs text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
         aria-label="Date to"
       />
       {hasFilters && (
         <button
           onClick={() => { onStatusChange(''); onInstrumentChange(''); onDateFromChange(''); onDateToChange('') }}
-          className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent transition-colors"
         >
-          <X size={12} />
+          <X size={12} aria-hidden="true" />
           Clear
         </button>
       )}
@@ -886,18 +892,18 @@ export function OrdersScreen({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Manage
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Orders
           </h1>
         </div>
         <button
           onClick={() => onCreateOrder?.()}
-          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
+          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
         >
-          <Plus size={15} className="transition-transform group-hover:rotate-90" />
+          <Plus size={15} aria-hidden="true" className="transition-transform group-hover:rotate-90" />
           New Order
         </button>
       </div>
@@ -905,7 +911,7 @@ export function OrdersScreen({
       {/* ================================================================= */}
       {/* Tab bar                                                           */}
       {/* ================================================================= */}
-      <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+      <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id
           const Icon = tab.icon
@@ -917,15 +923,15 @@ export function OrdersScreen({
                 flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200
                 sm:flex-none
                 ${isActive
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
                 }
               `}
             >
-              <Icon size={15} />
+              <Icon size={15} aria-hidden="true" />
               {tab.label}
               {tab.id === 'pending' && pendingCount > 0 && (
-                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-600 px-1.5 text-xs font-bold tabular-nums text-white shadow-sm shadow-pink-600/30">
+                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums text-primary-foreground shadow-sm shadow-pink-600/30">
                   {pendingCount}
                 </span>
               )}
@@ -950,7 +956,7 @@ export function OrdersScreen({
       {/* ================================================================= */}
       {/* Orders table card                                                 */}
       {/* ================================================================= */}
-      <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
         {/* Pink gradient accent at the top */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pink-600/50 via-pink-500/15 to-transparent" />
 
@@ -982,11 +988,11 @@ export function OrdersScreen({
           <div className="overflow-x-auto">
             <table className="w-full min-w-[800px]">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
+                <tr className="border-b border-border/50">
                   {columns.map((col, i) => (
                     <th
                       key={col.key}
-                      className={`py-3 text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500 ${
+                      className={`py-3 text-xs font-bold uppercase tracking-[0.12em] text-hint ${
                         i === 0 ? 'pl-5 pr-2 text-left' : col.key === 'actions' ? 'pl-2 pr-5 text-right' : 'px-2 text-left'
                       } ${col.align === 'right' ? 'text-right' : ''}`}
                     >
@@ -1006,7 +1012,7 @@ export function OrdersScreen({
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+              <tbody className="divide-y divide-border/50">
                 {paginatedRows.map(({ order, isChild }) => (
                   <OrderRow
                     key={order.id}
@@ -1047,22 +1053,22 @@ export function OrdersScreen({
 
         {/* Pagination (history only) */}
         {activeTab === 'history' && totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/50 px-5 py-3">
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between border-t border-border/50 px-5 py-3">
+            <p className="text-xs text-muted-foreground">
               Showing {historyPage * ROWS_PER_PAGE + 1}&ndash;{Math.min((historyPage + 1) * ROWS_PER_PAGE, displayRows.length)} of {displayRows.length}
             </p>
             <div className="flex gap-1">
               <button
                 disabled={historyPage === 0}
                 onClick={() => setHistoryPage(historyPage - 1)}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
               <button
                 disabled={historyPage >= totalPages - 1}
                 onClick={() => setHistoryPage(historyPage + 1)}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>

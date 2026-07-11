@@ -68,11 +68,11 @@ export function PerformanceTab({
   if (!benchmarkComparison) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-          <BarChart3 size={24} className="text-zinc-300 dark:text-zinc-600" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+          <BarChart3 size={24} className="text-faint" />
         </div>
-        <p className="mt-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">Not enough data</p>
-        <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">Check back after your portfolio has some history.</p>
+        <p className="mt-5 text-sm font-medium text-foreground">Not enough data</p>
+        <p className="mt-1 text-xs text-hint">Check back after your portfolio has some history.</p>
       </div>
     )
   }
@@ -108,18 +108,18 @@ export function PerformanceTab({
       {/* ================================================================= */}
       {/* Benchmark Comparison                                              */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         {/* Header */}
-        <div className="flex flex-col gap-3 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-b border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-              <BarChart3 size={13} className="text-zinc-500 dark:text-zinc-400" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+              <BarChart3 size={13} className="text-muted-foreground" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <h2 className="text-sm font-semibold text-foreground">
                 Benchmark Comparison
               </h2>
-              <p className="text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="text-xs text-faint">
                 vs {bc.benchmarkName}
               </p>
             </div>
@@ -130,22 +130,23 @@ export function PerformanceTab({
             <select
               value={bc.benchmark}
               onChange={e => onChangeBenchmark?.(e.target.value)}
-              className="h-8 appearance-none rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 px-3 pr-8 text-xs font-semibold text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+              aria-label="Select benchmark"
+              className="h-8 appearance-none rounded-lg border border-border bg-card px-3 pr-8 text-xs font-semibold text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
             >
               <option value="SPY">S&P 500 (SPY)</option>
               <option value="QQQ">NASDAQ (QQQ)</option>
             </select>
 
             {/* Period selector */}
-            <div className="flex gap-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-900/80 p-0.5 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+            <div className="flex gap-0.5 rounded-lg bg-muted p-0.5 ring-1 ring-border/60">
               {BENCHMARK_PERIODS.map(p => (
                 <button
                   key={p.key}
                   onClick={() => { setSelectedPeriod(p.key); onChangeBenchmarkPeriod?.(p.key) }}
                   className={`rounded-md px-2 py-1 text-xs font-semibold transition-all ${
                     selectedPeriod === p.key
-                      ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                      : 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400'
+                      ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                      : 'text-faint hover:text-zinc-600 dark:hover:text-zinc-400'
                   }`}
                 >
                   {p.label}
@@ -156,9 +157,9 @@ export function PerformanceTab({
         </div>
 
         {/* Summary metrics */}
-        <div className="grid grid-cols-3 gap-4 px-6 py-4 border-b border-zinc-100 dark:border-zinc-800/60">
+        <div className="grid grid-cols-3 gap-4 px-6 py-4 border-b border-border">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Portfolio Return</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Portfolio Return</p>
             <p className={`mt-1 font-mono text-xl font-semibold tracking-tight ${
               bc.portfolioReturnPercent >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'
             }`}>
@@ -166,7 +167,7 @@ export function PerformanceTab({
             </p>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Benchmark Return</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Benchmark Return</p>
             <p className={`mt-1 font-mono text-xl font-semibold tracking-tight ${
               bc.benchmarkReturnPercent >= 0 ? 'text-sky-600 dark:text-sky-400' : 'text-red-500 dark:text-red-400'
             }`}>
@@ -174,7 +175,7 @@ export function PerformanceTab({
             </p>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Alpha</p>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Alpha</p>
             <div className="mt-1 flex items-center gap-2">
               <p className={`font-mono text-xl font-semibold tracking-tight ${
                 alphaPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'
@@ -202,7 +203,7 @@ export function PerformanceTab({
             <line x1="0" y1={height * 0.75} x2="100" y2={height * 0.75} stroke="currentColor" strokeWidth="0.15" className="text-zinc-200 dark:text-zinc-800" />
 
             {/* Zero line */}
-            <line x1="0" y1={zeroY} x2="100" y2={zeroY} stroke="currentColor" strokeWidth="0.2" strokeDasharray="0.5,0.5" className="text-zinc-300 dark:text-zinc-700" />
+            <line x1="0" y1={zeroY} x2="100" y2={zeroY} stroke="currentColor" strokeWidth="0.2" strokeDasharray="0.5,0.5" className="text-faint" />
 
             {/* Benchmark line (sky blue) */}
             <polyline
@@ -233,22 +234,22 @@ export function PerformanceTab({
           {/* Legend */}
           <div className="mt-3 flex items-center justify-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="h-0.5 w-5 rounded-full bg-pink-600" />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">Portfolio</span>
+              <div className="h-0.5 w-5 rounded-full bg-primary" />
+              <span className="text-xs text-muted-foreground">Portfolio</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-0.5 w-5 rounded-full bg-sky-400 opacity-70" />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">{bc.benchmarkName}</span>
+              <span className="text-xs text-muted-foreground">{bc.benchmarkName}</span>
             </div>
           </div>
 
           {/* X-axis labels */}
           {series.length > 0 && (
             <div className="mt-2 flex justify-between">
-              <span className="text-xs text-zinc-300 dark:text-zinc-700">
+              <span className="text-xs text-faint">
                 {new Date(series[0].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
-              <span className="text-xs text-zinc-300 dark:text-zinc-700">
+              <span className="text-xs text-faint">
                 {new Date(series[series.length - 1].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
             </div>
@@ -257,14 +258,14 @@ export function PerformanceTab({
       </div>
 
       {/* Attribution analysis */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-5 py-3">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800/80">
-            <BarChart3 size={12} className="text-zinc-500 dark:text-zinc-400" />
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center gap-2.5 border-b border-border px-5 py-3">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-muted">
+            <BarChart3 size={12} className="text-muted-foreground" />
           </div>
-          <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Attribution Analysis</h3>
+          <h3 className="text-sm font-semibold text-foreground">Attribution Analysis</h3>
         </div>
-        <div className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+        <div className="divide-y divide-border/50">
           {bc.attribution.map(entry => {
             const positive = entry.contributionPercent >= 0
             return (
@@ -275,13 +276,13 @@ export function PerformanceTab({
                     : <TrendingDown size={14} className="text-red-500/60 dark:text-red-400/50" />
                   }
                   <div>
-                    <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">{entry.symbol}</span>
-                    <span className="ml-2 text-xs text-zinc-400 dark:text-zinc-500">{entry.instrumentName}</span>
+                    <span className="font-mono text-sm font-semibold text-foreground">{entry.symbol}</span>
+                    <span className="ml-2 text-xs text-hint">{entry.instrumentName}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   {/* Mini bar */}
-                  <div className="hidden sm:flex h-1.5 w-20 items-center rounded-full bg-zinc-100 dark:bg-zinc-800/60 overflow-hidden">
+                  <div className="hidden sm:flex h-1.5 w-20 items-center rounded-full bg-muted overflow-hidden">
                     <div
                       className={`h-full rounded-full ${positive ? 'bg-emerald-500' : 'bg-red-500'}`}
                       style={{ width: `${Math.min(Math.abs(entry.contributionPercent) * 20, 100)}%` }}
@@ -304,31 +305,31 @@ export function PerformanceTab({
       {/* ================================================================= */}
       {marginInfo && (
         <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
-            <Shield size={15} className="text-zinc-400 dark:text-zinc-500" />
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <Shield size={15} className="text-hint" />
             Margin & Buying Power
           </h3>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             {/* Margin Used */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Margin Used</p>
-              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Margin Used</p>
+              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-foreground">
                 {formatCurrency(marginInfo.marginUsed)}
               </p>
             </div>
 
             {/* Margin Available */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Available</p>
-              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Available</p>
+              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-foreground">
                 {formatCurrency(marginInfo.marginAvailable)}
               </p>
             </div>
 
             {/* Margin Usage % */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Usage</p>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Usage</p>
               <p className={`mt-1 font-mono text-lg font-semibold tracking-tight ${
                 marginInfo.marginUsagePercent > 50
                   ? 'text-red-600 dark:text-red-400'
@@ -339,7 +340,7 @@ export function PerformanceTab({
                 {marginInfo.marginUsagePercent.toFixed(1)}%
               </p>
               {/* Progress bar */}
-              <div className="mt-2 h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800/60">
+              <div className="mt-2 h-1.5 w-full rounded-full bg-muted">
                 <div
                   className={`h-full rounded-full transition-all ${
                     marginInfo.marginUsagePercent > 50
@@ -354,16 +355,16 @@ export function PerformanceTab({
             </div>
 
             {/* Buying Power */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Buying Power</p>
-              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Buying Power</p>
+              <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-foreground">
                 {formatCurrency(marginInfo.buyingPower)}
               </p>
             </div>
 
             {/* Margin Call Distance */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Call Distance</p>
+            <div className="rounded-xl border border-border bg-card p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint">Call Distance</p>
               <p className="mt-1 font-mono text-lg font-semibold tracking-tight text-emerald-600 dark:text-emerald-400">
                 {marginInfo.marginCallDistancePercent.toFixed(1)}%
               </p>
@@ -378,17 +379,17 @@ export function PerformanceTab({
 
           {/* Margin call risk */}
           {marginInfo.marginCallRisk.length > 0 && (
-            <div className="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-              <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-4 py-2.5">
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
+              <div className="flex items-center gap-2.5 border-b border-border px-4 py-2.5">
                 <AlertTriangle size={13} className="text-amber-500 dark:text-amber-400" />
-                <p className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+                <p className="text-xs font-semibold text-muted-foreground">
                   Margin call risk — price drop to trigger call
                 </p>
               </div>
-              <div className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+              <div className="divide-y divide-border/50">
                 {marginInfo.marginCallRisk.map(risk => (
                   <div key={risk.symbol} className="flex items-center justify-between px-4 py-2.5">
-                    <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">{risk.symbol}</span>
+                    <span className="font-mono text-sm font-semibold text-foreground">{risk.symbol}</span>
                     <span className="font-mono text-sm font-semibold tabular-nums text-red-500 dark:text-red-400">
                       {risk.priceDropPercentToCall.toFixed(1)}%
                     </span>

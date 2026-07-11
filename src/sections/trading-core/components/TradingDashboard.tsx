@@ -92,8 +92,8 @@ const activityConfig: Record<RecentActivity['type'], { color: string; ring: stri
   },
   approved: {
     color: 'text-pink-400',
-    ring: 'ring-pink-500/20',
-    bg: 'bg-pink-500',
+    ring: 'ring-ring/20',
+    bg: 'bg-primary',
     label: 'Approved',
   },
 }
@@ -125,20 +125,20 @@ export function TradingDashboard({
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="relative w-full max-w-md">
           {/* Glow effect behind card */}
-          <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-          <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-              <Cable size={28} className="text-zinc-400 dark:text-zinc-500" />
+          <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+          <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+              <Cable size={28} className="text-hint" />
             </div>
-            <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+            <h2 className="mt-6 text-xl font-semibold text-foreground">
               Welcome to Trading Squad
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Connect your broker to get started.
             </p>
             <button
               onClick={() => onConnectBroker?.()}
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
             >
               Connect Broker
             </button>
@@ -161,10 +161,10 @@ export function TradingDashboard({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Overview
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Dashboard
           </h1>
           {/* Surface-level data freshness (rec #2) */}
@@ -173,9 +173,9 @@ export function TradingDashboard({
 
         <button
           onClick={() => onCreateOrder?.()}
-          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
+          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
         >
-          <Plus size={15} className="transition-transform group-hover:rotate-90" />
+          <Plus size={15} aria-hidden="true" className="transition-transform group-hover:rotate-90" />
           New Order
         </button>
       </div>
@@ -184,7 +184,7 @@ export function TradingDashboard({
       {/* Portfolio selector tabs                                           */}
       {/* ================================================================= */}
       {portfolios.length > 1 && (
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           {portfolios.map((portfolio) => {
             const isActive = selectedPortfolioId === portfolio.id
             return (
@@ -195,8 +195,8 @@ export function TradingDashboard({
                   flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200
                   sm:flex-none
                   ${isActive
-                    ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                    : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                    ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                    : 'text-hint hover:text-foreground'
                   }
                 `}
               >
@@ -205,8 +205,8 @@ export function TradingDashboard({
                   className={`
                     rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider
                     ${isActive
-                      ? 'bg-pink-600/10 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400'
-                      : 'bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-400 dark:text-zinc-600'
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-zinc-200/60 dark:bg-zinc-800/60 text-faint'
                     }
                   `}
                 >
@@ -226,20 +226,20 @@ export function TradingDashboard({
         {/* -------------------------------------------------------------- */}
         {/* HERO: Portfolio Value (spans 5 columns on desktop)              */}
         {/* -------------------------------------------------------------- */}
-        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-border bg-card">
           {/* Gradient glow behind value */}
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-pink-500/[0.04] blur-3xl dark:bg-pink-500/[0.07]" />
-          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-pink-500/[0.03] blur-2xl dark:bg-pink-500/[0.05]" />
+          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/[0.04] blur-3xl dark:bg-primary/[0.07]" />
+          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-primary/[0.03] blur-2xl dark:bg-primary/[0.05]" />
 
           <div className="relative p-6">
-            <div className="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+            <div className="flex items-center gap-2 text-hint">
               <Wallet size={14} strokeWidth={2} />
               <span className="text-xs font-bold uppercase tracking-[0.15em]">
                 Portfolio Value
               </span>
             </div>
 
-            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
+            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               {formatCurrency(stats.portfolioValue, currency)}
             </p>
 
@@ -253,7 +253,7 @@ export function TradingDashboard({
                 {pnlPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                 <span className="font-mono">{formatPercent(stats.dayPnLPercent)}</span>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">today</span>
+              <span className="text-xs text-faint">today</span>
             </div>
 
             {/* Decorative bottom accent line */}
@@ -267,7 +267,7 @@ export function TradingDashboard({
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-7">
 
           {/* Day P&L */}
-          <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
             {/* Glow on positive/negative */}
             <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl transition-opacity ${
               pnlPositive ? 'bg-emerald-500/[0.06] dark:bg-emerald-500/[0.08]' : 'bg-red-500/[0.06] dark:bg-red-500/[0.08]'
@@ -277,7 +277,7 @@ export function TradingDashboard({
               <div className={`${pnlPositive ? 'text-emerald-500/50 dark:text-emerald-400/40' : 'text-red-500/50 dark:text-red-400/40'}`}>
                 {pnlPositive ? <TrendingUp size={16} strokeWidth={1.5} /> : <TrendingDown size={16} strokeWidth={1.5} />}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Day P&L
               </p>
               <p className={`mt-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl ${
@@ -294,17 +294,17 @@ export function TradingDashboard({
           </div>
 
           {/* Cash Available */}
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-            <div className="text-zinc-300 dark:text-zinc-700">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div className="text-faint">
               <Banknote size={16} strokeWidth={1.5} />
             </div>
-            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Cash Available
             </p>
-            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               {formatCurrency(stats.cashAvailable, currency)}
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               {selectedPortfolio.currency} balance
             </p>
           </div>
@@ -312,7 +312,7 @@ export function TradingDashboard({
           {/* Pending Approvals */}
           <button
             onClick={() => onReviewApproval?.('')}
-            className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 text-left transition-all hover:border-pink-300 dark:hover:border-pink-900/60 hover:shadow-sm"
+            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-pink-300 dark:hover:border-pink-900/60 hover:shadow-sm"
           >
             {stats.pendingApprovals > 0 && (
               <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-amber-500/[0.06] blur-2xl dark:bg-amber-500/[0.10]" />
@@ -320,18 +320,18 @@ export function TradingDashboard({
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div className="text-amber-500/50 dark:text-amber-400/40">
-                  <Clock size={16} strokeWidth={1.5} />
+                  <Clock size={16} strokeWidth={1.5} aria-hidden="true" />
                 </div>
                 {stats.pendingApprovals > 0 && (
-                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-600 px-1.5 text-xs font-bold tabular-nums text-white shadow-sm shadow-pink-600/30">
+                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums text-primary-foreground shadow-sm shadow-pink-600/30">
                     {stats.pendingApprovals}
                   </span>
                 )}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Pending Approvals
               </p>
-              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                 {stats.pendingApprovals}
               </p>
               <p className={`mt-1 text-xs font-medium ${
@@ -344,7 +344,7 @@ export function TradingDashboard({
 
               {/* Hover arrow */}
               <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100 -translate-x-1">
-                <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
+                <ChevronRight size={14} aria-hidden="true" className="text-faint" />
               </div>
             </div>
           </button>
@@ -352,25 +352,25 @@ export function TradingDashboard({
           {/* Open Orders */}
           <button
             onClick={() => onViewOrders?.()}
-            className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 text-left transition-all hover:border-pink-300 dark:hover:border-pink-900/60 hover:shadow-sm"
+            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-pink-300 dark:hover:border-pink-900/60 hover:shadow-sm"
           >
             <div className="relative">
-              <div className="text-zinc-300 dark:text-zinc-700">
-                <ListOrdered size={16} strokeWidth={1.5} />
+              <div className="text-faint">
+                <ListOrdered size={16} strokeWidth={1.5} aria-hidden="true" />
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Open Orders
               </p>
-              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                 {stats.openOrders}
               </p>
-              <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-1 text-xs text-faint">
                 {stats.openOrders} active
               </p>
 
               {/* Hover arrow */}
               <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100 -translate-x-1">
-                <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
+                <ChevronRight size={14} aria-hidden="true" className="text-faint" />
               </div>
             </div>
           </button>
@@ -380,36 +380,36 @@ export function TradingDashboard({
       {/* ================================================================= */}
       {/* Recent Activity                                                   */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-              <Activity size={13} className="text-zinc-500 dark:text-zinc-400" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+              <Activity size={13} className="text-muted-foreground" />
             </div>
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="text-sm font-semibold text-foreground">
               Recent Activity
             </h2>
           </div>
           <button
             onClick={() => onViewOrders?.()}
-            className="group flex items-center gap-1 text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+            className="group flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
           >
             View All Orders
-            <ChevronRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+            <ChevronRight size={12} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
           </button>
         </div>
 
         {/* Activity list */}
         {recentActivity.length === 0 ? (
           <div className="py-14 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/60">
-              <Activity size={20} className="text-zinc-300 dark:text-zinc-700" />
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+              <Activity size={20} className="text-faint" />
             </div>
-            <p className="mt-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            <p className="mt-4 text-sm font-medium text-muted-foreground">
               No recent activity
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               Your order history will appear here.
             </p>
           </div>
@@ -440,29 +440,29 @@ export function TradingDashboard({
                           activity.type === 'fill'
                             ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400'
                             : activity.type === 'cancelled'
-                            ? 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500'
+                            ? 'bg-muted text-hint'
                             : activity.type === 'rejected'
                             ? 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400'
                             : activity.type === 'submitted'
                             ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400'
-                            : 'bg-pink-50 text-pink-600 dark:bg-pink-950/30 dark:text-pink-400'
+                            : 'bg-pink-50 dark:bg-pink-950/30 text-primary'
                         }`}>
                           {config.label}
                         </span>
-                        <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                        <span className="font-mono text-xs font-semibold text-foreground">
                           {activity.symbol}
                         </span>
                       </div>
-                      <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-500">
+                      <p className="mt-0.5 truncate text-xs text-hint">
                         {activity.message}
                       </p>
                     </div>
 
                     <div className="shrink-0 text-right">
-                      <p className="text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
+                      <p className="text-xs tabular-nums text-faint">
                         {relativeTime(activity.timestamp)}
                       </p>
-                      <p className="mt-0.5 text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+                      <p className="mt-0.5 text-xs tabular-nums text-faint">
                         {formatTimestamp(activity.timestamp)}
                       </p>
                     </div>

@@ -57,7 +57,7 @@ const EVENT_TYPE_CONFIG: Record<
     chipActive:
       'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 border-amber-300 dark:border-amber-700',
     chipInactive:
-      'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+      'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
     icon: BarChart3,
   },
   economic: {
@@ -69,7 +69,7 @@ const EVENT_TYPE_CONFIG: Record<
     chipActive:
       'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 border-blue-300 dark:border-blue-700',
     chipInactive:
-      'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+      'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
     icon: Globe,
   },
   dividend: {
@@ -81,7 +81,7 @@ const EVENT_TYPE_CONFIG: Record<
     chipActive:
       'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700',
     chipInactive:
-      'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+      'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
     icon: Banknote,
   },
   options: {
@@ -93,19 +93,19 @@ const EVENT_TYPE_CONFIG: Record<
     chipActive:
       'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-200 border-purple-300 dark:border-purple-700',
     chipInactive:
-      'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+      'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
     icon: Clock,
   },
   ipo: {
     label: 'IPOs',
-    color: 'text-pink-600 dark:text-pink-400',
-    dot: 'bg-pink-500',
+    color: 'text-primary',
+    dot: 'bg-primary',
     bg: 'bg-pink-50 dark:bg-pink-950/40',
     text: 'text-pink-700 dark:text-pink-300',
     chipActive:
       'bg-pink-100 dark:bg-pink-900/40 text-pink-800 dark:text-pink-200 border-pink-300 dark:border-pink-700',
     chipInactive:
-      'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+      'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
     icon: Rocket,
   },
 }
@@ -257,22 +257,22 @@ function StatCard({
   sub?: string
 }) {
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col gap-1.5">
+    <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-1.5">
       <div className="flex items-center gap-2">
         <div
           className={cn(
-            'w-7 h-7 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0',
+            'w-7 h-7 rounded-md bg-muted flex items-center justify-center flex-shrink-0',
             iconCls,
           )}
         >
           <Icon className="w-3.5 h-3.5" />
         </div>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">{label}</span>
+        <span className="text-xs text-muted-foreground font-medium">{label}</span>
       </div>
-      <span className="text-2xl font-mono font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
+      <span className="text-2xl font-mono font-semibold text-foreground tracking-tight">
         {value}
       </span>
-      {sub && <span className="text-xs text-zinc-400 dark:text-zinc-500">{sub}</span>}
+      {sub && <span className="text-xs text-hint">{sub}</span>}
     </div>
   )
 }
@@ -297,6 +297,7 @@ function TypeChip({
   return (
     <button
       onClick={onToggle}
+      aria-pressed={active}
       className={cn(
         'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all',
         active ? cfg.chipActive : cfg.chipInactive,
@@ -305,12 +306,12 @@ function TypeChip({
       <div
         className={cn('w-1.5 h-1.5 rounded-full flex-shrink-0', active ? cfg.dot : 'bg-zinc-300 dark:bg-zinc-600')}
       />
-      <Icon className="w-3 h-3" />
+      <Icon className="w-3 h-3" aria-hidden="true" />
       {cfg.label}
       <span
         className={cn(
           'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
-          active ? 'bg-white/60 dark:bg-black/20' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
+          active ? 'bg-white/60 dark:bg-black/20' : 'bg-muted text-hint',
         )}
       >
         {count}
@@ -345,37 +346,39 @@ function MiniCalendar({
   const days = useMemo(() => getMonthGrid(year, month), [year, month])
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-border">
         <button
           onClick={onPrev}
-          className="p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors"
+          aria-label="Previous month"
+          className="p-1 rounded-md hover:bg-accent text-hint transition-colors"
         >
-          <ChevronLeft className="w-3.5 h-3.5" />
+          <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
-        <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+        <span className="text-xs font-semibold text-foreground">
           {formatMonthYear(year, month)}
         </span>
         <button
           onClick={onNext}
-          className="p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors"
+          aria-label="Next month"
+          className="p-1 rounded-md hover:bg-accent text-hint transition-colors"
         >
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
 
       {/* Day labels */}
       <div className="grid grid-cols-7 px-1 pt-2 pb-1">
         {WEEKDAY_SHORT.map((l, i) => (
-          <div key={i} className="text-center text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase">
+          <div key={i} className="text-center text-xs font-semibold text-hint uppercase">
             {l}
           </div>
         ))}
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-7 gap-px bg-zinc-100 dark:bg-zinc-800 mx-1 mb-1 rounded-lg overflow-hidden">
+      <div className="grid grid-cols-7 gap-px bg-muted mx-1 mb-1 rounded-lg overflow-hidden">
         {days.map(dateStr => {
           const dayEvents = eventsByDate[dateStr] ?? []
           const inMonth = new Date(dateStr + 'T00:00:00').getMonth() === month
@@ -389,20 +392,20 @@ function MiniCalendar({
               key={dateStr}
               onClick={() => onDayClick(dateStr)}
               className={cn(
-                'flex flex-col items-center justify-start pt-1 pb-1 gap-0.5 min-h-[40px] bg-white dark:bg-zinc-900 transition-colors',
+                'flex flex-col items-center justify-start pt-1 pb-1 gap-0.5 min-h-[40px] bg-card transition-colors',
                 !inMonth && 'opacity-25',
                 isSelected && !isToday && 'bg-pink-50 dark:bg-pink-950/20',
-                'hover:bg-zinc-50 dark:hover:bg-zinc-800/60',
+                'hover:bg-accent',
               )}
             >
               <span
                 className={cn(
                   'w-5 h-5 flex items-center justify-center text-xs font-medium rounded-full leading-none',
                   isToday
-                    ? 'bg-pink-600 text-white font-bold'
+                    ? 'bg-primary text-primary-foreground font-bold'
                     : isSelected
-                      ? 'text-pink-600 dark:text-pink-400 font-semibold'
-                      : 'text-zinc-700 dark:text-zinc-300',
+                      ? 'text-primary font-semibold'
+                      : 'text-foreground',
                 )}
               >
                 {dayNum}
@@ -429,8 +432,8 @@ function MiniCalendar({
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="text-xs text-zinc-400 dark:text-zinc-500 w-24 flex-shrink-0 pt-0.5">{label}</span>
-      <span className="text-xs text-zinc-700 dark:text-zinc-300 flex-1">{value}</span>
+      <span className="text-xs text-hint w-24 flex-shrink-0 pt-0.5">{label}</span>
+      <span className="text-xs text-foreground flex-1">{value}</span>
     </div>
   )
 }
@@ -447,17 +450,17 @@ function MetricBox({
   highlight?: boolean
 }) {
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5">
-      <div className="text-xs text-zinc-400 mb-1">{label}</div>
+    <div className="bg-card border border-border rounded-lg p-2.5">
+      <div className="text-xs text-hint mb-1">{label}</div>
       <div
         className={cn(
           'font-mono text-sm font-semibold',
-          highlight ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 dark:text-zinc-400',
+          highlight ? 'text-foreground' : 'text-muted-foreground',
         )}
       >
         {value}
       </div>
-      {sub && <div className="text-xs text-zinc-400 mt-0.5">{sub}</div>}
+      {sub && <div className="text-xs text-hint mt-0.5">{sub}</div>}
     </div>
   )
 }
@@ -475,7 +478,7 @@ function EarningsDetail({ event, d }: { event: CalendarEvent; d: EarningsDetails
           className={cn(
             'px-2 py-0.5 text-xs font-medium rounded-full border flex items-center gap-1',
             d.confirmed
-              ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
+              ? 'bg-muted text-muted-foreground border-border'
               : 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800',
           )}
         >
@@ -524,7 +527,7 @@ function EconomicDetail({ event, d }: { event: CalendarEvent; d: EconomicDetails
               ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800'
               : event.impact === 'medium'
                 ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700',
+                : 'bg-muted text-muted-foreground border-border',
           )}
         >
           {event.impact === 'high' ? 'High Impact' : event.impact === 'medium' ? 'Medium' : 'Low'}
@@ -551,7 +554,7 @@ function EconomicDetail({ event, d }: { event: CalendarEvent; d: EconomicDetails
         </div>
       )}
       {d.description && (
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{d.description}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">{d.description}</p>
       )}
     </div>
   )
@@ -603,7 +606,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
       <DetailRow label="Third Friday" value={d.isThirdFriday ? 'Yes' : 'No'} />
       {d.affectedPositions.length > 0 && (
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-hint mb-2">
             Affected Positions
           </div>
           <div className="space-y-1.5">
@@ -613,11 +616,11 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
                 className="flex items-center justify-between p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg"
               >
                 <div>
-                  <div className="text-xs font-mono font-medium text-zinc-900 dark:text-zinc-100">{pos.option}</div>
-                  <div className="text-xs text-zinc-400 mt-0.5">Qty: {pos.quantity}</div>
+                  <div className="text-xs font-mono font-medium text-foreground">{pos.option}</div>
+                  <div className="text-xs text-hint mt-0.5">Qty: {pos.quantity}</div>
                 </div>
                 <div className="text-right flex items-center gap-2">
-                  <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                  <span className="font-mono text-xs text-foreground">
                     {formatCurrency(pos.currentValue)}
                   </span>
                   <span
@@ -625,7 +628,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
                       'text-xs font-medium px-1.5 py-0.5 rounded-full',
                       pos.itm
                         ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400',
+                        : 'bg-muted text-muted-foreground',
                     )}
                   >
                     {pos.itm ? 'ITM' : 'OTM'}
@@ -637,7 +640,7 @@ function OptionsDetail({ d }: { d: OptionsDetails }) {
         </div>
       )}
       {d.affectedPositions.length === 0 && (
-        <p className="text-xs text-zinc-400 dark:text-zinc-500">No affected positions in portfolio</p>
+        <p className="text-xs text-hint">No affected positions in portfolio</p>
       )}
     </div>
   )
@@ -688,7 +691,7 @@ function IpoDetail({ d }: { d: IpoDetails }) {
               {d.leadUnderwriters.map(u => (
                 <span
                   key={u}
-                  className="px-1.5 py-0.5 text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded border border-zinc-200 dark:border-zinc-700"
+                  className="px-1.5 py-0.5 text-xs bg-muted text-muted-foreground rounded border border-border"
                 >
                   {u}
                 </span>
@@ -734,14 +737,15 @@ function AgendaEventCard({
         'rounded-xl border transition-all duration-150',
         isDismissed && 'opacity-60',
         isExpanded
-          ? 'border-zinc-300 dark:border-zinc-700 shadow-sm'
-          : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700',
-        'bg-white dark:bg-zinc-900 overflow-hidden',
+          ? 'border-border shadow-sm'
+          : 'border-border hover:border-zinc-300 dark:hover:border-zinc-700',
+        'bg-card overflow-hidden',
       )}
     >
       {/* Summary row */}
       <button
         onClick={onToggle}
+        aria-expanded={isExpanded}
         className="w-full flex items-center gap-3 px-4 py-3 text-left"
       >
         {/* Left type stripe */}
@@ -764,13 +768,13 @@ function AgendaEventCard({
             <span className={cn(
               'text-sm font-medium truncate',
               isDismissed
-                ? 'line-through text-zinc-400 dark:text-zinc-500'
-                : 'text-zinc-900 dark:text-zinc-100',
+                ? 'line-through text-hint'
+                : 'text-foreground',
             )}>
               {event.title}
             </span>
             {isDismissed && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-full border border-zinc-200 dark:border-zinc-700 flex-shrink-0">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded-full border border-border flex-shrink-0">
                 <EyeOff className="w-2 h-2" />
                 Dismissed
               </span>
@@ -789,13 +793,13 @@ function AgendaEventCard({
                   e.stopPropagation()
                   onViewInstrument?.(event.instrument!)
                 }}
-                className="text-xs font-mono font-semibold text-pink-600 dark:text-pink-400 hover:underline"
+                className="text-xs font-mono font-semibold text-primary hover:underline"
               >
                 {event.instrument}
               </button>
             )}
             {timing && (
-              <span className="text-xs text-zinc-400 dark:text-zinc-500">{timing}</span>
+              <span className="text-xs text-hint">{timing}</span>
             )}
             {event.impact === 'high' && (
               <span className="inline-flex items-center gap-0.5 text-xs font-medium text-red-600 dark:text-red-400">
@@ -808,8 +812,9 @@ function AgendaEventCard({
 
         {/* Expand chevron */}
         <ChevronDown
+          aria-hidden="true"
           className={cn(
-            'w-4 h-4 text-zinc-400 dark:text-zinc-500 flex-shrink-0 transition-transform duration-150',
+            'w-4 h-4 text-hint flex-shrink-0 transition-transform duration-150',
             isExpanded && 'rotate-180',
           )}
         />
@@ -817,7 +822,7 @@ function AgendaEventCard({
 
       {/* Expanded detail */}
       {isExpanded && (
-        <div className="px-4 pb-4 border-t border-zinc-100 dark:border-zinc-800 pt-3 bg-zinc-50/60 dark:bg-zinc-800/20">
+        <div className="px-4 pb-4 border-t border-border pt-3 bg-zinc-50/60 dark:bg-zinc-800/20">
           {event.type === 'earnings' && (
             <EarningsDetail event={event} d={event.details as EarningsDetails} />
           )}
@@ -829,13 +834,13 @@ function AgendaEventCard({
           )}
           {event.type === 'options' && <OptionsDetail d={event.details as OptionsDetails} />}
           {event.type === 'ipo' && <IpoDetail d={event.details as IpoDetails} />}
-          <div className="mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
+          <div className="mt-3 pt-3 border-t border-border flex items-center gap-2">
             {!isDismissed && (
               <button
                 onClick={() => onCreateAlert?.(event.id)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground border border-border rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-colors"
               >
-                <Bell className="w-3 h-3" />
+                <Bell className="w-3 h-3" aria-hidden="true" />
                 Set Alert
               </button>
             )}
@@ -844,15 +849,15 @@ function AgendaEventCard({
                 onClick={onRestore}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3 h-3" aria-hidden="true" />
                 Restore
               </button>
             ) : (
               <button
                 onClick={onDismiss}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground border border-border rounded-lg hover:bg-accent hover:text-foreground transition-colors"
               >
-                <EyeOff className="w-3 h-3" />
+                <EyeOff className="w-3 h-3" aria-hidden="true" />
                 Dismiss
               </button>
             )}
@@ -957,10 +962,10 @@ export function CalendarDashboard({
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Overview
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Trading Calendar
           </h1>
         </div>
@@ -970,7 +975,7 @@ export function CalendarDashboard({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
           icon={Calendar}
-          iconCls="text-zinc-500 dark:text-zinc-400"
+          iconCls="text-muted-foreground"
           label="This Week"
           value={stats.thisWeekTotal}
           sub={`${stats.thisWeekByType.earnings} earnings · ${stats.thisWeekByType.economic} economic`}
@@ -1012,21 +1017,22 @@ export function CalendarDashboard({
         <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
         <button
           onClick={() => setPortfolioOnly(p => !p)}
+          aria-pressed={portfolioOnly}
           className={cn(
             'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all',
             portfolioOnly
               ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700'
-              : 'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+              : 'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
           )}
         >
-          <Briefcase className="w-3 h-3" />
+          <Briefcase className="w-3 h-3" aria-hidden="true" />
           Portfolio Only
           <span
             className={cn(
               'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
               portfolioOnly
                 ? 'bg-white/60 dark:bg-black/20'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
+                : 'bg-muted text-hint',
             )}
           >
             {portfolioCount}
@@ -1035,22 +1041,23 @@ export function CalendarDashboard({
         <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
         <button
           onClick={() => { setShowDismissed(d => !d); setExpandedId(null) }}
+          aria-pressed={showDismissed}
           className={cn(
             'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all',
             showDismissed
-              ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-600'
-              : 'text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
+              ? 'bg-zinc-200 dark:bg-zinc-700 text-foreground border-zinc-300 dark:border-zinc-600'
+              : 'text-muted-foreground border-border hover:border-zinc-300 dark:hover:border-zinc-600',
           )}
         >
-          <EyeOff className="w-3 h-3" />
+          <EyeOff className="w-3 h-3" aria-hidden="true" />
           Dismissed
           <span
             className={cn(
               'ml-0.5 px-1.5 py-0.5 rounded-full text-xs font-medium',
               showDismissed
                 ? 'bg-white/60 dark:bg-black/20'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400',
-              dismissedIds.size > 0 && !showDismissed && 'bg-zinc-300 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-300',
+                : 'bg-muted text-hint',
+              dismissedIds.size > 0 && !showDismissed && 'bg-zinc-300 dark:bg-zinc-600 text-foreground',
             )}
           >
             {dismissedIds.size}
@@ -1060,15 +1067,15 @@ export function CalendarDashboard({
 
       {/* Main content: Agenda + Mini Calendar */}
       {filteredEvents.length === 0 ? (
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-12 text-center">
+        <div className="bg-card border border-border rounded-xl p-12 text-center">
           <EyeOff className={cn(
             'w-10 h-10 mx-auto mb-3',
-            showDismissed ? 'text-zinc-300 dark:text-zinc-600' : 'text-zinc-200 dark:text-zinc-700',
+            showDismissed ? 'text-faint' : 'text-zinc-200 dark:text-zinc-700',
           )} />
-          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm font-medium text-muted-foreground">
             {showDismissed ? 'No dismissed events' : 'No events match the selected filters'}
           </p>
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
+          <p className="text-xs text-hint mt-1">
             {showDismissed
               ? 'Dismissed events will appear here'
               : 'Try enabling more event types or removing filters'}
@@ -1079,7 +1086,7 @@ export function CalendarDashboard({
                 setActiveTypes(new Set(['earnings', 'economic', 'dividend', 'options', 'ipo']))
                 setPortfolioOnly(false)
               }}
-              className="mt-3 text-xs text-pink-600 dark:text-pink-400 hover:underline"
+              className="mt-3 text-xs text-primary hover:underline"
             >
               Reset filters
             </button>
@@ -1094,7 +1101,7 @@ export function CalendarDashboard({
                 {/* Month separator */}
                 <div className="flex items-center gap-3 mb-5">
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
-                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                  <span className="text-xs font-bold uppercase tracking-widest text-hint whitespace-nowrap">
                     {group.monthLabel}
                   </span>
                   <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
@@ -1119,8 +1126,8 @@ export function CalendarDashboard({
                             className={cn(
                               'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border',
                               isToday
-                                ? 'bg-pink-600 text-white border-pink-600'
-                                : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700',
+                                ? 'bg-primary text-primary-foreground border-primary'
+                                : 'bg-card text-muted-foreground border-border',
                             )}
                           >
                             {dayNum}
@@ -1129,8 +1136,8 @@ export function CalendarDashboard({
                             className={cn(
                               'text-sm font-semibold',
                               isToday
-                                ? 'text-pink-600 dark:text-pink-400'
-                                : 'text-zinc-700 dark:text-zinc-300',
+                                ? 'text-primary'
+                                : 'text-foreground',
                             )}
                           >
                             {formatDayHeader(day.dateStr)}
@@ -1144,8 +1151,8 @@ export function CalendarDashboard({
                               Portfolio
                             </button>
                           )}
-                          <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
-                          <span className="text-xs text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+                          <div className="h-px flex-1 bg-muted" />
+                          <span className="text-xs text-hint flex-shrink-0">
                             {day.events.length} event{day.events.length !== 1 ? 's' : ''}
                           </span>
                         </div>
@@ -1197,8 +1204,8 @@ export function CalendarDashboard({
             />
 
             {/* Event type legend */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3">
-              <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-2.5">
+            <div className="bg-card border border-border rounded-xl p-3">
+              <div className="text-xs font-semibold uppercase tracking-wider text-hint mb-2.5">
                 Event Types
               </div>
               <div className="space-y-1.5">
@@ -1209,8 +1216,8 @@ export function CalendarDashboard({
                     <div key={type} className="flex items-center gap-2">
                       <div className={cn('w-1.5 h-1.5 rounded-full flex-shrink-0', cfg.dot)} />
                       <Icon className={cn('w-3 h-3', cfg.color)} />
-                      <span className="text-xs text-zinc-600 dark:text-zinc-400 flex-1">{cfg.label}</span>
-                      <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">{count}</span>
+                      <span className="text-xs text-muted-foreground flex-1">{cfg.label}</span>
+                      <span className="text-xs font-mono text-hint">{count}</span>
                     </div>
                   )
                 })}

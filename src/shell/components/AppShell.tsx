@@ -371,9 +371,9 @@ export default function AppShell({
             }
           >
             {tradingMode === 'paper' ? (
-              <FlaskConical size={collapsed ? 16 : 13} />
+              <FlaskConical size={collapsed ? 16 : 13} aria-hidden="true" />
             ) : (
-              <span className="relative flex h-2.5 w-2.5 items-center justify-center">
+              <span className="relative flex h-2.5 w-2.5 items-center justify-center" aria-hidden="true">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-500 opacity-75 motion-reduce:hidden" />
                 <Radio size={collapsed ? 16 : 13} className="relative" />
               </span>
@@ -386,6 +386,7 @@ export default function AppShell({
         <div className={collapsed ? 'flex justify-center pb-4' : 'px-3 pb-4'}>
           <button
             onClick={() => setCommandPaletteOpen(true)}
+            aria-label="Open command palette"
             title={collapsed ? 'Search (\u2318K)' : undefined}
             className={
               collapsed
@@ -393,7 +394,7 @@ export default function AppShell({
                 : 'flex w-full items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-hint transition-colors hover:border-sidebar-border hover:text-muted-foreground min-h-[44px] lg:min-h-0'
             }
           >
-            <Search size={14} />
+            <Search size={14} aria-hidden="true" />
             {!collapsed && (
               <>
                 <span className="flex-1 text-left text-xs">Search...</span>
@@ -442,6 +443,7 @@ export default function AppShell({
           <div className={collapsed ? 'flex justify-center py-2' : 'px-3 py-2'}>
             <button
               onClick={() => setEmergencyCloseOpen(true)}
+              aria-label="Close all positions"
               title={collapsed ? 'Close All Positions' : undefined}
               className={
                 collapsed
@@ -451,7 +453,7 @@ export default function AppShell({
                     transition-colors hover:border-red-300 dark:hover:border-red-800 hover:bg-red-100 dark:hover:bg-red-950/50`
               }
             >
-              <ShieldAlert size={14} />
+              <ShieldAlert size={14} aria-hidden="true" />
               {!collapsed && <span>Close All Positions</span>}
             </button>
           </div>
@@ -521,7 +523,7 @@ export default function AppShell({
             aria-expanded={sidebarOpen}
             className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
-            {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+            {sidebarOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
           </button>
         </div>
 

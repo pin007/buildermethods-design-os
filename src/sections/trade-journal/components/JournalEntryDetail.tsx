@@ -149,18 +149,18 @@ export function JournalEntryDetail({
         <div className="flex items-center gap-4">
           <button
             onClick={() => onBack?.()}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 active:scale-95"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-foreground active:scale-95"
             aria-label="Back to journal"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} aria-hidden="true" />
           </button>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Trade Journal
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               {ts.instrument}{' '}
-              <span className="text-zinc-400 dark:text-zinc-600">{ts.instrumentName}</span>
+              <span className="text-faint">{ts.instrumentName}</span>
             </h1>
           </div>
         </div>
@@ -176,22 +176,23 @@ export function JournalEntryDetail({
           >
             <Star
               size={14}
+              aria-hidden="true"
               className={entry.starred ? 'fill-amber-400 text-amber-400' : ''}
             />
             {entry.starred ? 'Starred' : 'Star'}
           </button>
           <button
             onClick={() => onEdit?.(entry.id)}
-            className="flex items-center gap-1.5 rounded-lg bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98]"
           >
-            <Pencil size={14} />
+            <Pencil size={14} aria-hidden="true" />
             Edit
           </button>
           <button
             onClick={() => setDeleteModalOpen(true)}
             className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:border-red-900/40 dark:bg-zinc-900/80 dark:text-red-400 dark:hover:bg-red-950/20"
           >
-            <Trash2 size={14} />
+            <Trash2 size={14} aria-hidden="true" />
             Delete
           </button>
         </div>
@@ -200,7 +201,7 @@ export function JournalEntryDetail({
       {/* ================================================================= */}
       {/* Trade Summary Card                                                */}
       {/* ================================================================= */}
-      <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
         {/* Accent line */}
         <div className={`absolute top-0 left-0 right-0 h-[2px] ${
           pnlPositive
@@ -268,12 +269,12 @@ export function JournalEntryDetail({
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
         {/* Pre-Trade Section */}
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/30">
               <Target size={13} className="text-blue-600 dark:text-blue-400" />
             </div>
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="text-sm font-semibold text-foreground">
               Pre-Trade Analysis
             </h2>
           </div>
@@ -289,12 +290,12 @@ export function JournalEntryDetail({
         </div>
 
         {/* Post-Trade Section */}
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30">
               <CheckCircle2 size={13} className="text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="text-sm font-semibold text-foreground">
               Post-Trade Review
             </h2>
           </div>
@@ -313,12 +314,12 @@ export function JournalEntryDetail({
       {/* ================================================================= */}
       {/* Process Scores                                                    */}
       {/* ================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
-            <Gauge size={13} className="text-pink-600 dark:text-pink-400" />
+            <Gauge size={13} className="text-primary" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             Process Scores
           </h2>
           <span className={`ml-auto rounded-lg px-2.5 py-1 font-mono text-lg font-bold ${
@@ -331,7 +332,7 @@ export function JournalEntryDetail({
               : 'text-red-600 dark:text-red-400'
           }`}>
             {entry.processScores.overall.toFixed(1)}
-            <span className="ml-1 text-xs font-normal text-zinc-400 dark:text-zinc-600">/ 5</span>
+            <span className="ml-1 text-xs font-normal text-faint">/ 5</span>
           </span>
         </div>
 
@@ -358,10 +359,10 @@ export function JournalEntryDetail({
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
         {/* Tags */}
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-            <Tag size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Tags</h2>
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
+            <Tag size={13} className="text-hint" />
+            <h2 className="text-sm font-semibold text-foreground">Tags</h2>
           </div>
           <div className="p-5">
             {entry.tags.length > 0 ? (
@@ -376,16 +377,16 @@ export function JournalEntryDetail({
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-zinc-400 dark:text-zinc-600">No tags</p>
+              <p className="text-sm text-faint">No tags</p>
             )}
           </div>
         </div>
 
         {/* Related Trades */}
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-            <Link2 size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Related Trades</h2>
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
+            <Link2 size={13} className="text-hint" />
+            <h2 className="text-sm font-semibold text-foreground">Related Trades</h2>
           </div>
           <div className="p-5">
             {entry.relatedTrades.length > 0 ? (
@@ -396,27 +397,28 @@ export function JournalEntryDetail({
                     onClick={() => onViewRelatedTrade?.(tradeId)}
                     className="group flex w-full items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-left transition-colors hover:border-pink-300 hover:bg-pink-50/50 dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:border-pink-900/40 dark:hover:bg-pink-950/10"
                   >
-                    <span className="font-mono text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+                    <span className="font-mono text-xs font-semibold text-muted-foreground">
                       {tradeId}
                     </span>
                     <ChevronRight
                       size={12}
+                      aria-hidden="true"
                       className="ml-auto text-zinc-300 transition-transform group-hover:translate-x-0.5 dark:text-zinc-600"
                     />
                   </button>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-zinc-400 dark:text-zinc-600">No related trades</p>
+              <p className="text-sm text-faint">No related trades</p>
             )}
           </div>
         </div>
 
         {/* Attachments */}
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2.5 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-            <Paperclip size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Attachments</h2>
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="flex items-center gap-2.5 border-b border-border px-6 py-4">
+            <Paperclip size={13} className="text-hint" />
+            <h2 className="text-sm font-semibold text-foreground">Attachments</h2>
             {entry.attachments.length > 0 && (
               <span className="rounded-full bg-zinc-100 px-1.5 py-0.5 text-xs font-bold tabular-nums text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500">
                 {entry.attachments.length}
@@ -430,10 +432,11 @@ export function JournalEntryDetail({
                   <button
                     key={att.id}
                     onClick={() => setLightboxUrl(att.url)}
+                    aria-label={`View attachment ${att.fileName}`}
                     className="group relative aspect-video overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 transition-all hover:border-pink-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-800/60 dark:hover:border-pink-900/40"
                   >
                     <div className="flex h-full items-center justify-center">
-                      <Image size={20} className="text-zinc-300 dark:text-zinc-700" />
+                      <Image size={20} className="text-faint" />
                     </div>
                     <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                       <p className="px-2 py-1.5 text-xs font-medium text-white truncate">
@@ -444,7 +447,7 @@ export function JournalEntryDetail({
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-zinc-400 dark:text-zinc-600">No attachments</p>
+              <p className="text-sm text-faint">No attachments</p>
             )}
           </div>
         </div>
@@ -453,7 +456,7 @@ export function JournalEntryDetail({
       {/* ================================================================= */}
       {/* Metadata                                                          */}
       {/* ================================================================= */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-400 dark:text-zinc-600">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-faint">
         <span>Created: {formatDateTime(entry.createdAt)}</span>
         <span>\u00b7</span>
         <span>Updated: {formatDateTime(entry.updatedAt)}</span>
@@ -474,12 +477,12 @@ export function JournalEntryDetail({
                 <AlertTriangle size={20} className="text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                <h3 className="text-base font-semibold text-foreground">
                   Delete Journal Entry
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   Are you sure you want to delete this journal entry for{' '}
-                  <span className="font-mono font-semibold text-zinc-700 dark:text-zinc-300">
+                  <span className="font-mono font-semibold text-foreground">
                     {ts.instrument}
                   </span>
                   ? This action cannot be undone.
@@ -514,9 +517,10 @@ export function JournalEntryDetail({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8">
           <button
             onClick={() => setLightboxUrl(null)}
+            aria-label="Close image preview"
             className="absolute right-4 top-4 rounded-lg bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
           <div className="flex h-full max-h-[80vh] w-full max-w-4xl items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900">
             <div className="flex flex-col items-center gap-4">
@@ -545,10 +549,10 @@ function DetailField({
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
         {label}
       </p>
-      <p className={`mt-0.5 text-sm text-zinc-800 dark:text-zinc-200 ${mono ? 'font-mono' : ''}`}>
+      <p className={`mt-0.5 text-sm text-foreground ${mono ? 'font-mono' : ''}`}>
         {value}
       </p>
     </div>
@@ -570,20 +574,20 @@ function PreTradeContent({
     <div className="space-y-4 p-6">
       {/* Thesis */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
           Thesis
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {preTrade.thesis}
         </p>
       </div>
 
       {/* Entry Criteria */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
           Entry Criteria
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {preTrade.entryCriteria}
         </p>
       </div>
@@ -591,7 +595,7 @@ function PreTradeContent({
       {/* Grid: target, stop, R:R */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
             Target
           </p>
           <p className="mt-0.5 font-mono text-sm font-medium text-emerald-600 dark:text-emerald-400">
@@ -599,7 +603,7 @@ function PreTradeContent({
           </p>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
             Stop Loss
           </p>
           <p className="mt-0.5 font-mono text-sm font-medium text-red-600 dark:text-red-400">
@@ -607,10 +611,10 @@ function PreTradeContent({
           </p>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
             R:R Ratio
           </p>
-          <p className="mt-0.5 font-mono text-sm font-medium text-zinc-800 dark:text-zinc-200">
+          <p className="mt-0.5 font-mono text-sm font-medium text-foreground">
             {preTrade.riskRewardRatio.toFixed(2)}
           </p>
         </div>
@@ -618,10 +622,10 @@ function PreTradeContent({
 
       {/* Position size rationale */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-hint">
           Position Size Rationale
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {preTrade.positionSizeRationale}
         </p>
       </div>
@@ -630,7 +634,7 @@ function PreTradeContent({
       <div className="flex flex-wrap items-center gap-3">
         {/* Confidence */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-zinc-400 dark:text-zinc-500">Confidence</span>
+          <span className="text-xs text-hint">Confidence</span>
           <ConfidenceDots value={preTrade.confidenceLevel} />
         </div>
 
@@ -665,7 +669,7 @@ function PostTradeContent({
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-500 dark:text-emerald-400">
           What Worked
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {postTrade.whatWorked}
         </p>
       </div>
@@ -674,7 +678,7 @@ function PostTradeContent({
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-red-500 dark:text-red-400">
           What Didn&apos;t Work
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {postTrade.whatDidntWork}
         </p>
       </div>
@@ -683,7 +687,7 @@ function PostTradeContent({
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-amber-500 dark:text-amber-400">
           Lessons Learned
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <p className="mt-1 text-sm leading-relaxed text-foreground">
           {postTrade.lessonsLearned}
         </p>
       </div>
@@ -723,12 +727,12 @@ function EmptySection({
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-10">
-      <p className="text-sm text-zinc-400 dark:text-zinc-500">{message}</p>
+      <p className="text-sm text-hint">{message}</p>
       <button
         onClick={onEdit}
-        className="mt-2 flex items-center gap-1 text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400"
+        className="mt-2 flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary"
       >
-        <Pencil size={12} />
+        <Pencil size={12} aria-hidden="true" />
         Edit to add
       </button>
     </div>
@@ -747,7 +751,7 @@ function ConfidenceDots({ value }: { value: number }) {
           key={dot}
           className={`h-2 w-2 rounded-full ${
             dot <= value
-              ? 'bg-pink-600 dark:bg-pink-400'
+              ? 'bg-primary dark:bg-pink-400'
               : 'bg-zinc-200 dark:bg-zinc-700'
           }`}
         />
@@ -781,19 +785,19 @@ function ScoreBar({
   return (
     <div className="flex items-center gap-3">
       <div className="flex w-40 items-center gap-2 shrink-0 sm:w-48">
-        <Icon size={14} className="shrink-0 text-zinc-400 dark:text-zinc-500" />
-        <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 truncate">
+        <Icon size={14} className="shrink-0 text-hint" />
+        <span className="text-xs font-medium text-muted-foreground truncate">
           {label}
         </span>
       </div>
       <div className="flex flex-1 items-center gap-2">
-        <div className="h-2 flex-1 rounded-full bg-zinc-100 dark:bg-zinc-800">
+        <div className="h-2 flex-1 rounded-full bg-muted">
           <div
             className={`h-2 rounded-full transition-all ${getColor(value)}`}
             style={{ width: `${percentage}%` }}
           />
         </div>
-        <span className="w-6 text-right font-mono text-xs font-bold text-zinc-700 dark:text-zinc-300">
+        <span className="w-6 text-right font-mono text-xs font-bold text-foreground">
           {value}
         </span>
       </div>

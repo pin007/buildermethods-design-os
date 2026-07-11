@@ -8,10 +8,10 @@ import { SettingsDetailLayout, FormSection, FormRow, ToggleSwitch } from './Sett
 // ---------------------------------------------------------------------------
 
 const inputClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 const selectClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 const statusDotClass: Record<string, string> = {
   success: 'bg-emerald-500',
@@ -103,8 +103,8 @@ export function PortfolioCurrency({
                     rounded-full px-3 py-1 text-xs font-medium transition-colors
                     ${
                       active
-                        ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 ring-1 ring-pink-600/25 dark:ring-pink-400/25'
-                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 ring-1 ring-zinc-200 dark:ring-zinc-800'
+                        ? 'bg-primary/10 text-primary ring-1 ring-ring/25'
+                        : 'bg-muted text-hint ring-1 ring-border'
                     }
                   `}
                 >
@@ -127,13 +127,14 @@ export function PortfolioCurrency({
           {benchmarks.map((bench) => (
             <div
               key={bench.id}
-              className="flex items-center justify-between gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/40 px-4 py-3"
+              className="flex items-center justify-between gap-4 rounded-lg border border-border bg-white/50 dark:bg-zinc-900/40 px-4 py-3"
             >
               <div className="min-w-0">
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{bench.label}</span>
-                <span className="ml-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">{bench.symbol}</span>
+                <span className="text-sm font-medium text-foreground">{bench.label}</span>
+                <span className="ml-2 font-mono text-xs text-muted-foreground">{bench.symbol}</span>
               </div>
               <ToggleSwitch
+                label={`Enable ${bench.label} benchmark`}
                 enabled={bench.enabled}
                 onChange={(enabled) => {
                   onToggleBenchmark?.(bench.id, enabled)
@@ -160,6 +161,7 @@ export function PortfolioCurrency({
                 min={0}
                 max={100}
                 step={1}
+                aria-label="Warning Threshold"
                 value={marginAlertThresholds.warning}
                 onChange={(e) => {
                   const v = parseInt(e.target.value, 10)
@@ -169,7 +171,7 @@ export function PortfolioCurrency({
                 }}
                 className={`${inputClasses} w-24`}
               />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+              <span className="text-xs text-muted-foreground">%</span>
             </div>
           </FormRow>
 
@@ -180,6 +182,7 @@ export function PortfolioCurrency({
                 min={0}
                 max={100}
                 step={1}
+                aria-label="Critical Threshold"
                 value={marginAlertThresholds.critical}
                 onChange={(e) => {
                   const v = parseInt(e.target.value, 10)
@@ -189,14 +192,14 @@ export function PortfolioCurrency({
                 }}
                 className={`${inputClasses} w-24`}
               />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+              <span className="text-xs text-muted-foreground">%</span>
             </div>
           </FormRow>
         </div>
 
         {/* Visual threshold bar */}
         <div className="mt-2">
-          <div className="mb-1 flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
+          <div className="mb-1 flex items-center justify-between text-xs text-hint">
             <span>0%</span>
             <span>100%</span>
           </div>
@@ -235,7 +238,7 @@ export function PortfolioCurrency({
               title={`Critical: ${marginAlertThresholds.critical}%`}
             />
           </div>
-          <div className="mt-1 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-500/50" />
               Safe
@@ -261,6 +264,7 @@ export function PortfolioCurrency({
       >
         <FormRow label="Enabled" hint="Periodically reconcile positions with the broker" horizontal>
           <ToggleSwitch
+            label="Enable position reconciliation"
             enabled={reconciliation.enabled}
             onChange={(enabled) => {
               onUpdateReconciliation?.({ enabled })
@@ -276,6 +280,7 @@ export function PortfolioCurrency({
               min={10}
               max={86400}
               step={10}
+              aria-label="Reconciliation interval"
               value={reconciliation.intervalSeconds}
               onChange={(e) => {
                 const v = parseInt(e.target.value, 10)
@@ -285,12 +290,13 @@ export function PortfolioCurrency({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
 
         <FormRow label="Run on Startup" hint="Trigger reconciliation when the system starts" horizontal>
           <ToggleSwitch
+            label="Run reconciliation on startup"
             enabled={reconciliation.runOnStartup}
             onChange={(runOnStartup) => {
               onUpdateReconciliation?.({ runOnStartup })
@@ -300,14 +306,14 @@ export function PortfolioCurrency({
         </FormRow>
 
         {/* Last run info */}
-        <div className="flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2">
+        <div className="flex items-center gap-3 rounded-lg border border-border bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2">
           <div
             className={`h-2 w-2 shrink-0 rounded-full ${statusDotClass[reconciliation.lastRunStatus]}`}
           />
-          <span className="text-xs font-medium text-zinc-900 dark:text-zinc-50">
+          <span className="text-xs font-medium text-foreground">
             Last Run: {statusLabel[reconciliation.lastRunStatus]}
           </span>
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs text-muted-foreground">
             {new Date(reconciliation.lastRun).toLocaleString()}
           </span>
         </div>
@@ -327,13 +333,14 @@ export function PortfolioCurrency({
               min={1}
               max={86400}
               step={1}
+              aria-label="Cache TTL"
               value={cacheTtlSeconds}
               onChange={() => {
                 markDirty()
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
       </FormSection>

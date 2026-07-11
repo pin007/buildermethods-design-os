@@ -21,10 +21,10 @@ import {
 // ---------------------------------------------------------------------------
 
 const inputClasses =
-  'w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'w-full rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary dark:focus:border-pink-400 focus:ring-1 focus:ring-ring/30 dark:focus:ring-pink-400/30'
 
 const providerTagClasses =
-  'rounded-full bg-pink-600/10 dark:bg-pink-500/10 px-2.5 py-0.5 text-xs font-medium text-pink-600 dark:text-pink-400'
+  'rounded-full bg-primary/10 dark:bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary'
 
 // ---------------------------------------------------------------------------
 // Sub-section wrapper: visually distinct with a left border accent
@@ -46,10 +46,11 @@ function SubSection({
   children,
 }: SubSectionProps) {
   return (
-    <div className="border-l-2 border-pink-600/20 dark:border-pink-400/20 pl-4">
+    <div className="border-l-2 border-primary/20 dark:border-pink-400/20 pl-4">
       <div className="mb-3 flex items-center justify-between">
-        <h4 className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{title}</h4>
+        <h4 className="text-sm font-medium text-foreground">{title}</h4>
         <ToggleSwitch
+          label={`Enable ${title}`}
           enabled={enabled}
           onChange={(val) => {
             onToggle?.(val)
@@ -69,7 +70,7 @@ function SubSection({
 function ProviderTags({ providers }: { providers: string[] }) {
   if (providers.length === 0) {
     return (
-      <span className="text-xs text-zinc-500 dark:text-zinc-400 italic">
+      <span className="text-xs text-muted-foreground italic">
         No providers configured
       </span>
     )
@@ -349,12 +350,13 @@ interface ScheduleRowProps {
 
 function ScheduleRow({ schedule, onToggle, onMarkChanged }: ScheduleRowProps) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/30 dark:bg-zinc-800/30 px-4 py-3">
+    <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-zinc-100/30 dark:bg-zinc-800/30 px-4 py-3">
       <div className="min-w-0">
-        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{schedule.label}</p>
-        <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">{schedule.cronLabel}</p>
+        <p className="text-sm font-medium text-foreground">{schedule.label}</p>
+        <p className="font-mono text-xs text-muted-foreground">{schedule.cronLabel}</p>
       </div>
       <ToggleSwitch
+        label={`Enable ${schedule.label} schedule`}
         enabled={schedule.enabled}
         onChange={(val) => {
           onToggle?.(schedule.id, val)
@@ -444,7 +446,7 @@ export function IntelligenceSources({
       >
         {/* Research Schedules */}
         <div>
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-hint">
             Research Schedules
           </h4>
           <div className="space-y-2">
@@ -467,7 +469,7 @@ export function IntelligenceSources({
 
         {/* Confidence Thresholds */}
         <div>
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-hint">
             Confidence Thresholds
           </h4>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -499,7 +501,7 @@ export function IntelligenceSources({
         {/* Scoring Weights */}
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-hint">
               Scoring Weights
             </h4>
             <span
@@ -523,7 +525,7 @@ export function IntelligenceSources({
                   onChange={markChanged}
                   className={inputClasses}
                 />
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                   %
                 </span>
               </div>
@@ -538,7 +540,7 @@ export function IntelligenceSources({
                   onChange={markChanged}
                   className={inputClasses}
                 />
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                   %
                 </span>
               </div>
@@ -553,16 +555,16 @@ export function IntelligenceSources({
                   onChange={markChanged}
                   className={inputClasses}
                 />
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                   %
                 </span>
               </div>
             </FormRow>
           </div>
           {/* Visual weight bar */}
-          <div className="mt-2 flex h-2 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+          <div className="mt-2 flex h-2 overflow-hidden rounded-full bg-muted">
             <div
-              className="bg-pink-600 transition-all"
+              className="bg-primary transition-all"
               style={{ width: `${(technical / Math.max(weightsTotal, 1)) * 100}%` }}
               title={`Technical: ${technical}%`}
             />
@@ -577,9 +579,9 @@ export function IntelligenceSources({
               title={`Diversification: ${diversification}%`}
             />
           </div>
-          <div className="mt-1 flex gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-1 flex gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-full bg-pink-600" />
+              <span className="inline-block h-2 w-2 rounded-full bg-primary" />
               Technical
             </span>
             <span className="flex items-center gap-1">
@@ -595,7 +597,7 @@ export function IntelligenceSources({
 
         {/* Top N Published */}
         <div>
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-hint">
             Top N Published
           </h4>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -625,6 +627,7 @@ export function IntelligenceSources({
         {/* Watchlist Focused */}
         <FormRow label="Watchlist Focused" hint="Only analyze instruments on your watchlist" horizontal>
           <ToggleSwitch
+            label="Watchlist focused analysis"
             enabled={marketAnalyst.watchlistFocused}
             onChange={(val) => {
               onUpdateMarketAnalyst?.({ watchlistFocused: val })

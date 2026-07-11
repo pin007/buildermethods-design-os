@@ -67,7 +67,7 @@ function TrendArrow({ direction, size = 14 }: { direction: TrendDirection; size?
   if (direction === 'down') {
     return <ArrowDownRight size={size} className="text-red-500 dark:text-red-400" />
   }
-  return <Minus size={size} className="text-zinc-400 dark:text-zinc-500" />
+  return <Minus size={size} className="text-hint" />
 }
 
 // =============================================================================
@@ -214,8 +214,8 @@ function HabitGauge({
       </div>
 
       <div className="flex items-center gap-1.5">
-        <Icon size={12} className="text-zinc-400 dark:text-zinc-500" />
-        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <Icon size={12} className="text-hint" />
+        <span className="text-xs font-medium text-muted-foreground">
           {label}
         </span>
       </div>
@@ -243,11 +243,11 @@ const severityConfig = {
     icon: 'text-amber-500 dark:text-amber-400',
   },
   low: {
-    border: 'border-zinc-200 dark:border-zinc-800',
+    border: 'border-border',
     bg: 'bg-zinc-50/50 dark:bg-zinc-900/40',
     badge: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
     glow: 'bg-zinc-500/[0.04] dark:bg-zinc-500/[0.06]',
-    icon: 'text-zinc-400 dark:text-zinc-500',
+    icon: 'text-hint',
   },
 }
 
@@ -295,22 +295,22 @@ export function JournalDashboard({
     return (
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="relative w-full max-w-md">
-          <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-          <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-              <BookOpen size={28} className="text-zinc-400 dark:text-zinc-500" />
+          <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+          <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+              <BookOpen size={28} className="text-hint" />
             </div>
-            <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+            <h2 className="mt-6 text-xl font-semibold text-foreground">
               Start Your Trading Journal
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Start journaling your trades to track improvement over time.
             </p>
             <button
               onClick={() => onCreateEntry?.()}
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98]"
             >
-              <Plus size={15} />
+              <Plus size={15} aria-hidden="true" />
               Create Entry
             </button>
           </div>
@@ -326,19 +326,19 @@ export function JournalDashboard({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Overview
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Journal Dashboard
           </h1>
         </div>
 
         <button
           onClick={() => onCreateEntry?.()}
-          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
+          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
         >
-          <Plus size={15} className="transition-transform group-hover:rotate-90" />
+          <Plus size={15} aria-hidden="true" className="transition-transform group-hover:rotate-90" />
           Create Entry
         </button>
       </div>
@@ -347,7 +347,7 @@ export function JournalDashboard({
       {/* Portfolio Selector                                                */}
       {/* ================================================================= */}
       {portfolios.length > 1 && (
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           <button
             onClick={() => {
               setSelectedPortfolio(null)
@@ -357,8 +357,8 @@ export function JournalDashboard({
               flex flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200
               sm:flex-none
               ${selectedPortfolio === null
-                ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                : 'text-hint hover:text-foreground'
               }
             `}
           >
@@ -377,8 +377,8 @@ export function JournalDashboard({
                   flex flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200
                   sm:flex-none
                   ${isActive
-                    ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                    : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                    ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                    : 'text-hint hover:text-foreground'
                   }
                 `}
               >
@@ -395,23 +395,23 @@ export function JournalDashboard({
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
 
         {/* Total Journal Entries */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
           <div className="text-pink-500/40 dark:text-pink-400/30">
             <BookOpen size={16} strokeWidth={1.5} />
           </div>
-          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Total Entries
           </p>
-          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {stats.totalEntries}
           </p>
-          <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-1 text-xs text-faint">
             journal entries
           </p>
         </div>
 
         {/* Average Process Score */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
           <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl bg-pink-500/[0.04] dark:bg-pink-500/[0.06]" />
           <div className="relative">
             <div className="flex items-center justify-between">
@@ -429,34 +429,34 @@ export function JournalDashboard({
                 <span>{stats.avgProcessScoreTrend === 'up' ? 'Improving' : stats.avgProcessScoreTrend === 'down' ? 'Declining' : 'Stable'}</span>
               </div>
             </div>
-            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Avg Process Score
             </p>
-            <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+            <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               {stats.avgProcessScore.toFixed(2)}
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               out of 5.00
             </p>
           </div>
         </div>
 
         {/* Journal Completion Rate */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
           <div className={`${stats.journalCompletionRate >= 80 ? 'text-emerald-500/40 dark:text-emerald-400/30' : stats.journalCompletionRate >= 50 ? 'text-amber-500/40 dark:text-amber-400/30' : 'text-red-500/40 dark:text-red-400/30'}`}>
             <CheckCircle2 size={16} strokeWidth={1.5} />
           </div>
-          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Completion Rate
           </p>
-          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {stats.journalCompletionRate.toFixed(1)}%
           </p>
-          <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-1 text-xs text-faint">
             trades journaled
           </p>
           {/* Mini progress bar */}
-          <div className="mt-2 h-1 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+          <div className="mt-2 h-1 w-full rounded-full bg-muted">
             <div
               className={`h-1 rounded-full transition-all ${
                 stats.journalCompletionRate >= 80
@@ -471,17 +471,17 @@ export function JournalDashboard({
         </div>
 
         {/* Entries This Week */}
-        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-          <div className="text-zinc-300 dark:text-zinc-700">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="text-faint">
             <CalendarDays size={16} strokeWidth={1.5} />
           </div>
-          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
             This Week
           </p>
-          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          <p className="mt-1 font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {stats.entriesThisWeek}
           </p>
-          <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-1 text-xs text-faint">
             entries added
           </p>
         </div>
@@ -498,17 +498,17 @@ export function JournalDashboard({
         <div className="space-y-4 lg:col-span-7">
 
           {/* Process Score Trend */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
-                  <TrendingUp size={13} className="text-pink-600 dark:text-pink-400" />
+                  <TrendingUp size={13} className="text-primary" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Process Score Trend
                 </h2>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">30-day rolling</span>
+              <span className="text-xs text-faint">30-day rolling</span>
             </div>
 
             <div className="px-6 py-5">
@@ -518,36 +518,36 @@ export function JournalDashboard({
           </div>
 
           {/* Recent Entries */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-                  <BookOpen size={13} className="text-zinc-500 dark:text-zinc-400" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                  <BookOpen size={13} className="text-muted-foreground" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Recent Entries
                 </h2>
               </div>
               <button
                 onClick={() => onViewEntry?.(last5Entries[0]?.id ?? '')}
-                className="group flex items-center gap-1 text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+                className="group flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
               >
                 View All
-                <ChevronRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                <ChevronRight size={12} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
               </button>
             </div>
 
             {last5Entries.length === 0 ? (
               <div className="py-14 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/60">
-                  <BookOpen size={20} className="text-zinc-300 dark:text-zinc-700" />
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                  <BookOpen size={20} className="text-faint" />
                 </div>
-                <p className="mt-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                <p className="mt-4 text-sm font-medium text-muted-foreground">
                   No entries yet
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <div className="divide-y divide-border">
                 {last5Entries.map((entry) => (
                   <RecentEntryRow
                     key={entry.id}
@@ -566,17 +566,17 @@ export function JournalDashboard({
         <div className="space-y-4 lg:col-span-5">
 
           {/* Behavioral Alerts */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/30">
                   <AlertTriangle size={13} className="text-amber-600 dark:text-amber-400" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Active Alerts
                 </h2>
                 {activeAlerts.length > 0 && (
-                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-600 px-1.5 text-xs font-bold tabular-nums text-white">
+                  <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums text-white">
                     {activeAlerts.length}
                   </span>
                 )}
@@ -584,10 +584,10 @@ export function JournalDashboard({
               {activeAlerts.length > 0 && (
                 <button
                   onClick={() => onViewBehavioralPatterns?.()}
-                  className="group flex items-center gap-1 text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+                  className="group flex items-center gap-1 text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
                 >
                   View Details
-                  <ChevronRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight size={12} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
                 </button>
               )}
             </div>
@@ -597,10 +597,10 @@ export function JournalDashboard({
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/30">
                   <CheckCircle2 size={18} className="text-emerald-500 dark:text-emerald-400" />
                 </div>
-                <p className="mt-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                <p className="mt-3 text-sm font-medium text-muted-foreground">
                   No active alerts
                 </p>
-                <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+                <p className="mt-1 text-xs text-faint">
                   Your trading habits look healthy.
                 </p>
               </div>
@@ -618,17 +618,17 @@ export function JournalDashboard({
           </div>
 
           {/* Habit Scores */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30">
                   <Sparkles size={13} className="text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Habit Scores
                 </h2>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 cross-portfolio
               </span>
             </div>
@@ -809,7 +809,7 @@ function RecentEntryRow({
   return (
     <button
       onClick={onClick}
-      className="group flex w-full items-center gap-4 px-6 py-3.5 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
+      className="group flex w-full items-center gap-4 px-6 py-3.5 text-left transition-colors hover:bg-accent/40"
     >
       {/* Instrument + Side */}
       <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -822,7 +822,7 @@ function RecentEntryRow({
 
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <span className="font-mono text-sm font-semibold text-foreground">
               {entry.tradeSummary.instrument}
             </span>
             <span className={`rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
@@ -833,10 +833,10 @@ function RecentEntryRow({
               {entry.tradeSummary.side}
             </span>
             {entry.starred && (
-              <Star size={12} className="fill-amber-400 text-amber-400" />
+              <Star size={12} aria-hidden="true" className="fill-amber-400 text-amber-400" />
             )}
           </div>
-          <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-0.5 text-xs text-faint">
             {formatDate(entry.tradeSummary.exitDate)}
           </p>
         </div>
@@ -845,7 +845,7 @@ function RecentEntryRow({
       {/* Process Score */}
       <div className="flex items-center gap-1.5">
         <ProcessDots score={entry.processScores.overall} />
-        <span className="w-7 text-right font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <span className="w-7 text-right font-mono text-xs font-medium text-muted-foreground">
           {entry.processScores.overall.toFixed(1)}
         </span>
       </div>
@@ -871,6 +871,7 @@ function RecentEntryRow({
       {/* Arrow */}
       <ChevronRight
         size={14}
+        aria-hidden="true"
         className="shrink-0 text-zinc-300 transition-transform group-hover:translate-x-0.5 dark:text-zinc-700"
       />
     </button>
@@ -893,9 +894,9 @@ function ProcessDots({ score }: { score: number }) {
             key={dot}
             className={`h-1.5 w-1.5 rounded-full ${
               filled
-                ? 'bg-pink-600 dark:bg-pink-400'
+                ? 'bg-primary dark:bg-pink-400'
                 : partial
-                ? 'bg-pink-600/40 dark:bg-pink-400/40'
+                ? 'bg-primary/40 dark:bg-pink-400/40'
                 : 'bg-zinc-200 dark:bg-zinc-700'
             }`}
           />
@@ -930,15 +931,15 @@ function BehavioralAlertCard({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <AlertTriangle size={14} className={config.icon} />
-              <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <AlertTriangle size={14} aria-hidden="true" className={config.icon} />
+              <span className="text-sm font-semibold text-foreground">
                 {patternLabels[pattern.patternType] ?? pattern.patternType}
               </span>
               <span className={`rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${config.badge}`}>
                 {pattern.severity}
               </span>
             </div>
-            <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
               {pattern.description}
             </p>
           </div>
@@ -946,7 +947,7 @@ function BehavioralAlertCard({
             <p className="font-mono text-sm font-semibold text-red-600 dark:text-red-400">
               {formatSignedCurrency(pattern.impactPnl)}
             </p>
-            <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-0.5 text-xs text-faint">
               {pattern.occurrences} times
             </p>
           </div>
@@ -954,7 +955,7 @@ function BehavioralAlertCard({
 
         {/* Hover arrow */}
         <div className="absolute -right-1 top-1/2 -translate-y-1/2 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100 -translate-x-1">
-          <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
+          <ChevronRight size={14} className="text-faint" />
         </div>
       </div>
     </button>

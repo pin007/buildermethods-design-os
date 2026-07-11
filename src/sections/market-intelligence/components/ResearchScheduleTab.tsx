@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useId } from 'react'
 import {
   Plus,
   Clock,
@@ -145,7 +145,7 @@ function StatusBadge({ status }: { status: JobStatus }) {
   switch (status) {
     case 'idle':
       return (
-        <span className={`${base} bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500`}>
+        <span className={`${base} bg-muted text-hint`}>
           Idle
         </span>
       )
@@ -165,7 +165,7 @@ function StatusBadge({ status }: { status: JobStatus }) {
       )
     case 'disabled':
       return (
-        <span className={`${base} bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500 opacity-60`}>
+        <span className={`${base} bg-muted text-hint opacity-60`}>
           Disabled
         </span>
       )
@@ -184,7 +184,7 @@ function RunStatusBadge({ status }: { status: JobRunStatus }) {
     case 'failed':
       return <span className={`${base} bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400`}>Failed</span>
     case 'cancelled':
-      return <span className={`${base} bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500`}>Cancelled</span>
+      return <span className={`${base} bg-muted text-hint`}>Cancelled</span>
   }
 }
 
@@ -195,14 +195,14 @@ function RunStatusBadge({ status }: { status: JobRunStatus }) {
 function TriggerBadge({ trigger }: { trigger: JobTriggerType }) {
   if (trigger === 'scheduled') {
     return (
-      <span className="inline-flex items-center rounded-full bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500 px-2 py-0.5 text-xs font-medium">
+      <span className="inline-flex items-center rounded-full bg-muted text-hint px-2 py-0.5 text-xs font-medium">
         <Calendar size={10} className="mr-1" />
         Scheduled
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center rounded-full bg-pink-50 text-pink-600 dark:bg-pink-950/30 dark:text-pink-400 px-2 py-0.5 text-xs font-medium">
+    <span className="inline-flex items-center rounded-full bg-pink-50 text-primary dark:bg-pink-950/30 px-2 py-0.5 text-xs font-medium">
       <Play size={10} className="mr-1" />
       Manual
     </span>
@@ -213,15 +213,16 @@ function TriggerBadge({ trigger }: { trigger: JobTriggerType }) {
 // Toggle switch
 // =============================================================================
 
-function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
+      aria-label={label}
       onClick={(e) => { e.stopPropagation(); onChange(!checked) }}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ${
-        checked ? 'bg-pink-600' : 'bg-zinc-300 dark:bg-zinc-700'
+        checked ? 'bg-primary' : 'bg-zinc-300 dark:bg-zinc-700'
       }`}
     >
       <span
@@ -314,11 +315,11 @@ function JobCard({
     ? 'border-blue-300 dark:border-blue-900/60'
     : isError
     ? 'border-red-300 dark:border-red-900/60'
-    : 'border-zinc-200 dark:border-zinc-800/80'
+    : 'border-border'
 
   return (
     <div
-      className={`relative rounded-2xl border bg-white dark:bg-zinc-900/80 ${borderClass} ${
+      className={`relative rounded-2xl border bg-card ${borderClass} ${
         isRunning ? 'shadow-sm shadow-blue-500/5' : ''
       } transition-all`}
     >
@@ -332,11 +333,11 @@ function JobCard({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              <h3 className="truncate text-sm font-semibold text-foreground">
                 {job.name}
               </h3>
               {job.isSystem && (
-                <span className="inline-flex items-center gap-1 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 text-xs rounded px-1.5 py-0.5">
+                <span className="inline-flex items-center gap-1 bg-muted text-muted-foreground text-xs rounded px-1.5 py-0.5">
                   <Shield size={10} />
                   System
                 </span>
@@ -350,21 +351,22 @@ function JobCard({
           <Toggle
             checked={job.enabled}
             onChange={(val) => onToggle?.(job.id, val)}
+            label={`Toggle ${job.name} job`}
           />
         </div>
 
         {/* Schedule */}
         <div className="mt-4 space-y-2">
-          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Calendar size={12} className="shrink-0" />
             <span>{formatSchedule(job)}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Timer size={12} className="shrink-0" />
             <span>Universe: {universeLabel(job.universe)}</span>
             {job.universe === 'custom' && job.customInstruments.length > 0 && (
-              <span className="text-zinc-400 dark:text-zinc-600">
+              <span className="text-faint">
                 ({job.customInstruments.length} instruments)
               </span>
             )}
@@ -402,52 +404,52 @@ function JobCard({
           {job.lastRun && (
             <>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400 dark:text-zinc-500">Last run</span>
-                <span className="text-zinc-600 dark:text-zinc-300 font-mono">
+                <span className="text-hint">Last run</span>
+                <span className="text-muted-foreground font-mono">
                   {formatTimestamp(job.lastRun.timestamp)} ({job.lastRun.duration})
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400 dark:text-zinc-500">Results</span>
-                <span className="text-zinc-600 dark:text-zinc-300 font-mono">
+                <span className="text-hint">Results</span>
+                <span className="text-muted-foreground font-mono">
                   {job.lastRun.opportunitiesFound} found, {job.lastRun.opportunitiesPublished} published
                 </span>
               </div>
             </>
           )}
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-400 dark:text-zinc-500">Next run</span>
-            <span className="text-zinc-600 dark:text-zinc-300 font-mono">
+            <span className="text-hint">Next run</span>
+            <span className="text-muted-foreground font-mono">
               {job.nextRunAt ? formatCountdown(job.nextRunAt) : '\u2014'}
             </span>
           </div>
         </div>
 
         {/* Action buttons */}
-        <div className="mt-4 flex items-center gap-2 border-t border-zinc-100 dark:border-zinc-800/60 pt-4">
+        <div className="mt-4 flex items-center gap-2 border-t border-border pt-4">
           {isError ? (
             <button
               onClick={() => onRunNow?.(job.id)}
-              className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
             >
-              <Play size={12} className="mr-1 inline-block" />
+              <Play size={12} aria-hidden="true" className="mr-1 inline-block" />
               Retry
             </button>
           ) : (
             <button
               onClick={() => onRunNow?.(job.id)}
-              className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               disabled={isRunning}
             >
-              <Play size={12} className="mr-1 inline-block" />
+              <Play size={12} aria-hidden="true" className="mr-1 inline-block" />
               Run Now
             </button>
           )}
           <button
             onClick={() => onEdit?.(job)}
-            className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+            className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
           >
-            <Pencil size={12} className="mr-1 inline-block" />
+            <Pencil size={12} aria-hidden="true" className="mr-1 inline-block" />
             Edit
           </button>
           <button
@@ -455,40 +457,42 @@ function JobCard({
             disabled={job.isSystem}
             className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
               job.isSystem
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
+                ? 'bg-muted text-faint cursor-not-allowed'
                 : 'bg-red-600 text-white hover:bg-red-500'
             }`}
           >
-            <Trash2 size={12} className="mr-1 inline-block" />
+            <Trash2 size={12} aria-hidden="true" className="mr-1 inline-block" />
             Delete
           </button>
         </div>
 
         {/* History toggle */}
         {job.history.length > 0 && (
-          <div className="mt-3 border-t border-zinc-100 dark:border-zinc-800/60 pt-3">
+          <div className="mt-3 border-t border-border pt-3">
             <button
               onClick={() => setHistoryExpanded(!historyExpanded)}
-              className="flex w-full items-center justify-between text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+              aria-expanded={historyExpanded}
+              className="flex w-full items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               <span>History ({job.history.length})</span>
               <ChevronDown
                 size={14}
+                aria-hidden="true"
                 className={`transition-transform duration-200 ${historyExpanded ? 'rotate-180' : ''}`}
               />
             </button>
 
             {historyExpanded && (
-              <div className="mt-2 overflow-hidden rounded-lg border border-zinc-100 dark:border-zinc-800/60">
+              <div className="mt-2 overflow-hidden rounded-lg border border-border">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-zinc-100 dark:border-zinc-800/60 bg-zinc-50 dark:bg-zinc-800/40">
-                      <th className="px-2 py-1.5 text-left font-medium text-zinc-400 dark:text-zinc-500">Time</th>
-                      <th className="px-2 py-1.5 text-left font-medium text-zinc-400 dark:text-zinc-500">Duration</th>
-                      <th className="px-2 py-1.5 text-right font-medium text-zinc-400 dark:text-zinc-500">Found</th>
-                      <th className="px-2 py-1.5 text-right font-medium text-zinc-400 dark:text-zinc-500">Published</th>
-                      <th className="px-2 py-1.5 text-center font-medium text-zinc-400 dark:text-zinc-500">Status</th>
-                      <th className="px-2 py-1.5 text-center font-medium text-zinc-400 dark:text-zinc-500">Trigger</th>
+                    <tr className="border-b border-border bg-zinc-50 dark:bg-zinc-800/40">
+                      <th className="px-2 py-1.5 text-left font-medium text-hint">Time</th>
+                      <th className="px-2 py-1.5 text-left font-medium text-hint">Duration</th>
+                      <th className="px-2 py-1.5 text-right font-medium text-hint">Found</th>
+                      <th className="px-2 py-1.5 text-right font-medium text-hint">Published</th>
+                      <th className="px-2 py-1.5 text-center font-medium text-hint">Status</th>
+                      <th className="px-2 py-1.5 text-center font-medium text-hint">Trigger</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -496,14 +500,14 @@ function JobCard({
                       <tr
                         key={run.id}
                         onClick={() => onViewRunResults?.(run.id)}
-                        className="border-b border-zinc-50 dark:border-zinc-800/40 last:border-b-0 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 cursor-pointer transition-colors"
+                        className="border-b border-zinc-50 dark:border-zinc-800/40 last:border-b-0 hover:bg-accent/30 cursor-pointer transition-colors"
                       >
-                        <td className="px-2 py-1.5 font-mono text-zinc-600 dark:text-zinc-300">
+                        <td className="px-2 py-1.5 font-mono text-muted-foreground">
                           {formatTimestamp(run.timestamp)}
                         </td>
-                        <td className="px-2 py-1.5 font-mono text-zinc-500 dark:text-zinc-400">{run.duration}</td>
-                        <td className="px-2 py-1.5 text-right font-mono text-zinc-600 dark:text-zinc-300">{run.opportunitiesFound}</td>
-                        <td className="px-2 py-1.5 text-right font-mono text-zinc-600 dark:text-zinc-300">{run.opportunitiesPublished}</td>
+                        <td className="px-2 py-1.5 font-mono text-muted-foreground">{run.duration}</td>
+                        <td className="px-2 py-1.5 text-right font-mono text-muted-foreground">{run.opportunitiesFound}</td>
+                        <td className="px-2 py-1.5 text-right font-mono text-muted-foreground">{run.opportunitiesPublished}</td>
                         <td className="px-2 py-1.5 text-center"><RunStatusBadge status={run.status} /></td>
                         <td className="px-2 py-1.5 text-center"><TriggerBadge trigger={run.triggerType} /></td>
                       </tr>
@@ -555,7 +559,7 @@ function Modal({
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl max-w-lg w-full mx-4 p-6 max-h-[80vh] overflow-y-auto">
+      <div className="rounded-2xl border border-border bg-card shadow-2xl max-w-lg w-full mx-4 p-6 max-h-[80vh] overflow-y-auto">
         {children}
       </div>
     </div>
@@ -591,6 +595,13 @@ function JobFormModal({
 }) {
   const [form, setForm] = useState<JobFormState>(defaultFormState)
   const [instrumentInput, setInstrumentInput] = useState('')
+  const nameId = useId()
+  const timeId = useId()
+  const timezoneId = useId()
+  const intervalId = useId()
+  const instrumentInputId = useId()
+  const confidenceId = useId()
+  const maxResultsId = useId()
 
   useEffect(() => {
     if (mode === 'edit' && editJob) {
@@ -660,19 +671,20 @@ function JobFormModal({
   const isSystem = mode === 'edit' && editJob?.isSystem
 
   const inputClass =
-    'w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100'
+    'w-full rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 text-foreground'
 
   return (
     <Modal open={open} onClose={onClose}>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+        <h2 className="text-lg font-semibold text-foreground">
           {mode === 'create' ? 'Create Research Job' : 'Edit Research Job'}
         </h2>
         <button
           onClick={onClose}
-          className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          aria-label="Close research job form"
+          className="rounded-lg p-1.5 text-zinc-400 hover:text-muted-foreground hover:bg-accent transition-colors"
         >
-          <X size={18} />
+          <X size={18} aria-hidden="true" />
         </button>
       </div>
 
@@ -686,10 +698,11 @@ function JobFormModal({
       <div className="space-y-5">
         {/* Job name */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+          <label htmlFor={nameId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
             Job Name
           </label>
           <input
+            id={nameId}
             type="text"
             value={form.name}
             onChange={(e) => updateField('name', e.target.value)}
@@ -701,7 +714,7 @@ function JobFormModal({
 
         {/* Schedule type */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">
+          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-2">
             Schedule Type
           </label>
           <div className="flex gap-3">
@@ -713,7 +726,7 @@ function JobFormModal({
                 onChange={() => updateField('scheduleType', 'daily')}
                 className="accent-pink-600"
               />
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Daily at specific time</span>
+              <span className="text-sm text-foreground">Daily at specific time</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -723,7 +736,7 @@ function JobFormModal({
                 onChange={() => updateField('scheduleType', 'interval')}
                 className="accent-pink-600"
               />
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Interval</span>
+              <span className="text-sm text-foreground">Interval</span>
             </label>
           </div>
         </div>
@@ -732,10 +745,11 @@ function JobFormModal({
         {form.scheduleType === 'daily' && (
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+              <label htmlFor={timeId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
                 Time (HH:MM)
               </label>
               <input
+                id={timeId}
                 type="text"
                 value={form.scheduleTime}
                 onChange={(e) => updateField('scheduleTime', e.target.value)}
@@ -745,10 +759,11 @@ function JobFormModal({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+              <label htmlFor={timezoneId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
                 Timezone
               </label>
               <select
+                id={timezoneId}
                 value={form.scheduleTimezone}
                 onChange={(e) => updateField('scheduleTimezone', e.target.value)}
                 className={inputClass}
@@ -766,10 +781,11 @@ function JobFormModal({
         {/* Interval fields */}
         {form.scheduleType === 'interval' && (
           <div>
-            <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+            <label htmlFor={intervalId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
               Interval (hours)
             </label>
             <input
+              id={intervalId}
               type="number"
               min={1}
               max={168}
@@ -782,7 +798,7 @@ function JobFormModal({
 
         {/* Universe */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">
+          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-2">
             Universe
           </label>
           <div className="flex gap-3">
@@ -795,7 +811,7 @@ function JobFormModal({
                   onChange={() => updateField('universe', u)}
                   className="accent-pink-600"
                 />
-                <span className="text-sm text-zinc-700 dark:text-zinc-300">{universeLabel(u)}</span>
+                <span className="text-sm text-foreground">{universeLabel(u)}</span>
               </label>
             ))}
           </div>
@@ -803,14 +819,15 @@ function JobFormModal({
 
         {/* Custom instruments */}
         {form.universe === 'custom' && (
-          <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 p-3">
-            <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">
+          <div className="rounded-lg border border-border p-3">
+            <label htmlFor={instrumentInputId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-2">
               Custom Instruments
             </label>
             <div className="flex gap-2 mb-2">
               <div className="relative flex-1">
-                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Search size={14} aria-hidden="true" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-faint" />
                 <input
+                  id={instrumentInputId}
                   type="text"
                   value={instrumentInput}
                   onChange={(e) => setInstrumentInput(e.target.value)}
@@ -827,7 +844,7 @@ function JobFormModal({
               <button
                 type="button"
                 onClick={addInstrument}
-                className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               >
                 Add
               </button>
@@ -837,32 +854,34 @@ function JobFormModal({
                 {form.customInstruments.map((sym) => (
                   <span
                     key={sym}
-                    className="inline-flex items-center gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300"
+                    className="inline-flex items-center gap-1 rounded-lg bg-muted px-2 py-1 text-xs font-medium text-foreground"
                   >
                     {sym}
                     <button
                       type="button"
                       onClick={() => removeInstrument(sym)}
+                      aria-label={`Remove ${sym} from custom instruments`}
                       className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
                     >
-                      <X size={12} />
+                      <X size={12} aria-hidden="true" />
                     </button>
                   </span>
                 ))}
               </div>
             )}
             {form.customInstruments.length === 0 && (
-              <p className="text-xs text-zinc-400 dark:text-zinc-500">No instruments added yet.</p>
+              <p className="text-xs text-hint">No instruments added yet.</p>
             )}
           </div>
         )}
 
         {/* Confidence threshold */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+          <label htmlFor={confidenceId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
             Confidence Threshold
           </label>
           <input
+            id={confidenceId}
             type="number"
             min={1.0}
             max={10.0}
@@ -875,10 +894,11 @@ function JobFormModal({
 
         {/* Max results */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+          <label htmlFor={maxResultsId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
             Max Results
           </label>
           <input
+            id={maxResultsId}
             type="number"
             min={1}
             max={50}
@@ -893,14 +913,14 @@ function JobFormModal({
       <div className="mt-6 flex items-center justify-end gap-3">
         <button
           onClick={onClose}
-          className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
           disabled={!form.name.trim()}
-          className="rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 hover:bg-pink-500 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {mode === 'create' ? 'Create Job' : 'Save Changes'}
         </button>
@@ -928,23 +948,24 @@ function DeleteConfirmModal({
   return (
     <Modal open={open} onClose={onClose}>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+        <h2 className="text-lg font-semibold text-foreground">
           Delete {job.name}?
         </h2>
         <button
           onClick={onClose}
-          className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          aria-label="Close delete confirmation"
+          className="rounded-lg p-1.5 text-zinc-400 hover:text-muted-foreground hover:bg-accent transition-colors"
         >
-          <X size={18} />
+          <X size={18} aria-hidden="true" />
         </button>
       </div>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+      <p className="text-sm text-muted-foreground mb-6">
         This will permanently remove the job and all its run history. This action cannot be undone.
       </p>
       <div className="flex items-center justify-end gap-3">
         <button
           onClick={onClose}
-          className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
         >
           Cancel
         </button>
@@ -979,6 +1000,7 @@ function RunNowModal({
 }) {
   const [universe, setUniverse] = useState<JobUniverse>('full')
   const [threshold, setThreshold] = useState(7.0)
+  const thresholdId = useId()
 
   useEffect(() => {
     if (job) {
@@ -990,26 +1012,27 @@ function RunNowModal({
   if (!job) return null
 
   const inputClass =
-    'w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 text-zinc-900 dark:text-zinc-100'
+    'w-full rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 text-foreground'
 
   return (
     <Modal open={open} onClose={onClose}>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+        <h2 className="text-lg font-semibold text-foreground">
           Run Now: {job.name}
         </h2>
         <button
           onClick={onClose}
-          className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          aria-label="Close run now dialog"
+          className="rounded-lg p-1.5 text-zinc-400 hover:text-muted-foreground hover:bg-accent transition-colors"
         >
-          <X size={18} />
+          <X size={18} aria-hidden="true" />
         </button>
       </div>
 
       <div className="space-y-5">
         {/* Universe */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">
+          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-2">
             Universe
           </label>
           <div className="flex gap-3">
@@ -1022,7 +1045,7 @@ function RunNowModal({
                   onChange={() => setUniverse(u)}
                   className="accent-pink-600"
                 />
-                <span className="text-sm text-zinc-700 dark:text-zinc-300">{universeLabel(u)}</span>
+                <span className="text-sm text-foreground">{universeLabel(u)}</span>
               </label>
             ))}
           </div>
@@ -1030,10 +1053,11 @@ function RunNowModal({
 
         {/* Confidence threshold */}
         <div>
-          <label className="block text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5">
+          <label htmlFor={thresholdId} className="block text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5">
             Confidence Threshold
           </label>
           <input
+            id={thresholdId}
             type="number"
             min={1.0}
             max={10.0}
@@ -1048,7 +1072,7 @@ function RunNowModal({
       <div className="mt-6 flex items-center justify-end gap-3">
         <button
           onClick={onClose}
-          className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
         >
           Cancel
         </button>
@@ -1057,9 +1081,9 @@ function RunNowModal({
             onConfirm?.(job.id, { universe, confidenceThreshold: threshold })
             onClose()
           }}
-          className="rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 hover:bg-pink-500 active:scale-[0.98] transition-all"
+          className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 hover:bg-primary/90 active:scale-[0.98] transition-all"
         >
-          <Play size={14} className="mr-1 inline-block" />
+          <Play size={14} aria-hidden="true" className="mr-1 inline-block" />
           Start Research
         </button>
       </div>
@@ -1121,22 +1145,22 @@ export function ResearchScheduleTab({
       <>
         <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
           <div className="relative w-full max-w-md">
-            <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-            <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-                <Clock size={28} className="text-zinc-400 dark:text-zinc-500" />
+            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+            <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+                <Clock size={28} className="text-hint" />
               </div>
-              <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+              <h2 className="mt-6 text-xl font-semibold text-foreground">
                 No research jobs configured yet
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Create your first job to automate instrument analysis and receive trade recommendations on a schedule.
               </p>
               <button
                 onClick={openCreateModal}
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
               >
-                <Plus size={15} />
+                <Plus size={15} aria-hidden="true" />
                 Create Research Job
               </button>
             </div>
@@ -1162,19 +1186,19 @@ export function ResearchScheduleTab({
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Automation
             </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
               Research Schedule
             </h1>
           </div>
 
           <button
             onClick={openCreateModal}
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98] sm:w-auto"
           >
-            <Plus size={15} className="transition-transform group-hover:rotate-90" />
+            <Plus size={15} aria-hidden="true" className="transition-transform group-hover:rotate-90" />
             Create Job
           </button>
         </div>

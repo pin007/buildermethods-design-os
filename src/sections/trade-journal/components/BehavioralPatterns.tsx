@@ -68,12 +68,12 @@ const SEVERITY_CONFIG = {
     accentBar: 'bg-amber-500',
   },
   low: {
-    border: 'border-zinc-200 dark:border-zinc-800',
+    border: 'border-border',
     bg: 'bg-zinc-50/50 dark:bg-zinc-900/40',
     badge: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
     glow: 'bg-zinc-500/[0.04] dark:bg-zinc-500/[0.06]',
-    icon: 'text-zinc-400 dark:text-zinc-500',
-    ring: 'ring-zinc-200/60 dark:ring-zinc-800/60',
+    icon: 'text-hint',
+    ring: 'ring-border/60',
     accentBar: 'bg-zinc-400 dark:bg-zinc-600',
   },
 }
@@ -105,7 +105,7 @@ function fmtDate(iso: string): string {
 function TrendArrow({ direction, size = 14 }: { direction: TrendDirection; size?: number }) {
   if (direction === 'up') return <ArrowUpRight size={size} className="text-emerald-500 dark:text-emerald-400" />
   if (direction === 'down') return <ArrowDownRight size={size} className="text-red-500 dark:text-red-400" />
-  return <Minus size={size} className="text-zinc-400 dark:text-zinc-500" />
+  return <Minus size={size} className="text-hint" />
 }
 
 // =============================================================================
@@ -212,15 +212,15 @@ export function BehavioralPatterns({
     return (
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="relative w-full max-w-md">
-          <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-          <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-              <Brain size={28} className="text-zinc-400 dark:text-zinc-500" />
+          <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+          <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+              <Brain size={28} className="text-hint" />
             </div>
-            <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+            <h2 className="mt-6 text-xl font-semibold text-foreground">
               No Patterns Detected
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               No behavioral patterns detected. Keep trading consistently to build your behavioral profile.
             </p>
           </div>
@@ -236,16 +236,16 @@ export function BehavioralPatterns({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Cross-Portfolio
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Behavioral Patterns
           </h1>
         </div>
 
         {/* Period selector */}
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -256,8 +256,8 @@ export function BehavioralPatterns({
               className={`
                 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200
                 ${selectedPeriod === p
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
                 }
               `}
             >
@@ -279,10 +279,10 @@ export function BehavioralPatterns({
                 <AlertTriangle size={18} className="text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <p className="text-sm font-semibold text-foreground">
                   {activePatterns.length} Active Pattern{activePatterns.length !== 1 ? 's' : ''} Detected
                 </p>
-                <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Estimated P&L impact from destructive habits
                 </p>
               </div>
@@ -291,7 +291,7 @@ export function BehavioralPatterns({
               <p className="font-mono text-2xl font-bold text-red-600 dark:text-red-400">
                 {fmtSignedCurrency(totalImpact)}
               </p>
-              <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-0.5 text-xs text-faint">
                 combined impact
               </p>
             </div>
@@ -313,10 +313,10 @@ export function BehavioralPatterns({
           {activePatterns.length > 0 && (
             <div>
               <div className="mb-3 flex items-center gap-2">
-                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-600 px-1.5 text-xs font-bold tabular-nums text-white">
+                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums text-white">
                   {activePatterns.length}
                 </span>
-                <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                <h2 className="text-sm font-semibold text-foreground">
                   Active Patterns
                 </h2>
               </div>
@@ -342,12 +342,13 @@ export function BehavioralPatterns({
             <div>
               <button
                 onClick={() => setShowAcknowledged(!showAcknowledged)}
+                aria-expanded={showAcknowledged}
                 className="group mb-3 flex items-center gap-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
               >
                 {showAcknowledged ? (
-                  <ChevronDown size={14} />
+                  <ChevronDown size={14} aria-hidden="true" />
                 ) : (
-                  <ChevronRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
                 )}
                 {acknowledgedPatterns.length} Acknowledged Pattern{acknowledgedPatterns.length !== 1 ? 's' : ''}
               </button>
@@ -373,22 +374,22 @@ export function BehavioralPatterns({
         <div className="space-y-4 lg:col-span-5">
 
           {/* Habit Scores */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30">
                   <Sparkles size={13} className="text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Habit Scores
                 </h2>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 90-day trend
               </span>
             </div>
 
-            <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <div className="divide-y divide-border">
               <HabitScoreRow
                 label="Consistency"
                 icon={Target}
@@ -413,22 +414,22 @@ export function BehavioralPatterns({
           </div>
 
           {/* Improvement Focus Areas */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/30">
-                  <Lightbulb size={13} className="text-pink-600 dark:text-pink-400" />
+                  <Lightbulb size={13} className="text-primary" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Focus Areas
                 </h2>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 prioritized
               </span>
             </div>
 
-            <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <div className="divide-y divide-border">
               {improvementAreas.map((area, i) => (
                 <ImprovementRow key={i} area={area} index={i + 1} />
               ))}
@@ -437,7 +438,7 @@ export function BehavioralPatterns({
             {improvementAreas.length === 0 && (
               <div className="py-10 text-center">
                 <CheckCircle2 size={20} className="mx-auto text-emerald-500 dark:text-emerald-400" />
-                <p className="mt-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                <p className="mt-3 text-sm font-medium text-muted-foreground">
                   No improvement areas identified
                 </p>
               </div>
@@ -492,22 +493,22 @@ function PatternCard({
                 ? 'bg-red-100 dark:bg-red-900/40'
                 : pattern.severity === 'moderate'
                 ? 'bg-amber-100 dark:bg-amber-900/40'
-                : 'bg-zinc-100 dark:bg-zinc-800'
+                : 'bg-muted'
             }`}>
               <PatternIcon size={16} className={config.icon} />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h3 className="text-sm font-semibold text-foreground">
                   {meta.label}
                 </h3>
                 <span className={`rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${config.badge}`}>
                   {pattern.severity}
                 </span>
               </div>
-              <div className="mt-1 flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-500">
+              <div className="mt-1 flex items-center gap-3 text-xs text-hint">
                 <span>{pattern.occurrences} occurrence{pattern.occurrences !== 1 ? 's' : ''}</span>
-                <span className="text-zinc-300 dark:text-zinc-700">&middot;</span>
+                <span className="text-faint">&middot;</span>
                 <span>Detected {fmtDate(pattern.detectedAt)}</span>
               </div>
             </div>
@@ -522,26 +523,26 @@ function PatternCard({
             }`}>
               {fmtSignedCurrency(pattern.impactPnl)}
             </p>
-            <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-0.5 text-xs text-faint">
               P&L impact
             </p>
           </div>
         </div>
 
         {/* Description */}
-        <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           {pattern.description}
         </p>
 
         {/* Recommendation */}
         <div className="mt-3 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 p-3.5">
           <div className="flex items-start gap-2">
-            <Lightbulb size={13} className="mt-0.5 shrink-0 text-pink-500 dark:text-pink-400" />
+            <Lightbulb size={13} className="mt-0.5 shrink-0 text-primary" />
             <div>
-              <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              <p className="text-xs font-semibold text-foreground">
                 Recommendation
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {pattern.recommendation}
               </p>
             </div>
@@ -550,7 +551,7 @@ function PatternCard({
 
         {/* Footer */}
         {acknowledged ? (
-          <div className="mt-3 flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-600">
+          <div className="mt-3 flex items-center gap-2 text-xs text-faint">
             <CheckCircle2 size={12} />
             <span>Acknowledged {pattern.acknowledgedAt ? fmtDate(pattern.acknowledgedAt) : ''}</span>
           </div>
@@ -558,9 +559,9 @@ function PatternCard({
           <div className="mt-4 flex justify-end">
             <button
               onClick={onAcknowledge}
-              className="flex items-center gap-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-3.5 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 shadow-sm transition-all hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-white dark:bg-zinc-800/80 px-3.5 py-2 text-xs font-semibold text-foreground shadow-sm transition-all hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-accent active:scale-[0.98]"
             >
-              <CheckCircle2 size={13} />
+              <CheckCircle2 size={13} aria-hidden="true" />
               Acknowledge
             </button>
           </div>
@@ -601,7 +602,7 @@ function HabitScoreRow({
           <Icon size={14} className={colors.text} />
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</p>
+          <p className="text-sm font-medium text-foreground">{label}</p>
           <p className={`text-xs font-medium ${colors.text}`}>{colors.label}</p>
         </div>
       </div>
@@ -641,18 +642,18 @@ function ImprovementRow({
   return (
     <div className="px-6 py-4">
       <div className="flex items-start gap-3">
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 text-xs font-bold text-pink-600 dark:text-pink-400">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 text-xs font-bold text-primary">
           {index}
         </span>
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <p className="text-sm font-semibold text-foreground">
             {area.title}
           </p>
-          <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             {area.description}
           </p>
           {area.relatedPatternId && (
-            <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-pink-600 dark:text-pink-400">
+            <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary">
               <ExternalLink size={10} />
               View related pattern
             </span>

@@ -75,7 +75,7 @@ function EnvBadge({ environment }: { environment: Portfolio['environment'] }) {
 // ---------------------------------------------------------------------------
 
 const SLICE_COLORS = [
-  { bar: 'bg-pink-500', text: 'text-pink-500', dot: 'bg-pink-500' },
+  { bar: 'bg-primary', text: 'text-primary', dot: 'bg-primary' },
   { bar: 'bg-emerald-500', text: 'text-emerald-500', dot: 'bg-emerald-500' },
   { bar: 'bg-sky-500', text: 'text-sky-500', dot: 'bg-sky-500' },
   { bar: 'bg-amber-500', text: 'text-amber-500', dot: 'bg-amber-500' },
@@ -136,28 +136,28 @@ function EquityCurveChart({ data, period, onPeriodChange }: {
   const areaPoints = `0,${height} ${points} 100,${height}`
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       {/* Header */}
-      <div className="flex flex-col gap-3 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 border-b border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-            <BarChart3 size={13} className="text-zinc-500 dark:text-zinc-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+            <BarChart3 size={13} className="text-muted-foreground" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             Equity Curve
           </h2>
         </div>
 
         {/* Period selector */}
-        <div className="flex gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-900/80 p-0.5 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-lg bg-muted p-0.5 ring-1 ring-border/60">
           {PERIODS.map(p => (
             <button
               key={p}
               onClick={() => onPeriodChange(p)}
               className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-all ${
                 period === p
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-faint hover:text-muted-foreground'
               }`}
             >
               {p}
@@ -170,13 +170,13 @@ function EquityCurveChart({ data, period, onPeriodChange }: {
       <div className="relative px-6 py-6">
         {/* Y-axis labels */}
         <div className="absolute left-6 top-6 bottom-6 flex flex-col justify-between">
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency(max)}
           </span>
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency((max + min) / 2)}
           </span>
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency(min)}
           </span>
         </div>
@@ -228,15 +228,15 @@ function EquityCurveChart({ data, period, onPeriodChange }: {
           <div className="mt-2 flex justify-between">
             {filteredData.length > 0 && (
               <>
-                <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                <span className="text-xs text-faint">
                   {new Date(filteredData[0].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                 </span>
                 {filteredData.length > 2 && (
-                  <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                  <span className="text-xs text-faint">
                     {new Date(filteredData[Math.floor(filteredData.length / 2)].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                   </span>
                 )}
-                <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                <span className="text-xs text-faint">
                   {new Date(filteredData[filteredData.length - 1].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                 </span>
               </>
@@ -259,28 +259,28 @@ function AllocationChart({ slices, view, onViewChange }: {
   )
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       {/* Header */}
-      <div className="flex flex-col gap-3 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 border-b border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-            <PieChart size={13} className="text-zinc-500 dark:text-zinc-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+            <PieChart size={13} className="text-muted-foreground" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             Allocation
           </h2>
         </div>
 
         {/* View toggle */}
-        <div className="flex gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-900/80 p-0.5 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-lg bg-muted p-0.5 ring-1 ring-border/60">
           {ALLOCATION_VIEWS.map(v => (
             <button
               key={v.key}
               onClick={() => onViewChange(v.key)}
               className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-all ${
                 view === v.key
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-faint hover:text-muted-foreground'
               }`}
             >
               {v.label}
@@ -292,7 +292,7 @@ function AllocationChart({ slices, view, onViewChange }: {
       {/* Allocation bars */}
       <div className="px-6 py-5 space-y-3">
         {/* Stacked bar */}
-        <div className="flex h-3 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800/60">
+        <div className="flex h-3 overflow-hidden rounded-full bg-muted">
           {sortedSlices.map((slice, i) => {
             const color = SLICE_COLORS[i % SLICE_COLORS.length]
             return (
@@ -314,15 +314,15 @@ function AllocationChart({ slices, view, onViewChange }: {
               <div key={slice.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div className={`h-2.5 w-2.5 rounded-full ${color.dot}`} />
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <span className="text-sm text-muted-foreground">
                     {slice.name}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-sm tabular-nums text-zinc-500 dark:text-zinc-500">
+                  <span className="font-mono text-sm tabular-nums text-hint">
                     {formatCurrency(slice.valueUsd)}
                   </span>
-                  <span className="w-14 text-right font-mono text-sm font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
+                  <span className="w-14 text-right font-mono text-sm font-semibold tabular-nums text-foreground">
                     {slice.percent.toFixed(1)}%
                   </span>
                 </div>
@@ -340,18 +340,18 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
   onViewPortfolio?: (id: string) => void
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-            <Briefcase size={13} className="text-zinc-500 dark:text-zinc-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+            <Briefcase size={13} className="text-muted-foreground" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             Portfolios
           </h2>
         </div>
-        <span className="rounded-md bg-zinc-100 dark:bg-zinc-800/60 px-2 py-0.5 text-xs font-bold tabular-nums text-zinc-500 dark:text-zinc-500">
+        <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-bold tabular-nums text-hint">
           {portfolios.length}
         </span>
       </div>
@@ -360,23 +360,23 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
       <div className="hidden sm:block">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800/40">
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+            <tr className="border-b border-border/40">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Portfolio
               </th>
-              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Total Value
               </th>
-              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Day P&L
               </th>
-              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Day %
               </th>
-              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+              <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Positions
               </th>
-              <th className="px-6 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-600">
+              <th className="px-6 py-3 text-right text-xs font-bold uppercase tracking-[0.15em] text-faint">
                 Cash
               </th>
             </tr>
@@ -388,25 +388,25 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
                 <tr
                   key={portfolio.id}
                   onClick={() => onViewPortfolio?.(portfolio.id)}
-                  className="group cursor-pointer border-b border-zinc-50 dark:border-zinc-800/30 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/30 last:border-b-0"
+                  className="group cursor-pointer border-b border-zinc-50 dark:border-zinc-800/30 transition-colors hover:bg-accent/30 last:border-b-0"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/20">
-                        <Briefcase size={14} className="text-pink-600 dark:text-pink-400" />
+                        <Briefcase size={14} className="text-primary" />
                       </div>
                       <div>
-                        <p className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                        <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
                           {portfolio.name}
                           <EnvBadge environment={portfolio.environment} />
                         </p>
-                        <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                        <p className="text-xs text-faint">
                           {portfolio.currency} · {portfolio.positionCount} positions
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-right font-mono text-sm font-semibold tabular-nums text-zinc-800 dark:text-zinc-200">
+                  <td className="px-4 py-4 text-right font-mono text-sm font-semibold tabular-nums text-foreground">
                     {formatCurrency(portfolio.totalValue, portfolio.currency)}
                   </td>
                   <td className={`px-4 py-4 text-right font-mono text-sm font-semibold tabular-nums ${
@@ -419,17 +419,17 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
                   }`}>
                     {formatPercent(portfolio.dayPnLPercent)}
                   </td>
-                  <td className="px-4 py-4 text-right font-mono text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
+                  <td className="px-4 py-4 text-right font-mono text-sm tabular-nums text-muted-foreground">
                     {portfolio.positionCount}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <span className="font-mono text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
+                      <span className="font-mono text-sm tabular-nums text-muted-foreground">
                         {formatCurrency(portfolio.cashBalance, portfolio.currency)}
                       </span>
                       <ChevronRight
                         size={14}
-                        className="text-zinc-400 dark:text-zinc-600 opacity-50 transition-all group-hover:opacity-100 group-hover:translate-x-0.5"
+                        className="text-faint opacity-50 transition-all group-hover:opacity-100 group-hover:translate-x-0.5"
                       />
                     </div>
                   </td>
@@ -441,33 +441,33 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
       </div>
 
       {/* Cards — mobile */}
-      <div className="sm:hidden divide-y divide-zinc-100 dark:divide-zinc-800/40">
+      <div className="sm:hidden divide-y divide-border/40">
         {portfolios.map((portfolio) => {
           const pnlPositive = portfolio.dayPnL >= 0
           return (
             <button
               key={portfolio.id}
               onClick={() => onViewPortfolio?.(portfolio.id)}
-              className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
+              className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-accent/30"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2.5">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pink-50 dark:bg-pink-950/20">
-                    <Briefcase size={14} className="text-pink-600 dark:text-pink-400" />
+                    <Briefcase size={14} className="text-primary" />
                   </div>
                   <div className="min-w-0">
-                    <p className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                    <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
                       <span className="truncate">{portfolio.name}</span>
                       <EnvBadge environment={portfolio.environment} />
                     </p>
-                    <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                    <p className="text-xs text-faint">
                       {portfolio.currency} · {portfolio.positionCount} positions
                     </p>
                   </div>
                 </div>
               </div>
               <div className="shrink-0 text-right">
-                <p className="font-mono text-sm font-semibold tabular-nums text-zinc-800 dark:text-zinc-200">
+                <p className="font-mono text-sm font-semibold tabular-nums text-foreground">
                   {formatCurrency(portfolio.totalValue, portfolio.currency)}
                 </p>
                 <p className={`font-mono text-xs tabular-nums ${
@@ -478,7 +478,8 @@ function PortfolioListTable({ portfolios, onViewPortfolio }: {
               </div>
               <ChevronRight
                 size={14}
-                className="shrink-0 text-zinc-300 dark:text-zinc-700"
+                aria-hidden="true"
+                className="shrink-0 text-faint"
               />
             </button>
           )
@@ -516,20 +517,20 @@ export function PortfolioOverview({
     return (
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="relative w-full max-w-md">
-          <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-          <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-              <Cable size={28} className="text-zinc-400 dark:text-zinc-500" />
+          <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+          <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+              <Cable size={28} className="text-hint" />
             </div>
-            <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+            <h2 className="mt-6 text-xl font-semibold text-foreground">
               Welcome to Trading Squad!
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Connect your broker to get started.
             </p>
             <button
               onClick={() => onConnectBroker?.()}
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30 active:scale-[0.98]"
             >
               Connect Broker
             </button>
@@ -548,10 +549,10 @@ export function PortfolioOverview({
       {/* Header row                                                        */}
       {/* ================================================================= */}
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
           Overview
         </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
           Portfolios
         </h1>
       </div>
@@ -564,19 +565,19 @@ export function PortfolioOverview({
         {/* -------------------------------------------------------------- */}
         {/* HERO: Total Net Worth (spans 5 columns)                        */}
         {/* -------------------------------------------------------------- */}
-        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-pink-500/[0.04] blur-3xl dark:bg-pink-500/[0.07]" />
-          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-pink-500/[0.03] blur-2xl dark:bg-pink-500/[0.05]" />
+        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/[0.04] blur-3xl dark:bg-primary/[0.07]" />
+          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-primary/[0.03] blur-2xl dark:bg-primary/[0.05]" />
 
           <div className="relative p-6">
-            <div className="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+            <div className="flex items-center gap-2 text-hint">
               <Wallet size={14} strokeWidth={2} />
               <span className="text-xs font-bold uppercase tracking-[0.15em]">
                 Total Net Worth
               </span>
             </div>
 
-            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
+            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               {formatCurrency(aggregatedOverview.totalNetWorthUsd)}
             </p>
 
@@ -589,14 +590,14 @@ export function PortfolioOverview({
                 {pnlPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                 <span className="font-mono">{formatPercent(aggregatedOverview.totalDayPnLPercent)}</span>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">today</span>
-              <span className="text-xs text-zinc-300 dark:text-zinc-700">·</span>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">today</span>
+              <span className="text-xs text-faint">·</span>
+              <span className="text-xs text-faint">
                 {aggregatedOverview.portfolioCount} portfolios · {aggregatedOverview.positionCount} positions
               </span>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pink-600/60 via-pink-500/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/60 via-primary/20 to-transparent" />
           </div>
         </div>
 
@@ -606,7 +607,7 @@ export function PortfolioOverview({
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-7">
 
           {/* Day P&L */}
-          <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
             <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl transition-opacity ${
               pnlPositive ? 'bg-emerald-500/[0.06] dark:bg-emerald-500/[0.08]' : 'bg-red-500/[0.06] dark:bg-red-500/[0.08]'
             }`} />
@@ -614,7 +615,7 @@ export function PortfolioOverview({
               <div className={pnlPositive ? 'text-emerald-500/50 dark:text-emerald-400/40' : 'text-red-500/50 dark:text-red-400/40'}>
                 {pnlPositive ? <TrendingUp size={16} strokeWidth={1.5} /> : <TrendingDown size={16} strokeWidth={1.5} />}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Day P&L
               </p>
               <p className={`mt-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl ${
@@ -631,23 +632,23 @@ export function PortfolioOverview({
           </div>
 
           {/* Cash Balance */}
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-            <div className="text-zinc-300 dark:text-zinc-700">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div className="text-faint">
               <Banknote size={16} strokeWidth={1.5} />
             </div>
-            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Cash Balance
             </p>
-            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               {formatCurrency(aggregatedOverview.totalCashUsd)}
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               across all portfolios
             </p>
           </div>
 
           {/* Unrealized P&L */}
-          <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
             <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl transition-opacity ${
               unrealizedPositive ? 'bg-emerald-500/[0.04] dark:bg-emerald-500/[0.06]' : 'bg-red-500/[0.04] dark:bg-red-500/[0.06]'
             }`} />
@@ -655,7 +656,7 @@ export function PortfolioOverview({
               <div className={unrealizedPositive ? 'text-emerald-500/50 dark:text-emerald-400/40' : 'text-red-500/50 dark:text-red-400/40'}>
                 {unrealizedPositive ? <TrendingUp size={16} strokeWidth={1.5} /> : <TrendingDown size={16} strokeWidth={1.5} />}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Unrealized P&L
               </p>
               <p className={`mt-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl ${
@@ -672,17 +673,17 @@ export function PortfolioOverview({
           </div>
 
           {/* Portfolios & Positions count */}
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-            <div className="text-zinc-300 dark:text-zinc-700">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div className="text-faint">
               <Layers size={16} strokeWidth={1.5} />
             </div>
-            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Holdings
             </p>
-            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               {aggregatedOverview.positionCount}
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               across {aggregatedOverview.portfolioCount} portfolios
             </p>
           </div>

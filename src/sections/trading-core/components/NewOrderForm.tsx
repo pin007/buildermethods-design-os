@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect, useId } from 'react'
 import {
   Search,
   TrendingUp,
@@ -64,17 +64,17 @@ function InstrumentDropdownItem({ instrument, onSelect }: { instrument: Instrume
   return (
     <button
       onClick={onSelect}
-      className="group flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-pink-500/5 dark:hover:bg-pink-500/10"
+      className="group flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-primary/5 dark:hover:bg-primary/10"
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">{instrument.symbol}</span>
-          <span className="truncate text-xs text-zinc-500 dark:text-zinc-400">{instrument.name}</span>
+          <span className="truncate text-xs text-muted-foreground">{instrument.name}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{instrument.exchange}</span>
-          <span className="text-zinc-300 dark:text-zinc-600">&middot;</span>
-          <span className="text-xs capitalize text-zinc-400 dark:text-zinc-500">{instrument.assetType}</span>
+          <span className="text-xs uppercase tracking-wider text-hint">{instrument.exchange}</span>
+          <span className="text-faint">&middot;</span>
+          <span className="text-xs capitalize text-hint">{instrument.assetType}</span>
         </div>
       </div>
       <div className="text-right shrink-0">
@@ -90,20 +90,20 @@ function InstrumentDropdownItem({ instrument, onSelect }: { instrument: Instrume
 function SelectedInstrumentCard({ instrument }: { instrument: Instrument }) {
   const isPositive = instrument.dayChange >= 0
   return (
-    <div className="relative overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-gradient-to-br from-zinc-50 via-zinc-50 to-zinc-100 dark:from-zinc-800/60 dark:via-zinc-800/40 dark:to-zinc-900/60">
+    <div className="relative overflow-hidden rounded-lg border border-border bg-gradient-to-br from-zinc-50 via-zinc-50 to-zinc-100 dark:from-zinc-800/60 dark:via-zinc-800/40 dark:to-zinc-900/60">
       {/* Subtle glow */}
-      <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-pink-500/5 blur-2xl dark:bg-pink-500/10" />
+      <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-primary/5 blur-2xl dark:bg-primary/10" />
 
       <div className="relative flex items-center justify-between px-3 py-2.5">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-foreground">{instrument.symbol}</span>
-            <span className="truncate text-xs text-zinc-500 dark:text-zinc-400">{instrument.name}</span>
+            <span className="truncate text-xs text-muted-foreground">{instrument.name}</span>
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{instrument.exchange}</span>
-            <span className="text-zinc-300 dark:text-zinc-600">&middot;</span>
-            <span className="text-xs capitalize text-zinc-400 dark:text-zinc-500">{instrument.assetType}</span>
+            <span className="text-xs uppercase tracking-wider text-hint">{instrument.exchange}</span>
+            <span className="text-faint">&middot;</span>
+            <span className="text-xs capitalize text-hint">{instrument.assetType}</span>
           </div>
         </div>
         <div className="text-right shrink-0">
@@ -124,11 +124,11 @@ function SelectedInstrumentCard({ instrument }: { instrument: Instrument }) {
   )
 }
 
-function FieldLabel({ label, required }: { label: string; required?: boolean }) {
+function FieldLabel({ label, required, htmlFor }: { label: string; required?: boolean; htmlFor?: string }) {
   return (
-    <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+    <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-hint">
       {label}
-      {required && <span className="ml-0.5 text-pink-500">*</span>}
+      {required && <span className="ml-0.5 text-primary">*</span>}
     </label>
   )
 }
@@ -152,12 +152,12 @@ function SummaryRow({ label, value, mono, highlight, dim }: {
     : highlight === 'success'
     ? 'text-emerald-600 dark:text-emerald-400'
     : dim
-    ? 'text-zinc-400 dark:text-zinc-500'
+    ? 'text-hint'
     : 'text-foreground'
 
   return (
     <div className="flex items-baseline justify-between gap-3 py-1">
-      <span className="text-xs text-zinc-500 dark:text-zinc-400">{label}</span>
+      <span className="text-xs text-muted-foreground">{label}</span>
       <span className={`text-xs font-medium ${color} ${mono ? 'font-mono' : ''}`}>{value}</span>
     </div>
   )
@@ -215,6 +215,16 @@ export function NewOrderForm({
 
   const searchRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Stable ids to associate visible labels with their form controls
+  const uid = useId()
+  const instrumentInputId = `${uid}-instrument`
+  const quantityInputId = `${uid}-quantity`
+  const limitPriceInputId = `${uid}-limit-price`
+  const stopPriceInputId = `${uid}-stop-price`
+  const portfolioSelectId = `${uid}-portfolio`
+  const bracketStopLossInputId = `${uid}-bracket-stop-loss`
+  const bracketTakeProfitInputId = `${uid}-bracket-take-profit`
 
   const isAmend = !!amendOrder
 
@@ -378,10 +388,10 @@ export function NewOrderForm({
 
   // Input class helper
   const inputClass = (field: string) =>
-    `w-full rounded-lg border bg-white dark:bg-zinc-900/60 py-2.5 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-all focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] focus-visible:bg-white dark:focus-visible:bg-zinc-900 ${
+    `w-full rounded-lg border bg-card/60 py-2.5 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-all focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] focus-visible:bg-card ${
       touched.has(field) && errors[field]
         ? 'border-red-400 dark:border-red-500/60'
-        : 'border-zinc-200 dark:border-zinc-700/60'
+        : 'border-border'
     }`
 
   // -------------------------------------------------------------------------
@@ -404,10 +414,10 @@ export function NewOrderForm({
                 className={`relative flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold tracking-wide transition-all ${
                   side === 'BUY'
                     ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/25'
-                    : 'border border-zinc-200 dark:border-zinc-700/60 text-zinc-400 dark:text-zinc-500 hover:border-emerald-400/40 hover:text-emerald-600 dark:hover:border-emerald-600/30 dark:hover:text-emerald-400'
+                    : 'border border-border text-hint hover:border-emerald-400/40 hover:text-emerald-600 dark:hover:border-emerald-600/30 dark:hover:text-emerald-400'
                 } ${isAmend ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                {side === 'BUY' && <TrendingUp size={14} />}
+                {side === 'BUY' && <TrendingUp size={14} aria-hidden="true" />}
                 BUY
               </button>
               <button
@@ -416,10 +426,10 @@ export function NewOrderForm({
                 className={`relative flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold tracking-wide transition-all ${
                   side === 'SELL'
                     ? 'bg-red-600 text-white shadow-lg shadow-red-600/25'
-                    : 'border border-zinc-200 dark:border-zinc-700/60 text-zinc-400 dark:text-zinc-500 hover:border-red-400/40 hover:text-red-600 dark:hover:border-red-600/30 dark:hover:text-red-400'
+                    : 'border border-border text-hint hover:border-red-400/40 hover:text-red-600 dark:hover:border-red-600/30 dark:hover:text-red-400'
                 } ${isAmend ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                {side === 'SELL' && <TrendingDown size={14} />}
+                {side === 'SELL' && <TrendingDown size={14} aria-hidden="true" />}
                 SELL
               </button>
             </div>
@@ -429,13 +439,13 @@ export function NewOrderForm({
           {/* Instrument search                                              */}
           {/* ============================================================= */}
           <div ref={dropdownRef} className="relative">
-            <FieldLabel label="Instrument" required />
+            <FieldLabel label="Instrument" required htmlFor={instrumentInputId} />
             {selectedInstrument && !isAmend ? (
               <div>
                 <SelectedInstrumentCard instrument={selectedInstrument} />
                 <button
                   onClick={() => { setSelectedInstrument(null); setTimeout(() => searchRef.current?.focus(), 50) }}
-                  className="mt-1.5 text-xs font-semibold text-pink-600 dark:text-pink-400 hover:text-pink-500 dark:hover:text-pink-300 transition-colors"
+                  className="mt-1.5 text-xs font-semibold text-primary hover:text-primary dark:hover:text-pink-300 transition-colors"
                 >
                   Change instrument
                 </button>
@@ -445,27 +455,28 @@ export function NewOrderForm({
             ) : (
               <div>
                 <div className="relative">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-hint" />
                   <input
                     ref={searchRef}
+                    id={instrumentInputId}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true) }}
                     onFocus={() => setShowDropdown(true)}
                     onBlur={() => handleBlur('instrument')}
                     placeholder="Search ticker or company..."
-                    className={`w-full rounded-lg border bg-white dark:bg-zinc-900/60 py-2.5 pl-9 pr-3 text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-all focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] ${
+                    className={`w-full rounded-lg border bg-card/60 py-2.5 pl-9 pr-3 text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-all focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] ${
                       touched.has('instrument') && errors.instrument
                         ? 'border-red-400 dark:border-red-500/60'
-                        : 'border-zinc-200 dark:border-zinc-700/60'
+                        : 'border-border'
                     }`}
                   />
                 </div>
                 {showDropdown && filteredInstruments.length > 0 && (
-                  <div className="absolute z-10 mt-1.5 w-full rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-900 shadow-xl dark:shadow-2xl dark:shadow-black/40 overflow-hidden max-h-56 overflow-y-auto">
+                  <div className="absolute z-10 mt-1.5 w-full rounded-lg border border-border bg-card shadow-xl dark:shadow-2xl dark:shadow-black/40 overflow-hidden max-h-56 overflow-y-auto">
                     {filteredInstruments.map((inst, idx) => (
                       <div key={inst.id}>
-                        {idx > 0 && <div className="mx-3 border-t border-zinc-100 dark:border-zinc-800" />}
+                        {idx > 0 && <div className="mx-3 border-t border-border" />}
                         <InstrumentDropdownItem
                           instrument={inst}
                           onSelect={() => selectInstrument(inst)}
@@ -484,7 +495,7 @@ export function NewOrderForm({
           {/* ============================================================= */}
           <div>
             <FieldLabel label="Order Type" required />
-            <div className="flex rounded-lg bg-zinc-100 dark:bg-zinc-800/60 p-0.5 border border-zinc-200/60 dark:border-zinc-700/40">
+            <div className="flex rounded-lg bg-muted p-0.5 border border-zinc-200/60 dark:border-zinc-700/40">
               {ORDER_TABS.map((tab) => {
                 const isActive = activeTab === tab.id
                 return (
@@ -493,13 +504,13 @@ export function NewOrderForm({
                     onClick={() => handleTabChange(tab.id)}
                     className={`relative flex-1 rounded-md px-3 py-2 text-xs font-bold tracking-wide transition-all ${
                       isActive
-                        ? 'bg-white dark:bg-zinc-900 text-foreground shadow-sm'
-                        : 'text-zinc-400 dark:text-zinc-500 hover:text-foreground'
+                        ? 'bg-card text-foreground shadow-sm'
+                        : 'text-hint hover:text-foreground'
                     }`}
                   >
                     {tab.label}
                     {isActive && (
-                      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-pink-500" />
+                      <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-primary" />
                     )}
                   </button>
                 )
@@ -524,8 +535,8 @@ export function NewOrderForm({
                     onClick={() => setOrderType(opt.id)}
                     className={`flex-1 rounded-md py-1.5 text-xs font-bold tracking-wide transition-all ${
                       orderType === opt.id
-                        ? 'bg-pink-600 text-white shadow-sm shadow-pink-600/20'
-                        : 'border border-zinc-200 dark:border-zinc-700/60 text-zinc-400 dark:text-zinc-500 hover:border-pink-400/40 dark:hover:border-pink-600/30 hover:text-foreground'
+                        ? 'bg-primary text-primary-foreground shadow-sm shadow-pink-600/20'
+                        : 'border border-border text-hint hover:border-pink-400/40 dark:hover:border-primary/30 hover:text-foreground'
                     }`}
                   >
                     {opt.label}
@@ -539,8 +550,9 @@ export function NewOrderForm({
           {/* Quantity                                                        */}
           {/* ============================================================= */}
           <div>
-            <FieldLabel label="Quantity" required />
+            <FieldLabel label="Quantity" required htmlFor={quantityInputId} />
             <input
+              id={quantityInputId}
               type="number"
               min="1"
               step="any"
@@ -558,8 +570,9 @@ export function NewOrderForm({
           {/* ============================================================= */}
           {showLimitPrice && (
             <div>
-              <FieldLabel label="Limit Price" required />
+              <FieldLabel label="Limit Price" required htmlFor={limitPriceInputId} />
               <input
+                id={limitPriceInputId}
                 type="number"
                 min="0"
                 step="0.01"
@@ -578,8 +591,9 @@ export function NewOrderForm({
           {/* ============================================================= */}
           {showStopPrice && (
             <div>
-              <FieldLabel label="Stop Price" required />
+              <FieldLabel label="Stop Price" required htmlFor={stopPriceInputId} />
               <input
+                id={stopPriceInputId}
                 type="number"
                 min="0"
                 step="0.01"
@@ -598,11 +612,12 @@ export function NewOrderForm({
           {/* ============================================================= */}
           {portfolios.length > 1 && (
             <div>
-              <FieldLabel label="Portfolio" />
+              <FieldLabel label="Portfolio" htmlFor={portfolioSelectId} />
               <select
+                id={portfolioSelectId}
                 value={selectedPortfolioId}
                 onChange={(e) => setSelectedPortfolioId(e.target.value)}
-                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-900/60 py-2.5 px-3 text-sm text-foreground transition-all focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px]"
+                className="w-full rounded-lg border border-border bg-card/60 py-2.5 px-3 text-sm text-foreground transition-all focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px]"
               >
                 {portfolios.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -617,7 +632,7 @@ export function NewOrderForm({
           {/* Advanced tab extras: TIF + Bracket                             */}
           {/* ============================================================= */}
           {activeTab === 'advanced' && (
-            <div className="space-y-4 rounded-lg border border-zinc-200 dark:border-zinc-700/40 bg-zinc-50/50 dark:bg-zinc-800/20 p-3">
+            <div className="space-y-4 rounded-lg border border-border/40 bg-zinc-50/50 dark:bg-zinc-800/20 p-3">
               {/* Time in Force */}
               <div>
                 <FieldLabel label="Time in Force" />
@@ -629,15 +644,15 @@ export function NewOrderForm({
                       title={opt.desc}
                       className={`rounded-md py-2 text-xs font-bold tracking-wide transition-all ${
                         timeInForce === opt.value
-                          ? 'bg-pink-600 text-white shadow-sm shadow-pink-600/20'
-                          : 'bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-700/60 text-zinc-400 dark:text-zinc-500 hover:border-pink-400/40 dark:hover:border-pink-600/30 hover:text-foreground'
+                          ? 'bg-primary text-primary-foreground shadow-sm shadow-pink-600/20'
+                          : 'bg-card/60 border border-border text-hint hover:border-pink-400/40 dark:hover:border-primary/30 hover:text-foreground'
                       }`}
                     >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-                <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
+                <p className="mt-1 text-xs text-hint">
                   {TIF_OPTIONS.find((o) => o.value === timeInForce)?.desc}
                 </p>
               </div>
@@ -647,13 +662,15 @@ export function NewOrderForm({
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Link2 size={13} className="text-zinc-400 dark:text-zinc-500" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Bracket Order</span>
+                      <Link2 size={13} className="text-hint" />
+                      <span className="text-xs font-bold uppercase tracking-wider text-hint">Bracket Order</span>
                     </div>
                     <button
                       onClick={() => setBracketEnabled(!bracketEnabled)}
+                      aria-label="Toggle bracket order"
+                      aria-expanded={bracketEnabled}
                       className={`relative h-5 w-9 rounded-full transition-colors ${
-                        bracketEnabled ? 'bg-pink-600' : 'bg-zinc-300 dark:bg-zinc-600'
+                        bracketEnabled ? 'bg-primary' : 'bg-zinc-300 dark:bg-zinc-600'
                       }`}
                     >
                       <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
@@ -673,29 +690,31 @@ export function NewOrderForm({
                           {/* Stop-Loss */}
                           <div className="relative">
                             <div className="absolute -left-4 top-3 h-2 w-2 rounded-full bg-red-500 ring-2 ring-red-500/20" />
-                            <FieldLabel label="Stop-Loss Price" />
+                            <FieldLabel label="Stop-Loss Price" htmlFor={bracketStopLossInputId} />
                             <input
+                              id={bracketStopLossInputId}
                               type="number"
                               min="0"
                               step="0.01"
                               value={bracketStopLoss}
                               onChange={(e) => setBracketStopLoss(e.target.value)}
                               placeholder="0.00"
-                              className="w-full rounded-md border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-900/60 py-2 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+                              className="w-full rounded-md border border-border bg-card/60 py-2 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
                             />
                           </div>
                           {/* Take-Profit */}
                           <div className="relative">
                             <div className="absolute -left-4 top-3 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
-                            <FieldLabel label="Take-Profit Price" />
+                            <FieldLabel label="Take-Profit Price" htmlFor={bracketTakeProfitInputId} />
                             <input
+                              id={bracketTakeProfitInputId}
                               type="number"
                               min="0"
                               step="0.01"
                               value={bracketTakeProfit}
                               onChange={(e) => setBracketTakeProfit(e.target.value)}
                               placeholder="0.00"
-                              className="w-full rounded-md border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-900/60 py-2 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+                              className="w-full rounded-md border border-border bg-card/60 py-2 px-3 font-mono text-sm text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
                             />
                           </div>
                         </div>
@@ -719,7 +738,7 @@ export function NewOrderForm({
           {/* ============================================================= */}
           {/* Order Summary                                                  */}
           {/* ============================================================= */}
-          <div className="relative overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700/40 bg-gradient-to-b from-zinc-50/80 to-zinc-100/40 dark:from-zinc-800/30 dark:to-zinc-900/20">
+          <div className="relative overflow-hidden rounded-lg border border-border/40 bg-gradient-to-b from-zinc-50/80 to-zinc-100/40 dark:from-zinc-800/30 dark:to-zinc-900/20">
             {/* Subtle corner glow for risk */}
             {estimatedTotal > 0 && riskLevel === 'high' && (
               <div className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full bg-red-500/10 blur-2xl" />
@@ -727,17 +746,18 @@ export function NewOrderForm({
 
             <button
               onClick={() => setSummaryExpanded(!summaryExpanded)}
+              aria-expanded={summaryExpanded}
               className="flex w-full items-center justify-between px-3 py-2.5 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/30 transition-colors"
             >
               <div className="flex items-center gap-2">
-                <Zap size={12} className="text-pink-500" />
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                <Zap size={12} aria-hidden="true" className="text-primary" />
+                <span className="text-xs font-bold uppercase tracking-wider text-hint">
                   Order Summary
                 </span>
               </div>
               {summaryExpanded
-                ? <ChevronUp size={14} className="text-zinc-400 dark:text-zinc-500" />
-                : <ChevronDown size={14} className="text-zinc-400 dark:text-zinc-500" />
+                ? <ChevronUp size={14} aria-hidden="true" className="text-hint" />
+                : <ChevronDown size={14} aria-hidden="true" className="text-hint" />
               }
             </button>
 
@@ -745,8 +765,8 @@ export function NewOrderForm({
               <div className="border-t border-zinc-200/60 dark:border-zinc-700/40 px-3 pb-3 pt-1">
                 {!selectedInstrument ? (
                   <div className="py-6 text-center">
-                    <CircleDot size={20} className="mx-auto mb-2 text-zinc-300 dark:text-zinc-600" />
-                    <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                    <CircleDot size={20} className="mx-auto mb-2 text-faint" />
+                    <p className="text-xs text-hint">
                       Select an instrument to see the order summary
                     </p>
                   </div>
@@ -756,7 +776,7 @@ export function NewOrderForm({
                     <div className="flex items-center justify-between py-1.5">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-foreground">{selectedInstrument.symbol}</span>
-                        <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+                        <span className="font-mono text-xs text-hint">
                           {orderType === 'stop_loss' ? 'Stop Loss' : orderType.charAt(0).toUpperCase() + orderType.slice(1)}
                         </span>
                       </div>
@@ -804,7 +824,7 @@ export function NewOrderForm({
                         highlight={estimatedTotal > 0 ? impactHighlight : undefined}
                       />
                       <div className="flex items-baseline justify-between gap-3 py-1">
-                        <span className="text-xs text-zinc-500 dark:text-zinc-400">Risk Level</span>
+                        <span className="text-xs text-muted-foreground">Risk Level</span>
                         {estimatedTotal > 0 ? (
                           <span className={`inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-bold ${
                             riskLevel === 'high'
@@ -820,7 +840,7 @@ export function NewOrderForm({
                             {riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1)}
                           </span>
                         ) : (
-                          <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">&mdash;</span>
+                          <span className="text-xs font-medium text-hint">&mdash;</span>
                         )}
                       </div>
                       <SummaryRow
@@ -861,10 +881,10 @@ export function NewOrderForm({
 
                     {/* Bracket summary */}
                     {bracketEnabled && (bracketStopLoss || bracketTakeProfit) && (
-                      <div className="rounded-md border border-zinc-200 dark:border-zinc-700/40 bg-white/50 dark:bg-zinc-800/20 p-2.5 space-y-1">
+                      <div className="rounded-md border border-border/40 bg-white/50 dark:bg-zinc-800/20 p-2.5 space-y-1">
                         <div className="flex items-center gap-1.5 mb-1">
-                          <Link2 size={10} className="text-pink-500" />
-                          <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Bracket</p>
+                          <Link2 size={10} className="text-primary" />
+                          <p className="text-xs font-bold uppercase tracking-wider text-hint">Bracket</p>
                         </div>
                         {bracketStopLoss && (
                           <SummaryRow label="Stop-Loss" value={formatCurrency(parseFloat(bracketStopLoss), currency)} mono highlight="danger" />
@@ -885,7 +905,7 @@ export function NewOrderForm({
       {/* ================================================================ */}
       {/* Sticky submit footer                                              */}
       {/* ================================================================ */}
-      <div className="shrink-0 border-t border-zinc-200 dark:border-zinc-700/40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm p-4">
+      <div className="shrink-0 border-t border-border/40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm p-4">
         <button
           onClick={handleSubmit}
           disabled={!selectedInstrument}

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useId } from 'react'
 import {
   BookOpen,
   Star,
@@ -110,6 +110,7 @@ export function JournalEntries({
   const [selectedPortfolios, setSelectedPortfolios] = useState<string[]>([])
   const [selectedStrategy, setSelectedStrategy] = useState<string>('')
   const [outcomeFilter, setOutcomeFilter] = useState<'all' | 'win' | 'loss'>('all')
+  const strategySelectId = useId()
 
   // -------------------------------------------------------------------------
   // Filtered and sorted entries
@@ -266,39 +267,41 @@ export function JournalEntries({
       {/* ================================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Trade Journal
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Journal Entries
           </h1>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Group toggle */}
-          <div className="flex rounded-lg bg-zinc-100 dark:bg-zinc-900/80 p-0.5 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+          <div className="flex rounded-lg bg-muted p-0.5 ring-1 ring-border/60">
             <button
               onClick={() => setGroupByPortfolio(true)}
               className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                 groupByPortfolio
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
               }`}
               title="Group by portfolio"
+              aria-label="Group by portfolio"
             >
-              <Layers size={13} />
+              <Layers size={13} aria-hidden="true" />
               <span className="hidden sm:inline">Grouped</span>
             </button>
             <button
               onClick={() => setGroupByPortfolio(false)}
               className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                 !groupByPortfolio
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
               }`}
               title="Flat list"
+              aria-label="Flat list"
             >
-              <List size={13} />
+              <List size={13} aria-hidden="true" />
               <span className="hidden sm:inline">Flat</span>
             </button>
           </div>
@@ -308,7 +311,7 @@ export function JournalEntries({
       {/* ================================================================= */}
       {/* Tabs                                                              */}
       {/* ================================================================= */}
-      <div className="flex gap-1 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex gap-1 border-b border-border">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id
           const Icon = tab.icon
@@ -319,12 +322,12 @@ export function JournalEntries({
               className={`
                 relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors
                 ${isActive
-                  ? 'text-zinc-900 dark:text-zinc-100'
+                  ? 'text-foreground'
                   : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300'
                 }
               `}
             >
-              <Icon size={14} className={isActive ? 'text-pink-600 dark:text-pink-400' : ''} />
+              <Icon size={14} aria-hidden="true" className={isActive ? 'text-primary' : ''} />
               {tab.label}
               {tab.count > 0 && (
                 <span
@@ -341,7 +344,7 @@ export function JournalEntries({
               )}
               {/* Active indicator */}
               {isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-pink-600 dark:bg-pink-400" />
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary dark:bg-pink-400" />
               )}
             </button>
           )
@@ -357,21 +360,23 @@ export function JournalEntries({
           <div className="relative flex-1">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-hint"
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by instrument, name, or tag..."
-              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-900 placeholder-zinc-400 transition-colors focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-100 dark:placeholder-zinc-600 dark:focus-visible:border-pink-400 dark:focus-visible:ring-pink-400/20"
+              aria-label="Search journal entries"
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-900 placeholder-zinc-400 transition-colors focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-100 dark:placeholder-zinc-600 dark:focus-visible:border-pink-400 dark:focus-visible:ring-pink-400/20"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-hint hover:text-muted-foreground"
+                aria-label="Clear search"
               >
-                <X size={14} />
+                <X size={14} aria-hidden="true" />
               </button>
             )}
           </div>
@@ -379,16 +384,17 @@ export function JournalEntries({
           {/* Filter toggle */}
           <button
             onClick={() => setShowFilters((f) => !f)}
+            aria-expanded={showFilters}
             className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
               showFilters || hasActiveFilters
                 ? 'border-pink-200 bg-pink-50 text-pink-700 dark:border-pink-900/40 dark:bg-pink-950/20 dark:text-pink-400'
                 : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-400 dark:hover:border-zinc-700'
             }`}
           >
-            <Filter size={14} />
+            <Filter size={14} aria-hidden="true" />
             Filters
             {hasActiveFilters && (
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-pink-600 text-xs font-bold text-white">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 {(selectedPortfolios.length > 0 ? 1 : 0) + (selectedStrategy ? 1 : 0) + (outcomeFilter !== 'all' ? 1 : 0)}
               </span>
             )}
@@ -400,7 +406,7 @@ export function JournalEntries({
           <div className="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-900/40">
             {/* Portfolio filter */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-500">Portfolio</label>
+              <label className="text-xs font-semibold text-hint">Portfolio</label>
               <div className="flex gap-1">
                 {portfolios.map((p) => {
                   const isSelected = selectedPortfolios.includes(p.id)
@@ -414,7 +420,7 @@ export function JournalEntries({
                       }
                       className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                         isSelected
-                          ? 'bg-pink-600 text-white'
+                          ? 'bg-primary text-white'
                           : 'bg-white text-zinc-600 ring-1 ring-zinc-200 hover:ring-zinc-300 dark:bg-zinc-800 dark:text-zinc-400 dark:ring-zinc-700 dark:hover:ring-zinc-600'
                       }`}
                     >
@@ -427,8 +433,9 @@ export function JournalEntries({
 
             {/* Strategy filter */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-500">Strategy</label>
+              <label htmlFor={strategySelectId} className="text-xs font-semibold text-hint">Strategy</label>
               <select
+                id={strategySelectId}
                 value={selectedStrategy}
                 onChange={(e) => setSelectedStrategy(e.target.value)}
                 className="rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
@@ -444,7 +451,7 @@ export function JournalEntries({
 
             {/* Outcome filter */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-500">Outcome</label>
+              <label className="text-xs font-semibold text-hint">Outcome</label>
               <div className="flex gap-1">
                 {(['all', 'win', 'loss'] as const).map((o) => (
                   <button
@@ -452,7 +459,7 @@ export function JournalEntries({
                     onClick={() => setOutcomeFilter(o)}
                     className={`rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
                       outcomeFilter === o
-                        ? 'bg-pink-600 text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-white text-zinc-600 ring-1 ring-zinc-200 hover:ring-zinc-300 dark:bg-zinc-800 dark:text-zinc-400 dark:ring-zinc-700 dark:hover:ring-zinc-600'
                     }`}
                   >
@@ -466,9 +473,9 @@ export function JournalEntries({
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="ml-auto flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium text-pink-600 transition-colors hover:bg-pink-50 dark:text-pink-400 dark:hover:bg-pink-950/20"
+                className="ml-auto flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-pink-50 dark:text-pink-400 dark:hover:bg-pink-950/20"
               >
-                <X size={12} />
+                <X size={12} aria-hidden="true" />
                 Clear filters
               </button>
             )}
@@ -553,18 +560,18 @@ function NeedsReviewContent({
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/30">
           <CheckCircle2 size={24} className="text-emerald-500 dark:text-emerald-400" />
         </div>
-        <p className="mt-4 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+        <p className="mt-4 text-sm font-semibold text-foreground">
           All caught up!
         </p>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           No trades waiting for review.
         </p>
         <button
           onClick={onSwitchTab}
-          className="mt-4 flex items-center gap-1 text-sm font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400"
+          className="mt-4 flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary"
         >
           View All Entries
-          <ChevronRight size={14} />
+          <ChevronRight size={14} aria-hidden="true" />
         </button>
       </div>
     )
@@ -579,7 +586,7 @@ function NeedsReviewContent({
             portfolioName={portfolioMap[portfolioId]?.name ?? portfolioId}
             count={groupTrades.length}
           >
-            <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <div className="divide-y divide-border">
               {groupTrades.map((trade) => (
                 <UnjournaledTradeRow
                   key={trade.tradeId}
@@ -595,8 +602,8 @@ function NeedsReviewContent({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-      <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="divide-y divide-border">
         {trades.map((trade) => (
           <UnjournaledTradeRow
             key={trade.tradeId}
@@ -638,7 +645,7 @@ function UnjournaledTradeRow({
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <span className="font-mono text-sm font-semibold text-foreground">
               {trade.instrument}
             </span>
             <span
@@ -651,7 +658,7 @@ function UnjournaledTradeRow({
               {trade.side}
             </span>
           </div>
-          <p className="mt-0.5 truncate text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-0.5 truncate text-xs text-faint">
             {trade.instrumentName}
             {portfolioName && ` \u00b7 ${portfolioName}`}
           </p>
@@ -659,8 +666,8 @@ function UnjournaledTradeRow({
 
         {/* Close date */}
         <div className="hidden text-right sm:block">
-          <p className="text-xs text-zinc-500 dark:text-zinc-500">Closed</p>
-          <p className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="text-xs text-hint">Closed</p>
+          <p className="font-mono text-xs text-faint">
             {formatShortDate(trade.exitDate)}
           </p>
         </div>
@@ -690,11 +697,12 @@ function UnjournaledTradeRow({
         {/* CTA */}
         <button
           onClick={onJournal}
-          className="shrink-0 rounded-lg bg-pink-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.97]"
+          aria-label={`Journal ${trade.instrument} trade`}
+          className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-pink-600/20 transition-all hover:bg-primary hover:shadow-pink-600/30 active:scale-[0.97]"
         >
           <span className="hidden sm:inline">Journal This Trade</span>
           <span className="sm:hidden">
-            <FileEdit size={14} />
+            <FileEdit size={14} aria-hidden="true" />
           </span>
         </button>
       </div>
@@ -739,17 +747,17 @@ function EntriesTableContent({
   if (entries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/60">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted">
           {isStarredTab ? (
-            <Star size={24} className="text-zinc-300 dark:text-zinc-700" />
+            <Star size={24} className="text-faint" />
           ) : (
-            <BookOpen size={24} className="text-zinc-300 dark:text-zinc-700" />
+            <BookOpen size={24} className="text-faint" />
           )}
         </div>
-        <p className="mt-4 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+        <p className="mt-4 text-sm font-semibold text-foreground">
           {isStarredTab ? 'No starred entries' : 'No entries found'}
         </p>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           {isStarredTab
             ? 'Star important entries to find them quickly.'
             : 'Try adjusting your filters.'}
@@ -757,10 +765,10 @@ function EntriesTableContent({
         {isStarredTab && (
           <button
             onClick={onSwitchTab}
-            className="mt-4 flex items-center gap-1 text-sm font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400"
+            className="mt-4 flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary"
           >
             View All Entries
-            <ChevronRight size={14} />
+            <ChevronRight size={14} aria-hidden="true" />
           </button>
         )}
       </div>
@@ -774,19 +782,19 @@ function EntriesTableContent({
         onClick={() => onSort(field)}
         className={`group inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.1em] transition-colors ${
           isActive
-            ? 'text-pink-600 dark:text-pink-400'
+            ? 'text-primary'
             : 'text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300'
         }`}
       >
         {label}
         {isActive ? (
           sortDir === 'asc' ? (
-            <ArrowUp size={12} />
+            <ArrowUp size={12} aria-hidden="true" />
           ) : (
-            <ArrowDown size={12} />
+            <ArrowDown size={12} aria-hidden="true" />
           )
         ) : (
-          <ArrowUpDown size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+          <ArrowUpDown size={12} aria-hidden="true" className="opacity-0 transition-opacity group-hover:opacity-100" />
         )}
       </button>
     )
@@ -796,14 +804,14 @@ function EntriesTableContent({
     <div className="overflow-x-auto">
       <table className="w-full min-w-[700px]">
         <thead>
-          <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+          <tr className="border-b border-border">
             <th className="w-8 px-2 py-3" />
             <th className="px-3 py-3 text-left">{sortHeader('Date', 'date')}</th>
             <th className="px-3 py-3 text-left">{sortHeader('Instrument', 'instrument')}</th>
             <th className="px-3 py-3 text-left">{sortHeader('Side', 'side')}</th>
             {showPortfolio && (
               <th className="hidden px-3 py-3 text-left lg:table-cell">
-                <span className="text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+                <span className="text-xs font-bold uppercase tracking-[0.1em] text-hint">
                   Portfolio
                 </span>
               </th>
@@ -814,12 +822,12 @@ function EntriesTableContent({
               {sortHeader('Strategy', 'strategy')}
             </th>
             <th className="hidden px-3 py-3 text-left lg:table-cell">
-              <span className="text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs font-bold uppercase tracking-[0.1em] text-hint">
                 Tags
               </span>
             </th>
             <th className="px-3 py-3 text-right">
-              <span className="text-xs font-bold uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs font-bold uppercase tracking-[0.1em] text-hint">
                 Actions
               </span>
             </th>
@@ -860,7 +868,7 @@ function EntriesTableContent({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       {renderTable(entries)}
     </div>
   )
@@ -891,7 +899,7 @@ function JournalEntryRow({
 
   return (
     <tr
-      className="group cursor-pointer transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
+      className="group cursor-pointer transition-colors hover:bg-accent/30"
       onClick={onView}
     >
       {/* Star */}
@@ -901,11 +909,17 @@ function JournalEntryRow({
             e.stopPropagation()
             onToggleStar?.()
           }}
-          className="rounded p-1 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded p-1 transition-colors hover:bg-accent"
           title={entry.starred ? 'Remove star' : 'Add star'}
+          aria-label={
+            entry.starred
+              ? `Remove star from ${entry.tradeSummary.instrument} entry`
+              : `Star ${entry.tradeSummary.instrument} entry`
+          }
         >
           <Star
             size={14}
+            aria-hidden="true"
             className={
               entry.starred
                 ? 'fill-amber-400 text-amber-400'
@@ -917,7 +931,7 @@ function JournalEntryRow({
 
       {/* Date */}
       <td className="px-3 py-3">
-        <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="font-mono text-xs text-muted-foreground">
           {formatDate(entry.tradeSummary.exitDate)}
         </span>
       </td>
@@ -925,10 +939,10 @@ function JournalEntryRow({
       {/* Instrument */}
       <td className="px-3 py-3">
         <div>
-          <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <span className="font-mono text-sm font-semibold text-foreground">
             {entry.tradeSummary.instrument}
           </span>
-          <p className="mt-0.5 truncate text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-0.5 truncate text-xs text-faint">
             {entry.tradeSummary.instrumentName}
           </p>
         </div>
@@ -950,7 +964,7 @@ function JournalEntryRow({
       {/* Portfolio */}
       {showPortfolio && (
         <td className="hidden px-3 py-3 lg:table-cell">
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">{portfolioName}</span>
+          <span className="text-xs text-muted-foreground">{portfolioName}</span>
         </td>
       )}
 
@@ -1017,8 +1031,9 @@ function JournalEntryRow({
             }}
             className="rounded p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
             title="Edit"
+            aria-label={`Edit ${entry.tradeSummary.instrument} entry`}
           >
-            <Pencil size={14} />
+            <Pencil size={14} aria-hidden="true" />
           </button>
           <button
             onClick={(e) => {
@@ -1027,8 +1042,9 @@ function JournalEntryRow({
             }}
             className="rounded p-1.5 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20 dark:hover:text-red-400"
             title="Delete"
+            aria-label={`Delete ${entry.tradeSummary.instrument} entry`}
           >
-            <Trash2 size={14} />
+            <Trash2 size={14} aria-hidden="true" />
           </button>
         </div>
       </td>
@@ -1071,15 +1087,16 @@ function CollapsiblePortfolioGroup({
   const [isOpen, setIsOpen] = useState(true)
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <button
         onClick={() => setIsOpen((o) => !o)}
-        className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
+        aria-expanded={isOpen}
+        className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-accent/30"
       >
         <div className={`transition-transform ${isOpen ? 'rotate-0' : '-rotate-90'}`}>
-          <ChevronDown size={14} className="text-zinc-400 dark:text-zinc-500" />
+          <ChevronDown size={14} aria-hidden="true" className="text-hint" />
         </div>
-        <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+        <span className="text-sm font-semibold text-foreground">
           {portfolioName}
         </span>
         <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-bold tabular-nums text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500">
@@ -1088,7 +1105,7 @@ function CollapsiblePortfolioGroup({
       </button>
 
       {isOpen && (
-        <div className="border-t border-zinc-100 dark:border-zinc-800/60">
+        <div className="border-t border-border">
           {children}
         </div>
       )}
@@ -1124,12 +1141,12 @@ function DeleteConfirmationModal({
             <AlertTriangle size={20} className="text-red-600 dark:text-red-400" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            <h3 className="text-base font-semibold text-foreground">
               Delete Journal Entry
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Are you sure you want to delete this journal entry for{' '}
-              <span className="font-mono font-semibold text-zinc-700 dark:text-zinc-300">
+              <span className="font-mono font-semibold text-foreground">
                 {entry.tradeSummary.instrument}
               </span>
               ? This action cannot be undone.

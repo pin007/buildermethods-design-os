@@ -127,20 +127,23 @@ function Badge({ label, className }: { label: string; className: string }) {
 
 function LabelPill({ label, value, isRegex }: { label: string; value: string; isRegex?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
-      <span className="text-zinc-400 dark:text-zinc-500">{label}=</span>
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono bg-muted text-muted-foreground ring-1 ring-zinc-200 dark:ring-zinc-700">
+      <span className="text-hint">{label}=</span>
       <span className={isRegex ? 'italic' : ''}>{value}</span>
-      {isRegex && <span className="text-xs text-zinc-400 dark:text-zinc-600">~</span>}
+      {isRegex && <span className="text-xs text-faint">~</span>}
     </span>
   )
 }
 
-function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
+function Toggle({ enabled, onToggle, label }: { enabled: boolean; onToggle: () => void; label: string }) {
   return (
     <button
       onClick={onToggle}
+      role="switch"
+      aria-checked={enabled}
+      aria-label={label}
       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-        enabled ? 'bg-pink-500' : 'bg-zinc-300 dark:bg-zinc-700'
+        enabled ? 'bg-primary' : 'bg-zinc-300 dark:bg-zinc-700'
       }`}
     >
       <span
@@ -166,14 +169,14 @@ interface StatCardProps {
 
 function StatCard({ label, value, sub, accent, icon }: StatCardProps) {
   return (
-    <div className={`relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex items-start gap-3 group hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors`}>
+    <div className={`relative overflow-hidden rounded-xl border border-border bg-card p-4 flex items-start gap-3 group hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors`}>
       <div className={`mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${accent}`}>
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{label}</p>
-        <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 leading-none mt-0.5">{value}</p>
-        <p className="text-xs text-zinc-400 dark:text-zinc-600 mt-1">{sub}</p>
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
+        <p className="text-2xl font-bold text-foreground leading-none mt-0.5">{value}</p>
+        <p className="text-xs text-faint mt-1">{sub}</p>
       </div>
     </div>
   )
@@ -198,7 +201,7 @@ function AlertCard({ alert, dark, onAcknowledge, onSilence, onView }: AlertCardP
   const sourceBadge = dark ? SOURCE_BADGE[alert.source] : SOURCE_BADGE_LIGHT[alert.source]
 
   return (
-    <div className={`border-l-4 ${SEVERITY_LEFT[alert.severity]} bg-white dark:bg-zinc-900 border border-l-0 border-zinc-200 dark:border-zinc-800 rounded-r-xl overflow-hidden`}>
+    <div className={`border-l-4 ${SEVERITY_LEFT[alert.severity]} bg-card border border-l-0 border-border rounded-r-xl overflow-hidden`}>
       {/* Header row */}
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-3">
@@ -212,38 +215,40 @@ function AlertCard({ alert, dark, onAcknowledge, onSilence, onView }: AlertCardP
             </span>
             <button
               onClick={onView}
-              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:text-pink-600 dark:hover:text-pink-400 transition-colors text-left"
+              className="text-sm font-medium text-foreground hover:text-primary transition-colors text-left"
             >
               {alert.summary}
             </button>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-xs text-zinc-400 dark:text-zinc-600 font-mono whitespace-nowrap">
+            <span className="text-xs text-faint font-mono whitespace-nowrap">
               {relativeTime(alert.startsAt)}
             </span>
             {alert.status !== 'silenced' && !alert.acknowledgedAt && (
               <button
                 onClick={onAcknowledge}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               >
-                <CheckCheck className="w-3 h-3" />
+                <CheckCheck className="w-3 h-3" aria-hidden="true" />
                 Ack
               </button>
             )}
             {alert.status !== 'silenced' && (
               <button
                 onClick={onSilence}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               >
-                <VolumeX className="w-3 h-3" />
+                <VolumeX className="w-3 h-3" aria-hidden="true" />
                 Silence
               </button>
             )}
             <button
               onClick={() => setExpanded(!expanded)}
-              className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+              aria-expanded={expanded}
+              aria-label={`${expanded ? 'Collapse' : 'Expand'} details for alert ${alert.summary}`}
+              className="p-1 rounded text-hint hover:text-muted-foreground transition-colors"
             >
-              {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {expanded ? <ChevronDown className="w-4 h-4" aria-hidden="true" /> : <ChevronRight className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -251,13 +256,13 @@ function AlertCard({ alert, dark, onAcknowledge, onSilence, onView }: AlertCardP
         {/* Status indicators */}
         <div className="mt-1.5 flex items-center gap-3 flex-wrap">
           {alert.acknowledgedAt && alert.acknowledgedBy && (
-            <span className="inline-flex items-center gap-1 text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="inline-flex items-center gap-1 text-xs text-hint">
               <CheckCheck className="w-3 h-3 text-emerald-500" />
               Acknowledged by {alert.acknowledgedBy} at {formatDT(alert.acknowledgedAt)}
             </span>
           )}
           {alert.silenceId && (
-            <span className="inline-flex items-center gap-1 text-xs text-zinc-400 dark:text-zinc-500">
+            <span className="inline-flex items-center gap-1 text-xs text-hint">
               <VolumeX className="w-3 h-3 text-violet-500" />
               Silenced by {alert.silenceId}
             </span>
@@ -267,8 +272,8 @@ function AlertCard({ alert, dark, onAcknowledge, onSilence, onView }: AlertCardP
 
       {/* Expanded description */}
       {expanded && (
-        <div className="px-4 pb-3 border-t border-zinc-100 dark:border-zinc-800">
-          <p className="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        <div className="px-4 pb-3 border-t border-border">
+          <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed">
             {alert.description}
           </p>
           {Object.keys(alert.labels).length > 0 && (
@@ -333,16 +338,17 @@ function ActiveAlertsTab({ alerts, recentlyResolved, dark, onAcknowledgeAlert, o
         <div className="mt-4">
           <button
             onClick={() => setResolvedOpen(!resolvedOpen)}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+            aria-expanded={resolvedOpen}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border bg-card text-sm font-medium text-muted-foreground hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
           >
             <div className="flex items-center gap-2">
-              <CheckCheck className="w-4 h-4 text-emerald-500" />
+              <CheckCheck className="w-4 h-4 text-emerald-500" aria-hidden="true" />
               <span>Recently Resolved</span>
-              <span className="px-1.5 py-0.5 rounded-full text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500">
+              <span className="px-1.5 py-0.5 rounded-full text-xs font-mono bg-muted text-hint">
                 {recentlyResolved.length}
               </span>
             </div>
-            {resolvedOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            {resolvedOpen ? <ChevronDown className="w-4 h-4" aria-hidden="true" /> : <ChevronRight className="w-4 h-4" aria-hidden="true" />}
           </button>
 
           {resolvedOpen && (
@@ -350,7 +356,7 @@ function ActiveAlertsTab({ alerts, recentlyResolved, dark, onAcknowledgeAlert, o
               {recentlyResolved.map(alert => (
                 <div
                   key={alert.id}
-                  className="border-l-4 border-l-zinc-300 dark:border-l-zinc-700 bg-white dark:bg-zinc-900 border border-l-0 border-zinc-200 dark:border-zinc-800 rounded-r-xl px-4 py-3 opacity-70"
+                  className="border-l-4 border-l-zinc-300 dark:border-l-zinc-700 bg-card border border-l-0 border-border rounded-r-xl px-4 py-3 opacity-70"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -361,10 +367,10 @@ function ActiveAlertsTab({ alerts, recentlyResolved, dark, onAcknowledgeAlert, o
                       <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${dark ? SOURCE_BADGE[alert.source] : SOURCE_BADGE_LIGHT[alert.source]}`}>
                         {alert.source}
                       </span>
-                      <span className="text-sm text-zinc-600 dark:text-zinc-400">{alert.summary}</span>
+                      <span className="text-sm text-muted-foreground">{alert.summary}</span>
                     </div>
                     {alert.endsAt && (
-                      <span className="text-xs text-zinc-400 dark:text-zinc-600 font-mono whitespace-nowrap flex-shrink-0">
+                      <span className="text-xs text-faint font-mono whitespace-nowrap flex-shrink-0">
                         resolved {relativeTime(alert.endsAt)}
                       </span>
                     )}
@@ -396,9 +402,9 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
       <div className="flex items-center justify-end mb-4">
         <button
           onClick={onCreateSilence}
-          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium transition-colors"
         >
-          <Plus className="w-3.5 h-3.5" />
+          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
           New Silence
         </button>
       </div>
@@ -414,7 +420,7 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
           {silences.map(silence => (
             <div
               key={silence.id}
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4"
+              className="rounded-xl border border-border bg-card p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
@@ -422,12 +428,12 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide font-mono ${
                       silence.status === 'active'
                         ? 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-400 bg-emerald-100 text-emerald-700 ring-emerald-200'
-                        : 'bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:ring-zinc-700'
+                        : 'bg-zinc-100 text-muted-foreground ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700'
                     }`}>
                       {silence.status}
                     </span>
                     {silence.matchedAlertCount > 0 && (
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                      <span className="text-xs text-muted-foreground font-mono">
                         {silence.matchedAlertCount} alert{silence.matchedAlertCount !== 1 ? 's' : ''} muted
                       </span>
                     )}
@@ -439,9 +445,9 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
                     ))}
                   </div>
 
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 italic mb-2">"{silence.comment}"</p>
+                  <p className="text-xs text-muted-foreground italic mb-2">"{silence.comment}"</p>
 
-                  <div className="flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-600 font-mono">
+                  <div className="flex items-center gap-3 text-xs text-faint font-mono">
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {timeRemaining(silence.endsAt)}
@@ -453,9 +459,10 @@ function SilencesTab({ silences, onCreateSilence, onExpireSilence, onEditSilence
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <button
                     onClick={() => onEditSilence?.(silence.id)}
-                    className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    aria-label={`Edit silence ${silence.id}`}
+                    className="p-1.5 rounded-lg text-hint hover:text-muted-foreground hover:bg-accent transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => onExpireSilence?.(silence.id)}
@@ -498,9 +505,9 @@ function RoutesTab({ routes, onCreateRoute, onToggleRoute, onEditRoute }: Routes
       <div className="flex items-center justify-end mb-4">
         <button
           onClick={onCreateRoute}
-          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium transition-colors"
         >
-          <Plus className="w-3.5 h-3.5" />
+          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
           New Route
         </button>
       </div>
@@ -516,17 +523,17 @@ function RoutesTab({ routes, onCreateRoute, onToggleRoute, onEditRoute }: Routes
           {routes.map(route => (
             <div
               key={route.id}
-              className={`rounded-xl border bg-white dark:bg-zinc-900 p-4 transition-colors ${
+              className={`rounded-xl border bg-card p-4 transition-colors ${
                 route.enabled
-                  ? 'border-zinc-200 dark:border-zinc-800'
+                  ? 'border-border'
                   : 'border-zinc-200/60 dark:border-zinc-800/60 opacity-60'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{route.name}</span>
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-700">
+                    <span className="text-sm font-medium text-foreground">{route.name}</span>
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold font-mono bg-muted text-muted-foreground ring-1 ring-zinc-200 dark:ring-zinc-700">
                       {route.receiver}
                     </span>
                   </div>
@@ -537,13 +544,13 @@ function RoutesTab({ routes, onCreateRoute, onToggleRoute, onEditRoute }: Routes
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-zinc-400 dark:text-zinc-600 font-mono flex-wrap">
+                  <div className="flex items-center gap-4 text-xs text-faint font-mono flex-wrap">
                     <span>group by: {route.groupBy.join(', ')}</span>
                     <span>wait {route.groupWait}</span>
                     <span>interval {route.groupInterval}</span>
                     <span>repeat {route.repeatInterval}</span>
                     {route.lastDeliveredAt && (
-                      <span className="flex items-center gap-1 text-zinc-400 dark:text-zinc-600">
+                      <span className="flex items-center gap-1 text-faint">
                         <Zap className="w-3 h-3" />
                         {relativeTime(route.lastDeliveredAt)}
                       </span>
@@ -554,13 +561,15 @@ function RoutesTab({ routes, onCreateRoute, onToggleRoute, onEditRoute }: Routes
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => onEditRoute?.(route.id)}
-                    className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    aria-label={`Edit route ${route.name}`}
+                    className="p-1.5 rounded-lg text-hint hover:text-muted-foreground hover:bg-accent transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                   <Toggle
                     enabled={route.enabled}
                     onToggle={() => onToggleRoute?.(route.id, !route.enabled)}
+                    label={`${route.enabled ? 'Disable' : 'Enable'} route ${route.name}`}
                   />
                 </div>
               </div>
@@ -589,9 +598,9 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
       <div className="flex items-center justify-end mb-4">
         <button
           onClick={onCreateInhibition}
-          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium transition-colors"
         >
-          <Plus className="w-3.5 h-3.5" />
+          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
           New Rule
         </button>
       </div>
@@ -607,16 +616,16 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
           {rules.map(rule => (
             <div
               key={rule.id}
-              className={`rounded-xl border bg-white dark:bg-zinc-900 p-4 transition-colors ${
+              className={`rounded-xl border bg-card p-4 transition-colors ${
                 rule.enabled
-                  ? 'border-zinc-200 dark:border-zinc-800'
+                  ? 'border-border'
                   : 'border-zinc-200/60 dark:border-zinc-800/60 opacity-60'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{rule.name}</span>
+                    <span className="text-sm font-medium text-foreground">{rule.name}</span>
                     {rule.suppressedCount > 0 && (
                       <span className="px-1.5 py-0.5 rounded-full text-xs font-mono bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400">
                         {rule.suppressedCount} suppressed
@@ -624,11 +633,11 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                     )}
                   </div>
 
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">{rule.description}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{rule.description}</p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <p className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Source fires when</p>
+                      <p className="text-xs uppercase tracking-wider text-faint font-semibold mb-1.5">Source fires when</p>
                       <div className="flex flex-wrap gap-1">
                         {Object.entries(rule.sourceMatch).map(([k, v]) => (
                           <LabelPill key={k} label={k} value={v} />
@@ -636,7 +645,7 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-600 font-semibold mb-1.5">Suppresses when</p>
+                      <p className="text-xs uppercase tracking-wider text-faint font-semibold mb-1.5">Suppresses when</p>
                       <div className="flex flex-wrap gap-1">
                         {Object.entries(rule.targetMatch).map(([k, v]) => (
                           <LabelPill key={k} label={k} value={v} />
@@ -646,10 +655,10 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                   </div>
 
                   {rule.equal.length > 0 && (
-                    <div className="mt-2 flex items-center gap-1.5 text-xs text-zinc-400 dark:text-zinc-600 font-mono">
+                    <div className="mt-2 flex items-center gap-1.5 text-xs text-faint font-mono">
                       <span>equal labels:</span>
                       {rule.equal.map(l => (
-                        <span key={l} className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">{l}</span>
+                        <span key={l} className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground">{l}</span>
                       ))}
                     </div>
                   )}
@@ -658,13 +667,15 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => onEditInhibition?.(rule.id)}
-                    className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    aria-label={`Edit rule ${rule.name}`}
+                    className="p-1.5 rounded-lg text-hint hover:text-muted-foreground hover:bg-accent transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                   <Toggle
                     enabled={rule.enabled}
                     onToggle={() => onToggleInhibition?.(rule.id, !rule.enabled)}
+                    label={`${rule.enabled ? 'Disable' : 'Enable'} rule ${rule.name}`}
                   />
                 </div>
               </div>
@@ -683,11 +694,11 @@ function InhibitionsTab({ rules, onCreateInhibition, onToggleInhibition, onEditI
 function EmptyState({ icon, title, message }: { icon: React.ReactNode; title: string; message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 dark:text-zinc-600 mb-4">
+      <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-faint mb-4">
         {icon}
       </div>
-      <h3 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">{title}</h3>
-      <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600 max-w-xs">{message}</p>
+      <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+      <p className="mt-1 text-xs text-faint max-w-xs">{message}</p>
     </div>
   )
 }
@@ -747,8 +758,8 @@ export function AlertsDashboard({
     <div>
       {/* Page header */}
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-600 mb-1">Overview</p>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Alerts</h1>
+          <p className="text-xs font-semibold uppercase tracking-widest text-faint mb-1">Overview</p>
+          <h1 className="text-2xl font-bold text-foreground">Alerts</h1>
         </div>
 
         {/* Stat cards */}
@@ -784,15 +795,16 @@ export function AlertsDashboard({
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 mb-5 overflow-x-auto">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-border mb-5 overflow-x-auto">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
+              aria-label={tab.label}
               className={`flex-1 min-w-0 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm'
-                  : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {tab.icon}
@@ -800,8 +812,8 @@ export function AlertsDashboard({
               {tab.count !== undefined && tab.count > 0 && (
                 <span className={`px-1.5 py-0.5 rounded-full text-xs font-mono font-semibold ${
                   activeTab === tab.id
-                    ? 'bg-pink-500 text-white'
-                    : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-400'
+                    ? 'bg-primary text-white'
+                    : 'bg-zinc-200 dark:bg-zinc-700 text-muted-foreground'
                 }`}>
                   {tab.count}
                 </span>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useFocusTrap } from '@/lib/use-focus-trap'
 import { Search, ArrowRight, type LucideIcon } from 'lucide-react'
 
 export interface CommandItem {
@@ -22,6 +23,8 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
   const paletteRef = useRef<HTMLDivElement>(null)
+  // WCAG: keep Tab/Shift+Tab cycling inside the palette while it is open.
+  useFocusTrap(paletteRef, open)
 
   const filtered = query.trim()
     ? items.filter(
@@ -131,14 +134,15 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
       >
         {/* Search input */}
         <div className="flex items-center gap-3 border-b border-border px-4">
-          <Search size={16} className="shrink-0 text-hint" />
+          <Search size={16} aria-hidden="true" className="shrink-0 text-hint" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search pages, instruments, actions..."
-            className="h-12 flex-1 bg-transparent text-sm text-foreground placeholder:text-faint outline-none"
+            aria-label="Search pages, instruments, and actions"
+            className="h-12 flex-1 bg-transparent text-sm text-foreground placeholder:text-faint outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
           />
           <kbd className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 text-xs font-medium text-hint">
             ESC
@@ -178,6 +182,7 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
                       {Icon && (
                         <Icon
                           size={16}
+                          aria-hidden="true"
                           className={isSelected ? 'text-primary dark:text-pink-400' : 'text-faint'}
                         />
                       )}
@@ -188,7 +193,7 @@ export function CommandPalette({ items, open, onClose }: CommandPaletteProps) {
                         </span>
                       )}
                       {isSelected && (
-                        <ArrowRight size={14} className="text-faint" />
+                        <ArrowRight size={14} aria-hidden="true" className="text-faint" />
                       )}
                     </button>
                   )

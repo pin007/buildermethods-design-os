@@ -43,7 +43,7 @@ const circuitBreakerLabel: Record<CircuitBreakerState, string> = {
 }
 
 const inputClasses =
-  'w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'w-full rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 // ---------------------------------------------------------------------------
 // Broker Card
@@ -78,23 +78,24 @@ function BrokerCard({
   const { status, config, credentials, retryConfig } = broker
 
   return (
-    <div className="space-y-0 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80">
+    <div className="space-y-0 rounded-xl border border-border bg-card">
       {/* ---- Header: name + enabled toggle ---- */}
-      <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-5 py-4">
+      <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Cable size={16} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <h3 className="text-sm font-semibold text-foreground">
               {broker.name}
             </h3>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground">
               {broker.shortName}
             </span>
           </div>
         </div>
         <ToggleSwitch
+          label={`Enable ${broker.name}`}
           enabled={broker.enabled}
           onChange={(enabled) => {
             onToggleEnabled?.(broker.id, enabled)
@@ -103,10 +104,10 @@ function BrokerCard({
         />
       </div>
 
-      <div className="space-y-0 divide-y divide-zinc-200 dark:divide-zinc-800">
+      <div className="space-y-0 divide-y divide-border">
         {/* ---- Live Status ---- */}
         <div className="px-5 py-4">
-          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-hint">
             Live Status
           </h4>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -115,46 +116,46 @@ function BrokerCard({
               <div
                 className={`h-2 w-2 shrink-0 rounded-full ${connectionDotClass[status.connection]}`}
               />
-              <span className="text-sm text-zinc-900 dark:text-zinc-50">
+              <span className="text-sm text-foreground">
                 {connectionLabel[status.connection]}
               </span>
             </div>
 
             {/* Latency */}
-            <div className="text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="text-sm text-muted-foreground">
               Latency:{' '}
-              <span className="font-mono text-zinc-900 dark:text-zinc-50">
+              <span className="font-mono text-foreground">
                 {status.latencyMs}ms
               </span>
             </div>
 
             {/* Last heartbeat */}
-            <div className="text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="text-sm text-muted-foreground">
               Heartbeat:{' '}
-              <span className="font-mono text-zinc-900 dark:text-zinc-50">
+              <span className="font-mono text-foreground">
                 {new Date(status.lastHeartbeat).toLocaleTimeString()}
               </span>
             </div>
 
             {/* Uptime */}
-            <div className="text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="text-sm text-muted-foreground">
               Uptime:{' '}
-              <span className="font-mono text-zinc-900 dark:text-zinc-50">
+              <span className="font-mono text-foreground">
                 {status.uptime}
               </span>
             </div>
           </div>
 
           {/* Circuit breaker */}
-          <div className="mt-3 flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2">
+          <div className="mt-3 flex items-center gap-3 rounded-lg border border-border bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2">
             <div
               className={`h-2 w-2 shrink-0 rounded-full ${circuitBreakerDotClass[status.circuitBreaker.state]}`}
             />
-            <span className="text-xs font-medium text-zinc-900 dark:text-zinc-50">
+            <span className="text-xs font-medium text-foreground">
               Circuit Breaker:{' '}
               {circuitBreakerLabel[status.circuitBreaker.state]}
             </span>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground">
               Fails: {status.circuitBreaker.failCount}/
               {status.circuitBreaker.failMax}
             </span>
@@ -165,15 +166,15 @@ function BrokerCard({
             onClick={handleTestConnection}
             disabled={testing}
             className="
-              mt-3 flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800
-              px-3 py-2 text-xs font-medium text-zinc-900 dark:text-zinc-50
-              transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800
+              mt-3 flex items-center gap-2 rounded-lg border border-border
+              px-3 py-2 text-xs font-medium text-foreground
+              transition-colors hover:bg-accent
               disabled:cursor-not-allowed disabled:opacity-50
             "
           >
             {testing ? (
               <>
-                <Loader2 size={14} className="animate-spin" />
+                <Loader2 size={14} className="animate-spin" aria-hidden="true" />
                 Testing...
               </>
             ) : (
@@ -232,6 +233,7 @@ function BrokerCard({
             {config.paperTrading !== undefined && (
               <FormRow label="Paper Trading" horizontal>
                 <ToggleSwitch
+                  label={`Enable paper trading for ${broker.name}`}
                   enabled={config.paperTrading}
                   onChange={() => onMarkChanged()}
                 />
@@ -241,6 +243,7 @@ function BrokerCard({
             {config.testnet !== undefined && (
               <FormRow label="Testnet" horizontal>
                 <ToggleSwitch
+                  label={`Enable testnet for ${broker.name}`}
                   enabled={config.testnet}
                   onChange={() => onMarkChanged()}
                 />

@@ -85,7 +85,7 @@ const statusLabel: Record<DataSourceStatus, string> = {
 }
 
 const cardBorder: Record<DataSourceStatus, string> = {
-  connected: 'border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700',
+  connected: 'border-border hover:border-zinc-300 dark:hover:border-zinc-700',
   degraded: 'border-amber-300/50 dark:border-amber-900/40 hover:border-amber-400/60 dark:hover:border-amber-800/50',
   disconnected: 'border-red-300/50 dark:border-red-900/40 hover:border-red-400/60 dark:hover:border-red-800/50',
 }
@@ -123,7 +123,7 @@ export function SourceCard({ source, onClick }: SourceCardProps) {
       onClick={onClick}
       className={`
         group relative w-full overflow-hidden rounded-2xl border
-        bg-white dark:bg-zinc-900/80 p-5 text-left transition-all duration-200
+        bg-card p-5 text-left transition-all duration-200
         hover:shadow-sm active:scale-[0.99]
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600
         ${cardBorder[source.status]}
@@ -142,11 +142,11 @@ export function SourceCard({ source, onClick }: SourceCardProps) {
         {/* Header: icon + name + status */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200/60 dark:ring-zinc-700/40">
-              <Icon size={18} className="text-zinc-500 dark:text-zinc-400" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted ring-1 ring-zinc-200/60 dark:ring-zinc-700/40">
+              <Icon size={18} aria-hidden="true" className="text-muted-foreground" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <p className="text-sm font-semibold text-foreground">
                 {source.name}
               </p>
               <div className="mt-0.5 flex items-center gap-1.5">
@@ -160,42 +160,42 @@ export function SourceCard({ source, onClick }: SourceCardProps) {
 
           {/* Hover arrow */}
           <div className="opacity-40 transition-all -translate-x-1 group-hover:translate-x-0 group-hover:opacity-100">
-            <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-600" />
+            <ChevronRight size={14} aria-hidden="true" className="text-faint" />
           </div>
         </div>
 
         {/* Status message */}
-        <p className="mt-3 truncate text-xs text-zinc-500 dark:text-zinc-500">
+        <p className="mt-3 truncate text-xs text-hint">
           {source.statusMessage}
         </p>
 
         {/* Metrics grid */}
         <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-600">Last Fetch</p>
+            <p className="text-xs text-faint">Last Fetch</p>
             <p
-              className="mt-0.5 font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300"
+              className="mt-0.5 font-mono text-xs font-medium text-foreground"
               title={formatAbsoluteTime(source.lastSuccessfulFetch)}
             >
               {relativeTime(source.lastSuccessfulFetch)}
             </p>
           </div>
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-600">Error Rate</p>
+            <p className="text-xs text-faint">Error Rate</p>
             <p className={`mt-0.5 font-mono text-xs font-medium ${errorRateColor(source.errorRateLast24h)}`}>
               {source.errorRateLast24h.toFixed(1)}%
             </p>
           </div>
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-600">Instruments</p>
-            <p className="mt-0.5 font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            <p className="text-xs text-faint">Instruments</p>
+            <p className="mt-0.5 font-mono text-xs font-medium text-foreground">
               {source.trackedInstrumentsCount}
             </p>
           </div>
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-600">Next Fetch</p>
+            <p className="text-xs text-faint">Next Fetch</p>
             <p
-              className="mt-0.5 font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300"
+              className="mt-0.5 font-mono text-xs font-medium text-foreground"
               title={formatAbsoluteTime(source.nextScheduledFetch)}
             >
               {futureTime(source.nextScheduledFetch)}
@@ -211,7 +211,7 @@ export function SourceCard({ source, onClick }: SourceCardProps) {
               Real-time
             </span>
           ) : (
-            <span className="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-500 ring-1 ring-zinc-200/60 dark:bg-zinc-800/60 dark:text-zinc-400 dark:ring-zinc-700/40">
+            <span className="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-muted-foreground ring-1 ring-zinc-200/60 dark:bg-zinc-800/60 dark:ring-zinc-700/40">
               Scheduled
             </span>
           )}

@@ -8,10 +8,10 @@ import { SettingsDetailLayout, FormSection, FormRow, ToggleSwitch } from './Sett
 // ---------------------------------------------------------------------------
 
 const inputClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 const selectClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 // ---------------------------------------------------------------------------
 // Main component
@@ -53,15 +53,16 @@ export function CalendarDisplay({
           {settings.calendarProviders.map((cp) => (
             <div
               key={cp.id}
-              className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/30 dark:bg-zinc-800/30 px-4 py-3"
+              className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-border bg-zinc-100/30 dark:bg-zinc-800/30 px-4 py-3"
             >
               {/* Event type label */}
-              <span className="min-w-[130px] text-sm font-medium text-zinc-900 dark:text-zinc-50">
+              <span className="min-w-[130px] text-sm font-medium text-foreground">
                 {cp.eventType}
               </span>
 
               {/* Provider selector */}
               <select
+                aria-label={`${cp.eventType} provider`}
                 value={cp.provider}
                 onChange={(e) => {
                   onChangeProvider?.(cp.id, e.target.value)
@@ -77,11 +78,12 @@ export function CalendarDisplay({
               </select>
 
               {/* Refresh schedule (read-only) */}
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">{cp.refreshLabel}</span>
+              <span className="text-xs text-muted-foreground">{cp.refreshLabel}</span>
 
               {/* Spacer to push toggle to the right */}
               <div className="ml-auto">
                 <ToggleSwitch
+                  label={`Enable ${cp.eventType} calendar provider`}
                   enabled={cp.enabled}
                   onChange={(enabled) => {
                     onToggleProvider?.(cp.id, enabled)
@@ -111,6 +113,7 @@ export function CalendarDisplay({
               <div className="flex items-center gap-2">
                 <input
                   type="number"
+                  aria-label={`${at.eventType} alert timing`}
                   min={0}
                   step={1}
                   value={value}
@@ -122,7 +125,7 @@ export function CalendarDisplay({
                   }}
                   className={`${inputClasses} w-20`}
                 />
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">{unit} before</span>
+                <span className="text-xs text-muted-foreground">{unit} before</span>
               </div>
             </FormRow>
           )
@@ -151,8 +154,8 @@ export function CalendarDisplay({
                   rounded-full px-3 py-1 text-xs font-semibold transition-colors
                   ${
                     active
-                      ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 ring-1 ring-pink-600/25 dark:ring-pink-400/25'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 ring-1 ring-zinc-200 dark:ring-zinc-800'
+                      ? 'bg-primary/10 text-primary ring-1 ring-ring/25'
+                      : 'bg-muted text-hint ring-1 ring-border'
                   }
                 `}
               >
@@ -190,12 +193,12 @@ export function CalendarDisplay({
 
         {/* Week Start */}
         <FormRow label="Week Start" horizontal>
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">{settings.display.weekStart}</span>
+          <span className="text-sm text-muted-foreground">{settings.display.weekStart}</span>
         </FormRow>
 
         {/* Theme toggle */}
         <FormRow label="Theme" horizontal>
-          <div className="inline-flex overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
+          <div className="inline-flex overflow-hidden rounded-lg border border-border">
             <button
               onClick={() => {
                 onToggleTheme?.('dark')
@@ -205,12 +208,12 @@ export function CalendarDisplay({
                 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors
                 ${
                   settings.display.theme === 'dark'
-                    ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400'
-                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-muted text-muted-foreground'
                 }
               `}
             >
-              <Moon size={13} />
+              <Moon size={13} aria-hidden="true" />
               Dark
             </button>
             <button
@@ -222,12 +225,12 @@ export function CalendarDisplay({
                 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors
                 ${
                   settings.display.theme === 'light'
-                    ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400'
-                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-muted text-muted-foreground'
                 }
               `}
             >
-              <Sun size={13} />
+              <Sun size={13} aria-hidden="true" />
               Light
             </button>
           </div>
@@ -247,6 +250,7 @@ export function CalendarDisplay({
               type="number"
               min={1}
               step={1}
+              aria-label="Dashboard Refresh"
               value={settings.display.dashboardRefreshSeconds}
               onChange={(e) => {
                 const v = parseInt(e.target.value, 10)
@@ -256,7 +260,7 @@ export function CalendarDisplay({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
 
@@ -266,6 +270,7 @@ export function CalendarDisplay({
               type="number"
               min={1}
               step={1}
+              aria-label="Price Staleness Threshold"
               value={settings.display.priceStalenessSeconds}
               onChange={(e) => {
                 const v = parseInt(e.target.value, 10)
@@ -275,7 +280,7 @@ export function CalendarDisplay({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
 
@@ -285,6 +290,7 @@ export function CalendarDisplay({
               type="number"
               min={1}
               step={1}
+              aria-label="Order Staleness Threshold"
               value={settings.display.orderStalenessSeconds}
               onChange={(e) => {
                 const v = parseInt(e.target.value, 10)
@@ -294,7 +300,7 @@ export function CalendarDisplay({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
         </FormRow>
       </FormSection>

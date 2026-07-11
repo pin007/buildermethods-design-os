@@ -234,11 +234,11 @@ export function DataQuality({
   // --- Sort indicator ---
   function SortIcon({ sortKey }: { sortKey: SortKey }) {
     if (sort.key !== sortKey)
-      return <ArrowUpDown size={12} className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
+      return <ArrowUpDown size={12} aria-hidden="true" className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
     return sort.dir === 'asc' ? (
-      <ChevronUp size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronUp size={12} aria-hidden="true" className="text-primary" />
     ) : (
-      <ChevronDown size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronDown size={12} aria-hidden="true" className="text-primary" />
     )
   }
 
@@ -262,13 +262,13 @@ export function DataQuality({
       {/* Page Header                                                      */}
       {/* ================================================================= */}
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
           Market Data
         </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
           Data Quality
         </h1>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           Monitor data integrity across all sources and instruments
         </p>
       </div>
@@ -303,24 +303,24 @@ export function DataQuality({
             icon: Activity,
             label: 'Gaps Filled',
             value: stats.gapsFilled.toString(),
-            color: 'text-zinc-700 dark:text-zinc-300',
+            color: 'text-foreground',
             iconColor: 'text-blue-500',
           },
         ].map((card) => (
           <div
             key={card.label}
-            className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800/80 dark:bg-zinc-900/80"
+            className="relative overflow-hidden rounded-2xl border border-border bg-card p-5"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                <p className="text-xs font-bold uppercase tracking-wider text-faint">
                   {card.label}
                 </p>
                 <p className={`mt-2 font-mono text-2xl font-semibold ${card.color}`}>
                   {card.value}
                 </p>
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800/80">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
                 <card.icon size={18} className={card.iconColor} />
               </div>
             </div>
@@ -337,7 +337,7 @@ export function DataQuality({
           <div className="relative flex-1 sm:max-w-xs">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-faint"
             />
             <input
               type="text"
@@ -347,7 +347,8 @@ export function DataQuality({
                 setPage(0)
               }}
               placeholder="Search symbol or name..."
-              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
+              aria-label="Search alerts by symbol or name"
+              className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
             />
           </div>
 
@@ -358,7 +359,8 @@ export function DataQuality({
               setSourceFilter(e.target.value)
               setPage(0)
             }}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            aria-label="Filter by data source"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             <option value="all">All Sources</option>
             {uniqueSources.map(([id, name]) => (
@@ -375,7 +377,8 @@ export function DataQuality({
               setAlertTypeFilter(e.target.value)
               setPage(0)
             }}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            aria-label="Filter by alert type"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             <option value="all">All Types</option>
             <option value="outlier">Outlier</option>
@@ -391,7 +394,8 @@ export function DataQuality({
               setSeverityFilter(e.target.value)
               setPage(0)
             }}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+            aria-label="Filter by severity"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
           >
             <option value="all">All Severities</option>
             <option value="critical">Critical</option>
@@ -400,7 +404,7 @@ export function DataQuality({
           </select>
 
           {/* Acknowledged toggle */}
-          <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-700">
+          <div className="flex rounded-lg border border-border">
             {(['all', 'unreviewed'] as const).map((opt) => (
               <button
                 key={opt}
@@ -410,7 +414,7 @@ export function DataQuality({
                 }}
                 className={`px-3 py-2 text-xs font-medium transition-colors first:rounded-l-lg last:rounded-r-lg ${
                   acknowledgedFilter === opt
-                    ? 'bg-pink-600/10 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400'
+                    ? 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-pink-400'
                     : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
                 }`}
               >
@@ -423,9 +427,9 @@ export function DataQuality({
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              <X size={12} />
+              <X size={12} aria-hidden="true" />
               Clear
             </button>
           )}
@@ -435,9 +439,9 @@ export function DataQuality({
         {selectedIds.size > 0 && (
           <button
             onClick={handleBulkAcknowledge}
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
           >
-            <CheckCircle2 size={15} />
+            <CheckCircle2 size={15} aria-hidden="true" />
             Acknowledge Selected ({selectedIds.size})
           </button>
         )}
@@ -449,15 +453,15 @@ export function DataQuality({
       {qualityAlerts.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center px-4">
           <div className="relative w-full max-w-md">
-            <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-            <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-white px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-900/80">
+            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+            <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-card px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 ring-1 ring-emerald-200 dark:bg-emerald-900/30 dark:ring-emerald-800/50">
                 <Shield size={24} className="text-emerald-500" />
               </div>
-              <h2 className="mt-5 text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+              <h2 className="mt-5 text-lg font-semibold text-foreground">
                 All data quality checks passing
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 No issues to report. Quality checks run automatically after each fetch.
               </p>
             </div>
@@ -465,29 +469,30 @@ export function DataQuality({
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-14 text-center">
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">
+          <p className="text-sm text-hint">
             No alerts match your filters.
           </p>
           <button
             onClick={clearFilters}
-            className="mt-2 text-sm font-medium text-pink-600 hover:text-pink-500 dark:text-pink-400"
+            className="mt-2 text-sm font-medium text-primary hover:text-primary"
           >
             Clear filters
           </button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1060px]">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+                <tr className="border-b border-border">
                   {/* Select all checkbox */}
                   <th className="w-10 px-3 py-3">
                     <input
                       type="checkbox"
                       checked={allPageSelected}
                       onChange={toggleSelectAll}
-                      className="h-3.5 w-3.5 rounded border-zinc-300 text-pink-600 focus:ring-pink-600/20 dark:border-zinc-600 dark:bg-zinc-800"
+                      aria-label="Select all unreviewed alerts on this page"
+                      className="h-3.5 w-3.5 rounded border-zinc-300 text-primary focus:ring-ring/20 dark:border-zinc-600 dark:bg-zinc-800"
                     />
                   </th>
                   {(
@@ -510,18 +515,18 @@ export function DataQuality({
                       </div>
                     </th>
                   ))}
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                     Details
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                  <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-faint">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+              <tbody className="divide-y divide-border">
                 {paged.map((alert) => {
                   const typeBdg = alertTypeBadge[alert.alertType]
                   const sevBdg = severityBadge[alert.severity]
@@ -543,7 +548,8 @@ export function DataQuality({
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => toggleSelect(alert.id)}
-                            className="h-3.5 w-3.5 rounded border-zinc-300 text-pink-600 focus:ring-pink-600/20 dark:border-zinc-600 dark:bg-zinc-800"
+                            aria-label={`Select ${alert.symbol} alert`}
+                            className="h-3.5 w-3.5 rounded border-zinc-300 text-primary focus:ring-ring/20 dark:border-zinc-600 dark:bg-zinc-800"
                           />
                         ) : (
                           <div className="h-3.5 w-3.5" />
@@ -551,16 +557,16 @@ export function DataQuality({
                       </td>
                       {/* Instrument */}
                       <td className="px-4 py-3">
-                        <p className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                        <p className="font-mono text-sm font-semibold text-foreground">
                           {alert.symbol}
                         </p>
-                        <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                        <p className="text-xs text-faint">
                           {alert.instrumentName}
                         </p>
                       </td>
                       {/* Source */}
                       <td className="px-4 py-3">
-                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-muted-foreground dark:bg-zinc-800/60">
                           {alert.dataSourceName}
                         </span>
                       </td>
@@ -583,7 +589,7 @@ export function DataQuality({
                       {/* Detected */}
                       <td className="px-4 py-3">
                         <span
-                          className="font-mono text-xs text-zinc-600 dark:text-zinc-400"
+                          className="font-mono text-xs text-muted-foreground"
                           title={formatTimestamp(alert.detectedAt)}
                         >
                           {relativeTime(alert.detectedAt)}
@@ -591,7 +597,7 @@ export function DataQuality({
                       </td>
                       {/* Details */}
                       <td className="max-w-[260px] px-4 py-3">
-                        <p className="truncate text-xs leading-relaxed text-zinc-500 dark:text-zinc-400" title={alert.description}>
+                        <p className="truncate text-xs leading-relaxed text-muted-foreground" title={alert.description}>
                           {alert.description}
                         </p>
                         {alert.dataPoint && (
@@ -599,13 +605,13 @@ export function DataQuality({
                             {(['open', 'high', 'low', 'close'] as const).map((field) => (
                               <span
                                 key={field}
-                                className="font-mono text-xs text-zinc-400 dark:text-zinc-600"
+                                className="font-mono text-xs text-faint"
                               >
                                 <span className="uppercase">{field[0]}:</span>
                                 {alert.dataPoint![field].toFixed(2)}
                               </span>
                             ))}
-                            <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+                            <span className="font-mono text-xs text-faint">
                               <span className="uppercase">V:</span>
                               {alert.dataPoint!.volume.toLocaleString()}
                             </span>
@@ -620,7 +626,7 @@ export function DataQuality({
                             Reviewed
                           </span>
                         ) : (
-                          <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                          <span className="text-xs text-faint">
                             Unreviewed
                           </span>
                         )}
@@ -631,18 +637,19 @@ export function DataQuality({
                           {!alert.acknowledged && (
                             <button
                               onClick={() => onAcknowledge?.(alert.id)}
-                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-emerald-300 hover:text-emerald-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-emerald-800 dark:hover:text-emerald-400"
+                              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-emerald-300 hover:text-emerald-600 dark:border-zinc-700 dark:hover:border-emerald-800 dark:hover:text-emerald-400"
                             >
-                              <CheckCircle2 size={11} />
+                              <CheckCircle2 size={11} aria-hidden="true" />
                               Acknowledge
                             </button>
                           )}
                           <button
                             onClick={() => onViewSourceData?.(alert.dataSourceId)}
                             title="View in source"
-                            className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                            aria-label={`View ${alert.symbol} in ${alert.dataSourceName}`}
+                            className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-accent hover:text-zinc-600 dark:text-zinc-600 dark:hover:text-zinc-300"
                           >
-                            <BarChart3 size={14} />
+                            <BarChart3 size={14} aria-hidden="true" />
                           </button>
                         </div>
                       </td>
@@ -656,7 +663,7 @@ export function DataQuality({
           {/* Pagination */}
           {filtered.length > PAGE_SIZE && (
             <div className="flex items-center justify-between border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 Showing {page * PAGE_SIZE + 1}–
                 {Math.min((page + 1) * PAGE_SIZE, filtered.length)} of {filtered.length} alerts
               </span>
@@ -664,14 +671,14 @@ export function DataQuality({
                 <button
                   disabled={page === 0}
                   onClick={() => setPage((p) => p - 1)}
-                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                 >
                   Previous
                 </button>
                 <button
                   disabled={(page + 1) * PAGE_SIZE >= filtered.length}
                   onClick={() => setPage((p) => p + 1)}
-                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                 >
                   Next
                 </button>
@@ -682,7 +689,7 @@ export function DataQuality({
           {/* Row count for small datasets */}
           {filtered.length <= PAGE_SIZE && filtered.length > 0 && (
             <div className="border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">
                 Showing {filtered.length} of {qualityAlerts.length} alerts
               </span>
             </div>

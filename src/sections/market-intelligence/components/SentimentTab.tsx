@@ -137,7 +137,7 @@ function newsSentimentBadge(sentiment: NewsSentiment): { label: string; classes:
     case 'negative':
       return { label: 'Negative', classes: 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400' }
     case 'neutral':
-      return { label: 'Neutral', classes: 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400' }
+      return { label: 'Neutral', classes: 'bg-muted text-muted-foreground' }
   }
 }
 
@@ -276,7 +276,7 @@ function SentimentGauge({
         stroke="currentColor"
         strokeWidth={2.5}
         strokeLinecap="round"
-        className="text-zinc-700 dark:text-zinc-300"
+        className="text-foreground"
       />
       {/* Center dot */}
       <circle cx={cx} cy={cy} r={5} className="fill-zinc-700 dark:fill-zinc-300" />
@@ -301,15 +301,20 @@ function SentimentGauge({
 function Toggle({
   enabled,
   onChange,
+  label,
 }: {
   enabled: boolean
   onChange: (val: boolean) => void
+  label?: string
 }) {
   return (
     <button
       onClick={() => onChange(!enabled)}
+      role="switch"
+      aria-checked={enabled}
+      aria-label={label}
       className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
-        enabled ? 'bg-pink-600' : 'bg-zinc-300 dark:bg-zinc-700'
+        enabled ? 'bg-primary' : 'bg-zinc-300 dark:bg-zinc-700'
       }`}
     >
       <span
@@ -379,15 +384,15 @@ export function SentimentTab({
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
         <div className="relative w-full max-w-sm">
-          <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-          <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-              <Activity size={28} className="text-zinc-400 dark:text-zinc-500" />
+          <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+          <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+              <Activity size={28} className="text-hint" />
             </div>
-            <h2 className="mt-6 text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+            <h2 className="mt-6 text-lg font-semibold text-foreground">
               Sentiment data is being collected...
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Your sentiment analysis will appear here once articles are processed.
             </p>
           </div>
@@ -436,20 +441,20 @@ export function SentimentTab({
       {/* Header + Time Range Pills                                         */}
       {/* ================================================================== */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+        <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
           Sentiment Analysis
         </p>
 
         {/* Time range pill toggle */}
-        <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
           {(['24h', '7d', '30d'] as const).map((range) => (
             <button
               key={range}
               onClick={() => handleTimeRange(range)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 timeRange === range
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-hint hover:text-foreground'
               }`}
             >
               {range}
@@ -465,28 +470,30 @@ export function SentimentTab({
         {/* ─── Left column (~60%) ──────────────────────────────────────── */}
         <div className="space-y-6 lg:col-span-3">
           {/* ── Sentiment Gauge ──────────────────────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <h2 className="text-sm font-semibold text-foreground">
                 Market Sentiment
               </h2>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                <span className="text-xs text-faint">
                   {sentimentLabel(overview.finbertSensitivity)} sensitivity
                 </span>
                 <button
                   onClick={() => setShowSensitivity(!showSensitivity)}
-                  className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  aria-label="Configure FinBERT sensitivity"
+                  aria-expanded={showSensitivity}
+                  className="rounded-lg p-1.5 text-hint transition-colors hover:bg-accent hover:text-muted-foreground"
                 >
-                  <Settings2 size={15} />
+                  <Settings2 size={15} aria-hidden="true" />
                 </button>
               </div>
             </div>
 
             {/* Sensitivity inline radio */}
             {showSensitivity && (
-              <div className="border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-3">
-                <p className="mb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <div className="border-b border-border px-6 py-3">
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                   FinBERT Sensitivity
                 </p>
                 <div className="flex gap-2">
@@ -496,8 +503,8 @@ export function SentimentTab({
                       onClick={() => handleSensitivity(s)}
                       className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                         overview.finbertSensitivity === s
-                          ? 'bg-pink-600 text-white shadow-sm'
-                          : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                          ? 'bg-primary text-primary-foreground shadow-sm'
+                          : 'bg-muted text-zinc-600 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-700'
                       }`}
                     >
                       {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -534,7 +541,7 @@ export function SentimentTab({
               <p className={`mt-1 text-lg font-semibold capitalize ${sentimentColor(overview.overallScore)}`}>
                 {sentimentLabel(overview.overallLabel)}
               </p>
-              <div className="mt-1 flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
                 {overview.trend === 'up' ? (
                   <ArrowUp size={12} className="text-emerald-500" />
                 ) : (
@@ -545,21 +552,22 @@ export function SentimentTab({
                   {overview.trendDelta} from {overview.previousScore}
                 </span>
               </div>
-              <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-2 text-xs text-faint">
                 {overview.articleCount24h} articles analyzed (24h)
               </p>
             </div>
           </div>
 
           {/* ── Sentiment by Sector ──────────────────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <h2 className="text-sm font-semibold text-foreground">
                 Sentiment by Sector
               </h2>
               <button
                 onClick={() => setShowSectorManagement(!showSectorManagement)}
-                className="text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+                aria-expanded={showSectorManagement}
+                className="text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
               >
                 {showSectorManagement ? 'Close' : 'Edit Sectors'}
               </button>
@@ -567,31 +575,32 @@ export function SentimentTab({
 
             {/* Sector management panel */}
             {showSectorManagement && (
-              <div className="border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 space-y-3">
+              <div className="border-b border-border px-6 py-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     Sector Groupings
                   </p>
                   <button
                     onClick={() => onCreateSector?.('New Sector', [])}
-                    className="flex items-center gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                    className="flex items-center gap-1 rounded-lg bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
                   >
-                    <Plus size={12} />
+                    <Plus size={12} aria-hidden="true" />
                     New Sector
                   </button>
                 </div>
                 {sectors.map((sector) => (
-                  <div key={sector.id} className="rounded-lg border border-zinc-100 dark:border-zinc-800/60 overflow-hidden">
+                  <div key={sector.id} className="rounded-lg border border-border overflow-hidden">
                     <button
                       onClick={() => toggleSectorExpand(sector.id)}
-                      className="flex w-full items-center justify-between px-4 py-2.5 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors"
+                      aria-expanded={expandedSectors.has(sector.id)}
+                      className="flex w-full items-center justify-between px-4 py-2.5 text-left hover:bg-accent/40 transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        {sector.isSystem && <Lock size={12} className="text-zinc-400 dark:text-zinc-600" />}
-                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                        {sector.isSystem && <Lock size={12} aria-hidden="true" className="text-faint" />}
+                        <span className="text-sm font-medium text-foreground">
                           {sector.name}
                         </span>
-                        <span className="rounded bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+                        <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-faint">
                           {sector.instruments.length}
                         </span>
                       </div>
@@ -602,25 +611,26 @@ export function SentimentTab({
                               e.stopPropagation()
                               onDeleteSector?.(sector.id)
                             }}
+                            aria-label={`Delete ${sector.name} sector`}
                             className="rounded p-1 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 dark:hover:text-red-400 transition-colors"
                           >
-                            <Trash2 size={12} />
+                            <Trash2 size={12} aria-hidden="true" />
                           </button>
                         )}
                         {expandedSectors.has(sector.id) ? (
-                          <ChevronUp size={14} className="text-zinc-400 dark:text-zinc-600" />
+                          <ChevronUp size={14} aria-hidden="true" className="text-faint" />
                         ) : (
-                          <ChevronDown size={14} className="text-zinc-400 dark:text-zinc-600" />
+                          <ChevronDown size={14} aria-hidden="true" className="text-faint" />
                         )}
                       </div>
                     </button>
                     {expandedSectors.has(sector.id) && (
-                      <div className="border-t border-zinc-100 dark:border-zinc-800/60 px-4 py-2.5">
+                      <div className="border-t border-border px-4 py-2.5">
                         <div className="flex flex-wrap gap-1.5">
                           {sector.instruments.map((inst) => (
                             <span
                               key={inst}
-                              className="rounded bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-xs text-zinc-600 dark:text-zinc-400"
+                              className="rounded bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground"
                             >
                               {inst}
                             </span>
@@ -637,10 +647,10 @@ export function SentimentTab({
             <div className="px-6 py-4 space-y-3">
               {sortedSectors.map((sector) => (
                 <div key={sector.id} className="flex items-center gap-3">
-                  <span className="w-24 shrink-0 truncate text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                  <span className="w-24 shrink-0 truncate text-xs font-medium text-muted-foreground">
                     {sector.name}
                   </span>
-                  <div className="flex-1 h-5 rounded bg-zinc-100 dark:bg-zinc-800/60 overflow-hidden">
+                  <div className="flex-1 h-5 rounded bg-muted overflow-hidden">
                     <div
                       className={`h-full rounded transition-all ${sentimentBgBar(sector.score)}`}
                       style={{ width: `${(sector.score / maxSectorScore) * 100}%` }}
@@ -655,33 +665,34 @@ export function SentimentTab({
           </div>
 
           {/* ── Sentiment Watchlist (collapsible) ────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
             <button
               onClick={() => setWatchlistOpen(!watchlistOpen)}
-              className="flex w-full items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 text-left"
+              aria-expanded={watchlistOpen}
+              className="flex w-full items-center justify-between border-b border-border px-6 py-4 text-left"
             >
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-                  <Eye size={13} className="text-zinc-500 dark:text-zinc-400" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                  <Eye size={13} className="text-muted-foreground" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Sentiment Watchlist
                 </h2>
-                <span className="rounded bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-xs font-medium text-zinc-400 dark:text-zinc-500">
+                <span className="rounded bg-muted px-1.5 py-0.5 text-xs font-medium text-hint">
                   {sentimentWatchlist.length}
                 </span>
               </div>
               {watchlistOpen ? (
-                <ChevronUp size={16} className="text-zinc-400 dark:text-zinc-600" />
+                <ChevronUp size={16} aria-hidden="true" className="text-faint" />
               ) : (
-                <ChevronDown size={16} className="text-zinc-400 dark:text-zinc-600" />
+                <ChevronDown size={16} aria-hidden="true" className="text-faint" />
               )}
             </button>
 
             {watchlistOpen && (
               <div className="px-6 py-4">
                 {sentimentWatchlist.length === 0 ? (
-                  <p className="py-4 text-center text-xs text-zinc-400 dark:text-zinc-600">
+                  <p className="py-4 text-center text-xs text-faint">
                     No instruments in watchlist. Click "Add" to start tracking.
                   </p>
                 ) : (
@@ -690,9 +701,9 @@ export function SentimentTab({
                       <button
                         key={item.instrumentId}
                         onClick={() => onAnalyzeInstrument?.(item.symbol, 'quick')}
-                        className="group flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800/60 bg-zinc-50 dark:bg-zinc-800/40 px-3 py-2 transition-colors hover:border-pink-300 dark:hover:border-pink-900/60"
+                        className="group flex items-center gap-2 rounded-xl border border-border bg-zinc-50 dark:bg-zinc-800/40 px-3 py-2 transition-colors hover:border-pink-300 dark:hover:border-pink-900/60"
                       >
-                        <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                        <span className="font-mono text-xs font-semibold text-foreground">
                           {item.symbol}
                         </span>
                         <span className={`font-mono text-xs font-bold ${sentimentColor(item.sentimentScore * 10)}`}>
@@ -711,17 +722,18 @@ export function SentimentTab({
                             e.stopPropagation()
                             onRemoveFromWatchlist?.(item.instrumentId)
                           }}
-                          className="rounded p-0.5 text-zinc-300 opacity-0 transition-all group-hover:opacity-100 hover:text-red-400 dark:text-zinc-600 dark:hover:text-red-400"
+                          aria-label={`Remove ${item.symbol} from watchlist`}
+                          className="rounded p-0.5 text-faint opacity-0 transition-all group-hover:opacity-100 hover:text-red-400 dark:hover:text-red-400"
                         >
-                          <X size={10} />
+                          <X size={10} aria-hidden="true" />
                         </button>
                       </button>
                     ))}
                     <button
                       onClick={() => onAddToWatchlist?.('')}
-                      className="flex items-center gap-1 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-pink-400 hover:text-pink-500 dark:text-zinc-600 dark:hover:border-pink-800 dark:hover:text-pink-400"
+                      className="flex items-center gap-1 rounded-xl border border-dashed border-border px-3 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-pink-400 hover:text-primary dark:text-zinc-600 dark:hover:border-pink-800 dark:hover:text-pink-400"
                     >
-                      <Plus size={12} />
+                      <Plus size={12} aria-hidden="true" />
                       Add
                     </button>
                   </div>
@@ -731,53 +743,54 @@ export function SentimentTab({
           </div>
 
           {/* ── Active Alerts (collapsible) ──────────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
             <button
               onClick={() => setAlertsOpen(!alertsOpen)}
-              className="flex w-full items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 text-left"
+              aria-expanded={alertsOpen}
+              className="flex w-full items-center justify-between border-b border-border px-6 py-4 text-left"
             >
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-                  <Bell size={13} className="text-zinc-500 dark:text-zinc-400" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                  <Bell size={13} className="text-muted-foreground" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   Sentiment Alerts
                 </h2>
-                <span className="rounded bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-xs font-medium text-zinc-400 dark:text-zinc-500">
+                <span className="rounded bg-muted px-1.5 py-0.5 text-xs font-medium text-hint">
                   {sentimentAlerts.length}
                 </span>
               </div>
               {alertsOpen ? (
-                <ChevronUp size={16} className="text-zinc-400 dark:text-zinc-600" />
+                <ChevronUp size={16} aria-hidden="true" className="text-faint" />
               ) : (
-                <ChevronDown size={16} className="text-zinc-400 dark:text-zinc-600" />
+                <ChevronDown size={16} aria-hidden="true" className="text-faint" />
               )}
             </button>
 
             {alertsOpen && (
               <div className="px-6 py-4">
                 {sentimentAlerts.length === 0 ? (
-                  <p className="py-4 text-center text-xs text-zinc-400 dark:text-zinc-600">
+                  <p className="py-4 text-center text-xs text-faint">
                     No alerts configured.
                   </p>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left">
                       <thead>
-                        <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
-                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                        <tr className="border-b border-border">
+                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                             Instrument
                           </th>
-                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                             Direction
                           </th>
-                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                             Threshold
                           </th>
-                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                             Status
                           </th>
-                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                          <th className="pb-2 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                             Last Triggered
                           </th>
                           <th className="pb-2" />
@@ -790,17 +803,17 @@ export function SentimentTab({
                             className="border-b border-zinc-50 dark:border-zinc-800/40 last:border-0"
                           >
                             <td className="py-2.5 pr-3">
-                              <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                              <span className="font-mono text-xs font-semibold text-foreground">
                                 {alert.symbol}
                               </span>
                             </td>
                             <td className="py-2.5 pr-3">
-                              <span className="text-xs text-zinc-500 dark:text-zinc-400 capitalize">
+                              <span className="text-xs text-muted-foreground capitalize">
                                 {alert.direction}
                               </span>
                             </td>
                             <td className="py-2.5 pr-3">
-                              <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                              <span className="font-mono text-xs font-semibold text-foreground">
                                 {alert.threshold}
                               </span>
                             </td>
@@ -808,10 +821,11 @@ export function SentimentTab({
                               <Toggle
                                 enabled={alert.status === 'active'}
                                 onChange={(val) => onToggleSentimentAlert?.(alert.id, val)}
+                                label={`Toggle alert for ${alert.symbol}`}
                               />
                             </td>
                             <td className="py-2.5 pr-3">
-                              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                              <span className="text-xs text-faint">
                                 {alert.lastTriggeredAt
                                   ? relativeTime(alert.lastTriggeredAt)
                                   : 'Never'}
@@ -820,9 +834,10 @@ export function SentimentTab({
                             <td className="py-2.5">
                               <button
                                 onClick={() => onDeleteSentimentAlert?.(alert.id)}
+                                aria-label={`Delete alert for ${alert.symbol}`}
                                 className="rounded p-1 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 dark:hover:text-red-400"
                               >
-                                <Trash2 size={13} />
+                                <Trash2 size={13} aria-hidden="true" />
                               </button>
                             </td>
                           </tr>
@@ -841,9 +856,9 @@ export function SentimentTab({
                         threshold: 5.0,
                       })
                     }
-                    className="flex items-center gap-1.5 rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 active:scale-[0.98]"
+                    className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 active:scale-[0.98]"
                   >
-                    <Plus size={14} />
+                    <Plus size={14} aria-hidden="true" />
                     Create Alert
                   </button>
                 </div>
@@ -852,14 +867,14 @@ export function SentimentTab({
           </div>
 
           {/* ── Top Movers ───────────────────────────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
-              <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="border-b border-border px-6 py-4">
+              <h2 className="text-sm font-semibold text-foreground">
                 Top Movers
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-zinc-100 dark:divide-zinc-800/60">
+            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
               {/* Most Bullish */}
               <div className="px-6 py-4">
                 <p className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-emerald-600 dark:text-emerald-400">
@@ -912,19 +927,20 @@ export function SentimentTab({
           </div>
 
           {/* ── News Feed ────────────────────────────────────────────── */}
-          <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-                  <Newspaper size={13} className="text-zinc-500 dark:text-zinc-400" />
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                  <Newspaper size={13} className="text-muted-foreground" />
                 </div>
-                <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                <h2 className="text-sm font-semibold text-foreground">
                   News Feed
                 </h2>
               </div>
               <button
                 onClick={() => setShowSourceManagement(!showSourceManagement)}
-                className="text-xs font-medium text-pink-600 transition-colors hover:text-pink-500 dark:text-pink-400 dark:hover:text-pink-300"
+                aria-expanded={showSourceManagement}
+                className="text-xs font-medium text-primary transition-colors hover:text-primary dark:hover:text-pink-300"
               >
                 {showSourceManagement ? 'Close' : 'Manage Sources'}
               </button>
@@ -932,9 +948,9 @@ export function SentimentTab({
 
             {/* Source management panel */}
             {showSourceManagement && (
-              <div className="border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 space-y-3">
+              <div className="border-b border-border px-6 py-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     News Sources
                   </p>
                   <button
@@ -945,9 +961,9 @@ export function SentimentTab({
                         feedUrl: '',
                       })
                     }
-                    className="flex items-center gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                    className="flex items-center gap-1 rounded-lg bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
                   >
-                    <Plus size={12} />
+                    <Plus size={12} aria-hidden="true" />
                     Add Source
                   </button>
                 </div>
@@ -959,66 +975,69 @@ export function SentimentTab({
                   return (
                     <div
                       key={source.id}
-                      className="rounded-lg border border-zinc-100 dark:border-zinc-800/60 overflow-hidden"
+                      className="rounded-lg border border-border overflow-hidden"
                     >
                       <div className="flex items-center justify-between px-4 py-2.5">
                         <button
                           onClick={() => toggleSourceExpand(source.id)}
+                          aria-expanded={isExpanded}
                           className="flex items-center gap-2 text-left min-w-0"
                         >
                           <span className={`h-2 w-2 shrink-0 rounded-full ${sourceStatusDot(source.status)}`} />
-                          <span className="truncate text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                          <span className="truncate text-sm font-medium text-foreground">
                             {source.name}
                           </span>
                           <span className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${typeBadge.classes}`}>
                             {typeBadge.label}
                           </span>
-                          <span className="shrink-0 text-xs text-zinc-400 dark:text-zinc-600">
+                          <span className="shrink-0 text-xs text-faint">
                             {source.articleVolume24h}/24h
                           </span>
                           {isExpanded ? (
-                            <ChevronUp size={12} className="shrink-0 text-zinc-400 dark:text-zinc-600" />
+                            <ChevronUp size={12} aria-hidden="true" className="shrink-0 text-faint" />
                           ) : (
-                            <ChevronDown size={12} className="shrink-0 text-zinc-400 dark:text-zinc-600" />
+                            <ChevronDown size={12} aria-hidden="true" className="shrink-0 text-faint" />
                           )}
                         </button>
                         <div className="flex items-center gap-2 ml-2">
                           <Toggle
                             enabled={source.enabled}
                             onChange={(val) => onToggleNewsSource?.(source.id, val)}
+                            label={`Toggle ${source.name} source`}
                           />
                           <button
                             onClick={() => onRemoveNewsSource?.(source.id)}
+                            aria-label={`Remove ${source.name} source`}
                             className="rounded p-1 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 dark:hover:text-red-400"
                           >
-                            <Trash2 size={12} />
+                            <Trash2 size={12} aria-hidden="true" />
                           </button>
                         </div>
                       </div>
 
                       {isExpanded && (
-                        <div className="border-t border-zinc-100 dark:border-zinc-800/60 px-4 py-2.5 space-y-1">
+                        <div className="border-t border-border px-4 py-2.5 space-y-1">
                           <div className="flex justify-between text-xs">
-                            <span className="text-zinc-400 dark:text-zinc-600">URL</span>
-                            <span className="truncate ml-2 font-mono text-zinc-500 dark:text-zinc-400 max-w-[200px]">
+                            <span className="text-faint">URL</span>
+                            <span className="truncate ml-2 font-mono text-muted-foreground max-w-[200px]">
                               {source.feedUrl}
                             </span>
                           </div>
                           <div className="flex justify-between text-xs">
-                            <span className="text-zinc-400 dark:text-zinc-600">Last Fetch</span>
-                            <span className="text-zinc-500 dark:text-zinc-400">
+                            <span className="text-faint">Last Fetch</span>
+                            <span className="text-muted-foreground">
                               {source.lastFetchAt ? relativeTime(source.lastFetchAt) : 'Never'}
                             </span>
                           </div>
                           <div className="flex justify-between text-xs">
-                            <span className="text-zinc-400 dark:text-zinc-600">Errors (24h)</span>
-                            <span className={source.errorCount24h > 0 ? 'text-red-500' : 'text-zinc-500 dark:text-zinc-400'}>
+                            <span className="text-faint">Errors (24h)</span>
+                            <span className={source.errorCount24h > 0 ? 'text-red-500' : 'text-muted-foreground'}>
                               {source.errorCount24h}
                             </span>
                           </div>
                           <div className="flex justify-between text-xs">
-                            <span className="text-zinc-400 dark:text-zinc-600">Avg Articles/Day</span>
-                            <span className="text-zinc-500 dark:text-zinc-400">
+                            <span className="text-faint">Avg Articles/Day</span>
+                            <span className="text-muted-foreground">
                               {source.avgArticlesPerDay}
                             </span>
                           </div>
@@ -1034,13 +1053,13 @@ export function SentimentTab({
             <div className="max-h-[600px] overflow-y-auto">
               {newsArticles.length === 0 ? (
                 <div className="py-10 text-center">
-                  <Newspaper size={20} className="mx-auto text-zinc-300 dark:text-zinc-700" />
-                  <p className="mt-3 text-xs text-zinc-400 dark:text-zinc-600">
+                  <Newspaper size={20} className="mx-auto text-faint" />
+                  <p className="mt-3 text-xs text-faint">
                     No articles yet.
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                <div className="divide-y divide-border">
                   {newsArticles.map((article) => {
                     const sBadge = newsSentimentBadge(article.sentiment)
                     const source = newsSources.find((s) => s.id === article.sourceId)
@@ -1048,7 +1067,7 @@ export function SentimentTab({
                     return (
                       <div key={article.id} className="px-6 py-4 space-y-2">
                         {/* Headline */}
-                        <p className="text-sm font-medium leading-snug text-zinc-800 dark:text-zinc-200 line-clamp-2">
+                        <p className="text-sm font-medium leading-snug text-foreground line-clamp-2">
                           {article.headline}
                         </p>
 
@@ -1057,18 +1076,18 @@ export function SentimentTab({
                           {source && (
                             <>
                               <span className={`h-2 w-2 shrink-0 rounded-full ${sourceStatusDot(source.status)}`} />
-                              <span className="text-zinc-500 dark:text-zinc-400">
+                              <span className="text-muted-foreground">
                                 {article.source}
                               </span>
                             </>
                           )}
                           {!source && (
-                            <span className="text-zinc-500 dark:text-zinc-400">
+                            <span className="text-muted-foreground">
                               {article.source}
                             </span>
                           )}
-                          <span className="text-zinc-300 dark:text-zinc-700">|</span>
-                          <span className="text-zinc-400 dark:text-zinc-600">
+                          <span className="text-faint">|</span>
+                          <span className="text-faint">
                             {relativeTime(article.publishedAt)}
                           </span>
                         </div>
@@ -1078,13 +1097,13 @@ export function SentimentTab({
                           <span className={`rounded px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${sBadge.classes}`}>
                             {sBadge.label}
                           </span>
-                          <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+                          <span className="font-mono text-xs text-faint">
                             {(article.sentimentConfidence * 100).toFixed(0)}%
                           </span>
                           {article.instrumentTags.map((tag) => (
                             <span
                               key={tag}
-                              className="rounded bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-zinc-500 dark:text-zinc-400"
+                              className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground"
                             >
                               {tag}
                             </span>
@@ -1121,8 +1140,8 @@ function AssetClassCard({
   }
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5">
-      <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card p-5">
+      <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
         {label}
       </p>
       <p className={`mt-2 font-mono text-3xl font-bold tracking-tight ${sentimentColor(sentiment.score)}`}>
@@ -1134,12 +1153,12 @@ function AssetClassCard({
         ) : (
           <ArrowDown size={12} className="text-red-500" />
         )}
-        <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="font-mono text-xs text-muted-foreground">
           {sentiment.trendDelta > 0 ? '+' : ''}
           {sentiment.trendDelta}
         </span>
       </div>
-      <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-600">
+      <p className="mt-2 text-xs text-faint">
         {sentiment.articleCount} articles
       </p>
       <p className={`mt-0.5 text-xs font-medium capitalize ${sentimentColor(sentiment.score)}`}>
@@ -1159,14 +1178,14 @@ function MoverRow({
   onWatch: () => void
 }) {
   return (
-    <div className="group flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+    <div className="group flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-accent/40">
       {/* Symbol + Name */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+          <span className="font-mono text-xs font-semibold text-foreground">
             {mover.symbol}
           </span>
-          <span className="truncate text-xs text-zinc-400 dark:text-zinc-600">
+          <span className="truncate text-xs text-faint">
             {mover.name}
           </span>
         </div>
@@ -1197,7 +1216,7 @@ function MoverRow({
       </div>
 
       {/* Article count */}
-      <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
+      <span className="shrink-0 text-xs tabular-nums text-faint">
         {mover.articleCount}
       </span>
 
@@ -1207,7 +1226,7 @@ function MoverRow({
       {/* Watch button */}
       <button
         onClick={onWatch}
-        className="shrink-0 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-300 opacity-0 transition-all group-hover:opacity-100 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+        className="shrink-0 rounded-lg bg-muted px-2 py-1 text-xs font-medium text-muted-foreground opacity-0 transition-all group-hover:opacity-100 hover:bg-zinc-200 dark:hover:bg-zinc-700"
       >
         Watch
       </button>

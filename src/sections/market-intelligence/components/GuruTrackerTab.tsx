@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect, useCallback, useId } from 'react'
 import {
   Building2,
   Landmark,
@@ -65,11 +65,11 @@ const GURU_TYPE_LABELS: Record<GuruType, string> = {
 function guruTypeIcon(type: GuruType, size = 14) {
   switch (type) {
     case 'institutional':
-      return <Building2 size={size} />
+      return <Building2 size={size} aria-hidden="true" />
     case 'hedge-fund':
-      return <Landmark size={size} />
+      return <Landmark size={size} aria-hidden="true" />
     case 'crypto-whale':
-      return <Bitcoin size={size} />
+      return <Bitcoin size={size} aria-hidden="true" />
   }
 }
 
@@ -170,7 +170,7 @@ function PillToggle<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="flex gap-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+    <div className="flex gap-1 rounded-xl bg-muted p-1 ring-1 ring-border/60">
       {options.map((opt) => {
         const active = opt.value === value
         return (
@@ -179,8 +179,8 @@ function PillToggle<T extends string>({
             onClick={() => onChange(opt.value)}
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               active
-                ? 'bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50 text-zinc-900 dark:text-zinc-100'
-                : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                ? 'bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-border/60 text-foreground'
+                : 'text-hint hover:text-foreground'
             }`}
           >
             {opt.label}
@@ -210,7 +210,7 @@ function Modal({
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl max-w-md w-full mx-4 p-6">
+      <div className="rounded-2xl border border-border bg-card shadow-2xl max-w-md w-full mx-4 p-6">
         {children}
       </div>
     </div>
@@ -239,18 +239,18 @@ function GuruChip({
           guru.enabled ? '' : 'opacity-50'
         } ${
           isActive
-            ? 'ring-2 ring-pink-600 dark:ring-pink-400 border-pink-200 dark:border-pink-800 bg-white dark:bg-zinc-800'
-            : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 hover:border-zinc-300 dark:hover:border-zinc-700'
+            ? 'ring-2 ring-ring dark:ring-pink-400 border-pink-200 dark:border-pink-800 bg-white dark:bg-zinc-800'
+            : 'border-border bg-card hover:border-zinc-300 dark:hover:border-zinc-700'
         }`}
       >
-        <span className="text-zinc-500 dark:text-zinc-400">
+        <span className="text-muted-foreground">
           {guruTypeIcon(guru.type)}
         </span>
-        <span className="whitespace-nowrap text-zinc-900 dark:text-zinc-100">
+        <span className="whitespace-nowrap text-foreground">
           {guru.displayName}
         </span>
         {guru.recentTradeCount > 0 && (
-          <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-600 px-1.5 text-xs font-bold tabular-nums text-white">
+          <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold tabular-nums text-primary-foreground">
             {guru.recentTradeCount}
           </span>
         )}
@@ -262,24 +262,26 @@ function GuruChip({
           e.stopPropagation()
           setMenuOpen(!menuOpen)
         }}
-        className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 ring-1 ring-zinc-200 dark:ring-zinc-700 transition-colors"
+        aria-label={`Options for ${guru.displayName}`}
+        aria-expanded={menuOpen}
+        className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-muted text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 ring-1 ring-zinc-200 dark:ring-zinc-700 transition-colors"
       >
-        <MoreHorizontal size={10} />
+        <MoreHorizontal size={10} aria-hidden="true" />
       </button>
 
       {/* Dropdown */}
       {menuOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
-          <div className="absolute right-0 top-full z-50 mt-1 w-40 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-lg py-1">
+          <div className="absolute right-0 top-full z-50 mt-1 w-40 rounded-lg border border-border bg-card shadow-lg py-1">
             <button
               onClick={() => {
                 onContextAction('alert')
                 setMenuOpen(false)
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="flex w-full items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-accent"
             >
-              <Bell size={12} />
+              <Bell size={12} aria-hidden="true" />
               Edit Alert
             </button>
             <button
@@ -287,7 +289,7 @@ function GuruChip({
                 onContextAction('toggle')
                 setMenuOpen(false)
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+              className="flex w-full items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-accent"
             >
               {guru.enabled ? 'Disable' : 'Enable'}
             </button>
@@ -298,7 +300,7 @@ function GuruChip({
               }}
               className="flex w-full items-center gap-2 px-3 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30"
             >
-              <Trash2 size={12} />
+              <Trash2 size={12} aria-hidden="true" />
               Remove
             </button>
           </div>
@@ -319,26 +321,26 @@ function TradeCard({
   const changePositive = trade.holdingChangePercent >= 0
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+    <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         {/* Left side */}
         <div className="min-w-0 flex-1 space-y-3">
           {/* Guru name + type */}
           <div className="flex items-center gap-2">
-            <span className="text-zinc-500 dark:text-zinc-400">
+            <span className="text-muted-foreground">
               {guruTypeIcon(trade.guruType)}
             </span>
-            <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            <span className="text-sm font-semibold text-foreground">
               {trade.guruName}
             </span>
           </div>
 
           {/* Instrument */}
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <span className="font-mono text-sm font-semibold text-foreground">
               {trade.symbol}
             </span>
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            <span className="text-sm text-muted-foreground">
               {trade.instrumentName}
             </span>
           </div>
@@ -352,17 +354,17 @@ function TradeCard({
             >
               {trade.action}
             </span>
-            <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
+            <span className="font-mono text-xs text-foreground">
               {formatShareCount(trade.shareCount)} shares
             </span>
-            <span className="font-mono text-xs font-medium text-zinc-900 dark:text-zinc-100">
+            <span className="font-mono text-xs font-medium text-foreground">
               {formatDollarCompact(trade.dollarValue)}
             </span>
           </div>
 
           {/* Date + change + source */}
           <div className="flex flex-wrap items-center gap-3 text-xs">
-            <span className="text-zinc-500 dark:text-zinc-400">
+            <span className="text-muted-foreground">
               {relativeTime(trade.filedAt)}
             </span>
             <span
@@ -380,7 +382,7 @@ function TradeCard({
               {changePositive ? '+' : ''}
               {trade.holdingChangePercent.toFixed(1)}% position change
             </span>
-            <span className="rounded bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">
               {trade.sourceAttribution}
             </span>
           </div>
@@ -390,7 +392,7 @@ function TradeCard({
         <div className="shrink-0">
           <button
             onClick={() => onFollowTrade?.(trade.id)}
-            className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+            className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
           >
             Follow Trade
           </button>
@@ -418,6 +420,9 @@ function AddGuruModal({
   const [walletAddress, setWalletAddress] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [alertOnAnyTrade, setAlertOnAnyTrade] = useState(true)
+  const walletId = useId()
+  const nameId = useId()
+  const displayNameId = useId()
 
   const reset = useCallback(() => {
     setName('')
@@ -444,21 +449,22 @@ function AddGuruModal({
   return (
     <Modal open={open} onClose={onClose}>
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+        <h3 className="text-lg font-semibold text-foreground">
           Add Guru
         </h3>
         <button
           onClick={onClose}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          aria-label="Close add guru dialog"
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-accent transition-colors"
         >
-          <X size={16} />
+          <X size={16} aria-hidden="true" />
         </button>
       </div>
 
       <div className="space-y-4">
         {/* Type selector */}
         <div>
-          <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+          <label className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
             Type
           </label>
           <PillToggle<GuruType>
@@ -475,33 +481,36 @@ function AddGuruModal({
         {/* Name / Wallet input */}
         {type === 'crypto-whale' ? (
           <div>
-            <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+            <label htmlFor={walletId} className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
               Wallet Address
             </label>
             <input
+              id={walletId}
               type="text"
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
               placeholder="0x..."
-              className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 font-mono"
+              className="w-full rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 font-mono"
             />
           </div>
         ) : (
           <div>
-            <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+            <label htmlFor={nameId} className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
               Search Name
             </label>
             <div className="relative">
               <Search
                 size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                aria-hidden="true"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-faint"
               />
               <input
+                id={nameId}
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Search institutional / hedge fund name..."
-                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-9 pr-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400"
+                className="w-full rounded-lg border border-border bg-white dark:bg-zinc-800 pl-9 pr-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400"
               />
             </div>
           </div>
@@ -509,15 +518,16 @@ function AddGuruModal({
 
         {/* Display name */}
         <div>
-          <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+          <label htmlFor={displayNameId} className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
             Display Name <span className="normal-case tracking-normal font-normal">(optional)</span>
           </label>
           <input
+            id={displayNameId}
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder="Custom display name"
-            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400"
+            className="w-full rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400"
           />
         </div>
 
@@ -527,9 +537,9 @@ function AddGuruModal({
             type="checkbox"
             checked={alertOnAnyTrade}
             onChange={(e) => setAlertOnAnyTrade(e.target.checked)}
-            className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-600 text-pink-600 focus:ring-pink-500/30"
+            className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-600 text-primary focus:ring-ring/30"
           />
-          <span className="text-sm text-zinc-700 dark:text-zinc-300">
+          <span className="text-sm text-foreground">
             Alert me on any trade
           </span>
         </label>
@@ -538,13 +548,13 @@ function AddGuruModal({
         <div className="flex items-center justify-end gap-2 pt-2">
           <button
             onClick={onClose}
-            className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+            className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 hover:bg-pink-500 active:scale-[0.98] transition-all"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 hover:bg-primary/90 active:scale-[0.98] transition-all"
           >
             Add &amp; Track
           </button>
@@ -572,16 +582,16 @@ function RemoveGuruModal({
 
   return (
     <Modal open={true} onClose={onClose}>
-      <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+      <h3 className="text-lg font-semibold text-foreground mb-2">
         Remove {guru.displayName}?
       </h3>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+      <p className="text-sm text-muted-foreground mb-6">
         This will remove all their trades from your feed and delete associated alerts.
       </p>
       <div className="flex items-center justify-end gap-2">
         <button
           onClick={onClose}
-          className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
         >
           Cancel
         </button>
@@ -622,6 +632,8 @@ function AlertConfigModal({
   const [actionFilter, setActionFilter] = useState<GuruAlertActionFilter>(
     existingAlert?.triggers.actionFilter ?? 'any',
   )
+  const instrumentInputId = useId()
+  const minTradeSizeId = useId()
 
   useEffect(() => {
     if (existingAlert) {
@@ -664,14 +676,15 @@ function AlertConfigModal({
   return (
     <Modal open={true} onClose={onClose}>
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+        <h3 className="text-lg font-semibold text-foreground">
           Alert for {guru.displayName}
         </h3>
         <button
           onClick={onClose}
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          aria-label="Close alert configuration dialog"
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-accent transition-colors"
         >
-          <X size={16} />
+          <X size={16} aria-hidden="true" />
         </button>
       </div>
 
@@ -682,18 +695,19 @@ function AlertConfigModal({
             type="checkbox"
             checked={anyTrade}
             onChange={(e) => setAnyTrade(e.target.checked)}
-            className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-600 text-pink-600 focus:ring-pink-500/30"
+            className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-600 text-primary focus:ring-ring/30"
           />
-          <span className="text-sm text-zinc-700 dark:text-zinc-300">Any trade</span>
+          <span className="text-sm text-foreground">Any trade</span>
         </label>
 
         {/* Specific instruments */}
         <div>
-          <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+          <label htmlFor={instrumentInputId} className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
             Specific Instruments
           </label>
           <div className="flex gap-2">
             <input
+              id={instrumentInputId}
               type="text"
               value={instrumentInput}
               onChange={(e) => setInstrumentInput(e.target.value)}
@@ -701,11 +715,11 @@ function AlertConfigModal({
                 if (e.key === 'Enter') handleAddInstrument()
               }}
               placeholder="AAPL, BTC/EUR..."
-              className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 font-mono"
+              className="flex-1 rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 font-mono"
             />
             <button
               onClick={handleAddInstrument}
-              className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
             >
               Add
             </button>
@@ -715,14 +729,15 @@ function AlertConfigModal({
               {specificInstruments.map((sym) => (
                 <span
                   key={sym}
-                  className="inline-flex items-center gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-mono text-zinc-700 dark:text-zinc-300"
+                  className="inline-flex items-center gap-1 rounded-lg bg-muted px-2 py-1 text-xs font-mono text-foreground"
                 >
                   {sym}
                   <button
                     onClick={() => handleRemoveInstrument(sym)}
+                    aria-label={`Remove ${sym} from alert instruments`}
                     className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                   >
-                    <X size={10} />
+                    <X size={10} aria-hidden="true" />
                   </button>
                 </span>
               ))}
@@ -732,21 +747,22 @@ function AlertConfigModal({
 
         {/* Size threshold */}
         <div>
-          <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+          <label htmlFor={minTradeSizeId} className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
             Minimum Trade Size ($)
           </label>
           <input
+            id={minTradeSizeId}
             type="number"
             value={minTradeSize}
             onChange={(e) => setMinTradeSize(e.target.value)}
             placeholder="e.g. 10000000"
-            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 font-mono"
+            className="w-full rounded-lg border border-border bg-white dark:bg-zinc-800 px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 font-mono"
           />
         </div>
 
         {/* Action filter */}
         <div>
-          <label className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1.5 block">
+          <label className="text-xs font-bold uppercase tracking-[0.15em] text-hint mb-1.5 block">
             Action Filter
           </label>
           <PillToggle<GuruAlertActionFilter>
@@ -764,13 +780,13 @@ function AlertConfigModal({
         <div className="flex items-center justify-end gap-2 pt-2">
           <button
             onClick={onClose}
-            className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+            className="rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="rounded-xl bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 hover:bg-pink-500 active:scale-[0.98] transition-all"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 hover:bg-primary/90 active:scale-[0.98] transition-all"
           >
             Save Alert
           </button>
@@ -802,46 +818,48 @@ function AlertsPanel({
   if (alerts.length === 0) return null
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 overflow-hidden">
+    <div className="rounded-2xl border border-border bg-card overflow-hidden">
       {/* Collapsible header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between px-5 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+        aria-expanded={expanded}
+        className="flex w-full items-center justify-between px-5 py-3 hover:bg-accent/50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <Bell size={14} className="text-zinc-500 dark:text-zinc-400" />
-          <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <Bell size={14} className="text-muted-foreground" aria-hidden="true" />
+          <span className="text-sm font-semibold text-foreground">
             Alerts
           </span>
-          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
             {alerts.length}
           </span>
         </div>
         <ChevronDown
           size={14}
-          className={`text-zinc-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+          className={`text-faint transition-transform ${expanded ? 'rotate-180' : ''}`}
         />
       </button>
 
       {expanded && (
-        <div className="border-t border-zinc-100 dark:border-zinc-800/60">
+        <div className="border-t border-border">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
-                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                <tr className="border-b border-border">
+                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     Guru
                   </th>
-                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     Triggers
                   </th>
-                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     Status
                   </th>
-                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                     Last Triggered
                   </th>
-                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 text-right">
+                  <th className="px-5 py-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint text-right">
                     Count
                   </th>
                   <th className="px-5 py-2.5" />
@@ -852,12 +870,12 @@ function AlertsPanel({
                   <tr
                     key={alert.id}
                     onClick={() => onEdit?.(alert)}
-                    className="border-b border-zinc-50 dark:border-zinc-800/40 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 cursor-pointer transition-colors"
+                    className="border-b border-zinc-50 dark:border-zinc-800/40 last:border-0 hover:bg-accent/30 cursor-pointer transition-colors"
                   >
-                    <td className="px-5 py-3 text-sm font-medium text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
+                    <td className="px-5 py-3 text-sm font-medium text-foreground whitespace-nowrap">
                       {alert.guruName}
                     </td>
-                    <td className="px-5 py-3 text-xs text-zinc-500 dark:text-zinc-400 max-w-[240px] truncate">
+                    <td className="px-5 py-3 text-xs text-muted-foreground max-w-[240px] truncate">
                       {describeTriggers(alert.triggers)}
                     </td>
                     <td className="px-5 py-3">
@@ -866,6 +884,9 @@ function AlertsPanel({
                           e.stopPropagation()
                           onToggle?.(alert.id, alert.status !== 'active')
                         }}
+                        role="switch"
+                        aria-checked={alert.status === 'active'}
+                        aria-label={`Toggle alert for ${alert.guruName}`}
                         className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
                         style={{
                           backgroundColor:
@@ -875,7 +896,7 @@ function AlertsPanel({
                         <span
                           className={`inline-flex h-5 w-9 items-center rounded-full transition-colors ${
                             alert.status === 'active'
-                              ? 'bg-pink-600'
+                              ? 'bg-primary'
                               : 'bg-zinc-300 dark:bg-zinc-700'
                           }`}
                         >
@@ -889,12 +910,12 @@ function AlertsPanel({
                         </span>
                       </button>
                     </td>
-                    <td className="px-5 py-3 text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+                    <td className="px-5 py-3 text-xs text-muted-foreground whitespace-nowrap">
                       {alert.lastTriggeredAt
                         ? relativeTime(alert.lastTriggeredAt)
                         : 'Never'}
                     </td>
-                    <td className="px-5 py-3 text-xs font-mono text-zinc-700 dark:text-zinc-300 text-right">
+                    <td className="px-5 py-3 text-xs font-mono text-foreground text-right">
                       {alert.triggerCount}
                     </td>
                     <td className="px-5 py-3">
@@ -903,9 +924,10 @@ function AlertsPanel({
                           e.stopPropagation()
                           onDelete?.(alert.id)
                         }}
+                        aria-label={`Delete alert for ${alert.guruName}`}
                         className="text-zinc-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={14} aria-hidden="true" />
                       </button>
                     </td>
                   </tr>
@@ -1052,22 +1074,22 @@ export function GuruTrackerTab({
       <>
         <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
           <div className="relative w-full max-w-md">
-            <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-            <div className="relative rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700/80 bg-white dark:bg-zinc-900/80 px-8 py-16 text-center backdrop-blur-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-                <Users size={28} className="text-zinc-400 dark:text-zinc-500" />
+            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+            <div className="relative rounded-2xl border border-dashed border-border/80 bg-card px-8 py-16 text-center backdrop-blur-sm">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+                <Users size={28} className="text-hint" />
               </div>
-              <h2 className="mt-6 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+              <h2 className="mt-6 text-xl font-semibold text-foreground">
                 Start tracking institutional moves
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Follow hedge funds, institutions, and crypto whales to see their latest trades in real time.
               </p>
               <button
                 onClick={() => setAddGuruOpen(true)}
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
               >
-                <Plus size={15} />
+                <Plus size={15} aria-hidden="true" />
                 Add Your First Guru
               </button>
             </div>
@@ -1105,9 +1127,9 @@ export function GuruTrackerTab({
         ))}
         <button
           onClick={() => setAddGuruOpen(true)}
-          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium text-zinc-500 hover:border-pink-400 hover:text-pink-600 dark:hover:border-pink-700 dark:hover:text-pink-400 transition-colors"
+          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-dashed border-border px-3 py-2 text-sm font-medium text-hint hover:border-pink-400 hover:text-primary dark:hover:border-pink-700 dark:hover:text-pink-400 transition-colors"
         >
-          <Plus size={14} />
+          <Plus size={14} aria-hidden="true" />
           Add Guru
         </button>
       </div>
@@ -1148,28 +1170,30 @@ export function GuruTrackerTab({
             <div className="relative">
               <Search
                 size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                aria-hidden="true"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-faint"
               />
               <input
                 type="text"
                 value={instrumentSearch}
                 onChange={(e) => setInstrumentSearch(e.target.value)}
                 placeholder="Search instrument..."
-                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-9 pr-3 py-2 text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 placeholder:text-zinc-400 lg:w-52"
+                aria-label="Search instrument"
+                className="w-full rounded-lg border border-border bg-white dark:bg-zinc-800 pl-9 pr-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus:border-primary focus:ring-1 focus:ring-ring/30 placeholder:text-zinc-400 lg:w-52"
               />
             </div>
 
             {/* Sort */}
             <div className="flex items-center gap-1">
-              <Filter size={12} className="text-zinc-400" />
+              <Filter size={12} aria-hidden="true" className="text-faint" />
               {(['date', 'size', 'instrument'] as SortField[]).map((field) => (
                 <button
                   key={field}
                   onClick={() => handleSortChange(field)}
                   className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
                     sortField === field
-                      ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
-                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                      ? 'bg-muted text-foreground'
+                      : 'text-hint hover:text-foreground'
                   }`}
                 >
                   {field === 'date'
@@ -1191,14 +1215,14 @@ export function GuruTrackerTab({
       {/* Trades Feed                                                       */}
       {/* ================================================================= */}
       {filteredTrades.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 py-14 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/60">
-            <Users size={20} className="text-zinc-300 dark:text-zinc-700" />
+        <div className="rounded-2xl border border-border bg-card py-14 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+            <Users size={20} className="text-faint" />
           </div>
-          <p className="mt-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          <p className="mt-4 text-sm font-medium text-muted-foreground">
             No notable trades detected recently
           </p>
-          <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-1 text-xs text-faint">
             Trades from your tracked gurus will appear here when new filings or on-chain activity is detected.
           </p>
         </div>
@@ -1217,7 +1241,7 @@ export function GuruTrackerTab({
             <div className="flex justify-center pt-2">
               <button
                 onClick={() => setVisibleCount((c) => c + 10)}
-                className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                className="rounded-lg bg-muted px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
               >
                 Load more ({filteredTrades.length - visibleCount} remaining)
               </button>

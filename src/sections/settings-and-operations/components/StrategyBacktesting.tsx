@@ -23,7 +23,7 @@ export function StrategyBacktesting({
   const markDirty = () => setHasChanges(true)
 
   const inputClasses =
-    'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+    'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary dark:focus:border-pink-400 focus:ring-1 focus:ring-ring/30 dark:focus:ring-pink-400/30'
 
   const { backtesting } = settings
 
@@ -64,9 +64,9 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">seconds</span>
+            <span className="text-xs text-muted-foreground">seconds</span>
           </div>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{settings.evaluationScheduleLabel}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{settings.evaluationScheduleLabel}</p>
         </FormRow>
 
         <FormRow label="Default Risk per Trade" hint="Percentage of portfolio risked per individual trade">
@@ -85,7 +85,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+            <span className="text-xs text-muted-foreground">%</span>
           </div>
         </FormRow>
 
@@ -104,15 +104,15 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+            <span className="text-xs text-muted-foreground">%</span>
           </div>
         </FormRow>
 
         <FormRow label="Strategy Config Directory" hint="Read-only path to strategy configuration files">
           <div
             className="
-              rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2
-              font-mono text-sm text-zinc-500 dark:text-zinc-400
+              rounded-lg border border-border bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2
+              font-mono text-sm text-muted-foreground
             "
           >
             {settings.strategyConfigDirectory}
@@ -143,7 +143,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-40`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground">
               ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(backtesting.defaultCapital)})
             </span>
           </div>
@@ -165,7 +165,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+            <span className="text-xs text-muted-foreground">%</span>
           </div>
         </FormRow>
 
@@ -185,7 +185,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">%</span>
+            <span className="text-xs text-muted-foreground">%</span>
           </div>
         </FormRow>
 
@@ -202,8 +202,8 @@ export function StrategyBacktesting({
                   rounded-lg px-3 py-1.5 text-xs font-medium transition-colors
                   ${
                     backtesting.executionModel === model
-                      ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 ring-1 ring-pink-600/25 dark:ring-pink-400/25'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-800'
+                      ? 'bg-primary/10 dark:bg-primary/10 text-primary ring-1 ring-ring/25 dark:ring-pink-400/25'
+                      : 'bg-muted text-muted-foreground ring-1 ring-border'
                   }
                 `}
               >
@@ -229,7 +229,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">workers</span>
+            <span className="text-xs text-muted-foreground">workers</span>
           </div>
         </FormRow>
       </FormSection>
@@ -258,7 +258,7 @@ export function StrategyBacktesting({
                 }}
                 className={`${inputClasses} w-24`}
               />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">months</span>
+              <span className="text-xs text-muted-foreground">months</span>
             </div>
           </FormRow>
 
@@ -278,20 +278,20 @@ export function StrategyBacktesting({
                 }}
                 className={`${inputClasses} w-24`}
               />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">months</span>
+              <span className="text-xs text-muted-foreground">months</span>
             </div>
           </FormRow>
         </div>
 
         {/* Visual period bar */}
         <div className="mt-2">
-          <div className="mb-1.5 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
             <span>Period Distribution</span>
             <span>{totalMonths} months total</span>
           </div>
-          <div className="flex h-6 overflow-hidden rounded-lg ring-1 ring-zinc-200 dark:ring-zinc-800">
+          <div className="flex h-6 overflow-hidden rounded-lg ring-1 ring-border">
             <div
-              className="flex items-center justify-center bg-pink-600/20 dark:bg-pink-500/20 text-xs font-medium text-pink-600 dark:text-pink-400 transition-all"
+              className="flex items-center justify-center bg-primary/20 dark:bg-primary/20 text-xs font-medium text-primary transition-all"
               style={{ width: `${trainingPct}%` }}
             >
               {backtesting.walkForward.trainingMonths}mo train
@@ -303,9 +303,9 @@ export function StrategyBacktesting({
               {backtesting.walkForward.validationMonths}mo val
             </div>
           </div>
-          <div className="mt-1 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-sm bg-pink-600/40 dark:bg-pink-500/40" />
+              <span className="inline-block h-2 w-2 rounded-sm bg-primary/40 dark:bg-primary/40" />
               Training ({trainingPct.toFixed(0)}%)
             </span>
             <span className="flex items-center gap-1">
@@ -336,8 +336,8 @@ export function StrategyBacktesting({
                   rounded-lg px-3 py-1.5 text-xs font-medium transition-colors
                   ${
                     backtesting.reportFormat === fmt
-                      ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 ring-1 ring-pink-600/25 dark:ring-pink-400/25'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 ring-1 ring-zinc-200 dark:ring-zinc-800'
+                      ? 'bg-primary/10 dark:bg-primary/10 text-primary ring-1 ring-ring/25 dark:ring-pink-400/25'
+                      : 'bg-muted text-muted-foreground ring-1 ring-border'
                   }
                 `}
               >
@@ -363,7 +363,7 @@ export function StrategyBacktesting({
               }}
               className={`${inputClasses} w-28`}
             />
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">days</span>
+            <span className="text-xs text-muted-foreground">days</span>
           </div>
         </FormRow>
       </FormSection>

@@ -42,7 +42,7 @@ export function SystemBanner({ banner, onDismiss, onAction }: SystemBannerProps)
       role={style.role}
       className={`flex items-center gap-3 border-b px-6 py-2.5 text-sm ${style.bg}`}
     >
-      <Icon size={16} className="shrink-0" />
+      <Icon size={16} aria-hidden="true" className="shrink-0" />
       <span className="flex-1">
         {banner.message}
         {banner.countdown && (
@@ -52,7 +52,7 @@ export function SystemBanner({ banner, onDismiss, onAction }: SystemBannerProps)
       {banner.actionLabel && onAction && (
         <button
           onClick={onAction}
-          className="shrink-0 rounded-md bg-white/80 dark:bg-white/10 px-3 py-1 text-xs font-semibold transition-colors hover:bg-white dark:hover:bg-white/20"
+          className="shrink-0 rounded-md bg-white/80 dark:bg-white/10 px-3 py-1 text-xs font-semibold transition-colors hover:bg-white dark:hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
         >
           {banner.actionLabel}
         </button>
@@ -61,9 +61,9 @@ export function SystemBanner({ banner, onDismiss, onAction }: SystemBannerProps)
         <button
           onClick={() => onDismiss(banner.id)}
           aria-label="Dismiss banner"
-          className="shrink-0 rounded p-0.5 opacity-60 transition-opacity hover:opacity-100"
+          className="shrink-0 rounded p-0.5 opacity-60 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
         >
-          <X size={14} />
+          <X size={14} aria-hidden="true" />
         </button>
       )}
     </div>

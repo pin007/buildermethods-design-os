@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useFocusTrap } from '@/lib/use-focus-trap'
 import { ShieldAlert, AlertTriangle } from 'lucide-react'
 import { useTradingScope } from '@/lib/trading-scope'
 
@@ -22,6 +23,9 @@ export function EmergencyCloseModal({
   const [filter, setFilter] = useState<'all' | 'intraday' | 'swing'>('all')
   const [confirmText, setConfirmText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+  // WCAG: trap Tab focus inside the modal while open; restore focus on close.
+  useFocusTrap(modalRef, open)
   const scope = useTradingScope()
   const isLive = scope === 'live'
 
@@ -55,6 +59,7 @@ export function EmergencyCloseModal({
 
       {/* Modal */}
       <div
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-label="Emergency close all positions"
@@ -135,11 +140,12 @@ export function EmergencyCloseModal({
 
           {/* Confirmation input */}
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+            <label htmlFor="emergency-close-confirm" className="mb-1.5 block text-xs font-medium text-muted-foreground">
               Type <span className="font-mono font-bold text-destructive">CLOSE ALL</span> to confirm
             </label>
             <input
               ref={inputRef}
+              id="emergency-close-confirm"
               type="text"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}

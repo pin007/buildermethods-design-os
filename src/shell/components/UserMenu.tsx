@@ -115,6 +115,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
             </div>
             <ChevronUp
               size={12}
+              aria-hidden="true"
               className={`shrink-0 text-faint transition-transform ${open ? '' : 'rotate-180'}`}
             />
           </>
@@ -154,7 +155,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
               }}
               className="flex w-full items-center gap-3 px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              <User size={14} />
+              <User size={14} aria-hidden="true" />
               Profile
             </button>
             <button
@@ -166,7 +167,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
               }}
               className="flex w-full items-center gap-3 px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              <Settings size={14} />
+              <Settings size={14} aria-hidden="true" />
               Settings
             </button>
           </div>
@@ -181,7 +182,7 @@ export function UserMenu({ user, variant = 'header', onNavigate, onLogout }: Use
               }}
               className="flex w-full items-center gap-3 px-4 py-2 text-sm text-destructive transition-colors hover:bg-accent"
             >
-              <LogOut size={14} />
+              <LogOut size={14} aria-hidden="true" />
               Logout
             </button>
           </div>

@@ -111,7 +111,7 @@
 
   /* Brand text tiers — tertiary (captions, hints) and faint (disabled, placeholders) */
   --hint: #78716C; /* brand --text-tertiary ≈ stone-500 */
-  --faint: #A8A29E; /* brand --text-muted ≈ stone-400 */
+  --faint: #79716B; /* WCAG bump from #A8A29E — ≥4.5:1 on --background and --card, warm-stone hue kept */
   /* Brand hover surface */
   --hover: #E7E5E4; /* brand --bg-hover */
 
@@ -170,8 +170,8 @@
   --sidebar-ring: #db2777;
 
   /* Brand text tiers — tertiary (captions, hints) and faint (disabled, placeholders) */
-  --hint: #6B6B70; /* brand --text-tertiary (dark) */
-  --faint: #4A4A4E; /* brand --text-muted (dark) */
+  --hint: #84848A; /* WCAG bump from #6B6B70 — ≥4.5:1 on #0d0d0f, still darker than --muted-foreground */
+  --faint: #7E7E84; /* WCAG bump from #4A4A4E — ≥4.5:1 on both #0d0d0f and card #141416 */
   /* Brand hover surface */
   --hover: #252528; /* brand --bg-hover (dark) */
 
@@ -330,5 +330,17 @@
     to {
       height: 0;
     }
+  }
+}
+
+/* WCAG: global reduced-motion — collapse all animation/transition durations
+   when the user asks for reduced motion (widespread animate-in/transition use). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

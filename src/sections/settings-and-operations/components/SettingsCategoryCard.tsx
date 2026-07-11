@@ -53,10 +53,10 @@ export function SettingsCategoryCard({ category, onClick }: SettingsCategoryCard
       onClick={onClick}
       className="
         group relative flex w-full flex-col items-start gap-4 rounded-xl
-        border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-5
+        border border-border bg-card p-5
         text-left transition-all duration-200
-        hover:border-pink-600/30 dark:hover:border-pink-500/30 hover:bg-pink-600/[0.03] dark:hover:bg-pink-500/[0.03]
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-600 dark:focus-visible:ring-pink-400 focus-visible:ring-offset-2
+        hover:border-primary/30 hover:bg-primary/[0.03]
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
         focus-visible:ring-offset-white dark:ring-offset-zinc-950
       "
     >
@@ -65,12 +65,12 @@ export function SettingsCategoryCard({ category, onClick }: SettingsCategoryCard
         <div
           className="
             flex h-10 w-10 items-center justify-center rounded-lg
-            bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400
+            bg-primary/10 text-primary
             transition-colors duration-200
-            group-hover:bg-pink-600/15 dark:group-hover:bg-pink-500/15
+            group-hover:bg-primary/15
           "
         >
-          <Icon size={20} />
+          <Icon size={20} aria-hidden="true" />
         </div>
         {category.badge !== null && category.badgeVariant && (
           <span
@@ -87,10 +87,10 @@ export function SettingsCategoryCard({ category, onClick }: SettingsCategoryCard
 
       {/* Label */}
       <div className="space-y-1">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <h3 className="text-sm font-semibold text-foreground">
           {category.label}
         </h3>
-        <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs leading-relaxed text-muted-foreground">
           {category.summary}
         </p>
       </div>
@@ -102,10 +102,10 @@ export function SettingsCategoryCard({ category, onClick }: SettingsCategoryCard
           flex h-6 w-6 items-center justify-center rounded-full
           bg-transparent text-transparent
           transition-all duration-200
-          group-hover:bg-pink-600/10 dark:group-hover:bg-pink-500/10 group-hover:text-pink-600 dark:group-hover:text-pink-400
+          group-hover:bg-primary/10 group-hover:text-primary
         "
       >
-        <ChevronRight size={14} />
+        <ChevronRight size={14} aria-hidden="true" />
       </div>
     </button>
   )

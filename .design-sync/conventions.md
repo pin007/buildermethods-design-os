@@ -33,7 +33,7 @@ Style with the design system's **semantic token utilities**, not raw hex. Core v
 
 **Typography**: DM Sans is the applied default for all UI text (no class needed); use **`font-mono`** (JetBrains Mono) for every number, price, quantity, percentage, and ID — this is a signature of the system. Tabular numerics read as monospace, e.g. `<span className="font-mono">$1,284,300</span>`.
 
-Always pair a surface with its foreground and add `dark:` variants when you write your own utilities, e.g. `bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800`.
+**Semantic tokens are the enforced idiom** — the components themselves are written with them. Never write raw light/dark neutral pairs (`bg-white dark:bg-zinc-900`, `border-zinc-200 dark:border-zinc-800`); use the single semantic class (`bg-card`, `border-border`) — it theme-switches automatically. The `dark:` prefix is only needed for the financial state colors above.
 
 ## Where the truth lives
 - `styles.css` (and its `@import` of `_ds_bundle.css`) is the full compiled stylesheet — every token definition and utility. Read it to confirm a class exists before using it.

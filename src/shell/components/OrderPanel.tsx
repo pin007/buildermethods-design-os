@@ -120,7 +120,7 @@ export function OrderPanel({ state, tradingMode = 'paper', onClose, onMinimize, 
           className="flex flex-col items-center gap-2 rounded-lg p-2 text-muted-foreground
             transition-colors hover:bg-accent hover:text-foreground"
         >
-          <Maximize2 size={16} />
+          <Maximize2 size={16} aria-hidden="true" />
           <span
             className="text-xs font-semibold uppercase tracking-widest text-hint"
             style={{ writingMode: 'vertical-rl' }}
@@ -163,7 +163,7 @@ export function OrderPanel({ state, tradingMode = 'paper', onClose, onMinimize, 
 
         {/* Header */}
         <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
-          <ShoppingCart size={16} className="text-primary dark:text-pink-400" />
+          <ShoppingCart size={16} aria-hidden="true" className="text-primary dark:text-pink-400" />
           <h2 className="flex-1 text-sm font-semibold text-foreground">New Order</h2>
           <span
             title={tradingMode === 'paper' ? 'Simulated order — no real money' : 'LIVE order — real money'}
@@ -180,14 +180,14 @@ export function OrderPanel({ state, tradingMode = 'paper', onClose, onMinimize, 
             aria-label="Minimize order panel"
             className="rounded-lg p-1.5 text-hint transition-colors hover:bg-accent hover:text-muted-foreground"
           >
-            <Minus size={14} />
+            <Minus size={14} aria-hidden="true" />
           </button>
           <button
             onClick={attemptClose}
             aria-label="Close order panel"
             className="rounded-lg p-1.5 text-hint transition-colors hover:bg-accent hover:text-muted-foreground"
           >
-            <X size={14} />
+            <X size={14} aria-hidden="true" />
           </button>
         </div>
 

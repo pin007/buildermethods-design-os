@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import type { Strategy, StrategyType } from '@/../product/sections/strategy-engine/types'
+import { ToggleSwitch } from '@/sections/settings-and-operations/components/SettingsDetailLayout'
 
 // =============================================================================
 // Props
@@ -87,10 +88,11 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
       className={`
         group relative rounded-2xl border transition-all duration-200 cursor-pointer
         ${isActive
-          ? 'border-l-[3px] border-l-pink-600 border-t-zinc-200 border-r-zinc-200 border-b-zinc-200 dark:border-l-pink-500 dark:border-t-zinc-800 dark:border-r-zinc-800 dark:border-b-zinc-800 bg-white dark:bg-zinc-900'
-          : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 opacity-75'
+          ? 'border-l-[3px] border-l-primary border-t-border border-r-border border-b-border bg-card'
+          : 'border-border bg-zinc-50/50 dark:bg-zinc-900/50 opacity-75'
         }
         hover:shadow-md dark:hover:shadow-zinc-950/40 hover:border-zinc-300 dark:hover:border-zinc-700
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1
       `}
       onClick={onView}
       role="button"
@@ -120,39 +122,23 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
               {strategy.promotedToLive ? 'Live' : 'Paper'}
             </span>
           </div>
-          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 truncate pr-8">
+          <h3 className="text-base font-semibold text-foreground truncate pr-8">
             {strategy.name}
           </h3>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-500 line-clamp-1">
+          <p className="mt-0.5 text-xs text-hint line-clamp-1">
             {strategy.description}
           </p>
         </div>
 
         {/* Active toggle */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onToggleActive?.(!isActive)
-          }}
-          className={`
-            relative flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200
-            focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600
-            ${isActive
-              ? 'bg-pink-600 dark:bg-pink-500'
-              : 'bg-zinc-200 dark:bg-zinc-700'
-            }
-          `}
-          aria-label={isActive ? 'Deactivate strategy' : 'Activate strategy'}
-          role="switch"
-          aria-checked={isActive}
-        >
-          <span
-            className={`
-              inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200
-              ${isActive ? 'translate-x-6' : 'translate-x-1'}
-            `}
+        <span className="shrink-0" onClick={(e) => e.stopPropagation()}>
+          <ToggleSwitch
+            enabled={isActive}
+            onChange={(active) => onToggleActive?.(active)}
+            label={isActive ? 'Deactivate strategy' : 'Activate strategy'}
+            size="md"
           />
-        </button>
+        </span>
       </div>
 
       {/* Instruments */}
@@ -161,13 +147,13 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
           {strategy.instruments.slice(0, 5).map((inst) => (
             <span
               key={inst}
-              className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:text-zinc-400"
+              className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
             >
               {inst}
             </span>
           ))}
           {strategy.instruments.length > 5 && (
-            <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-400 dark:text-zinc-500">
+            <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-hint">
               +{strategy.instruments.length - 5}
             </span>
           )}
@@ -179,7 +165,7 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
         <div className="mx-5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-3.5">
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-0.5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-hint mb-0.5">
                 Sharpe
               </p>
               <p className={`font-mono text-sm font-bold tabular-nums ${
@@ -193,7 +179,7 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-0.5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-hint mb-0.5">
                 CAGR
               </p>
               <p className={`font-mono text-sm font-bold tabular-nums ${
@@ -205,7 +191,7 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-0.5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-hint mb-0.5">
                 Max DD
               </p>
               <p className={`font-mono text-sm font-bold tabular-nums ${
@@ -222,7 +208,7 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
         </div>
       ) : (
         <div className="mx-5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-3.5">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 italic text-center">
+          <p className="text-xs text-hint italic text-center">
             No backtests yet
           </p>
         </div>
@@ -230,7 +216,7 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
 
       {/* Footer */}
       <div className="flex items-center justify-between px-5 py-3 mt-1">
-        <div className="flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-500">
+        <div className="flex items-center gap-3 text-xs text-hint">
           <span className="inline-flex items-center gap-1">
             <Clock size={12} strokeWidth={1.5} />
             {formatSchedule(strategy)}
@@ -249,12 +235,12 @@ export function StrategyCard({ strategy, onView, onToggleActive, onDelete }: Str
               e.stopPropagation()
               onDelete?.()
             }}
-            className="rounded-lg p-1.5 text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-150 hover:bg-red-50 dark:hover:bg-red-950/30"
+            className="rounded-lg p-1.5 text-faint hover:text-red-500 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-150 hover:bg-red-50 dark:hover:bg-red-950/30"
             aria-label="Delete strategy"
           >
-            <Trash2 size={14} strokeWidth={1.5} />
+            <Trash2 size={14} strokeWidth={1.5} aria-hidden="true" />
           </button>
-          <div className="text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="text-faint opacity-0 group-hover:opacity-100 transition-opacity">
             <ChevronRight size={16} strokeWidth={1.5} />
           </div>
         </div>

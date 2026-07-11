@@ -113,26 +113,26 @@ function EquityCurveChart({ data, period, onPeriodChange, currency }: {
   const areaPoints = `0,${height} ${points} 100,${height}`
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-      <div className="flex flex-col gap-3 border-b border-zinc-100 dark:border-zinc-800/60 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="flex flex-col gap-3 border-b border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-            <BarChart3 size={13} className="text-zinc-500 dark:text-zinc-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+            <BarChart3 size={13} className="text-muted-foreground" />
           </div>
-          <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          <h2 className="text-sm font-semibold text-foreground">
             Equity Curve
           </h2>
         </div>
 
-        <div className="flex gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-900/80 p-0.5 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+        <div className="flex gap-1 rounded-lg bg-muted p-0.5 ring-1 ring-border/60">
           {PERIODS.map(p => (
             <button
               key={p}
               onClick={() => onPeriodChange(p)}
               className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-all ${
                 period === p
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-faint hover:text-muted-foreground'
               }`}
             >
               {p}
@@ -143,13 +143,13 @@ function EquityCurveChart({ data, period, onPeriodChange, currency }: {
 
       <div className="relative px-6 py-6">
         <div className="absolute left-6 top-6 bottom-6 flex flex-col justify-between">
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency(max, currency)}
           </span>
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency((max + min) / 2, currency)}
           </span>
-          <span className="text-xs tabular-nums text-zinc-300 dark:text-zinc-700">
+          <span className="text-xs tabular-nums text-faint">
             {formatCompactCurrency(min, currency)}
           </span>
         </div>
@@ -190,15 +190,15 @@ function EquityCurveChart({ data, period, onPeriodChange, currency }: {
           <div className="mt-2 flex justify-between">
             {filteredData.length > 0 && (
               <>
-                <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                <span className="text-xs text-faint">
                   {new Date(filteredData[0].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                 </span>
                 {filteredData.length > 2 && (
-                  <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                  <span className="text-xs text-faint">
                     {new Date(filteredData[Math.floor(filteredData.length / 2)].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                   </span>
                 )}
-                <span className="text-xs text-zinc-300 dark:text-zinc-700">
+                <span className="text-xs text-faint">
                   {new Date(filteredData[filteredData.length - 1].date).toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}
                 </span>
               </>
@@ -254,19 +254,20 @@ export function PortfolioDetail({
       <div className="flex items-center gap-4">
         <button
           onClick={() => onBack?.()}
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 active:scale-95"
+          aria-label="Back to portfolios"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-accent hover:text-foreground active:scale-95"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16} aria-hidden="true" />
         </button>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Portfolio
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             {portfolio.name}
           </h1>
         </div>
-        <span className="ml-auto rounded-lg bg-zinc-100 dark:bg-zinc-800/60 px-3 py-1.5 text-xs font-bold text-zinc-500 dark:text-zinc-400">
+        <span className="ml-auto rounded-lg bg-muted px-3 py-1.5 text-xs font-bold text-muted-foreground">
           {portfolio.currency}
         </span>
       </div>
@@ -277,19 +278,19 @@ export function PortfolioDetail({
       <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12">
 
         {/* HERO: Total Value */}
-        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-pink-500/[0.04] blur-3xl dark:bg-pink-500/[0.07]" />
-          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-pink-500/[0.03] blur-2xl dark:bg-pink-500/[0.05]" />
+        <div className="relative lg:col-span-5 overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/[0.04] blur-3xl dark:bg-primary/[0.07]" />
+          <div className="absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-primary/[0.03] blur-2xl dark:bg-primary/[0.05]" />
 
           <div className="relative p-6">
-            <div className="flex items-center gap-2 text-zinc-400 dark:text-zinc-500">
+            <div className="flex items-center gap-2 text-hint">
               <Wallet size={14} strokeWidth={2} />
               <span className="text-xs font-bold uppercase tracking-[0.15em]">
                 Total Value
               </span>
             </div>
 
-            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
+            <p className="mt-4 font-mono text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               {formatCurrency(portfolio.totalValue, cur)}
             </p>
 
@@ -302,14 +303,14 @@ export function PortfolioDetail({
                 {pnlPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                 <span className="font-mono">{formatPercent(portfolio.dayPnLPercent)}</span>
               </div>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">today</span>
-              <span className="text-xs text-zinc-300 dark:text-zinc-700">&middot;</span>
-              <span className="text-xs text-zinc-400 dark:text-zinc-600">
+              <span className="text-xs text-faint">today</span>
+              <span className="text-xs text-faint">&middot;</span>
+              <span className="text-xs text-faint">
                 {portfolio.positionCount} positions
               </span>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pink-600/60 via-pink-500/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/60 via-primary/20 to-transparent" />
           </div>
         </div>
 
@@ -317,7 +318,7 @@ export function PortfolioDetail({
         <div className={`grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-7 ${portfolio.hasMargin ? 'sm:grid-cols-2 lg:grid-cols-2' : ''}`}>
 
           {/* Day P&L */}
-          <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
             <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl ${
               pnlPositive ? 'bg-emerald-500/[0.06] dark:bg-emerald-500/[0.08]' : 'bg-red-500/[0.06] dark:bg-red-500/[0.08]'
             }`} />
@@ -325,7 +326,7 @@ export function PortfolioDetail({
               <div className={pnlPositive ? 'text-emerald-500/50 dark:text-emerald-400/40' : 'text-red-500/50 dark:text-red-400/40'}>
                 {pnlPositive ? <TrendingUp size={16} strokeWidth={1.5} /> : <TrendingDown size={16} strokeWidth={1.5} />}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Day P&L
               </p>
               <p className={`mt-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl ${
@@ -342,23 +343,23 @@ export function PortfolioDetail({
           </div>
 
           {/* Cash Balance */}
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-            <div className="text-zinc-300 dark:text-zinc-700">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div className="text-faint">
               <Banknote size={16} strokeWidth={1.5} />
             </div>
-            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Cash Balance
             </p>
-            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+            <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               {formatCurrency(portfolio.cashBalance, cur)}
             </p>
-            <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+            <p className="mt-1 text-xs text-faint">
               available for trading
             </p>
           </div>
 
           {/* Unrealized P&L */}
-          <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
             <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl ${
               unrealizedPositive ? 'bg-emerald-500/[0.04] dark:bg-emerald-500/[0.06]' : 'bg-red-500/[0.04] dark:bg-red-500/[0.06]'
             }`} />
@@ -366,7 +367,7 @@ export function PortfolioDetail({
               <div className={unrealizedPositive ? 'text-emerald-500/50 dark:text-emerald-400/40' : 'text-red-500/50 dark:text-red-400/40'}>
                 {unrealizedPositive ? <TrendingUp size={16} strokeWidth={1.5} /> : <TrendingDown size={16} strokeWidth={1.5} />}
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Unrealized P&L
               </p>
               <p className={`mt-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl ${
@@ -384,32 +385,32 @@ export function PortfolioDetail({
 
           {/* Margin Available (conditional) or Positions count */}
           {portfolio.hasMargin && marginInfo ? (
-            <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
               <div className="text-amber-400/50 dark:text-amber-400/40">
                 <Shield size={16} strokeWidth={1.5} />
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Margin Available
               </p>
-              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                 {formatCurrency(marginInfo.marginAvailable, cur)}
               </p>
-              <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-1 text-xs text-faint">
                 {marginInfo.marginUsagePercent.toFixed(1)}% used
               </p>
             </div>
           ) : (
-            <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
-              <div className="text-zinc-300 dark:text-zinc-700">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+              <div className="text-faint">
                 <Layers size={16} strokeWidth={1.5} />
               </div>
-              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2.5 text-xs font-bold uppercase tracking-[0.15em] text-hint">
                 Positions
               </p>
-              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-2xl">
+              <p className="mt-1 font-mono text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                 {portfolio.positionCount}
               </p>
-              <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-600">
+              <p className="mt-1 text-xs text-faint">
                 open holdings
               </p>
             </div>
@@ -430,7 +431,7 @@ export function PortfolioDetail({
       {/* ================================================================= */}
       {/* Tab bar                                                          */}
       {/* ================================================================= */}
-      <div className="flex gap-1 overflow-x-auto rounded-xl bg-zinc-100 dark:bg-zinc-900/80 p-1 ring-1 ring-zinc-200/60 dark:ring-zinc-800/60">
+      <div className="flex gap-1 overflow-x-auto rounded-xl bg-muted p-1 ring-1 ring-border/60">
         {TABS.map(tab => {
           const Icon = tab.icon
           const isActive = activeTab === tab.key
@@ -440,11 +441,11 @@ export function PortfolioDetail({
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
                 isActive
-                  ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200/60 dark:ring-zinc-700/50'
-                  : 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400'
+                  ? 'bg-white dark:bg-zinc-800 text-foreground shadow-sm ring-1 ring-border/60'
+                  : 'text-faint hover:text-muted-foreground'
               }`}
             >
-              <Icon size={15} className={isActive ? 'text-pink-500 dark:text-pink-400' : ''} />
+              <Icon size={15} aria-hidden="true" className={isActive ? 'text-primary' : ''} />
               {tab.label}
             </button>
           )

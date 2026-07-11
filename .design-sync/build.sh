@@ -21,6 +21,14 @@ cp dist/assets/index-*.css dist/ds-styles.css
 # <link> the app ships in index.html. Must be the first rule in the stylesheet.
 GF="@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap');"
 printf '%s\n' "$GF" | cat - dist/ds-styles.css > dist/ds-styles.css.tmp && mv dist/ds-styles.css.tmp dist/ds-styles.css
+# Annotate Tailwind utility internals (--tw-*) with /* @kind other */ so the
+# design-system token check doesn't report them as unclassified theme tokens —
+# they are compilation artifacts, not part of the design language.
+node -e '
+const fs=require("fs");const p="dist/ds-styles.css";
+const css=fs.readFileSync(p,"utf8");
+fs.writeFileSync(p,css.replace(/(--tw-[\w-]+\s*:[^;{}]*)/g,"$1/* @kind other */"));
+' && echo "  annotated --tw-* internals (@kind other)"
 
 # 3. Emit real .d.ts (best-effort — the app carries pre-existing type errors,
 #    noEmitOnError:false lets tsc emit anyway) and resolve @/ aliases to

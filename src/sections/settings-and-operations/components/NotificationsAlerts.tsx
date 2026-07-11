@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useId } from 'react'
 import {
   Bell,
   Mail,
@@ -49,7 +49,7 @@ const matrixChannelLabels: Record<(typeof matrixChannelKeys)[number], string> = 
 // ---------------------------------------------------------------------------
 
 const inputClass =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-ring/30'
 
 const selectClass = inputClass
 
@@ -142,12 +142,12 @@ function ChannelCard({
   const configFields = extractConfigFields(channel.config)
 
   return (
-    <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 transition-colors">
+    <div className="rounded-lg border border-border bg-zinc-50/50 dark:bg-zinc-950/50 transition-colors">
       {/* Channel header row */}
       <div className="flex items-center gap-3 px-4 py-3">
         <div
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-            channel.enabled ? 'bg-pink-600/10 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
+            channel.enabled ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
           }`}
         >
           <Icon size={16} />
@@ -155,15 +155,17 @@ function ChannelCard({
 
         <button
           onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
           className="min-w-0 flex-1 text-left"
         >
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{channel.label}</span>
-          <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="text-sm font-medium text-foreground">{channel.label}</span>
+          <span className="ml-2 text-xs text-muted-foreground">
             {expanded ? '(collapse)' : '(expand)'}
           </span>
         </button>
 
         <ToggleSwitch
+          label={`Enable ${channel.label} notifications`}
           enabled={channel.enabled}
           onChange={(enabled) => {
             onToggle?.(channel.id, enabled)
@@ -174,11 +176,11 @@ function ChannelCard({
 
       {/* Expanded details */}
       {expanded && (
-        <div className="space-y-3 border-t border-zinc-200 dark:border-zinc-800 px-4 py-3">
+        <div className="space-y-3 border-t border-border px-4 py-3">
           {/* Masked credential fields */}
           {maskedFields.map((field) => (
             <div key={field.key}>
-              <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
                 {field.label}
               </label>
               <MaskedField
@@ -197,10 +199,10 @@ function ChannelCard({
             <div className="grid gap-3 sm:grid-cols-2">
               {configFields.map((field) => (
                 <div key={field.key}>
-                  <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
                     {field.label}
                   </label>
-                  <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-500 dark:text-zinc-400">
+                  <div className="rounded-lg border border-border bg-zinc-100/50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-muted-foreground">
                     {field.value}
                   </div>
                 </div>
@@ -232,6 +234,7 @@ export function NotificationsAlerts({
 }: NotificationsAlertsProps) {
   const [hasChanges, setHasChanges] = useState(false)
   const markChanged = () => setHasChanges(true)
+  const quietHoursId = useId()
 
   const {
     defaultSeverityThreshold,
@@ -282,6 +285,7 @@ export function NotificationsAlerts({
         <FormRow label="Default Severity Threshold" hint="Notifications below this level will be suppressed.">
           <div className="flex items-center gap-3">
             <select
+              aria-label="Default Severity Threshold"
               value={defaultSeverityThreshold}
               onChange={(e) => {
                 onUpdateSeverityThreshold?.(e.target.value as SeverityLevel)
@@ -306,15 +310,16 @@ export function NotificationsAlerts({
         </FormRow>
 
         {/* Quiet hours */}
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 p-4">
+        <div className="rounded-lg border border-border bg-zinc-50/50 dark:bg-zinc-950/50 p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Quiet Hours</p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-sm font-medium text-foreground">Quiet Hours</p>
+              <p className="text-xs text-muted-foreground">
                 Suppress non-critical notifications during specified hours.
               </p>
             </div>
             <ToggleSwitch
+              label="Enable quiet hours"
               enabled={quietHours.enabled}
               onChange={(enabled) => {
                 onUpdateQuietHours?.({ enabled })
@@ -326,10 +331,11 @@ export function NotificationsAlerts({
           {quietHours.enabled && (
             <div className="grid gap-3 sm:grid-cols-4">
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                <label htmlFor={`${quietHoursId}-start`} className="mb-1 block text-xs font-medium text-muted-foreground">
                   Start
                 </label>
                 <input
+                  id={`${quietHoursId}-start`}
                   type="time"
                   value={quietHours.start}
                   onChange={(e) => {
@@ -340,10 +346,11 @@ export function NotificationsAlerts({
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                <label htmlFor={`${quietHoursId}-end`} className="mb-1 block text-xs font-medium text-muted-foreground">
                   End
                 </label>
                 <input
+                  id={`${quietHoursId}-end`}
                   type="time"
                   value={quietHours.end}
                   onChange={(e) => {
@@ -354,26 +361,28 @@ export function NotificationsAlerts({
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                <label htmlFor={`${quietHoursId}-timezone`} className="mb-1 block text-xs font-medium text-muted-foreground">
                   Timezone
                 </label>
                 <input
+                  id={`${quietHoursId}-timezone`}
                   type="text"
                   value={quietHours.timezone}
                   readOnly
-                  className={inputClass + ' w-full bg-zinc-100/50 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400'}
+                  className={inputClass + ' w-full bg-zinc-100/50 dark:bg-zinc-800/50 text-muted-foreground'}
                 />
               </div>
               <div className="flex items-end">
                 <div className="flex items-center gap-2">
                   <ToggleSwitch
+                    label="Allow critical notifications during quiet hours"
                     enabled={quietHours.allowCritical}
                     onChange={(enabled) => {
                       onUpdateQuietHours?.({ allowCritical: enabled })
                       markChanged()
                     }}
                   />
-                  <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  <label className="text-xs font-medium text-muted-foreground">
                     Allow Critical
                   </label>
                 </div>
@@ -420,42 +429,43 @@ export function NotificationsAlerts({
       >
         {/* Desktop: table layout */}
         <div className="hidden sm:block">
-          <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+          <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="sticky top-0 z-10 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-100/60 dark:bg-zinc-800/60">
-                  <th className="px-4 py-2.5 text-left text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                <tr className="sticky top-0 z-10 border-b border-border bg-zinc-100/60 dark:bg-zinc-800/60">
+                  <th className="px-4 py-2.5 text-left text-xs font-semibold text-muted-foreground">
                     Alert Type
                   </th>
                   {matrixChannelKeys.map((key) => (
                     <th
                       key={key}
-                      className="px-3 py-2.5 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400"
+                      className="px-3 py-2.5 text-center text-xs font-semibold text-muted-foreground"
                     >
                       {matrixChannelLabels[key]}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <tbody className="divide-y divide-border">
                 {subscriptionMatrix.map((row) => (
                   <tr
                     key={row.alertType}
                     className="transition-colors hover:bg-zinc-100/30 dark:hover:bg-zinc-800/30"
                   >
-                    <td className="px-4 py-2.5 text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                    <td className="px-4 py-2.5 text-sm font-medium text-foreground">
                       {row.alertType}
                     </td>
                     {matrixChannelKeys.map((key) => (
                       <td key={key} className="px-3 py-2.5 text-center">
                         <input
                           type="checkbox"
+                          aria-label={`${row.alertType} via ${matrixChannelLabels[key]}`}
                           checked={row[key]}
                           onChange={(e) => {
                             onToggleSubscription?.(row.alertType, key, e.target.checked)
                             markChanged()
                           }}
-                          className="h-4 w-4 rounded border-zinc-200 dark:border-zinc-800 accent-pink-600 cursor-pointer"
+                          className="h-4 w-4 rounded border-border accent-pink-600 cursor-pointer"
                         />
                       </td>
                     ))}
@@ -471,14 +481,14 @@ export function NotificationsAlerts({
           {subscriptionMatrix.map((row) => (
             <div
               key={row.alertType}
-              className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 p-3"
+              className="rounded-lg border border-border bg-zinc-50/50 dark:bg-zinc-950/50 p-3"
             >
-              <p className="mb-2 text-sm font-medium text-zinc-900 dark:text-zinc-50">{row.alertType}</p>
+              <p className="mb-2 text-sm font-medium text-foreground">{row.alertType}</p>
               <div className="grid grid-cols-3 gap-2">
                 {matrixChannelKeys.map((key) => (
                   <label
                     key={key}
-                    className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400"
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground"
                   >
                     <input
                       type="checkbox"
@@ -487,7 +497,7 @@ export function NotificationsAlerts({
                         onToggleSubscription?.(row.alertType, key, e.target.checked)
                         markChanged()
                       }}
-                      className="h-4 w-4 rounded border-zinc-200 dark:border-zinc-800 accent-pink-600 cursor-pointer"
+                      className="h-4 w-4 rounded border-border accent-pink-600 cursor-pointer"
                     />
                     {matrixChannelLabels[key]}
                   </label>

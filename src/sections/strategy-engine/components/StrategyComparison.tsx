@@ -28,7 +28,7 @@ function formatNumber(value: number, decimals = 2): string {
 
 // Chart color palette — magenta, emerald, sky, amber (from brand manual)
 const CHART_COLORS = [
-  { line: 'rgb(219 39 119)', bg: 'bg-pink-600', text: 'text-pink-600 dark:text-pink-400', name: 'pink' },
+  { line: 'rgb(219 39 119)', bg: 'bg-primary', text: 'text-primary', name: 'pink' },
   { line: 'rgb(16 185 129)', bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', name: 'emerald' },
   { line: 'rgb(14 165 233)', bg: 'bg-sky-500', text: 'text-sky-600 dark:text-sky-400', name: 'sky' },
   { line: 'rgb(245 158 11)', bg: 'bg-amber-500', text: 'text-amber-600 dark:text-amber-400', name: 'amber' },
@@ -97,53 +97,53 @@ function RankingSummary({
             className={`group relative overflow-hidden rounded-xl border p-4 text-left transition-all hover:shadow-md ${
               isFirst
                 ? 'border-pink-200 bg-pink-50/50 dark:border-pink-900/50 dark:bg-pink-950/20'
-                : 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
+                : 'border-border bg-card'
             }`}
           >
             {/* Rank badge */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Icon className={`h-5 w-5 ${rankColor}`} />
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                <span className="text-xs font-bold uppercase tracking-wider text-hint">
                   #{strategy.rank}
                 </span>
               </div>
               <div className={`h-2 w-2 rounded-full ${colorConfig.bg}`} />
             </div>
 
-            <h3 className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+            <h3 className="mt-2 text-sm font-semibold text-foreground">
               {strategy.strategyName}
             </h3>
 
             <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
               <div>
-                <p className="text-xs text-zinc-400">Sharpe</p>
+                <p className="text-xs text-hint">Sharpe</p>
                 <p className={`text-sm font-bold tabular-nums ${colorConfig.text}`}>
                   {formatNumber(strategy.sharpeRatio)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-zinc-400">CAGR</p>
-                <p className="text-sm font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
+                <p className="text-xs text-hint">CAGR</p>
+                <p className="text-sm font-semibold tabular-nums text-foreground">
                   {formatPercent(strategy.cagr)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-zinc-400">Max DD</p>
-                <p className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
+                <p className="text-xs text-hint">Max DD</p>
+                <p className="text-sm tabular-nums text-muted-foreground">
                   {formatPercent(strategy.maxDrawdown)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-zinc-400">Profit Factor</p>
-                <p className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
+                <p className="text-xs text-hint">Profit Factor</p>
+                <p className="text-sm tabular-nums text-muted-foreground">
                   {formatNumber(strategy.profitFactor)}
                 </p>
               </div>
             </div>
 
             {/* Hover indicator */}
-            <span className="mt-2 block text-xs text-zinc-400 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="mt-2 block text-xs text-hint opacity-0 transition-opacity group-hover:opacity-100">
               View backtest details &rarr;
             </span>
           </button>
@@ -187,15 +187,15 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
   }, [ranked])
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Metrics Comparison</h3>
+    <div className="rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold text-foreground">Metrics Comparison</h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
-              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <tr className="border-b border-border">
+              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-hint">
                 Metric
               </th>
               {ranked.map((s, idx) => {
@@ -204,7 +204,7 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
                   <th key={s.backtestId} className="px-4 py-2.5">
                     <div className="flex items-center gap-1.5">
                       <div className={`h-2 w-2 rounded-full ${color.bg}`} />
-                      <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-hint">
                         {s.strategyName}
                       </span>
                     </div>
@@ -216,7 +216,7 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
           <tbody>
             {METRICS.map((metric) => (
               <tr key={metric.key} className="border-b border-zinc-50 dark:border-zinc-800/50">
-                <td className="px-4 py-2.5 text-xs font-medium text-zinc-600 dark:text-zinc-300">
+                <td className="px-4 py-2.5 text-xs font-medium text-muted-foreground">
                   {metric.label}
                 </td>
                 {ranked.map((s) => {
@@ -228,7 +228,7 @@ function ComparisonTable({ strategies }: { strategies: ComparisonStrategy[] }) {
                         className={`inline-flex rounded px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
                           isBest
                             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
-                            : 'text-zinc-700 dark:text-zinc-300'
+                            : 'text-foreground'
                         }`}
                       >
                         {metric.format(val)}
@@ -324,17 +324,19 @@ function EquityCurvesChart({
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+    <div className="rounded-xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold text-foreground">
           Equity Curves
-          <span className="ml-2 text-xs font-normal text-zinc-400">(Normalized to 100)</span>
+          <span className="ml-2 text-xs font-normal text-hint">(Normalized to 100)</span>
         </h3>
         <button
           onClick={() => setShowSpy(!showSpy)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+          aria-pressed={showSpy}
+          aria-label={showSpy ? 'Hide SPY benchmark' : 'Show SPY benchmark'}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent dark:border-zinc-700"
         >
-          {showSpy ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+          {showSpy ? <Eye className="h-3 w-3" aria-hidden="true" /> : <EyeOff className="h-3 w-3" aria-hidden="true" />}
           SPY Benchmark
         </button>
       </div>
@@ -346,7 +348,7 @@ function EquityCurvesChart({
             return (
               <div key={key} className="flex items-center gap-1.5">
                 <div className={`h-0.5 w-4 rounded ${color.bg}`} />
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs text-muted-foreground">
                   {keyToName[key] || key}
                 </span>
               </div>
@@ -355,7 +357,7 @@ function EquityCurvesChart({
           {showSpy && (
             <div className="flex items-center gap-1.5">
               <div className="h-0.5 w-4 rounded bg-zinc-400 opacity-60" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, currentColor 2px, currentColor 4px)' }} />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">SPY</span>
+              <span className="text-xs text-muted-foreground">SPY</span>
             </div>
           )}
         </div>
@@ -364,16 +366,16 @@ function EquityCurvesChart({
         <div className="relative h-56 w-full overflow-hidden rounded-lg border border-zinc-100 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
           {/* Y-axis */}
           <div className="absolute left-0 top-0 flex h-full w-10 flex-col justify-between py-2 text-right">
-            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{maxVal.toFixed(0)}</span>
-            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{((maxVal + minVal) / 2).toFixed(0)}</span>
-            <span className="pr-1.5 text-xs tabular-nums text-zinc-400">{minVal.toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-hint">{maxVal.toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-hint">{((maxVal + minVal) / 2).toFixed(0)}</span>
+            <span className="pr-1.5 text-xs tabular-nums text-hint">{minVal.toFixed(0)}</span>
           </div>
 
           {/* Grid */}
           <div className="absolute inset-0 left-10">
-            <div className="absolute left-0 right-0 top-1/4 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
-            <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
-            <div className="absolute left-0 right-0 top-3/4 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+            <div className="absolute left-0 right-0 top-1/4 border-t border-dashed border-border" />
+            <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-border" />
+            <div className="absolute left-0 right-0 top-3/4 border-t border-dashed border-border" />
           </div>
 
           {/* SVG */}
@@ -413,7 +415,7 @@ function EquityCurvesChart({
         </div>
 
         {/* X-axis */}
-        <div className="mt-1 flex justify-between pl-10 text-xs text-zinc-400">
+        <div className="mt-1 flex justify-between pl-10 text-xs text-hint">
           <span>{curves[0]?.date}</span>
           <span>{curves[Math.floor(curves.length / 2)]?.date}</span>
           <span>{curves[curves.length - 1]?.date}</span>
@@ -437,13 +439,13 @@ export function StrategyComparison({ comparison, onBack, onViewBacktest }: Strat
     <div className="space-y-6">
       {/* Section Header */}
       <div>
-          <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
             Intelligence
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             Strategy Comparison
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Comparing {comparison.strategies.length} strategies by Sharpe ratio
           </p>
         </div>

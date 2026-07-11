@@ -86,8 +86,8 @@ function SortableHeader({
       className={`group inline-flex items-center gap-1 ${align === 'right' ? 'flex-row-reverse' : ''}`}
     >
       <span>{label}</span>
-      <span className={`inline-flex ${isActive ? 'text-pink-500 dark:text-pink-400' : 'text-zinc-300 dark:text-zinc-700 opacity-0 group-hover:opacity-100'} transition-opacity`}>
-        {isActive && currentDirection === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+      <span className={`inline-flex ${isActive ? 'text-primary' : 'text-faint opacity-0 group-hover:opacity-100'} transition-opacity`}>
+        {isActive && currentDirection === 'asc' ? <ArrowUp size={12} aria-hidden="true" /> : <ArrowDown size={12} aria-hidden="true" />}
       </span>
     </button>
   )
@@ -111,7 +111,7 @@ function TaxStatusBadge({ status, daysHeld, exemptionDate }: { status: string; d
 
 function BrokerBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center rounded bg-zinc-100 dark:bg-zinc-800/60 px-1.5 py-0.5 font-mono text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+    <span className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 font-mono text-xs font-semibold text-muted-foreground">
       {name}
     </span>
   )
@@ -119,8 +119,8 @@ function BrokerBadge({ name }: { name: string }) {
 
 function CostLotsPanel({ lots, currency }: { lots: CostLot[]; currency: string }) {
   return (
-    <div className="border-t border-zinc-100 dark:border-zinc-800/40 bg-zinc-50/50 dark:bg-zinc-900/40 px-5 py-4">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500 mb-3">
+    <div className="border-t border-border/40 bg-zinc-50/50 dark:bg-zinc-900/40 px-5 py-4">
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-hint mb-3">
         FIFO Cost Lots
       </p>
       <div className="overflow-x-auto">
@@ -128,28 +128,28 @@ function CostLotsPanel({ lots, currency }: { lots: CostLot[]; currency: string }
           <thead>
             <tr className="border-b border-zinc-200/60 dark:border-zinc-800/40">
               {['Acquired', 'Quantity', 'Remaining', 'Cost/Unit', 'Total Cost', 'Current Value', 'P&L', 'Days Held', 'Exemption Date'].map(h => (
-                <th key={h} className="py-2 px-2 text-left text-xs font-bold uppercase tracking-[0.10em] text-zinc-400 dark:text-zinc-600 first:pl-0">
+                <th key={h} className="py-2 px-2 text-left text-xs font-bold uppercase tracking-[0.10em] text-faint first:pl-0">
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/30">
+          <tbody className="divide-y divide-border/30">
             {lots.map(lot => {
               const positive = lot.unrealizedPnL >= 0
               return (
                 <tr key={lot.id} className="text-xs">
-                  <td className="py-2 px-2 pl-0 text-zinc-600 dark:text-zinc-400">{formatDate(lot.acquiredAt)}</td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-700 dark:text-zinc-300">{formatQuantity(lot.originalQuantity)}</td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-700 dark:text-zinc-300">{formatQuantity(lot.remainingQuantity)}</td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-700 dark:text-zinc-300">{formatCurrency(lot.costPerUnit, currency)}</td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-700 dark:text-zinc-300">{formatCurrency(lot.totalCost, currency)}</td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-700 dark:text-zinc-300">{formatCurrency(lot.currentValue, currency)}</td>
+                  <td className="py-2 px-2 pl-0 text-muted-foreground">{formatDate(lot.acquiredAt)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-foreground">{formatQuantity(lot.originalQuantity)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-foreground">{formatQuantity(lot.remainingQuantity)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-foreground">{formatCurrency(lot.costPerUnit, currency)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-foreground">{formatCurrency(lot.totalCost, currency)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-foreground">{formatCurrency(lot.currentValue, currency)}</td>
                   <td className={`py-2 px-2 font-mono tabular-nums font-semibold ${positive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
                     {formatSignedCurrency(lot.unrealizedPnL, currency)}
                   </td>
-                  <td className="py-2 px-2 font-mono tabular-nums text-zinc-500 dark:text-zinc-500">{lot.daysHeld}d</td>
-                  <td className="py-2 px-2 text-zinc-500 dark:text-zinc-500">{formatDate(lot.taxExemptionDate)}</td>
+                  <td className="py-2 px-2 font-mono tabular-nums text-hint">{lot.daysHeld}d</td>
+                  <td className="py-2 px-2 text-hint">{formatDate(lot.taxExemptionDate)}</td>
                 </tr>
               )
             })}
@@ -235,23 +235,23 @@ export function PositionsTab({
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <div className="relative">
-          <div className="absolute -inset-3 rounded-2xl bg-pink-500/5 blur-xl dark:bg-pink-500/10" />
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 ring-1 ring-zinc-200 dark:ring-zinc-700/50">
-            <FileText size={24} className="text-zinc-300 dark:text-zinc-600" />
+          <div className="absolute -inset-3 rounded-2xl bg-primary/5 blur-xl dark:bg-primary/10" />
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-muted ring-1 ring-border">
+            <FileText size={24} className="text-faint" />
           </div>
         </div>
-        <p className="mt-5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <p className="mt-5 text-sm font-medium text-foreground">
           No positions yet
         </p>
-        <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
+        <p className="mt-1 text-xs text-hint">
           Create your first order to start building your portfolio.
         </p>
         {onCreateOrder && (
           <button
             onClick={onCreateOrder}
-            className="mt-5 flex items-center gap-1.5 rounded-xl bg-pink-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+            className="mt-5 flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30 active:scale-[0.98]"
           >
-            <Plus size={14} />
+            <Plus size={14} aria-hidden="true" />
             New Order
           </button>
         )}
@@ -264,19 +264,21 @@ export function PositionsTab({
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-2 pb-4">
         <div className="relative">
-          <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+          <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-hint" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => { setSearchQuery(e.target.value); setPage(0) }}
             placeholder="Search symbol or name..."
-            className="h-8 rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 pl-8 pr-3 text-xs text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all w-48"
+            aria-label="Search positions by symbol or name"
+            className="h-8 rounded-lg border border-border bg-card pl-8 pr-3 text-xs text-foreground placeholder:text-faint focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all w-48"
           />
         </div>
         <select
           value={brokerFilter}
           onChange={e => { setBrokerFilter(e.target.value); setPage(0) }}
-          className="h-8 appearance-none rounded-lg border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 px-3 pr-8 text-xs text-zinc-700 dark:text-zinc-300 focus-visible:border-pink-500/50 focus-visible:ring-pink-500/20 focus-visible:ring-[3px] transition-all"
+          aria-label="Filter positions by broker"
+          className="h-8 appearance-none rounded-lg border border-border bg-card px-3 pr-8 text-xs text-foreground focus-visible:border-primary/50 focus-visible:ring-ring/20 focus-visible:ring-[3px] transition-all"
         >
           <option value="">All Brokers</option>
           {brokers.map(b => <option key={b} value={b}>{b}</option>)}
@@ -284,54 +286,54 @@ export function PositionsTab({
         {hasFilters && (
           <button
             onClick={() => { setSearchQuery(''); setBrokerFilter(''); setPage(0) }}
-            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent transition-colors"
           >
-            <X size={12} /> Clear
+            <X size={12} aria-hidden="true" /> Clear
           </button>
         )}
-        <span className="ml-auto text-xs text-zinc-400 dark:text-zinc-600">
+        <span className="ml-auto text-xs text-faint">
           {filtered.length} position{filtered.length !== 1 ? 's' : ''}
         </span>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80">
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pink-600/50 via-pink-500/15 to-transparent" />
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/50 via-primary/15 to-transparent" />
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px]">
             <thead>
-              <tr className="border-b border-zinc-100 dark:border-zinc-800/50">
-                <th className="py-3 pl-5 pr-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500 w-5" />
-                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+              <tr className="border-b border-border/50">
+                <th className="py-3 pl-5 pr-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-hint w-5" />
+                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Symbol" column="symbol" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} />
                 </th>
-                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Broker</th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-hint">Broker</th>
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Qty" column="quantity" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Avg Price" column="avgCost" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Price" column="currentPrice" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Value" column="marketValue" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="P&L $" column="pnl" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="P&L %" column="pnlPercent" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+                <th className="py-3 px-2 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">
                   <SortableHeader label="Weight" column="weight" currentColumn={sortColumn} currentDirection={sortDirection} onSort={handleSort} align="right" />
                 </th>
-                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Tax</th>
-                <th className="py-3 pl-2 pr-5 text-right text-xs font-bold uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">Actions</th>
+                <th className="py-3 px-2 text-left text-xs font-bold uppercase tracking-[0.12em] text-hint">Tax</th>
+                <th className="py-3 pl-2 pr-5 text-right text-xs font-bold uppercase tracking-[0.12em] text-hint">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+            <tbody className="divide-y divide-border/50">
               {paginated.map(pos => {
                 const pnlPositive = pos.unrealizedPnL >= 0
                 const dayPositive = pos.dayChange >= 0
@@ -341,22 +343,35 @@ export function PositionsTab({
                     <td colSpan={12} className="p-0">
                       <div
                         className={`cursor-pointer transition-colors ${
-                          isExpanded ? 'bg-pink-50/40 dark:bg-pink-950/10' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/40'
+                          isExpanded ? 'bg-pink-50/40 dark:bg-pink-950/10' : 'hover:bg-accent/40'
                         }`}
                       >
-                        <div className="flex items-center" onClick={() => setExpandedId(isExpanded ? null : pos.id)}>
+                        <div
+                          className="flex items-center"
+                          role="button"
+                          tabIndex={0}
+                          aria-expanded={isExpanded}
+                          aria-label={`${isExpanded ? 'Collapse' : 'Expand'} cost lots for ${pos.symbol}`}
+                          onClick={() => setExpandedId(isExpanded ? null : pos.id)}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              setExpandedId(isExpanded ? null : pos.id)
+                            }
+                          }}
+                        >
                           {/* Chevron */}
                           <div className="py-3 pl-5 pr-2 w-8 shrink-0">
                             {isExpanded
-                              ? <ChevronDown size={14} className="text-pink-500 dark:text-pink-400" />
-                              : <ChevronRight size={14} className="text-zinc-300 dark:text-zinc-700 group-hover:text-zinc-400 dark:group-hover:text-zinc-500 transition-colors" />
+                              ? <ChevronDown size={14} className="text-primary" />
+                              : <ChevronRight size={14} className="text-faint group-hover:text-hint transition-colors" />
                             }
                           </div>
 
                           {/* Symbol */}
                           <div className="py-3 px-2 min-w-[140px]">
-                            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{pos.symbol}</p>
-                            <p className="text-xs text-zinc-400 dark:text-zinc-600 truncate max-w-[120px]">{pos.instrumentName}</p>
+                            <p className="text-sm font-semibold text-foreground">{pos.symbol}</p>
+                            <p className="text-xs text-faint truncate max-w-[120px]">{pos.instrumentName}</p>
                           </div>
 
                           {/* Broker */}
@@ -365,22 +380,22 @@ export function PositionsTab({
                           </div>
 
                           {/* Qty */}
-                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-zinc-700 dark:text-zinc-300 text-right min-w-[60px]">
+                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-foreground text-right min-w-[60px]">
                             {formatQuantity(pos.quantity)}
                           </div>
 
                           {/* Avg Price */}
-                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-zinc-700 dark:text-zinc-300 text-right min-w-[80px]">
+                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-foreground text-right min-w-[80px]">
                             {formatCurrency(pos.avgCostBasis, pos.currency)}
                           </div>
 
                           {/* Current Price */}
-                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-zinc-700 dark:text-zinc-300 text-right min-w-[80px]">
+                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-foreground text-right min-w-[80px]">
                             {formatCurrency(pos.currentPrice, pos.currency)}
                           </div>
 
                           {/* Market Value */}
-                          <div className="py-3 px-2 font-mono text-xs font-semibold tabular-nums text-zinc-800 dark:text-zinc-200 text-right min-w-[90px]">
+                          <div className="py-3 px-2 font-mono text-xs font-semibold tabular-nums text-foreground text-right min-w-[90px]">
                             {formatCurrency(pos.marketValue, pos.currency)}
                           </div>
 
@@ -399,7 +414,7 @@ export function PositionsTab({
                           </div>
 
                           {/* Weight % */}
-                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-zinc-600 dark:text-zinc-400 text-right min-w-[60px]">
+                          <div className="py-3 px-2 font-mono text-xs tabular-nums text-muted-foreground text-right min-w-[60px]">
                             {pos.weightPercent.toFixed(1)}%
                           </div>
 
@@ -413,17 +428,19 @@ export function PositionsTab({
                             <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
                                 onClick={() => onTradePosition?.(pos.symbol)}
-                                className="rounded-md px-2 py-1 text-xs font-medium text-pink-600 hover:bg-pink-50 dark:text-pink-400 dark:hover:bg-pink-950/20 transition-colors"
+                                className="rounded-md px-2 py-1 text-xs font-medium text-primary hover:bg-pink-50 dark:hover:bg-pink-950/20 transition-colors"
                                 title="Trade"
+                                aria-label={`Trade ${pos.symbol}`}
                               >
-                                <ShoppingCart size={13} />
+                                <ShoppingCart size={13} aria-hidden="true" />
                               </button>
                               <button
                                 onClick={() => onClosePosition?.(pos.symbol, pos.quantity)}
                                 className="rounded-md px-2 py-1 text-xs font-medium text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/20 transition-colors"
                                 title="Close Position"
+                                aria-label={`Close position ${pos.symbol}`}
                               >
-                                <LogOut size={13} />
+                                <LogOut size={13} aria-hidden="true" />
                               </button>
                             </div>
                           </div>
@@ -444,22 +461,22 @@ export function PositionsTab({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/50 px-5 py-3">
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between border-t border-border/50 px-5 py-3">
+            <p className="text-xs text-muted-foreground">
               Showing {page * ROWS_PER_PAGE + 1}&ndash;{Math.min((page + 1) * ROWS_PER_PAGE, filtered.length)} of {filtered.length} positions
             </p>
             <div className="flex gap-1">
               <button
                 disabled={page === 0}
                 onClick={() => setPage(page - 1)}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
               <button
                 disabled={page >= totalPages - 1}
                 onClick={() => setPage(page + 1)}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>

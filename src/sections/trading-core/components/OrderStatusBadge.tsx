@@ -3,7 +3,7 @@ import type { OrderStatus } from '@/../product/sections/trading-core/types'
 const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
   draft: {
     label: 'Draft',
-    color: 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400',
+    color: 'bg-muted text-muted-foreground',
   },
   pending_approval: {
     label: 'Pending',
@@ -31,7 +31,7 @@ const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
   },
   cancelled: {
     label: 'Cancelled',
-    color: 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400',
+    color: 'bg-muted text-muted-foreground',
   },
   rejected: {
     label: 'Rejected',
@@ -39,7 +39,7 @@ const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
   },
   expired: {
     label: 'Expired',
-    color: 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400',
+    color: 'bg-muted text-muted-foreground',
   },
   amended: {
     label: 'Amended',

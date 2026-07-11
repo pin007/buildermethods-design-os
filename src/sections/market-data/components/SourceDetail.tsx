@@ -91,7 +91,7 @@ function formatCompact(n: number): string {
 
 function lastFetchedColor(timestamp: string): string {
   const diffHr = (Date.now() - new Date(timestamp).getTime()) / 3600000
-  if (diffHr < 1) return 'text-zinc-700 dark:text-zinc-300'
+  if (diffHr < 1) return 'text-foreground'
   if (diffHr < 24) return 'text-amber-600 dark:text-amber-400'
   return 'text-red-600 dark:text-red-400'
 }
@@ -157,8 +157,8 @@ const freshnessOrder: Record<FreshnessStatus, number> = {
 }
 
 const fetchTypeBadge: Record<FetchOperationType, { bg: string; text: string; label: string }> = {
-  scheduled: { bg: 'bg-zinc-100 dark:bg-zinc-800/60', text: 'text-zinc-500 dark:text-zinc-400', label: 'Scheduled' },
-  manual: { bg: 'bg-pink-50 dark:bg-pink-950/30', text: 'text-pink-600 dark:text-pink-400', label: 'Manual' },
+  scheduled: { bg: 'bg-muted', text: 'text-muted-foreground', label: 'Scheduled' },
+  manual: { bg: 'bg-pink-50 dark:bg-pink-950/30', text: 'text-primary', label: 'Manual' },
   backfill: { bg: 'bg-blue-50 dark:bg-blue-950/30', text: 'text-blue-600 dark:text-blue-400', label: 'Backfill' },
   retry: { bg: 'bg-amber-50 dark:bg-amber-950/30', text: 'text-amber-600 dark:text-amber-400', label: 'Retry' },
 }
@@ -170,11 +170,11 @@ const fetchStatusBadge: Record<FetchOperationStatus, { bg: string; text: string;
 }
 
 const backfillStatusBadge: Record<BackfillTaskStatus, { bg: string; text: string; label: string }> = {
-  queued: { bg: 'bg-zinc-100 dark:bg-zinc-800/60', text: 'text-zinc-500 dark:text-zinc-400', label: 'Queued' },
+  queued: { bg: 'bg-muted', text: 'text-muted-foreground', label: 'Queued' },
   running: { bg: 'bg-blue-50 dark:bg-blue-950/30', text: 'text-blue-600 dark:text-blue-400', label: 'Running' },
   completed: { bg: 'bg-emerald-50 dark:bg-emerald-950/30', text: 'text-emerald-600 dark:text-emerald-400', label: 'Completed' },
   failed: { bg: 'bg-red-50 dark:bg-red-950/30', text: 'text-red-600 dark:text-red-400', label: 'Failed' },
-  cancelled: { bg: 'bg-zinc-100 dark:bg-zinc-800/60', text: 'text-zinc-500 dark:text-zinc-400', label: 'Cancelled' },
+  cancelled: { bg: 'bg-muted', text: 'text-muted-foreground', label: 'Cancelled' },
 }
 
 const alertTypeBadge: Record<QualityAlertType, { bg: string; text: string; label: string }> = {
@@ -412,11 +412,11 @@ export function SourceDetail({
   // --- Sort indicator helper ---
   function SortIcon({ sortKey, current }: { sortKey: string; current: { key: string; dir: string } }) {
     if (current.key !== sortKey)
-      return <ArrowUpDown size={12} className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
+      return <ArrowUpDown size={12} aria-hidden="true" className="text-zinc-300 opacity-0 transition-opacity group-hover/th:opacity-100 dark:text-zinc-700" />
     return current.dir === 'asc' ? (
-      <ChevronUp size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronUp size={12} aria-hidden="true" className="text-primary" />
     ) : (
-      <ChevronDown size={12} className="text-pink-600 dark:text-pink-400" />
+      <ChevronDown size={12} aria-hidden="true" className="text-primary" />
     )
   }
 
@@ -439,15 +439,16 @@ export function SourceDetail({
         <div className="flex items-center gap-4">
           <button
             onClick={() => onBack?.()}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 active:scale-95"
+            aria-label="Back to Market Data overview"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-accent hover:text-foreground active:scale-95"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} aria-hidden="true" />
           </button>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Market Data
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               {dataSource.name}
             </h1>
             <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -455,8 +456,8 @@ export function SourceDetail({
               <span className={`text-sm font-medium ${statusText[dataSource.status]}`}>
                 {statusLabel[dataSource.status]}
               </span>
-              <span className="text-sm text-zinc-300 dark:text-zinc-700">&mdash;</span>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+              <span className="text-sm text-faint">&mdash;</span>
+              <span className="text-sm text-muted-foreground">
                 {dataSource.statusMessage}
               </span>
             </div>
@@ -465,9 +466,9 @@ export function SourceDetail({
 
         <button
           onClick={() => onForceRefreshAll?.(dataSource.id)}
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-50 active:scale-[0.98] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:bg-accent active:scale-[0.98] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
         >
-          <RefreshCw size={14} />
+          <RefreshCw size={14} aria-hidden="true" />
           Force Refresh All
         </button>
       </div>
@@ -498,11 +499,11 @@ export function SourceDetail({
         ].map((item) => (
           <div
             key={item.label}
-            className="rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800/80 dark:bg-zinc-900/80"
+            className="rounded-xl border border-border bg-card p-3"
           >
-            <p className="text-xs text-zinc-400 dark:text-zinc-600">{item.label}</p>
+            <p className="text-xs text-faint">{item.label}</p>
             <p
-              className="mt-1 truncate font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300"
+              className="mt-1 truncate font-mono text-xs font-medium text-foreground"
               title={item.value}
             >
               {item.value}
@@ -526,7 +527,7 @@ export function SourceDetail({
                 sm:flex-none
                 ${
                   isActive
-                    ? 'bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200/60 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700/50'
+                    ? 'bg-white text-foreground shadow-sm ring-1 ring-zinc-200/60 dark:bg-zinc-800 dark:ring-zinc-700/50'
                     : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300'
                 }
               `}
@@ -536,7 +537,7 @@ export function SourceDetail({
                 <span
                   className={`rounded px-1.5 py-0.5 text-xs font-bold tabular-nums ${
                     isActive
-                      ? 'bg-pink-600/10 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400'
+                      ? 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-pink-400'
                       : 'bg-zinc-200/60 text-zinc-400 dark:bg-zinc-800/60 dark:text-zinc-600'
                   }`}
                 >
@@ -560,7 +561,7 @@ export function SourceDetail({
               <div className="relative flex-1 sm:max-w-xs">
                 <Search
                   size={14}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-faint"
                 />
                 <input
                   type="text"
@@ -570,7 +571,8 @@ export function SourceDetail({
                     setInstrumentPage(0)
                   }}
                   placeholder="Search symbol or name..."
-                  className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
+                  aria-label="Search instruments by symbol or name"
+                  className="w-full rounded-lg border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm text-zinc-700 placeholder:text-zinc-400 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:placeholder:text-zinc-600"
                 />
               </div>
 
@@ -581,7 +583,8 @@ export function SourceDetail({
                   setAssetTypeFilter(e.target.value)
                   setInstrumentPage(0)
                 }}
-                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                aria-label="Filter by asset type"
+                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
               >
                 <option value="all">All Types</option>
                 <option value="stock">Stock</option>
@@ -596,7 +599,8 @@ export function SourceDetail({
                   setFreshnessFilter(e.target.value)
                   setInstrumentPage(0)
                 }}
-                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                aria-label="Filter by data freshness"
+                className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
               >
                 <option value="all">All Freshness</option>
                 <option value="fresh">Fresh</option>
@@ -608,9 +612,9 @@ export function SourceDetail({
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
-                  className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  className="flex items-center gap-1 rounded-lg px-2.5 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <X size={12} />
+                  <X size={12} aria-hidden="true" />
                   Clear
                 </button>
               )}
@@ -619,9 +623,9 @@ export function SourceDetail({
             {/* Add Instrument */}
             <button
               onClick={() => onAddInstrument?.(dataSource.id, '', ['1d'])}
-              className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-pink-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
             >
-              <Plus size={15} className="transition-transform group-hover:rotate-90" />
+              <Plus size={15} aria-hidden="true" className="transition-transform group-hover:rotate-90" />
               Add Instrument
             </button>
           </div>
@@ -637,22 +641,22 @@ export function SourceDetail({
             />
           ) : filteredSubscriptions.length === 0 ? (
             <div className="py-14 text-center">
-              <p className="text-sm text-zinc-400 dark:text-zinc-500">
+              <p className="text-sm text-hint">
                 No instruments match your filters.
               </p>
               <button
                 onClick={clearFilters}
-                className="mt-2 text-sm font-medium text-pink-600 hover:text-pink-500 dark:text-pink-400"
+                className="mt-2 text-sm font-medium text-primary hover:text-primary"
               >
                 Clear filters
               </button>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[960px]">
                   <thead>
-                    <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+                    <tr className="border-b border-border">
                       {(
                         [
                           ['symbol', 'Symbol'],
@@ -670,7 +674,7 @@ export function SourceDetail({
                           </div>
                         </th>
                       ))}
-                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                      <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                         Intervals
                       </th>
                       <th className="hidden px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 lg:table-cell dark:text-zinc-600">
@@ -695,12 +699,12 @@ export function SourceDetail({
                           </div>
                         </th>
                       ))}
-                      <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                      <th className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-faint">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  <tbody className="divide-y divide-border">
                     {pagedSubscriptions.map((sub) => (
                       <tr
                         key={sub.id}
@@ -708,16 +712,16 @@ export function SourceDetail({
                       >
                         {/* Symbol */}
                         <td className="px-4 py-3">
-                          <p className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                          <p className="font-mono text-sm font-semibold text-foreground">
                             {sub.symbol}
                           </p>
-                          <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                          <p className="text-xs text-faint">
                             {sub.instrumentName}
                           </p>
                         </td>
                         {/* Type */}
                         <td className="px-4 py-3">
-                          <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium capitalize text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400">
+                          <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium capitalize text-muted-foreground dark:bg-zinc-800/60">
                             {sub.assetType}
                           </span>
                         </td>
@@ -727,7 +731,7 @@ export function SourceDetail({
                             {sub.trackedIntervals.map((interval) => (
                               <span
                                 key={interval}
-                                className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-xs text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-400"
+                                className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-xs text-muted-foreground dark:bg-zinc-800/60"
                               >
                                 {interval}
                               </span>
@@ -736,16 +740,16 @@ export function SourceDetail({
                         </td>
                         {/* Coverage */}
                         <td className="hidden px-4 py-3 lg:table-cell">
-                          <p className="font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                          <p className="font-mono text-xs text-muted-foreground">
                             {sub.coverageStart}
                           </p>
-                          <p className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+                          <p className="font-mono text-xs text-faint">
                             → {sub.coverageEnd}
                           </p>
                         </td>
                         {/* Points */}
                         <td className="px-4 py-3">
-                          <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                          <span className="font-mono text-xs text-foreground">
                             {sub.dataPoints.toLocaleString()}
                           </span>
                         </td>
@@ -774,7 +778,7 @@ export function SourceDetail({
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1.5">
                             <div className={`h-1.5 w-1.5 rounded-full ${freshnessDot[sub.freshness]}`} />
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                            <span className="text-xs text-muted-foreground">
                               {freshnessLabelText[sub.freshness]}
                             </span>
                           </div>
@@ -785,23 +789,26 @@ export function SourceDetail({
                             <button
                               onClick={() => onStartBackfill?.(sub.id, '', '', '1d', 'normal')}
                               title="Backfill"
-                              className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              aria-label={`Backfill data for ${sub.symbol}`}
+                              className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-accent hover:text-zinc-600 dark:text-zinc-600 dark:hover:text-zinc-300"
                             >
-                              <Download size={14} />
+                              <Download size={14} aria-hidden="true" />
                             </button>
                             <button
                               onClick={() => onRefreshInstrument?.(sub.id)}
                               title="Refresh"
-                              className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                              aria-label={`Refresh ${sub.symbol}`}
+                              className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-accent hover:text-zinc-600 dark:text-zinc-600 dark:hover:text-zinc-300"
                             >
-                              <RefreshCw size={14} />
+                              <RefreshCw size={14} aria-hidden="true" />
                             </button>
                             <button
                               onClick={() => onRemoveInstrument?.(sub.id)}
                               title="Remove"
+                              aria-label={`Remove ${sub.symbol} from tracked instruments`}
                               className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:text-zinc-600 dark:hover:bg-red-950/30 dark:hover:text-red-400"
                             >
-                              <Trash2 size={14} />
+                              <Trash2 size={14} aria-hidden="true" />
                             </button>
                           </div>
                         </td>
@@ -814,7 +821,7 @@ export function SourceDetail({
               {/* Pagination */}
               {filteredSubscriptions.length > PAGE_SIZE && (
                 <div className="flex items-center justify-between border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-                  <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                  <span className="text-xs text-faint">
                     Showing {instrumentPage * PAGE_SIZE + 1}–
                     {Math.min((instrumentPage + 1) * PAGE_SIZE, filteredSubscriptions.length)} of{' '}
                     {filteredSubscriptions.length} instruments
@@ -823,14 +830,14 @@ export function SourceDetail({
                     <button
                       disabled={instrumentPage === 0}
                       onClick={() => setInstrumentPage((p) => p - 1)}
-                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                     >
                       Previous
                     </button>
                     <button
                       disabled={(instrumentPage + 1) * PAGE_SIZE >= filteredSubscriptions.length}
                       onClick={() => setInstrumentPage((p) => p + 1)}
-                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                     >
                       Next
                     </button>
@@ -841,7 +848,7 @@ export function SourceDetail({
               {/* Row count for small datasets */}
               {filteredSubscriptions.length <= PAGE_SIZE && filteredSubscriptions.length > 0 && (
                 <div className="border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-                  <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                  <span className="text-xs text-faint">
                     Showing {filteredSubscriptions.length} of {subscriptions.length} instruments
                   </span>
                 </div>
@@ -874,10 +881,10 @@ export function SourceDetail({
                     <div key={task.id} className="px-6 py-4">
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                          <span className="font-mono text-sm font-semibold text-foreground">
                             {task.symbol}
                           </span>
-                          <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                          <span className="font-mono text-xs text-muted-foreground">
                             {task.interval}
                           </span>
                           <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${badge.bg} ${badge.text}`}>
@@ -885,12 +892,12 @@ export function SourceDetail({
                           </span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                          <span className="font-mono text-xs text-muted-foreground">
                             {formatTimeRemaining(task.estimatedTimeRemainingMs)}
                           </span>
                           <button
                             onClick={() => onCancelBackfill?.(task.id)}
-                            className="rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-500 transition-colors hover:border-red-300 hover:text-red-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-red-800 dark:hover:text-red-400"
+                            className="rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-red-300 hover:text-red-600 dark:border-zinc-700 dark:hover:border-red-800 dark:hover:text-red-400"
                           >
                             Cancel
                           </button>
@@ -902,17 +909,17 @@ export function SourceDetail({
                         <div className="flex-1">
                           <div className="h-1.5 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
                             <div
-                              className="h-full rounded-full bg-pink-600 transition-all duration-500"
+                              className="h-full rounded-full bg-primary transition-all duration-500"
                               style={{ width: `${task.progressPercent}%` }}
                             />
                           </div>
                         </div>
-                        <span className="font-mono text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                        <span className="font-mono text-xs font-medium text-foreground">
                           {task.progressPercent}%
                         </span>
                       </div>
 
-                      <div className="mt-1.5 flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-600">
+                      <div className="mt-1.5 flex items-center gap-2 text-xs text-faint">
                         <span>
                           {task.startDate} → {task.endDate}
                         </span>
@@ -936,7 +943,8 @@ export function SourceDetail({
                 setFetchStatusFilter(e.target.value)
                 setFetchPage(0)
               }}
-              className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-pink-600 focus-visible:ring-[3px] focus-visible:ring-pink-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+              aria-label="Filter by fetch status"
+              className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
             >
               <option value="all">All Statuses</option>
               <option value="success">Success</option>
@@ -954,21 +962,21 @@ export function SourceDetail({
             />
           ) : filteredFetchOps.length === 0 ? (
             <div className="py-14 text-center">
-              <p className="text-sm text-zinc-400 dark:text-zinc-500">
+              <p className="text-sm text-hint">
                 No operations match this filter.
               </p>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[800px]">
                   <thead>
-                    <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+                    <tr className="border-b border-border">
                       {['Timestamp', 'Type', 'Instruments', 'Points', 'Duration', 'Status', ''].map(
                         (col) => (
                           <th
                             key={col}
-                            className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600"
+                            className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint"
                           >
                             {col}
                           </th>
@@ -976,7 +984,7 @@ export function SourceDetail({
                       )}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  <tbody className="divide-y divide-border">
                     {pagedFetchOps.map((op) => {
                       const typeBdg = fetchTypeBadge[op.operationType]
                       const statusBdg = fetchStatusBadge[op.status]
@@ -985,7 +993,7 @@ export function SourceDetail({
                           key={op.id}
                           className="transition-colors hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
                         >
-                          <td className="px-4 py-3 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                             {formatTimestamp(op.timestamp)}
                           </td>
                           <td className="px-4 py-3">
@@ -997,19 +1005,19 @@ export function SourceDetail({
                           </td>
                           <td className="px-4 py-3">
                             {op.instrumentsCount <= 3 ? (
-                              <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                              <span className="font-mono text-xs text-muted-foreground">
                                 {op.instrumentsAffected.join(', ')}
                               </span>
                             ) : (
-                              <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                              <span className="font-mono text-xs text-muted-foreground">
                                 {op.instrumentsCount} instruments
                               </span>
                             )}
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                          <td className="px-4 py-3 font-mono text-xs text-foreground">
                             {op.dataPointsFetched.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                             {formatDuration(op.durationMs)}
                           </td>
                           <td className="px-4 py-3">
@@ -1028,9 +1036,9 @@ export function SourceDetail({
                             {(op.status === 'failed' || op.status === 'partial') && (
                               <button
                                 onClick={() => onRetryFetch?.(op.id)}
-                                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent dark:border-zinc-700"
                               >
-                                <RotateCcw size={11} />
+                                <RotateCcw size={11} aria-hidden="true" />
                                 Retry
                               </button>
                             )}
@@ -1045,7 +1053,7 @@ export function SourceDetail({
               {/* Pagination */}
               {filteredFetchOps.length > PAGE_SIZE && (
                 <div className="flex items-center justify-between border-t border-zinc-100 px-6 py-3 dark:border-zinc-800/60">
-                  <span className="text-xs text-zinc-400 dark:text-zinc-600">
+                  <span className="text-xs text-faint">
                     Showing {fetchPage * PAGE_SIZE + 1}–
                     {Math.min((fetchPage + 1) * PAGE_SIZE, filteredFetchOps.length)} of{' '}
                     {filteredFetchOps.length}
@@ -1054,14 +1062,14 @@ export function SourceDetail({
                     <button
                       disabled={fetchPage === 0}
                       onClick={() => setFetchPage((p) => p - 1)}
-                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                     >
                       Previous
                     </button>
                     <button
                       disabled={(fetchPage + 1) * PAGE_SIZE >= filteredFetchOps.length}
                       onClick={() => setFetchPage((p) => p + 1)}
-                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-40 dark:border-zinc-700"
                     >
                       Next
                     </button>
@@ -1087,11 +1095,11 @@ export function SourceDetail({
           ) : (
             <>
               {/* Quality Metrics Table */}
-              <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card">
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[720px]">
                     <thead>
-                      <tr className="border-b border-zinc-100 dark:border-zinc-800/60">
+                      <tr className="border-b border-border">
                         {(
                           [
                             ['symbol', 'Symbol'],
@@ -1115,12 +1123,12 @@ export function SourceDetail({
                         <th className="hidden px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 md:table-cell dark:text-zinc-600">
                           Last Validated
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-600">
+                        <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-faint">
                           Status
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                    <tbody className="divide-y divide-border">
                       {qualityMetrics.map((m) => {
                         const validityColor =
                           m.ohlcvValidity > 99
@@ -1158,10 +1166,10 @@ export function SourceDetail({
                             className="transition-colors hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
                           >
                             <td className="px-4 py-3">
-                              <p className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                              <p className="font-mono text-sm font-semibold text-foreground">
                                 {m.symbol}
                               </p>
-                              <p className="text-xs text-zinc-400 dark:text-zinc-600">
+                              <p className="text-xs text-faint">
                                 {m.instrumentName}
                               </p>
                             </td>
@@ -1176,13 +1184,13 @@ export function SourceDetail({
                                   {m.outliers}
                                 </span>
                               ) : (
-                                <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+                                <span className="font-mono text-xs text-faint">
                                   0
                                 </span>
                               )}
                             </td>
                             <td className="px-4 py-3">
-                              <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400">
+                              <span className="font-mono text-xs text-muted-foreground">
                                 {m.gapsFilled}
                               </span>
                             </td>
@@ -1192,7 +1200,7 @@ export function SourceDetail({
                               </span>
                             </td>
                             <td className="hidden px-4 py-3 md:table-cell">
-                              <span className="font-mono text-xs text-zinc-500 dark:text-zinc-500">
+                              <span className="font-mono text-xs text-hint">
                                 {relativeTime(m.lastValidated)}
                               </span>
                             </td>
@@ -1213,22 +1221,22 @@ export function SourceDetail({
 
               {/* Quality Alerts Detail */}
               {qualityAlerts.length > 0 && (
-                <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/80">
+                <div className="overflow-hidden rounded-2xl border border-border bg-card">
                   <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4 dark:border-zinc-800/60">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80">
-                        <AlertTriangle size={13} className="text-zinc-500 dark:text-zinc-400" />
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted">
+                        <AlertTriangle size={13} className="text-muted-foreground" />
                       </div>
-                      <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                      <h3 className="text-sm font-semibold text-foreground">
                         Quality Alerts
                       </h3>
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-bold tabular-nums text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400">
+                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-bold tabular-nums text-muted-foreground dark:bg-zinc-800/60">
                         {qualityAlerts.filter((a) => !a.acknowledged).length} unreviewed
                       </span>
                     </div>
                   </div>
 
-                  <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  <div className="divide-y divide-border">
                     {qualityAlerts.map((alert) => {
                       const alertBdg = alertTypeBadge[alert.alertType]
                       const sevBdg = severityBadge[alert.severity]
@@ -1237,7 +1245,7 @@ export function SourceDetail({
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
                               <div className="flex flex-wrap items-center gap-2">
-                                <span className="font-mono text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                                <span className="font-mono text-xs font-semibold text-foreground">
                                   {alert.symbol}
                                 </span>
                                 <span
@@ -1257,7 +1265,7 @@ export function SourceDetail({
                                   </span>
                                 )}
                               </div>
-                              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                              <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                                 {alert.description}
                               </p>
                               {alert.dataPoint && (
@@ -1266,9 +1274,9 @@ export function SourceDetail({
                                     (field) => (
                                       <span
                                         key={field}
-                                        className="font-mono text-xs text-zinc-500 dark:text-zinc-400"
+                                        className="font-mono text-xs text-muted-foreground"
                                       >
-                                        <span className="uppercase text-zinc-400 dark:text-zinc-600">
+                                        <span className="uppercase text-faint">
                                           {field[0]}:
                                         </span>{' '}
                                         {field === 'volume'
@@ -1282,15 +1290,15 @@ export function SourceDetail({
                             </div>
 
                             <div className="flex shrink-0 flex-col items-end gap-2">
-                              <span className="font-mono text-xs text-zinc-400 dark:text-zinc-600">
+                              <span className="font-mono text-xs text-faint">
                                 {relativeTime(alert.detectedAt)}
                               </span>
                               {!alert.acknowledged && (
                                 <button
                                   onClick={() => onAcknowledgeAlert?.(alert.id)}
-                                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 transition-colors hover:border-emerald-300 hover:text-emerald-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-emerald-800 dark:hover:text-emerald-400"
+                                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-emerald-300 hover:text-emerald-600 dark:border-zinc-700 dark:hover:border-emerald-800 dark:hover:text-emerald-400"
                                 >
-                                  <CheckCircle2 size={11} />
+                                  <CheckCircle2 size={11} aria-hidden="true" />
                                   Acknowledge
                                 </button>
                               )}
@@ -1330,21 +1338,21 @@ function EmptyState({
   return (
     <div className="flex min-h-[40vh] flex-col items-center justify-center px-4">
       <div className="relative w-full max-w-md">
-        <div className="absolute -inset-4 rounded-3xl bg-pink-600/5 blur-2xl dark:bg-pink-600/10" />
-        <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-white px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-900/80">
+        <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl dark:bg-primary/10" />
+        <div className="relative rounded-2xl border border-dashed border-zinc-300 bg-card px-8 py-16 text-center backdrop-blur-sm dark:border-zinc-700/80">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800/80 dark:ring-zinc-700/50">
-            <EmptyIcon size={24} className="text-zinc-400 dark:text-zinc-500" />
+            <EmptyIcon size={24} className="text-hint" />
           </div>
-          <h2 className="mt-5 text-lg font-semibold text-zinc-800 dark:text-zinc-100">{title}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+          <h2 className="mt-5 text-lg font-semibold text-foreground">{title}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
           {actionLabel && onAction && (
             <button
               onClick={onAction}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-600/20 transition-all hover:bg-pink-500 hover:shadow-pink-600/30 active:scale-[0.98]"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-pink-600/20 transition-all hover:bg-primary/90 hover:shadow-pink-600/30 active:scale-[0.98]"
             >
-              <Plus size={15} />
+              <Plus size={15} aria-hidden="true" />
               {actionLabel}
             </button>
           )}

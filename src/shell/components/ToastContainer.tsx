@@ -84,7 +84,7 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: string)
         ${style.container}
       `}
     >
-      <Icon size={16} className={`mt-0.5 shrink-0 ${style.icon}`} />
+      <Icon size={16} aria-hidden="true" className={`mt-0.5 shrink-0 ${style.icon}`} />
       <p className="flex-1 text-sm text-foreground">
         {toast.message}
         {toast.countdown && (
@@ -105,9 +105,9 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: string)
       <button
         onClick={dismiss}
         aria-label="Dismiss notification"
-        className="shrink-0 rounded p-0.5 text-hint transition-colors hover:text-muted-foreground"
+        className="shrink-0 rounded p-0.5 text-hint transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
       >
-        <X size={14} />
+        <X size={14} aria-hidden="true" />
       </button>
     </div>
   )
@@ -125,14 +125,14 @@ export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
   return (
     <>
       {/* Desktop: top-right, stacked (sticky notifications on top) */}
-      <div className="fixed right-4 top-4 z-[9999] hidden w-80 space-y-2 md:block">
+      <div role="status" aria-live="polite" className="fixed right-4 top-4 z-[9999] hidden w-80 space-y-2 md:block">
         {ordered.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={onDismiss} />
         ))}
       </div>
 
       {/* Mobile: top, full-width */}
-      <div className="fixed left-4 right-4 top-14 z-[9999] space-y-2 md:hidden">
+      <div role="status" aria-live="polite" className="fixed left-4 right-4 top-14 z-[9999] space-y-2 md:hidden">
         {ordered.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={onDismiss} />
         ))}

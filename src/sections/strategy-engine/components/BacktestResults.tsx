@@ -160,7 +160,7 @@ function ExecutiveSummary({
   const BadgeIcon = badge.icon
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-xl border border-border bg-card p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3">
@@ -168,15 +168,15 @@ function ExecutiveSummary({
               <BadgeIcon className="h-3.5 w-3.5" />
               {badge.label}
             </span>
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">{detail.backtestId}</span>
+            <span className="text-xs text-hint">{detail.backtestId}</span>
           </div>
-          <h2 className="mt-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+          <h2 className="mt-2 text-lg font-semibold text-foreground">
             {detail.strategyName}
           </h2>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             {detail.testPeriod} &middot; {formatCurrency(detail.initialCapital)} &rarr; {formatCurrency(detail.finalValue)}
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             {detail.recommendationText}
           </p>
         </div>
@@ -185,14 +185,14 @@ function ExecutiveSummary({
             onClick={() => onRerun?.(detail.backtestId)}
             className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
           >
-            <RotateCcw className="h-3.5 w-3.5" />
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             Re-run
           </button>
           <button
             onClick={() => onCompare?.(detail.backtestId)}
             className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
           >
-            <GitCompare className="h-3.5 w-3.5" />
+            <GitCompare className="h-3.5 w-3.5" aria-hidden="true" />
             Compare
           </button>
         </div>
@@ -219,11 +219,11 @@ function StatCard({ stat }: { stat: StatCardData }) {
     ? 'text-red-600 dark:text-red-400'
     : stat.isGood
       ? 'text-emerald-600 dark:text-emerald-400'
-      : 'text-zinc-900 dark:text-zinc-50'
+      : 'text-foreground'
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-      <p className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+    <div className="rounded-xl border border-border bg-card p-4">
+      <p className="text-xs font-medium uppercase tracking-wider text-hint">
         {stat.label}
       </p>
       <p className={`mt-1 text-xl font-bold tabular-nums ${valueColor}`}>
@@ -236,9 +236,9 @@ function StatCard({ stat }: { stat: StatCardData }) {
           ) : stat.isBad ? (
             <ArrowDownRight className="h-3 w-3 text-red-500" />
           ) : (
-            <Minus className="h-3 w-3 text-zinc-400" />
+            <Minus className="h-3 w-3 text-hint" />
           )}
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs text-muted-foreground">
             {stat.benchmark} {stat.benchmarkLabel ?? 'SPY'}
           </span>
         </div>
@@ -331,26 +331,26 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
     <div>
       <div className="mb-3 flex items-center gap-4">
         <div className="flex items-center gap-1.5">
-          <div className="h-0.5 w-4 rounded bg-pink-600" />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">Strategy</span>
+          <div className="h-0.5 w-4 rounded bg-primary" />
+          <span className="text-xs text-muted-foreground">Strategy</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-0.5 w-4 rounded bg-zinc-400 opacity-60" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, currentColor 2px, currentColor 4px)' }} />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">SPY</span>
+          <span className="text-xs text-muted-foreground">SPY</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-0.5 w-4 rounded bg-emerald-500 opacity-60" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 3px, currentColor 3px, currentColor 5px)' }} />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">Buy & Hold</span>
+          <span className="text-xs text-muted-foreground">Buy & Hold</span>
         </div>
       </div>
 
       {/* Tooltip */}
       {hovered && (
         <div className="mb-2 flex items-center gap-4 text-xs">
-          <span className="font-medium text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-muted-foreground">
             {new Date(hovered.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
           </span>
-          <span className="font-semibold text-pink-600">{formatCurrency(hovered.strategy)}</span>
+          <span className="font-semibold text-primary">{formatCurrency(hovered.strategy)}</span>
           <span className="text-zinc-400">{formatCurrency(hovered.spy)}</span>
           <span className="text-emerald-500">{formatCurrency(hovered.buyAndHold)}</span>
         </div>
@@ -362,16 +362,16 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
       >
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 flex h-full w-14 flex-col justify-between py-2 text-right">
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency(maxVal)}</span>
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency((maxVal + minVal) / 2)}</span>
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatCurrency(minVal)}</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">{formatCurrency(maxVal)}</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">{formatCurrency((maxVal + minVal) / 2)}</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">{formatCurrency(minVal)}</span>
         </div>
 
         {/* Grid lines */}
         <div className="absolute inset-0 left-14">
-          <div className="absolute left-0 right-0 top-1/4 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
-          <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
-          <div className="absolute left-0 right-0 top-3/4 border-t border-dashed border-zinc-200 dark:border-zinc-800" />
+          <div className="absolute left-0 right-0 top-1/4 border-t border-dashed border-border" />
+          <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-border" />
+          <div className="absolute left-0 right-0 top-3/4 border-t border-dashed border-border" />
         </div>
 
         {/* SVG Chart */}
@@ -425,7 +425,7 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
         {/* Hover line */}
         {hoveredIdx !== null && (
           <div
-            className="pointer-events-none absolute top-0 h-full w-px bg-pink-600/40"
+            className="pointer-events-none absolute top-0 h-full w-px bg-primary/40"
             style={{
               left: `calc(3.5rem + ${(hoveredIdx / (equityCurve.length - 1)) * 100}% * (1 - 3.5rem / 100%))`,
             }}
@@ -434,7 +434,7 @@ function EquityCurveChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) 
       </div>
 
       {/* X-axis */}
-      <div className="mt-1 flex justify-between pl-14 text-xs text-zinc-400">
+      <div className="mt-1 flex justify-between pl-14 text-xs text-hint">
         <span>{equityCurve[0]?.date.slice(0, 7)}</span>
         <span>{equityCurve[Math.floor(equityCurve.length / 2)]?.date.slice(0, 7)}</span>
         <span>{equityCurve[equityCurve.length - 1]?.date.slice(0, 7)}</span>
@@ -479,9 +479,9 @@ function DrawdownChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) {
 
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 flex h-full w-14 flex-col justify-between py-1 text-right">
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">0%</span>
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatPercent(minDD / 2)}</span>
-          <span className="pr-2 text-xs tabular-nums text-zinc-400">{formatPercent(minDD)}</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">0%</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">{formatPercent(minDD / 2)}</span>
+          <span className="pr-2 text-xs tabular-nums text-hint">{formatPercent(minDD)}</span>
         </div>
 
         <svg
@@ -504,7 +504,7 @@ function DrawdownChart({ equityCurve }: { equityCurve: EquityCurvePoint[] }) {
           />
         </svg>
       </div>
-      <div className="mt-1 flex justify-between pl-14 text-xs text-zinc-400">
+      <div className="mt-1 flex justify-between pl-14 text-xs text-hint">
         <span>{equityCurve[0]?.date.slice(0, 7)}</span>
         <span>{equityCurve[Math.floor(equityCurve.length / 2)]?.date.slice(0, 7)}</span>
         <span>{equityCurve[equityCurve.length - 1]?.date.slice(0, 7)}</span>
@@ -532,7 +532,7 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
 
   // Color scale
   const getColor = (val: number | undefined) => {
-    if (val === undefined) return 'bg-zinc-100 dark:bg-zinc-800'
+    if (val === undefined) return 'bg-muted'
     if (val >= 0.03) return 'bg-emerald-500 text-white'
     if (val >= 0.02) return 'bg-emerald-400 text-white'
     if (val >= 0.01) return 'bg-emerald-300 dark:bg-emerald-600 text-emerald-900 dark:text-emerald-100'
@@ -547,15 +547,15 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
       <table className="w-full border-collapse text-center">
         <thead>
           <tr>
-            <th className="px-2 py-1.5 text-left text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <th className="px-2 py-1.5 text-left text-xs font-semibold uppercase tracking-wider text-hint">
               Year
             </th>
             {MONTH_LABELS.map((m) => (
-              <th key={m} className="px-1 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <th key={m} className="px-1 py-1.5 text-xs font-semibold uppercase tracking-wider text-hint">
                 {m}
               </th>
             ))}
-            <th className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <th className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wider text-hint">
               Total
             </th>
           </tr>
@@ -565,7 +565,7 @@ function MonthlyReturnsHeatmap({ monthlyReturns }: { monthlyReturns: MonthlyRetu
             const yearTotal = Array.from(months.values()).reduce((sum, v) => sum + v, 0)
             return (
               <tr key={year}>
-                <td className="px-2 py-0.5 text-left text-xs font-medium text-zinc-600 dark:text-zinc-300">
+                <td className="px-2 py-0.5 text-left text-xs font-medium text-muted-foreground">
                   {year}
                 </td>
                 {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => {
@@ -636,12 +636,12 @@ function TradeDistribution({ trades }: { trades: BacktestTrade[] }) {
           </div>
         ))}
       </div>
-      <div className="mt-1 flex justify-between text-xs text-zinc-400">
+      <div className="mt-1 flex justify-between text-xs text-hint">
         <span>{formatPercent(buckets[0]?.from ?? 0)}</span>
         <span>0%</span>
         <span>{formatPercent(buckets[buckets.length - 1]?.to ?? 0)}</span>
       </div>
-      <p className="mt-1 text-center text-xs text-zinc-400">Trade Return Distribution</p>
+      <p className="mt-1 text-center text-xs text-hint">Trade Return Distribution</p>
     </div>
   )
 }
@@ -665,16 +665,16 @@ function ChartsSection({ equityCurve, monthlyReturns, trades }: {
   ]
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex gap-0 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="rounded-xl border border-border bg-card">
+      <div className="flex gap-0 border-b border-border">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2.5 text-xs font-medium transition-colors ${
               activeTab === tab.key
-                ? 'border-b-2 border-pink-600 text-pink-600 dark:text-pink-400'
-                : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
+                ? 'border-b-2 border-primary text-primary'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {tab.label}
@@ -697,19 +697,19 @@ function ChartsSection({ equityCurve, monthlyReturns, trades }: {
 
 function BenchmarkComparisonTable({ comparisons }: { comparisons: BenchmarkComparison[] }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Benchmark Comparison</h3>
+    <div className="rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold text-foreground">Benchmark Comparison</h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
-              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <tr className="border-b border-border">
+              <th className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-hint">
                 Metric
               </th>
               {comparisons.map((c) => (
-                <th key={c.benchmark} className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                <th key={c.benchmark} className="px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-hint">
                   vs {c.benchmark}
                 </th>
               ))}
@@ -717,7 +717,7 @@ function BenchmarkComparisonTable({ comparisons }: { comparisons: BenchmarkCompa
           </thead>
           <tbody className="text-xs">
             <tr className="border-b border-zinc-50 dark:border-zinc-800/50">
-              <td className="px-4 py-2 font-medium text-zinc-600 dark:text-zinc-300">Alpha</td>
+              <td className="px-4 py-2 font-medium text-muted-foreground">Alpha</td>
               {comparisons.map((c) => (
                 <td key={c.benchmark} className="px-4 py-2 tabular-nums">
                   <span className={c.alpha >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
@@ -727,15 +727,15 @@ function BenchmarkComparisonTable({ comparisons }: { comparisons: BenchmarkCompa
               ))}
             </tr>
             <tr className="border-b border-zinc-50 dark:border-zinc-800/50">
-              <td className="px-4 py-2 font-medium text-zinc-600 dark:text-zinc-300">Beta</td>
+              <td className="px-4 py-2 font-medium text-muted-foreground">Beta</td>
               {comparisons.map((c) => (
-                <td key={c.benchmark} className="px-4 py-2 tabular-nums text-zinc-700 dark:text-zinc-300">
+                <td key={c.benchmark} className="px-4 py-2 tabular-nums text-foreground">
                   {formatNumber(c.beta)}
                 </td>
               ))}
             </tr>
             <tr className="border-b border-zinc-50 dark:border-zinc-800/50">
-              <td className="px-4 py-2 font-medium text-zinc-600 dark:text-zinc-300">Excess Sharpe</td>
+              <td className="px-4 py-2 font-medium text-muted-foreground">Excess Sharpe</td>
               {comparisons.map((c) => (
                 <td key={c.benchmark} className="px-4 py-2 tabular-nums">
                   <span className={c.excessSharpe >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
@@ -745,20 +745,20 @@ function BenchmarkComparisonTable({ comparisons }: { comparisons: BenchmarkCompa
               ))}
             </tr>
             <tr className="border-b border-zinc-50 dark:border-zinc-800/50">
-              <td className="px-4 py-2 font-medium text-zinc-600 dark:text-zinc-300">Information Ratio</td>
+              <td className="px-4 py-2 font-medium text-muted-foreground">Information Ratio</td>
               {comparisons.map((c) => (
-                <td key={c.benchmark} className="px-4 py-2 tabular-nums text-zinc-700 dark:text-zinc-300">
+                <td key={c.benchmark} className="px-4 py-2 tabular-nums text-foreground">
                   {formatNumber(c.informationRatio)}
                 </td>
               ))}
             </tr>
             <tr>
-              <td className="px-4 py-2 font-medium text-zinc-600 dark:text-zinc-300">Max Drawdown</td>
+              <td className="px-4 py-2 font-medium text-muted-foreground">Max Drawdown</td>
               {comparisons.map((c) => (
                 <td key={c.benchmark} className="px-4 py-2 tabular-nums">
-                  <span className="text-zinc-700 dark:text-zinc-300">{formatPercent(c.strategyMaxDrawdown)}</span>
-                  <span className="mx-1 text-zinc-300 dark:text-zinc-600">vs</span>
-                  <span className="text-zinc-500">{formatPercent(c.benchmarkMaxDrawdown)}</span>
+                  <span className="text-foreground">{formatPercent(c.strategyMaxDrawdown)}</span>
+                  <span className="mx-1 text-faint">vs</span>
+                  <span className="text-hint">{formatPercent(c.benchmarkMaxDrawdown)}</span>
                 </td>
               ))}
             </tr>
@@ -791,17 +791,17 @@ function AdditionalMetrics({ metrics }: { metrics: BacktestDetailMetrics }) {
   ]
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Detailed Metrics</h3>
+    <div className="rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold text-foreground">Detailed Metrics</h3>
       </div>
-      <div className="grid grid-cols-2 gap-px bg-zinc-100 sm:grid-cols-3 lg:grid-cols-4 dark:bg-zinc-800">
+      <div className="grid grid-cols-2 gap-px bg-muted sm:grid-cols-3 lg:grid-cols-4">
         {items.map((item) => (
-          <div key={item.label} className="bg-white px-4 py-2.5 dark:bg-zinc-900">
-            <p className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <div key={item.label} className="bg-card px-4 py-2.5">
+            <p className="text-xs font-medium uppercase tracking-wider text-hint">
               {item.label}
             </p>
-            <p className="mt-0.5 text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+            <p className="mt-0.5 text-sm font-semibold tabular-nums text-foreground">
               {item.value}
             </p>
           </div>
@@ -850,32 +850,33 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
 
   const SortHeader = ({ col, label, className = '' }: { col: keyof BacktestTrade; label: string; className?: string }) => (
     <th
-      className={`cursor-pointer select-none px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300 ${className}`}
+      className={`cursor-pointer select-none px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-hint transition-colors hover:text-muted-foreground ${className}`}
       onClick={() => handleSort(col)}
     >
       <span className="inline-flex items-center gap-0.5">
         {label}
         {sortCol === col && (
-          <span className="text-pink-500">{sortAsc ? '↑' : '↓'}</span>
+          <span className="text-primary">{sortAsc ? '↑' : '↓'}</span>
         )}
       </span>
     </th>
   )
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+    <div className="rounded-xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h3 className="text-sm font-semibold text-foreground">
           Trade Log
-          <span className="ml-2 text-xs font-normal text-zinc-400">({trades.length} trades)</span>
+          <span className="ml-2 text-xs font-normal text-hint">({trades.length} trades)</span>
         </h3>
-        <div className="flex items-center gap-2 text-xs text-zinc-500">
+        <div className="flex items-center gap-2 text-xs text-hint">
           <button
             onClick={() => setPage(Math.max(0, page - 1))}
             disabled={page === 0}
-            className="rounded p-1 transition-colors hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+            aria-label="Previous page"
+            className="rounded p-1 transition-colors hover:bg-accent disabled:opacity-30"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
           </button>
           <span className="tabular-nums">
             {page + 1} / {totalPages}
@@ -883,16 +884,17 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
           <button
             onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
             disabled={page >= totalPages - 1}
-            className="rounded p-1 transition-colors hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+            aria-label="Next page"
+            className="rounded p-1 transition-colors hover:bg-accent disabled:opacity-30"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-border">
               <th className="w-8 px-3 py-2.5" />
               <SortHeader col="tradeNumber" label="#" className="text-right" />
               <SortHeader col="entryDate" label="Entry" />
@@ -915,27 +917,27 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                 <Fragment key={trade.tradeNumber}>
                   <tr
                     className={`border-b border-zinc-50 transition-colors dark:border-zinc-800/50 ${
-                      hasSnapshots ? 'cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50' : ''
+                      hasSnapshots ? 'cursor-pointer hover:bg-accent/50' : ''
                     } ${isExpanded ? 'bg-zinc-50 dark:bg-zinc-800/30' : ''}`}
                     onClick={() => hasSnapshots && setExpandedTrade(isExpanded ? null : trade.tradeNumber)}
                   >
                     <td className="px-3 py-2">
                       {hasSnapshots && (
                         isExpanded
-                          ? <ChevronUp className="h-3.5 w-3.5 text-zinc-400" />
-                          : <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
+                          ? <ChevronUp className="h-3.5 w-3.5 text-hint" />
+                          : <ChevronDown className="h-3.5 w-3.5 text-hint" />
                       )}
                     </td>
-                    <td className="px-3 py-2 text-right text-xs tabular-nums text-zinc-500">
+                    <td className="px-3 py-2 text-right text-xs tabular-nums text-hint">
                       {trade.tradeNumber}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-2 text-xs tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="whitespace-nowrap px-3 py-2 text-xs tabular-nums text-foreground">
                       {trade.entryDate}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-2 text-xs tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="whitespace-nowrap px-3 py-2 text-xs tabular-nums text-foreground">
                       {trade.exitDate}
                     </td>
-                    <td className="px-3 py-2 text-xs font-medium text-zinc-900 dark:text-zinc-50">
+                    <td className="px-3 py-2 text-xs font-medium text-foreground">
                       {trade.instrument}
                     </td>
                     <td className="px-3 py-2">
@@ -949,13 +951,13 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                         {trade.direction}
                       </span>
                     </td>
-                    <td className="px-3 py-2 text-right text-xs tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="px-3 py-2 text-right text-xs tabular-nums text-foreground">
                       {trade.quantity}
                     </td>
-                    <td className="px-3 py-2 text-right text-xs tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="px-3 py-2 text-right text-xs tabular-nums text-foreground">
                       {formatPrice(trade.entryPrice)}
                     </td>
-                    <td className="px-3 py-2 text-right text-xs tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="px-3 py-2 text-right text-xs tabular-nums text-foreground">
                       {formatPrice(trade.exitPrice)}
                     </td>
                     <td className={`px-3 py-2 text-right text-xs font-semibold tabular-nums ${
@@ -972,7 +974,7 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                     }`}>
                       {trade.returnPct >= 0 ? '+' : ''}{formatPercent(trade.returnPct)}
                     </td>
-                    <td className="px-3 py-2 text-right text-xs tabular-nums text-zinc-500">
+                    <td className="px-3 py-2 text-right text-xs tabular-nums text-hint">
                       {trade.holdingDays}
                     </td>
                   </tr>
@@ -982,14 +984,14 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                       <td colSpan={12} className="px-6 py-3">
                         <div className="flex gap-6">
                           <div>
-                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-hint">
                               Entry Indicators
                             </p>
                             <div className="grid grid-cols-2 gap-x-6 gap-y-1">
                               {Object.entries(trade.indicatorSnapshots.entry).map(([key, val]) => (
                                 <div key={key} className="flex items-center justify-between gap-4">
-                                  <span className="text-xs text-zinc-500">{key}</span>
-                                  <span className="text-xs font-medium tabular-nums text-zinc-700 dark:text-zinc-300">
+                                  <span className="text-xs text-hint">{key}</span>
+                                  <span className="text-xs font-medium tabular-nums text-foreground">
                                     {typeof val === 'number' ? formatNumber(val) : val}
                                   </span>
                                 </div>
@@ -998,14 +1000,14 @@ function TradeLog({ trades }: { trades: BacktestTrade[] }) {
                           </div>
                           <div className="w-px bg-zinc-200 dark:bg-zinc-700" />
                           <div>
-                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-hint">
                               Exit Indicators
                             </p>
                             <div className="grid grid-cols-2 gap-x-6 gap-y-1">
                               {Object.entries(trade.indicatorSnapshots.exit).map(([key, val]) => (
                                 <div key={key} className="flex items-center justify-between gap-4">
-                                  <span className="text-xs text-zinc-500">{key}</span>
-                                  <span className="text-xs font-medium tabular-nums text-zinc-700 dark:text-zinc-300">
+                                  <span className="text-xs text-hint">{key}</span>
+                                  <span className="text-xs font-medium tabular-nums text-foreground">
                                     {typeof val === 'number' ? formatNumber(val) : val}
                                   </span>
                                 </div>
@@ -1038,15 +1040,16 @@ export function BacktestResults({ detail, onBack, onRerun, onCompare }: Backtest
         <div className="mb-6 flex items-center gap-4">
           <button
             onClick={onBack}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700/60 bg-white dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200 active:scale-95"
+            aria-label="Go back"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-foreground active:scale-95"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} aria-hidden="true" />
           </button>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-hint">
               Intelligence
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               Backtest Results
             </h1>
           </div>

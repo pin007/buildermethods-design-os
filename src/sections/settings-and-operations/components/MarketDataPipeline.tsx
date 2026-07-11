@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import {
   Database,
   GripVertical,
@@ -25,7 +25,7 @@ import {
 // ---------------------------------------------------------------------------
 
 const inputClasses =
-  'rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 px-3 py-2 font-mono text-sm text-zinc-900 dark:text-zinc-50 outline-none transition-colors focus:border-pink-600 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-600/30 dark:focus:ring-pink-400/30'
+  'rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-primary dark:focus:border-pink-400 focus:ring-1 focus:ring-ring/30 dark:focus:ring-pink-400/30'
 
 function statusDot(status: FetchStatus) {
   const colors: Record<FetchStatus, string> = {
@@ -61,7 +61,7 @@ function qualityBadge(score: number) {
 
 function typeBadge(type: InstrumentType) {
   const styles: Record<string, string> = {
-    stock: 'bg-zinc-500/15 text-zinc-600 dark:text-zinc-400',
+    stock: 'bg-zinc-500/15 text-muted-foreground',
     crypto: 'bg-amber-500/15 text-amber-600 dark:text-amber-400',
     forex: 'bg-sky-500/15 text-sky-600 dark:text-sky-400',
     option: 'bg-purple-500/15 text-purple-600 dark:text-purple-400',
@@ -94,6 +94,7 @@ export function MarketDataPipeline({
   onSave,
   onBack,
 }: MarketDataPipelineProps) {
+  const retentionInputId = useId()
   const [hasChanges, setHasChanges] = useState(false)
 
   // Local state for sources ordering (to allow simulated reorder)
@@ -191,32 +192,32 @@ export function MarketDataPipeline({
           {orderedSources.map((source, index) => (
             <div
               key={source.id}
-              className="flex flex-wrap items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/30 dark:bg-zinc-800/30 px-3 py-2.5 sm:flex-nowrap"
+              className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-zinc-100/30 dark:bg-zinc-800/30 px-3 py-2.5 sm:flex-nowrap"
             >
               {/* Grip + priority */}
               <div className="flex shrink-0 items-center gap-1.5">
                 <GripVertical
                   size={14}
-                  className="cursor-grab text-zinc-400 dark:text-zinc-500"
+                  className="cursor-grab text-hint"
                   aria-hidden
                 />
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-pink-600/10 dark:bg-pink-500/10 text-xs font-bold text-pink-600 dark:text-pink-400">
+                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 dark:bg-primary/10 text-xs font-bold text-primary">
                   {source.priority}
                 </span>
               </div>
 
               {/* Source name */}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                <p className="truncate text-sm font-medium text-foreground">
                   {source.name}
                 </p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   {source.scheduleLabel}
                 </p>
               </div>
 
               {/* Status dot + records */}
-              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 {statusDot(source.lastFetchStatus)}
                 <span className="font-mono">
                   {source.recordsFetched.toLocaleString()} records
@@ -228,6 +229,7 @@ export function MarketDataPipeline({
 
               {/* Toggle */}
               <ToggleSwitch
+                label={`Enable ${source.name}`}
                 enabled={source.enabled}
                 onChange={(enabled) => handleToggleSource(source.id, enabled)}
               />
@@ -237,18 +239,18 @@ export function MarketDataPipeline({
                 <button
                   onClick={() => moveSource(index, 'up')}
                   disabled={index === 0}
-                  className="rounded p-0.5 text-zinc-500 dark:text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-50 disabled:opacity-30 disabled:hover:text-zinc-500 dark:disabled:hover:text-zinc-400"
+                  className="rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30 disabled:hover:text-zinc-500 dark:disabled:hover:text-zinc-400"
                   aria-label={`Move ${source.name} up`}
                 >
-                  <ChevronUp size={14} />
+                  <ChevronUp size={14} aria-hidden="true" />
                 </button>
                 <button
                   onClick={() => moveSource(index, 'down')}
                   disabled={index === orderedSources.length - 1}
-                  className="rounded p-0.5 text-zinc-500 dark:text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-50 disabled:opacity-30 disabled:hover:text-zinc-500 dark:disabled:hover:text-zinc-400"
+                  className="rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30 disabled:hover:text-zinc-500 dark:disabled:hover:text-zinc-400"
                   aria-label={`Move ${source.name} down`}
                 >
-                  <ChevronDown size={14} />
+                  <ChevronDown size={14} aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -337,23 +339,27 @@ export function MarketDataPipeline({
             return (
               <div
                 key={tier.id}
-                className={`rounded-lg border p-4 ${tierColors[tier.label] ?? 'border-zinc-200 dark:border-zinc-800 bg-zinc-100/30 dark:bg-zinc-800/30'}`}
+                className={`rounded-lg border p-4 ${tierColors[tier.label] ?? 'border-border bg-zinc-100/30 dark:bg-zinc-800/30'}`}
               >
                 <h3
-                  className={`text-sm font-bold ${labelColors[tier.label] ?? 'text-zinc-900 dark:text-zinc-50'}`}
+                  className={`text-sm font-bold ${labelColors[tier.label] ?? 'text-foreground'}`}
                 >
                   {tier.label}
                 </h3>
-                <p className="mb-3 mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mb-3 mt-0.5 text-xs text-muted-foreground">
                   {tier.description}
                 </p>
 
                 <div className="space-y-2">
                   <div>
-                    <label className="mb-1 block text-xs font-medium text-zinc-900 dark:text-zinc-50">
+                    <label
+                      htmlFor={`${retentionInputId}-${tier.id}`}
+                      className="mb-1 block text-xs font-medium text-foreground"
+                    >
                       Retention (days)
                     </label>
                     <input
+                      id={`${retentionInputId}-${tier.id}`}
                       type="number"
                       min={1}
                       value={retentionDays[tier.id] ?? tier.retentionDays}
@@ -366,11 +372,11 @@ export function MarketDataPipeline({
                       className={`w-full ${inputClasses}`}
                     />
                   </div>
-                  <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Granularity</span>
                     <span className="font-mono">{tier.granularity}</span>
                   </div>
-                  <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Storage</span>
                     <span className="font-mono">{tier.storage}</span>
                   </div>
@@ -392,24 +398,24 @@ export function MarketDataPipeline({
           {instruments.map((inst) => (
             <div
               key={inst.symbol}
-              className="flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/30 dark:bg-zinc-800/30 px-3 py-2"
+              className="flex items-center gap-3 rounded-lg border border-border bg-zinc-100/30 dark:bg-zinc-800/30 px-3 py-2"
             >
-              <span className="w-20 shrink-0 font-mono text-sm font-bold text-zinc-900 dark:text-zinc-50">
+              <span className="w-20 shrink-0 font-mono text-sm font-bold text-foreground">
                 {inst.symbol}
               </span>
-              <span className="min-w-0 flex-1 truncate text-sm text-zinc-500 dark:text-zinc-400">
+              <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground">
                 {inst.name}
               </span>
-              <span className="hidden shrink-0 text-xs text-zinc-500 dark:text-zinc-400 sm:inline">
+              <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">
                 {inst.exchange}
               </span>
               {typeBadge(inst.type)}
               <button
                 onClick={() => handleRemoveInstrument(inst.symbol)}
-                className="shrink-0 rounded p-1 text-zinc-500 dark:text-zinc-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
+                className="shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-500"
                 aria-label={`Remove ${inst.symbol}`}
               >
-                <X size={14} />
+                <X size={14} aria-hidden="true" />
               </button>
             </div>
           ))}
@@ -417,9 +423,9 @@ export function MarketDataPipeline({
 
         <button
           onClick={handleAddInstrument}
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800 py-2.5 text-sm font-medium text-zinc-500 dark:text-zinc-400 transition-colors hover:border-pink-600 dark:hover:border-pink-400 hover:text-pink-600 dark:hover:text-pink-400"
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary dark:hover:border-pink-400 hover:text-primary"
         >
-          <Plus size={14} />
+          <Plus size={14} aria-hidden="true" />
           Add Instrument
         </button>
       </FormSection>

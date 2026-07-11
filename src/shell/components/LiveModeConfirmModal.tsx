@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Radio, AlertTriangle } from 'lucide-react'
+import { useFocusTrap } from '@/lib/use-focus-trap'
 
 interface LiveModeConfirmModalProps {
   open: boolean
@@ -13,6 +14,10 @@ interface LiveModeConfirmModalProps {
  * requires a deliberate confirmation; switching back to Paper never does.
  */
 export function LiveModeConfirmModal({ open, onClose, onConfirm }: LiveModeConfirmModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+  // WCAG: trap Tab focus inside the confirm dialog while open; restore on close.
+  useFocusTrap(modalRef, open)
+
   useEffect(() => {
     if (!open) return
     function onKey(e: KeyboardEvent) {
@@ -31,6 +36,7 @@ export function LiveModeConfirmModal({ open, onClose, onConfirm }: LiveModeConfi
 
       {/* Modal */}
       <div
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-label="Switch to Live trading"
